@@ -13,7 +13,7 @@ export const formulas: Formula[] = [
       { sym: String.raw`H_{POA}`, meaning: "Plane-of-array irradiation", unit: "kWh/m²" },
       { sym: String.raw`G_{STC}`, meaning: "Reference irradiance, 1 kW/m²", unit: "kW/m²" },
     ],
-    explanation: md`Normalising by $P_0$ lets plants of any size be compared. Annual $Y_f$ for Kuwaiti bifacial trackers ≈ 2,100–2,300 kWh/kWp.`,
+    explanation: md`Normalising by $P_0$ lets plants of any size be compared. Annual $Y_f$ for Kuwaiti bifacial trackers ≈ 2,000–2,300 kWh/kWp (indicative; Shagaya resource data unverified).`,
     lesson: "m12-l01",
   },
   {

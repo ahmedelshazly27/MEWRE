@@ -156,14 +156,14 @@ The test: **would the next project's documents look different because of this en
           question: {
             id: "m15-l03-p1",
             type: "short",
-            prompt: md`Write one complete lessons-learned entry (event, root cause, impact, lesson, action, owner/date) for the failed PR test on NAJM-1000, where the root cause turned out to be two irradiance sensors that had not been cleaned for three weeks.`,
+            prompt: md`Write one complete lessons-learned entry (event, root cause, impact, lesson, action, owner/date) for the failed PR test on NAJM-1000, where the root cause turned out to be two reference irradiance sensors whose calibration had expired and which over-read irradiance by about 2 % (inflating the expected energy and so depressing PR). (Note: a merely dirty sensor under-reads, which would make PR look *higher*, not lower.)`,
             rubric: [
               "Event stated factually with numbers (79.5 % vs 81 %)",
-              "Root cause specific (sensor cleaning not in the test procedure or not enforced)",
+              "Root cause specific (pre-test sensor calibration check and cross-comparison not required by the procedure, or not enforced)",
               "Impact quantified (days of delay, dispute effort)",
               "Action changes a document (test procedure, O&M contract, checklist) with an owner and date",
             ],
-            modelAnswer: md`**Event:** First PR test measured 79.5 % vs 81 % guarantee; retest after sensor cleaning passed at 81.3 %. **Root cause:** The test procedure did not require documented daily cleaning of reference irradiance sensors; two sensors were soiled, under-reading irradiance. **Impact:** 18 days of COD delay and a week of dispute effort. **Lesson:** Test results are only as good as their inputs; sensor maintenance must be part of the procedure. **Action:** Add daily sensor cleaning logs and a pre-test calibration check to MEWRE's standard PR test procedure annex. **Owner/date:** Renewables technical lead, before the next RFP issue; verified in the RFP technical schedules.`,
+            modelAnswer: md`**Event:** First PR test measured 79.5 % vs 81 % guarantee; retest after sensor recalibration passed at 81.3 %. **Root cause:** The test procedure did not require a pre-test check of calibration certificates or a cross-comparison between reference sensors; two sensors with expired calibrations over-read irradiance by ~2 %, inflating the expected energy. **Impact:** 18 days of COD delay and a week of dispute effort. **Lesson:** Test results are only as good as their inputs; sensor maintenance must be part of the procedure. **Action:** Add a pre-test calibration-certificate check, a sensor cross-comparison tolerance (e.g. ±1 %) and daily cleaning logs to MEWRE's standard PR test procedure annex. **Owner/date:** Renewables technical lead, before the next RFP issue; verified in the RFP technical schedules.`,
             explanation: md`A good entry is specific enough that someone who was not there can act on it, and it ends in a changed document. Note that the real root cause was a test-procedure gap, not "the contractor" — root causes usually sit in systems, not people.`,
             concepts: ["m15.lessons-learned", "m15.commissioning-tests"],
             difficulty: 2,

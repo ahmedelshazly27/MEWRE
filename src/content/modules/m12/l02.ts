@@ -19,7 +19,7 @@ const lesson: Lesson = {
       description:
         "Decomposing the gap between modelled (expected) and measured energy into identified loss categories plus an unexplained residual.",
       competency: "operations",
-      related: ["m12.diagnosis-workflow"],
+      related: ["m12.diagnosis-workflow", "m02.loss-tree", "m09.deemed-energy"],
     },
     {
       id: "m12.loss-signatures",
@@ -27,6 +27,7 @@ const lesson: Lesson = {
       description:
         "Characteristic patterns in time series and spatial data that identify a loss mechanism (flat-top clipping, gradual soiling decline, zero-output blocks, asymmetric tracker profiles, set-point plateaus).",
       competency: "operations",
+      related: ["m06.curtailment", "m02.dc-ac-ratio"],
     },
     {
       id: "m12.diagnosis-workflow",
@@ -34,6 +35,7 @@ const lesson: Lesson = {
       description:
         "Top-down sequence: validate data → plant vs model → exclusions → block/inverter comparison → string level → field verification → root cause → corrective action.",
       competency: "operations",
+      related: ["m14.scada-anomaly"],
     },
     {
       id: "m12.rca-tools",

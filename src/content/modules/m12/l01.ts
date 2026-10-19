@@ -19,7 +19,7 @@ const lesson: Lesson = {
       description:
         "Sensors, data loggers, SCADA and historian that record irradiance, temperatures, electrical quantities and alarms at defined intervals, per IEC 61724-1 classes.",
       competency: "operations",
-      related: ["m12.data-quality"],
+      related: ["m12.data-quality", "m06.scada-architecture", "m06.revenue-metering"],
     },
     {
       id: "m12.performance-ratio",
@@ -27,7 +27,7 @@ const lesson: Lesson = {
       description:
         "Final yield divided by reference yield; the main normalised measure of how well the plant converts available irradiance, optionally temperature-corrected.",
       competency: "operations",
-      related: ["m12.specific-yield"],
+      related: ["m12.specific-yield", "m02.performance-ratio", "m07.pr-test", "m09.pr-guarantee"],
     },
     {
       id: "m12.availability",
@@ -35,6 +35,7 @@ const lesson: Lesson = {
       description:
         "Share of time (or of potential energy) during which the plant could generate, excluding agreed exclusions such as grid outages, curtailment and force majeure.",
       competency: "operations",
+      related: ["m09.availability-guarantee", "m04.availability-guarantee"],
     },
     {
       id: "m12.specific-yield",
@@ -42,6 +43,7 @@ const lesson: Lesson = {
       description:
         "Energy per installed kWp (kWh/kWp) and energy relative to continuous full-power output; used to compare plants and sites.",
       competency: "operations",
+      related: ["m01.capacity-factor"],
     },
     {
       id: "m12.data-quality",
@@ -49,6 +51,7 @@ const lesson: Lesson = {
       description:
         "Completeness, accuracy, calibration and consistency of monitoring data; the precondition for any KPI or claim.",
       competency: "operations",
+      related: ["m14.data-sanity"],
     },
   ],
   sections: [
@@ -72,7 +75,7 @@ A 1 GW PV + BESS plant produces millions of data points per day:
 | **PPC** | Set-points from the grid operator (P, Q, V, PF), curtailment flags | 1 s |
 | **BESS** | SoC, SoH, cell temperatures and voltages, HVAC status, fire system, charge/discharge energy | 1 s – 1 min |
 
-All of it flows to a SCADA/historian and usually a cloud monitoring platform. **IEC 61724-1** defines three monitoring accuracy classes: **Class A** (high accuracy, required for large utility plants and for performance guarantees — e.g. 3-second sampling and 1-minute recording of irradiance, secondary-standard-class pyranometers, regular calibration and daily cleaning of sensors), **Class B** (medium) and **Class C** (basic). For a MEWRE utility plant, specify Class A.`,
+All of it flows to a SCADA/historian and usually a cloud monitoring platform. **IEC 61724-1** defines three monitoring accuracy classes: **Class A** (high accuracy, required for large utility plants and for performance guarantees — e.g. 3-second sampling and 1-minute recording of irradiance, secondary-standard-class pyranometers, regular calibration and frequent sensor cleaning — in Kuwaiti dust, daily in practice), **Class B** (medium) and **Class C** (basic). For a MEWRE utility plant, specify Class A.`,
         },
         {
           kind: "callout",
@@ -117,7 +120,7 @@ IEC 61724-1 defines yields normalised by nameplate DC power $P_0$:`,
 
 ### Specific yield and capacity factor
 
-**Specific yield** $Y_f$ over a year (kWh/kWp/yr) is the best single number to compare plants: Kuwaiti bifacial tracker plants should reach roughly 2,100–2,300 kWh/kWp/yr; fixed-tilt plants roughly 1,750–1,900. **Capacity factor** relates energy to AC nameplate:`,
+**Specific yield** $Y_f$ over a year (kWh/kWp/yr) is the best single number to compare plants: Kuwaiti bifacial tracker plants should reach roughly 2,000–2,300 kWh/kWp/yr; fixed-tilt plants roughly 1,750–1,900 (indicative — Shagaya's long-term GHI is not yet verified; see M02). **Capacity factor** relates energy to AC nameplate:`,
         },
         { kind: "equation", formula: "m12-capacity-factor" },
         {
@@ -347,7 +350,7 @@ IEC 61724-1 defines yields normalised by nameplate DC power $P_0$:`,
     { id: "m12-l01-f3", front: "Typical annual PR, desert tracker plant", back: "~0.78–0.83 (uncorrected).", concepts: ["m12.performance-ratio"] },
     { id: "m12-l01-f4", front: "Energy-based availability", back: md`$A_E = E_{act}/(E_{act}+E_{lost})$, excluding agreed events`, concepts: ["m12.availability"] },
     { id: "m12-l01-f5", front: "IEC 61724-1 class for utility plants", back: "Class A (high accuracy).", concepts: ["m12.monitoring-system"] },
-    { id: "m12-l01-f6", front: "Specific yield, bifacial tracker in Kuwait", back: "~2,100–2,300 kWh/kWp/yr.", concepts: ["m12.specific-yield"] },
+    { id: "m12-l01-f6", front: "Specific yield, bifacial tracker in Kuwait", back: "~2,000–2,300 kWh/kWp/yr (indicative; resource unverified).", concepts: ["m12.specific-yield"] },
     { id: "m12-l01-f7", front: "Inverter-sum vs revenue-meter energy — expected difference", back: "~1.5–2.5 % (MV/HV transformer and cable losses, auxiliaries).", concepts: ["m12.data-quality"] },
     { id: "m12-l01-f8", front: "Capacity factor (AC)", back: md`$CF = E/(P_{AC}\cdot 8760)$ — always state AC or DC basis.`, concepts: ["m12.specific-yield"] },
   ],

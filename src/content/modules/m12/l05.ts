@@ -27,6 +27,7 @@ const lesson: Lesson = {
       description:
         "Present value of all costs of owning an asset — acquisition, operation, maintenance, replacement, disposal — minus residual value; basis for comparing lifecycle options.",
       competency: "finance",
+      related: ["m10.npv", "m10.lcoe"],
     },
     {
       id: "m12.degradation",
@@ -34,6 +35,7 @@ const lesson: Lesson = {
       description:
         "Measuring the long-term decline of plant output (typically 0.3–0.8 %/yr for modules) from performance data and comparing with warranty and model assumptions.",
       competency: "operations",
+      related: ["m02.degradation-mechanisms", "m05.capacity-fade"],
     },
     {
       id: "m12.repowering",
@@ -41,6 +43,7 @@ const lesson: Lesson = {
       description:
         "Mid-life inverter replacement, partial or full module repowering, BESS augmentation and decommissioning/recycling decisions.",
       competency: "operations",
+      related: ["m05.augmentation"],
     },
     {
       id: "m12.performance-reporting",
@@ -48,6 +51,7 @@ const lesson: Lesson = {
       description:
         "Concise, validated reporting of energy, KPIs, losses, incidents and decisions needed, using consistent definitions aligned with the PPA/O&M contract.",
       competency: "leadership",
+      related: ["m13.bluf", "m13.kpi-scorecard"],
     },
   ],
   sections: [
@@ -96,7 +100,7 @@ Long-term module degradation is usually modelled as a first-year drop plus a lin
         { kind: "equation", formula: "m12-degradation" },
         {
           kind: "md",
-          md: md`NREL's review of field data puts the median module degradation around 0.5 %/yr, with hot climates tending higher. Plant-level degradation (including balance-of-system) is estimated from years of temperature-corrected performance data, e.g. with year-on-year methods (NREL RdTools) that are robust to soiling and outliers. A measured plant degradation of 0.8 %/yr against a model assumption of 0.4 %/yr is a 30-year energy gap of ~5–6 % — a warranty and financial question, not a curiosity.`,
+          md: md`NREL's review of field data puts the median module degradation around 0.5 %/yr, with hot climates tending higher. Plant-level degradation (including balance-of-system) is estimated from years of temperature-corrected performance data, e.g. with year-on-year methods (NREL RdTools) that are robust to soiling and outliers. A measured plant degradation of 0.8 %/yr against a model assumption of 0.4 %/yr is a 30-year cumulative energy gap of ~6 % — a warranty and financial question, not a curiosity.`,
         },
         {
           kind: "widget",

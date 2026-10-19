@@ -19,7 +19,7 @@ const lesson: Lesson = {
       description:
         "Mechanisms by which PV, inverter, tracker and BESS components degrade or fail under heat, UV, dust, thermal cycling, humidity at night and high system voltage.",
       competency: "operations",
-      related: ["m12.ir-thermography", "m12.warranty-claim"],
+      related: ["m12.ir-thermography", "m12.warranty-claim", "m02.degradation-mechanisms", "m04.desert-failure-modes", "m05.thermal-runaway"],
     },
     {
       id: "m12.ir-thermography",
@@ -27,6 +27,7 @@ const lesson: Lesson = {
       description:
         "Infrared imaging (now mostly by drone) of operating modules and electrical equipment to find hot spots, bypass diode activation, string outages and hot connections, per IEC TS 62446-3.",
       competency: "operations",
+      related: ["m02.commissioning-tests"],
     },
     {
       id: "m12.el-iv-testing",
@@ -34,6 +35,7 @@ const lesson: Lesson = {
       description:
         "Electroluminescence imaging reveals cracks and inactive cell areas; IV-curve tracing measures string/module electrical characteristics and translates them to STC for comparison with nameplate.",
       competency: "operations",
+      related: ["m02.iv-parameters"],
     },
     {
       id: "m12.warranty-claim",
@@ -41,6 +43,7 @@ const lesson: Lesson = {
       description:
         "A formal, evidence-based claim against an OEM under product or performance warranty terms, including notice, sampling, accredited testing and remedy calculation.",
       competency: "contracts",
+      related: ["m02.module-warranty", "m05.warranty"],
     },
   ],
   sections: [

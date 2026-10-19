@@ -124,7 +124,7 @@ export const exam: Question[] = [
     ],
     modelAnswer:
       "First rule out measurement artefacts (irradiance sensor drift, changing soiling, downtime). Recompute with a year-on-year method on temperature-corrected PR and report the confidence interval. If confirmed, sample modules for IV/EL/flash testing to find the mechanism and compare with the warranty line; send notice to the OEM in time; apply mitigations (e.g. PID recovery) and update the energy forecast, budget and asset management plan.",
-    explanation: md`Degradation of 0.9 %/yr vs a 0.4 %/yr assumption is a ~7 % energy gap by year 20 — material for the business case and possibly warrantable.`,
+    explanation: md`Degradation of 0.9 %/yr vs a 0.4 %/yr assumption means output ≈ 9.5 percentage points lower by year 20 (≈ 5 % less cumulative energy over the first 20 years) — material for the business case and possibly warrantable.`,
     concepts: ["m12.degradation", "m12.warranty-claim"],
     difficulty: 3,
   },

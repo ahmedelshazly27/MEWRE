@@ -31,7 +31,7 @@ const mod: Module = {
 ## KPIs (IEC 61724-1)
 | KPI | Formula | Typical Kuwait value |
 |---|---|---|
-| Final yield | $Y_f = E/P_0$ | 2,100–2,300 kWh/kWp/yr (bifacial tracker) |
+| Final yield | $Y_f = E/P_0$ | ≈ 2,000–2,300 kWh/kWp/yr (bifacial tracker; indicative) |
 | Reference yield | $Y_r = H_{POA}/1\,\text{kW/m}^2$ | — |
 | PR | $Y_f/Y_r$ | 0.78–0.83 annual; lower in summer |
 | Temp-corrected PR | $\sum E/\sum P_0 (G/1000)[1+\gamma(T_c-T_{ref})]\Delta t$ | depends on $T_{ref}$ |

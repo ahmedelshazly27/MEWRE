@@ -19,7 +19,7 @@ const lesson: Lesson = {
       description:
         "Mix of preventive (time/usage-based), corrective (run-to-failure) and predictive/condition-based maintenance chosen by asset criticality and failure behaviour.",
       competency: "operations",
-      related: ["m12.cmms", "m12.spares-strategy"],
+      related: ["m12.cmms", "m12.spares-strategy", "m09.om-scope"],
     },
     {
       id: "m12.cmms",
@@ -41,7 +41,7 @@ const lesson: Lesson = {
       description:
         "Trade-off between cleaning cost and soiling energy loss; optimal interval balances the two, and technology choice (water, tractor, robotic dry) changes both.",
       competency: "operations",
-      related: ["m12.maintenance-strategy"],
+      related: ["m12.maintenance-strategy", "m02.cleaning-strategy", "m10.cleaning-economics"],
     },
     {
       id: "m12.site-management",
@@ -49,6 +49,7 @@ const lesson: Lesson = {
       description:
         "Sand encroachment and dune management, storm procedures, security against theft and intrusion, and staffing of a remote GW-scale site.",
       competency: "operations",
+      related: ["m02.wind-stow"],
     },
   ],
   sections: [
@@ -96,7 +97,7 @@ Assume soiling loss grows linearly at rate $s$ (fraction per day) after each cle
 
 | Method | Typical frequency | Water | Notes |
 |---|---|---|---|
-| Manual / tractor-mounted wet cleaning | Weekly–monthly | Yes (demineralised to avoid residue; ~1 L/module order of magnitude) | Labour-heavy; water logistics in the desert |
+| Manual / tractor-mounted wet cleaning | Weekly–monthly | Yes (demineralised to avoid residue; ≈ 0.5–2 L/m², i.e. a few litres per module) | Labour-heavy; water logistics in the desert |
 | Waterless robotic (one robot per row, nightly) | Daily or every few days | No | Capex ~USD 1,000–3,000 per row-robot; brush must be OEM-approved; cannot remove cemented dust |
 | Semi-automatic (robot moved between rows) | Every few days | No | Lower capex, more labour |
 | Hybrid | Robotic daily + periodic wet wash | Some | Handles dew-cemented dust in winter |
