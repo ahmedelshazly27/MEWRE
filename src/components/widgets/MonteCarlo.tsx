@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
-import { simulateSchedule, simulateSum, histogram, type Estimate } from "@/lib/calc/montecarlo";
+import { simulateSchedule, simulateSum, histogram, type Estimate, type McSummary } from "@/lib/calc/montecarlo";
 import { PV_NETWORK } from "./data";
 import {
   Card, Segmented, Slider, Stat, Stats, Hint, ChartBox, fmt, pct,
@@ -31,7 +31,7 @@ export default function MonteCarlo(_: WidgetProps) {
   const setRows = mode === "schedule" ? setSched : setCost;
   const unit = mode === "schedule" ? "weeks" : "USD m";
 
-  const sim = useMemo(() => {
+  const sim = useMemo((): McSummary & { criticality?: Record<string, number> } => {
     if (mode === "schedule") {
       const acts = PV_NETWORK.map((a) => {
         const r = sched.find((x) => x.id === a.id)!;
@@ -68,8 +68,8 @@ export default function MonteCarlo(_: WidgetProps) {
                 {rows.map((r) => (
                   <tr key={r.id} className="border-t border-border">
                     <td className="truncate px-2 py-1" title={r.name}>
-                      {mode === "schedule" && sim && "criticality" in sim ? (
-                        <span className="mr-1 font-mono text-[0.7rem] text-muted" title="criticality index">{Math.round((sim.criticality[r.id] ?? 0) * 100)}%</span>
+                      {mode === "schedule" && sim.criticality ? (
+                        <span className="mr-1 font-mono text-[0.7rem] text-muted" title="criticality index">{Math.round((sim.criticality?.[r.id] ?? 0) * 100)}%</span>
                       ) : null}
                       {r.name}
                     </td>

@@ -42,7 +42,7 @@ export default function Droop({ props }: WidgetProps) {
     [droop, db, headroom, fmin],
   );
   const pNadir = resp(fmin);
-  const unlimited = setpoint + (((50 - fmin - db / 1000) / 50) / (droop / 100)) * P_RATED;
+  const unlimited = droopResponse({ freqHz: fmin, droopPct: droop, deadbandHz: db / 1000, pRated: P_RATED, pSetpoint: setpoint, pAvailable: Infinity });
 
   return (
     <Card title="Frequency droop response" subtitle="1,000 MW PV plant, 900 MW available irradiance-limited; 50 Hz system">

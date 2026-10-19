@@ -78,4 +78,42 @@ export const formulas: Formula[] = [
     explanation: md`Kuwaiti tracker PV ≈ 30–34 % on AC basis (DC/AC ~1.3), ≈ 23–26 % on DC basis.`,
     lesson: "m12-l01",
   },
+  {
+    id: "m12-loss-attribution",
+    name: "Loss attribution",
+    tex: String.raw`E_{exp} - E_{act} = \sum_j \Delta E_j + \varepsilon`,
+    vars: [
+      { sym: String.raw`E_{exp}`, meaning: "Expected energy from the model with measured weather", unit: "MWh" },
+      { sym: String.raw`E_{act}`, meaning: "Measured energy at the meter", unit: "MWh" },
+      { sym: String.raw`\Delta E_j`, meaning: "Quantified loss j (curtailment, downtime, soiling, tracker, string faults…)", unit: "MWh" },
+      { sym: String.raw`\varepsilon`, meaning: "Unexplained residual", unit: "MWh" },
+    ],
+    explanation: md`A residual within ±1–2 % of expected energy is usually model/sensor uncertainty; a persistent one-sided residual signals an unidentified loss.`,
+    lesson: "m12-l02",
+  },
+  {
+    id: "m12-soiling-ratio",
+    name: "Soiling ratio and extra soiling loss",
+    tex: String.raw`SR = \frac{I_{sc,soiled}}{I_{sc,clean}}, \qquad \Delta E_{soil} = E_{exp}\left(1 - \frac{SR}{SR_{model}}\right)`,
+    vars: [
+      { sym: "SR", meaning: "Measured soiling ratio (temperature-corrected)", unit: "-" },
+      { sym: String.raw`I_{sc}`, meaning: "Short-circuit current of reference device", unit: "A" },
+      { sym: String.raw`SR_{model}`, meaning: "Soiling ratio assumed in the expected-energy model", unit: "-" },
+      { sym: String.raw`\Delta E_{soil}`, meaning: "Soiling loss beyond the model assumption", unit: "MWh" },
+    ],
+    explanation: md`Soiling stations pair a daily-cleaned and an uncleaned device. Kuwaiti data show steep losses between cleanings (8.7–15.1 % with monthly cleaning by season).`,
+    lesson: "m12-l02",
+  },
+  {
+    id: "m12-fault-tree",
+    name: "Fault tree gate probabilities",
+    tex: String.raw`P_{OR} = 1 - \prod_i (1 - p_i), \qquad P_{AND} = \prod_i p_i`,
+    vars: [
+      { sym: "p_i", meaning: "Probability of independent basic event i over the period", unit: "-" },
+      { sym: String.raw`P_{OR}`, meaning: "Output probability of an OR gate", unit: "-" },
+      { sym: String.raw`P_{AND}`, meaning: "Output probability of an AND gate", unit: "-" },
+    ],
+    explanation: md`For small $p_i$, OR ≈ sum. AND gates model redundancy. Beware common-cause failures that break independence (shared dust intake, shared supply).`,
+    lesson: "m12-l02",
+  },
 ];

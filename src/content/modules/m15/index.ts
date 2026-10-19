@@ -1,4 +1,7 @@
-import type { Module } from "../../schema";
+import { md, type Module } from "../../schema";
+import l01 from "./l01";
+import { formulas } from "./formulas";
+import { references } from "./references";
 
 const mod: Module = {
   id: "m15",
@@ -10,13 +13,12 @@ const mod: Module = {
   competencies: ["delivery", "controls", "contracts", "finance"],
   prerequisites: [],
   estimatedHours: 0,
-  lessons: [],
+  lessons: [l01],
   exam: [],
   glossary: [],
-  formulas: [],
-  references: [],
-  cheatSheet: "",
-  draft: true,
+  formulas,
+  references,
+  cheatSheet: md``,
 };
 
 export default mod;
