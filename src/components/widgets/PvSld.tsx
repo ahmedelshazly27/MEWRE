@@ -149,7 +149,7 @@ export default function PvSld(_: WidgetProps) {
 
   return (
     <Card title="Utility PV plant — single-line diagram" subtitle="Click a component for its role, typical rating in a 1 GW Kuwait plant and PM checks">
-      <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+      <div className="grid min-w-0 gap-4">
         <div className="min-w-0">
           <div className="overflow-x-auto">
           <svg viewBox="0 0 800 270" className="h-auto w-full min-w-[640px]" role="group" aria-label="PV plant single-line diagram">

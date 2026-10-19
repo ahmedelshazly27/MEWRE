@@ -95,6 +95,10 @@ body {
 }
 
 /* Long-form lesson typography */
+.prose-lesson,
+.prose-compact {
+  overflow-wrap: break-word;
+}
 .prose-lesson {
   font-size: 1.0625rem;
   line-height: 1.75;

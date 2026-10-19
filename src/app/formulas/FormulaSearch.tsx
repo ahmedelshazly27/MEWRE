@@ -42,10 +42,10 @@ export function FormulaSearch({ formulas }: { formulas: FormulaDto[] }) {
           <h2 className="mb-3 text-lg font-semibold">{g}</h2>
           <div className="grid gap-3 lg:grid-cols-2">
             {fs.map((f) => (
-              <div key={f.id} id={f.id} className="break-inside-avoid rounded-xl border border-border bg-surface">
-                <div className="flex items-center justify-between border-b border-border px-4 py-2 text-sm">
+              <div key={f.id} id={f.id} className="min-w-0 break-inside-avoid rounded-xl border border-border bg-surface">
+                <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-2 text-sm">
                   <span className="font-semibold">{f.name}</span>
-                  <Link href={`/learn/${f.moduleId}/${f.lessonId}`} className="text-xs text-accent">
+                  <Link href={`/learn/${f.moduleId}/${f.lessonId}`} className="truncate text-right text-xs text-accent">
                     {f.lessonTitle}
                   </Link>
                 </div>

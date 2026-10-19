@@ -58,7 +58,7 @@ export default async function LessonPage({ params }: Params) {
           {lesson.objectives.map((o, i) => (
             <li key={i} className="flex gap-2 text-[0.95rem]">
               <span className="text-accent">→</span>
-              <span>{o}</span>
+              <span>{o.replace(/^you can\s+/i, (m) => "").replace(/^./, (c) => c.toUpperCase())}</span>
             </li>
           ))}
         </ul>

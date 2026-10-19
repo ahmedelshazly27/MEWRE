@@ -65,21 +65,21 @@ function build(): Index {
     glossary: [],
   };
   const ordered = [...MODULES].sort((a, b) => STUDY_ORDER.indexOf(a.id) - STUDY_ORDER.indexOf(b.id));
-  for (const module of ordered) {
-    module.lessons.forEach((lesson, index) => {
-      idx.lessons.set(lesson.id, { module, lesson, index });
-      for (const c of lesson.concepts) idx.concepts.set(c.id, { concept: c, lesson, module });
-      for (const q of lesson.quiz) idx.questions.set(q.id, { question: q, module, lesson, origin: "quiz" });
-      for (const q of inlineQuestions(lesson)) idx.questions.set(q.id, { question: q, module, lesson, origin: "inline" });
-      for (const s of lesson.scenarios ?? []) idx.scenarios.set(s.id, { scenario: s, lesson, module });
+  for (const mod of ordered) {
+    mod.lessons.forEach((lesson, index) => {
+      idx.lessons.set(lesson.id, { module: mod, lesson, index });
+      for (const c of lesson.concepts) idx.concepts.set(c.id, { concept: c, lesson, module: mod });
+      for (const q of lesson.quiz) idx.questions.set(q.id, { question: q, module: mod, lesson, origin: "quiz" });
+      for (const q of inlineQuestions(lesson)) idx.questions.set(q.id, { question: q, module: mod, lesson, origin: "inline" });
+      for (const s of lesson.scenarios ?? []) idx.scenarios.set(s.id, { scenario: s, lesson, module: mod });
       for (const f of lesson.flashcards) {
-        const card: CardContent = { ...f, kind: "lesson", lessonId: lesson.id, moduleId: module.id };
+        const card: CardContent = { ...f, kind: "lesson", lessonId: lesson.id, moduleId: mod.id };
         idx.cards.set(f.id, card);
         idx.cardOrder.push(f.id);
       }
     });
-    for (const q of module.exam) idx.questions.set(q.id, { question: q, module, origin: "exam" });
-    for (const f of module.formulas) {
+    for (const q of mod.exam) idx.questions.set(q.id, { question: q, module: mod, origin: "exam" });
+    for (const f of mod.formulas) {
       idx.formulas.set(f.id, f);
       const id = `fx-${f.id}`;
       const conceptIds = idx.lessons.get(f.lesson)?.lesson.concepts.map((c) => c.id).slice(0, 1);
@@ -89,14 +89,14 @@ function build(): Index {
         front: `Formula: **${f.name}** — write it and define each symbol.`,
         back: `$$${f.tex}$$\n\n${f.vars.map((v) => `- $${v.sym}$ — ${v.meaning}${v.unit ? ` [${v.unit}]` : ""}`).join("\n")}`,
         lessonId: f.lesson,
-        moduleId: module.id,
+        moduleId: mod.id,
         concepts: conceptIds,
       });
       idx.cardOrder.push(id);
     }
-    for (const r of module.references) idx.references.set(r.id, { ...r, moduleId: module.id });
-    for (const g of module.glossary) {
-      idx.glossary.push({ ...g, moduleId: module.id });
+    for (const r of mod.references) idx.references.set(r.id, { ...r, moduleId: mod.id });
+    for (const g of mod.glossary) {
+      idx.glossary.push({ ...g, moduleId: mod.id });
       const id = `gl-${g.id}`;
       idx.cards.set(id, {
         id,
@@ -105,7 +105,7 @@ function build(): Index {
         back: `${g.definition}`,
         ar: g.ar,
         lessonId: g.lesson,
-        moduleId: module.id,
+        moduleId: mod.id,
       });
       idx.cardOrder.push(id);
     }

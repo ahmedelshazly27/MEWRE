@@ -193,7 +193,7 @@ export default function SubstationSld(_: WidgetProps) {
 
   return (
     <Card title="400/132/33 kV collector substation — single-line diagram" subtitle="Click equipment for role, typical rating and PM checks">
-      <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+      <div className="grid min-w-0 gap-4">
         <div className="min-w-0">
           <div className="overflow-x-auto">
           <svg viewBox="0 0 760 660" className="h-auto w-full min-w-[540px]" role="group" aria-label="Substation single-line diagram">

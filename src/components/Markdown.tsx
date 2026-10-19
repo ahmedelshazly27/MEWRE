@@ -26,5 +26,5 @@ export function Markdown({ children, className = "prose-lesson" }: { children: s
 
 /** Single-line markdown (options, labels): no surrounding paragraph margins. */
 export function InlineMarkdown({ children }: { children: string }) {
-  return <Markdown className="prose-compact [&_p]:my-0 inline-md">{children}</Markdown>;
+  return <Markdown className="prose-compact [&_p]:my-0 md-inline">{children}</Markdown>;
 }

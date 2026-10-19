@@ -61,7 +61,10 @@ export function gradeQuestion(q: Question, r: Response): Grade {
       const right = new Set(q.answer);
       let hits = 0;
       let wrong = 0;
-      for (const c of chosen) (right.has(c) ? hits++ : wrong++);
+      for (const c of chosen) {
+        if (right.has(c)) hits++;
+        else wrong++;
+      }
       if (hits === right.size && wrong === 0) return { score: 1, correct: true };
       // Partial credit: right picks minus wrong picks, never counted as correct unless exact.
       return { score: clamp01((hits - wrong) / right.size), correct: false };

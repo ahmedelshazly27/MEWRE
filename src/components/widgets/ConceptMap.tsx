@@ -1,8 +1,13 @@
 "use client";
 
-import { useMemo, useState, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
-import { MODULES } from "@/content";
+
+interface GraphModule {
+  id: string;
+  title: string;
+  lessons: { id: string; title: string; concepts: { id: string; name: string; description: string; related: string[] }[] }[];
+}
 import { Card, InfoPanel, Hint, type WidgetProps } from "./ui";
 
 interface Node {
@@ -28,6 +33,13 @@ export default function ConceptMap({ props }: WidgetProps) {
   const moduleFilter = typeof props?.module === "string" ? props.module : undefined;
   const [sel, setSel] = useState<string | null>(null);
   const [hover, setHover] = useState<string | null>(null);
+  const [MODULES, setModules] = useState<GraphModule[]>([]);
+  useEffect(() => {
+    fetch("/api/concepts")
+      .then((r) => r.json())
+      .then(setModules)
+      .catch(() => setModules([]));
+  }, []);
 
   const { nodes, groups, edges } = useMemo(() => {
     const mods = moduleFilter ? MODULES.filter((m) => m.id === moduleFilter) : MODULES;
@@ -113,7 +125,7 @@ export default function ConceptMap({ props }: WidgetProps) {
       }
     }
     return { nodes: placed, groups: groupsOut, edges: e };
-  }, [moduleFilter]);
+  }, [moduleFilter, MODULES]);
 
   const byId = useMemo(() => Object.fromEntries(nodes.map((n) => [n.id, n])), [nodes]);
   const focus = hover ?? sel;

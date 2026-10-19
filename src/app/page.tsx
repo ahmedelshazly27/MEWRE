@@ -29,7 +29,9 @@ export default function Dashboard() {
   const ordered = lessonsInOrder();
   const totalLessons = ordered.length;
   const completed = ordered.filter((r) => progress.get(r.lesson.id)?.status === "completed").length;
-  const inProgress = ordered.find((r) => progress.get(r.lesson.id)?.status === "started");
+  const inProgress = ordered
+    .filter((r) => progress.get(r.lesson.id)?.status === "started")
+    .sort((a, b) => progress.get(b.lesson.id)!.started_at - progress.get(a.lesson.id)!.started_at)[0];
   const nextUp = inProgress ?? ordered.find((r) => progress.get(r.lesson.id)?.status !== "completed");
 
   const weak = [...mastery.entries()]

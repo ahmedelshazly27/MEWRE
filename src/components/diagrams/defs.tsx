@@ -203,7 +203,7 @@ const ivCurveDef: DiagramDef = {
   },
   markers: {
     isc: { x: IVX(0), y: IVY(ivM.isc), lx: 80, ly: IVY(ivM.isc) - 18, anchor: "start" },
-    voc: { x: IVX(ivM.voc), y: 330, lx: IVX(ivM.voc) + 20, ly: 362, anchor: "start" },
+    voc: { x: IVX(ivM.voc), y: 330, lx: IVX(ivM.voc) + 12, ly: 375, anchor: "end" },
     mpp: { x: IVX(ivM.vmp), y: IVY(ivM.imp), lx: IVX(ivM.vmp) + 30, ly: IVY(ivM.imp) - 30, anchor: "start" },
     imp: { x: IVX(0), y: IVY(ivM.imp), lx: 120, ly: IVY(ivM.imp) + 30, anchor: "start" },
     vmp: { x: IVX(ivM.vmp), y: 330, lx: IVX(ivM.vmp) - 20, ly: 362, anchor: "end" },

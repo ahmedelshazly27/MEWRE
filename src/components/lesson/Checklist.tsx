@@ -28,7 +28,7 @@ export function Checklist({ id, title, items, tone }: { id: string; title: strin
             <li key={i}>
               <label className="flex cursor-pointer items-start gap-2 text-[0.95rem]">
                 <input type="checkbox" className="mt-1.5" checked={!!ticks[i]} onChange={() => toggle(i)} />
-                <span className={ticks[i] ? "text-muted line-through" : ""}>
+                <span className={`min-w-0 flex-1 ${ticks[i] ? "text-muted line-through" : ""}`}>
                   <InlineMarkdown>{it}</InlineMarkdown>
                 </span>
               </label>
@@ -36,7 +36,7 @@ export function Checklist({ id, title, items, tone }: { id: string; title: strin
           ) : (
             <li key={i} className="flex items-start gap-2 text-[0.95rem]">
               <span className="mt-0.5 text-sun">›</span>
-              <span>
+              <span className="min-w-0 flex-1">
                 <InlineMarkdown>{it}</InlineMarkdown>
               </span>
             </li>
