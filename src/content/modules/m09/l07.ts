@@ -20,6 +20,7 @@ const lesson: Lesson = {
       description:
         "Valuing instructed changes with contract rates where the work is similar, new rates derived from them where not, or Cost Plus Profit; crediting omissions; handling time-related costs separately.",
       competency: "contracts",
+      related: ["m08.change-control", "m15.claims-variations"],
     },
     {
       id: "m09.delay-analysis",
@@ -27,7 +28,7 @@ const lesson: Lesson = {
       description:
         "Techniques to establish the effect of events on completion: impacted as-planned, time impact analysis, time-slice windows, as-planned vs as-built windows, retrospective longest path and collapsed as-built (SCL Protocol 2nd ed.).",
       competency: "contracts",
-      related: ["m09.concurrent-delay"],
+      related: ["m09.concurrent-delay", "m08.time-impact-analysis", "m08.cpm"],
     },
     {
       id: "m09.concurrent-delay",
@@ -50,6 +51,7 @@ const lesson: Lesson = {
       description:
         "The FIDIC 2017 standing Dispute Avoidance/Adjudication Board, its binding interim decisions, and final resolution by arbitration (ICC by default), subject to governing law and any restrictions for government contracts.",
       competency: "contracts",
+      related: ["m13.claims-settlement"],
     },
   ],
   sections: [

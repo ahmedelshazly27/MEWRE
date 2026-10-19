@@ -236,7 +236,7 @@ const references: Reference[] = [
     date: "2021",
     url: "https://www.e3s-conferences.org/articles/e3sconf/pdf/2021/56/e3sconf_icsf2021_05016.pdf",
     type: "academic",
-    note: "Reports 42.59 GWh in year 1, 21% above the 31.16 GWh contractual figure.",
+    note: "Reports 42.59 GWh in year 1, stated as 21% above the 31.16 GWh contractual figure (the raw ratio is about 1.37; verify the basis).",
   },
   {
     id: "m09-pvmag-2025-zone1-prequal",

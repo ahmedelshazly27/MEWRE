@@ -13,10 +13,10 @@ const lesson: Lesson = {
     "You can handle typical delay scenarios (re-tender decision, bid validity expiry, committee deferral) as an experienced PM would.",
   ],
   concepts: [
-    { id: "m11.delay-causes", name: "Causes of delay in Kuwaiti procurement", description: "Approval ping-pong, deadline extensions, re-tenders and cancellations, budget allocation, land/permits, committee scheduling, lender–government term conflicts.", competency: "delivery", related: ["m11.pert-approvals", "m11.delay-countermeasures"] },
-    { id: "m11.pert-approvals", name: "Probabilistic approval scheduling", description: "Three-point estimates per approval step, summed means and variances, P80 = mean + 0.84σ; reduce the step with the largest variance first.", competency: "controls", related: ["m11.delay-causes"] },
-    { id: "m11.delay-countermeasures", name: "Practical countermeasures", description: "Approval calendars, pre-cleared files, parallel preparation, standard documents, bid-validity management, formal escalation with delay-cost numbers, referral registers.", competency: "delivery", related: ["m11.delay-causes"] },
-    { id: "m11.retender-decision", name: "Re-tender vs proceed decisions", description: "Weighing the cost and delay of cancelling and re-tendering against risks of proceeding with a weak competition or non-compliant bids.", competency: "procurement", related: ["m11.delay-countermeasures"] },
+    { id: "m11.delay-causes", name: "Causes of delay in Kuwaiti procurement", description: "Approval ping-pong, deadline extensions, re-tenders and cancellations, budget allocation, land/permits, committee scheduling, lender–government term conflicts.", competency: "delivery", related: ["m11.pert-approvals", "m11.delay-countermeasures", "m00.approval-timelines"] },
+    { id: "m11.pert-approvals", name: "Probabilistic approval scheduling", description: "Three-point estimates per approval step, summed means and variances, P80 = mean + 0.84σ; reduce the step with the largest variance first.", competency: "controls", related: ["m11.delay-causes", "m08.monte-carlo", "m00.decision-chain"] },
+    { id: "m11.delay-countermeasures", name: "Practical countermeasures", description: "Approval calendars, pre-cleared files, parallel preparation, standard documents, bid-validity management, formal escalation with delay-cost numbers, referral registers.", competency: "delivery", related: ["m11.delay-causes", "m00.delay-cost", "m13.decision-memo"] },
+    { id: "m11.retender-decision", name: "Re-tender vs proceed decisions", description: "Weighing the cost and delay of cancelling and re-tendering against risks of proceeding with a weak competition or non-compliant bids.", competency: "procurement", related: ["m11.delay-countermeasures", "m15.tradeoff-framework"] },
   ],
   sections: [
     {

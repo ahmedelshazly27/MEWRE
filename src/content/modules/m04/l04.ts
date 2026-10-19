@@ -19,39 +19,42 @@ const lesson: Lesson = {
       name: "Wind delivery and contracting structure",
       description: "Development stages and contract splits: turbine supply agreement + balance-of-plant, or full EPC; FIDIC adaptations.",
       competency: "delivery",
-      related: ["m04.wind-om-contracts"],
+      related: ["m04.wind-om-contracts", "m09.contracting-strategy", "m09.fidic-suite"],
     },
     {
       id: "m04.wind-logistics",
       name: "Wind logistics and installation",
       description: "Port handling, oversized transport routes, crane pads, foundations, main crane selection and lifting sequence.",
       competency: "delivery",
-      related: ["m04.weather-windows"],
+      related: ["m04.weather-windows", "m07.long-lead-items", "m07.construction-sequencing"],
     },
     {
       id: "m04.weather-windows",
       name: "Installation weather windows",
       description: "Wind-speed limits for crane lifts (blades, rotor, nacelle), shamal season, heat-stress working restrictions.",
       competency: "delivery",
+      related: ["m08.heat-stress"],
     },
     {
       id: "m04.wind-commissioning",
       name: "Wind commissioning and take-over",
       description: "Mechanical completion, energisation, reliability run, grid compliance tests, power-curve test, take-over certificates.",
       competency: "delivery",
+      related: ["m07.commissioning-sequence", "m07.grid-compliance-tests", "m07.taking-over"],
     },
     {
       id: "m04.availability-guarantee",
       name: "Availability guarantees",
       description: "Time- and energy-based availability, exclusions, liquidated damages and bonuses in service agreements.",
       competency: "operations",
-      related: ["m04.wind-om-contracts"],
+      related: ["m04.wind-om-contracts", "m09.availability-guarantee", "m12.availability"],
     },
     {
       id: "m04.wind-om-contracts",
       name: "Wind O&M contracts",
       description: "Warranty-period service, full-service agreements, self-perform or independent service providers; scope, spares and KPIs.",
       competency: "operations",
+      related: ["m09.om-scope"],
     },
   ],
   sections: [
@@ -138,7 +141,7 @@ Availability is the core KPI of every wind service agreement:`,
         { kind: "equation", formula: "wind-availability-energy" },
         {
           kind: "md",
-          md: md`Example (time-based): a turbine down for 350 h of 8,760 h attributable to the contractor has $A_t = (8{,}760 - 350.4)/8{,}760 = 96.0$ %.
+          md: md`Example (time-based): a turbine down for 350 h of 8,760 h attributable to the contractor has $A_t = (8{,}760 - 350)/8{,}760 = 96.0$ %.
 
 **Exclusions** — what does not count against the contractor — are where disputes live: grid outages (MEWRE side), owner-requested stops, force majeure, scheduled maintenance up to an allowance (e.g. 60–80 h/turbine/yr), ambient conditions outside the design envelope (e.g. above the shutdown temperature — significant in Kuwait!), lack of wind, and access restrictions (sandstorms).
 

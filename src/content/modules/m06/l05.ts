@@ -19,7 +19,7 @@ const lesson: Lesson = {
       name: "SCADA/EMS architecture",
       description: "Field devices → plant network → SCADA/PPC/historian → gateway/RTU → telecom (OPGW) → national control centre EMS (state estimation, AGC, contingency analysis).",
       competency: "grid",
-      related: ["m06.protocols"],
+      related: ["m06.protocols", "m12.monitoring-system"],
     },
     {
       id: "m06.protocols",
@@ -33,14 +33,14 @@ const lesson: Lesson = {
       name: "Protection schemes",
       description: "Distance (21), line/transformer/busbar differential (87), overcurrent/earth fault (50/51), breaker failure, voltage/frequency; selectivity, speed, redundancy; IBR fault-current effects.",
       competency: "grid",
-      related: ["m06.scada-architecture"],
+      related: ["m06.scada-architecture", "m01.fault-level"],
     },
     {
       id: "m06.revenue-metering",
       name: "Revenue metering",
       description: "Class 0.2S meters with 0.2S CTs and 0.2 VTs at the POI, main and check meters, sealing, calibration and data access.",
       competency: "grid",
-      related: ["m06.protection"],
+      related: ["m06.protection", "m09.ppa-tariff"],
     },
     {
       id: "m06.cybersecurity",
@@ -54,7 +54,7 @@ const lesson: Lesson = {
       name: "Energisation and grid-compliance testing",
       description: "Prerequisites and hold points, switching programme, back-feed and staged energisation, hot commissioning, compliance tests, trial operation, COD.",
       competency: "delivery",
-      related: ["m06.protection", "m06.scada-architecture"],
+      related: ["m06.protection", "m06.scada-architecture", "m07.commissioning-sequence", "m08.ptw"],
     },
   ],
   sections: [

@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "The Engineer's two-step procedure for claims and other matters: consult to reach agreement (42 days), then make a fair determination (42 days); binding unless a Notice of Dissatisfaction is given within 28 days.",
       competency: "contracts",
-      related: ["m09.claims-time-bar"],
+      related: ["m09.claims-time-bar", "m13.claims-settlement"],
     },
     {
       id: "m09.claims-time-bar",
@@ -28,7 +28,7 @@ const lesson: Lesson = {
       description:
         "Notice of Claim within 28 days of awareness or entitlement is lost; fully detailed Claim within 84 days including the contractual or legal basis, or the Notice lapses; continuing claims updated monthly. Applies to Employer's and Contractor's claims alike.",
       competency: "contracts",
-      related: ["m09.engineer-determination"],
+      related: ["m09.engineer-determination", "m13.contract-notice"],
     },
     {
       id: "m09.unforeseeable-conditions",
@@ -36,6 +36,7 @@ const lesson: Lesson = {
       description:
         "Under Red/Yellow, physical conditions not reasonably foreseeable by an experienced contractor at the Base Date entitle the Contractor to EOT and Cost; under Silver, unforeseeable difficulties are the Contractor's risk.",
       competency: "contracts",
+      related: ["m07.geotech-investigation"],
     },
     {
       id: "m09.programme-eot",
@@ -43,7 +44,7 @@ const lesson: Lesson = {
       description:
         "Commencement (8.1), the 8.3 programme as the baseline for delay assessment, advance warning (8.4), EOT grounds (8.5), delay damages (8.8) and suspension (8.9–8.13).",
       competency: "contracts",
-      related: ["m09.claims-time-bar"],
+      related: ["m09.claims-time-bar", "m08.time-impact-analysis"],
     },
     {
       id: "m09.payment-ipc",
@@ -51,6 +52,7 @@ const lesson: Lesson = {
       description:
         "Advance payment and its recovery, monthly Statements, Interim Payment Certificates within 28 days, payment within 56 days, retention and its release, Statement at Completion and Final Statement.",
       competency: "contracts",
+      related: ["m10.payment-mechanics"],
     },
     {
       id: "m09.taking-over-defects",
@@ -58,6 +60,7 @@ const lesson: Lesson = {
       description:
         "Tests on Completion, Taking-Over Certificate (risk and care pass to the Employer, delay damages stop), Defects Notification Period, Tests after Completion (Yellow/Silver) and the Performance Certificate as the only acceptance of the Works.",
       competency: "contracts",
+      related: ["m07.taking-over", "m07.dnp"],
     },
     {
       id: "m09.exceptional-events",
@@ -155,7 +158,7 @@ The "exceptionally adverse climatic conditions" ground in 8.5 is defined by refe
 ### Clause 13: Variations and Adjustments
 
 - **13.1 Right to Vary.** The Engineer may initiate a Variation at any time before the Performance Certificate. The Contractor is bound unless it promptly gives a Notice with reasons (for example the varied work was Unforeseeable in scope and nature, it cannot readily obtain the Goods, or it adversely affects health and safety; in Yellow/Silver also that it would adversely affect the performance guarantees). A Variation cannot omit work so that the Employer or others can do it, unless agreed.
-- **13.2 Value Engineering.** Contractor proposals that reduce cost or improve value; the 2017 Yellow/Silver books share savings (in Red, as agreed).
+- **13.2 Value Engineering.** Contractor proposals that accelerate completion, reduce cost or improve value; if approved, the Engineer agrees or determines the valuation, including any sharing of the benefit, costs or delay that the Particular Conditions provide for.
 - **13.3 Variation Procedure.** By instruction (13.3.1: Contractor submits particulars including a proposed EOT and valuation; Engineer agrees or determines under 3.7) or by request for proposal (13.3.2). The 2017 books assess the time effect of a Variation without needing a Notice of Claim.
 - **13.6 Adjustments for Changes in Laws.** The Contract Price is adjusted for any increase or decrease in Cost from a change in the Laws of the Country (including new laws, repeal or modification, and changes in judicial or official governmental interpretation), or in permits, made after the Base Date. The Contractor claims EOT and/or Cost through 20.2; the Employer is entitled to a reduction if Cost falls.
 - **13.7 Adjustments for Changes in Cost.** Indexation formula, only if a schedule of cost indexation is included.

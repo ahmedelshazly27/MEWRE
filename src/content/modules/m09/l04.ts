@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "A pre-agreed daily sum payable by the Contractor for each day completion is late beyond the (extended) Time for Completion; derived from the Employer's foreseeable loss.",
       competency: "contracts",
-      related: ["m09.ld-cap"],
+      related: ["m09.ld-cap", "m00.delay-cost"],
     },
     {
       id: "m09.performance-lds",
@@ -28,7 +28,7 @@ const lesson: Lesson = {
       description:
         "One-off payment compensating the present value of a permanent shortfall against guaranteed capacity, PR, efficiency or availability, usually above a minimum acceptance level.",
       competency: "contracts",
-      related: ["m09.ld-cap"],
+      related: ["m09.ld-cap", "m07.pr-test", "m07.capacity-test", "m10.cover-ratios"],
     },
     {
       id: "m09.ld-cap",

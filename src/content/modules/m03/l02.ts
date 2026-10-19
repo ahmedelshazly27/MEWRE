@@ -38,20 +38,21 @@ const lesson: Lesson = {
       name: "Rankine cycle efficiency",
       description: "Steam-cycle efficiency set by live-steam and condensing temperatures; ~37–38 % trough, ~41–44 % tower, gross.",
       competency: "solar",
-      related: ["m03.dry-cooling"],
+      related: ["m03.dry-cooling", "m01.thermal-efficiency", "m01.heat-rate"],
     },
     {
       id: "m03.dry-cooling",
       name: "Dry cooling penalty",
       description: "Air-cooled condensers save ~90 % of water but raise condensing temperature, cutting output most on the hottest afternoons.",
       competency: "solar",
+      related: ["m01.thermal-efficiency"],
     },
     {
       id: "m03.csp-capacity-factor",
       name: "Storage hours and capacity factor",
       description: "How storage hours and solar multiple raise CSP capacity factor and shift output into evening and night.",
       competency: "solar",
-      related: ["m03.two-tank-storage"],
+      related: ["m03.two-tank-storage", "m01.capacity-factor", "m05.power-energy"],
     },
   ],
   sections: [
@@ -81,7 +82,7 @@ The upper limit sets the hot tank (565 °C in towers); the freezing point sets t
 
 **Indirect (trough with oil):** synthetic thermal oil runs in the receivers (~293 → 393 °C) because salt would freeze in kilometres of thin receiver tubing at night. To store heat, part of the hot oil goes through an **oil-to-salt heat exchanger** that heats salt from ~292 °C to ~386 °C into the hot tank. At night the flow reverses: hot salt heats oil, which drives the steam generator. Penalties: the heat-exchanger approach temperature (~7 K each way), so the turbine gets slightly cooler steam during storage discharge (lower efficiency), plus extra capex and pumping. And the usable ΔT is only ~94 K, so you need roughly three times more salt per MWh than a tower.
 
-Shagaya's 50 MW trough (oil HTF, molten-salt TES) is this indirect configuration.
+Shagaya's 50 MW trough with molten-salt TES is treated in this module as this indirect configuration — the public sources confirm a trough with molten-salt storage but do not name the HTF, so confirm the thermal-oil assumption against the as-built design basis.
 
 ## Stored energy`,
         },

@@ -19,7 +19,7 @@ const lesson: Lesson = {
       name: "Shagaya 50 MW CSP",
       description: "KISR-led Phase I parabolic trough plant with ~10 h molten-salt storage and dry cooling, operating from about 2019.",
       competency: "solar",
-      related: ["m03.csp-lessons-learned", "m03.dni-resource-risk"],
+      related: ["m03.csp-lessons-learned", "m03.dni-resource-risk", "m00.shagaya-phase1"],
     },
     {
       id: "m03.csp-lessons-learned",
@@ -32,19 +32,21 @@ const lesson: Lesson = {
       name: "Mirror cleaning and water",
       description: "Cleaning frequency vs reflectivity loss vs demineralised water consumption in a dusty desert.",
       competency: "operations",
+      related: ["m02.cleaning-strategy", "m12.cleaning-economics"],
     },
     {
       id: "m03.csp-om",
       name: "CSP O&M model",
       description: "Large permanent staff, thermal-plant disciplines plus solar-field crews; availability and performance KPIs.",
       competency: "operations",
-      related: ["m03.mirror-cleaning"],
+      related: ["m03.mirror-cleaning", "m12.maintenance-strategy", "m12.availability"],
     },
     {
       id: "m03.dni-resource-risk",
       name: "DNI resource risk",
       description: "Uncertainty in long-term DNI from aerosols and dust events, propagating non-linearly into CSP energy.",
       competency: "solar",
+      related: ["m02.solar-resource-data", "m02.p50-p90"],
     },
   ],
   sections: [

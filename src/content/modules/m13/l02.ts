@@ -27,7 +27,7 @@ const lesson: Lesson = {
       description:
         "Issue, background, options (including do-nothing), recommendation, risks, and an explicit 'decision required' line — designed to be annotated and filed as the decision record.",
       competency: "leadership",
-      related: ["m13.authority-flow"],
+      related: ["m13.authority-flow", "m15.leadership-briefing"],
     },
     {
       id: "m13.arabic-correspondence",
@@ -35,7 +35,7 @@ const lesson: Lesson = {
       description:
         "Reference number and date (often Hijri and Gregorian), السيد/ ... المحترم, الموضوع, تحية طيبة وبعد، بالإشارة إلى, numbered body, يرجى التكرم, وتفضلوا بقبول فائق الاحترام, signature block and copies.",
       competency: "leadership",
-      related: ["m13.protocol"],
+      related: ["m13.protocol", "m14.bilingual-drafting", "m14.term-consistency"],
     },
     {
       id: "m13.contract-notice",
@@ -43,6 +43,7 @@ const lesson: Lesson = {
       description:
         "A written communication identified as a Notice and given in the form, to the address and within the time the contract's notice and claims clauses require; tone is factual and rights-reserving.",
       competency: "contracts",
+      related: ["m09.claims-time-bar", "m09.programme-eot"],
     },
     {
       id: "m13.plain-language",
@@ -50,6 +51,7 @@ const lesson: Lesson = {
       description:
         "Short sentences, concrete numbers, active voice, one idea per paragraph, and no padding — in both English and Arabic.",
       competency: "leadership",
+      related: ["m08.progress-report"],
     },
   ],
   sections: [

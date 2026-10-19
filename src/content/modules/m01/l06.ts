@@ -16,36 +16,37 @@ const lesson: Lesson = {
     {
       id: "m01.system-structure",
       name: "Power system structure",
-      description: "Generation, transmission (400/275/132 kV class), sub-transmission and distribution (33/11 kV, 415 V) linked by substations, operated by a control centre; interconnectors to neighbours.",
+      description: "Generation, transmission (400 and 132 kV class, plus any intermediate EHV level), sub-transmission and distribution (33/11 kV, 415 V) linked by substations, operated by a control centre; interconnectors to neighbours.",
       competency: "grid",
-      related: ["m01.frequency-balance"],
+      related: ["m01.frequency-balance", "m06.transmission-voltage", "m00.mewre-role"],
     },
     {
       id: "m01.frequency-balance",
       name: "Frequency as power balance",
       description: "All synchronous machines rotate together; any generation–load mismatch changes their speed and hence system frequency (swing equation).",
       competency: "grid",
-      related: ["m01.inertia-rocof", "m01.frequency-response"],
+      related: ["m01.inertia-rocof", "m01.frequency-response", "m06.frequency-control", "m00.reserve-margin"],
     },
     {
       id: "m01.inertia-rocof",
       name: "Inertia and ROCOF",
       description: "Stored rotating kinetic energy (H·S) limits the initial rate of change of frequency after a disturbance: ROCOF = −ΔP·f₀/(2ΣHS).",
       competency: "grid",
-      related: ["m01.system-strength"],
+      related: ["m01.system-strength", "m06.inertia"],
     },
     {
       id: "m01.frequency-response",
       name: "Frequency response and droop",
       description: "Inertial response, primary (governor droop), secondary (AGC) and tertiary control restore balance over seconds to minutes; under-frequency load shedding is the last defence.",
       competency: "grid",
+      related: ["m06.droop", "m05.frequency-response"],
     },
     {
       id: "m01.system-strength",
       name: "System strength and inverter-based resources",
       description: "Low fault level (short-circuit ratio) and low inertia as IBR displace synchronous machines; mitigated by grid-forming inverters, synchronous condensers, STATCOMs and fast frequency response.",
       competency: "grid",
-      related: ["m01.fault-level", "m01.reactive-capability"],
+      related: ["m01.fault-level", "m01.reactive-capability", "m06.system-strength", "m06.grid-forming"],
     },
   ],
   sections: [
@@ -61,7 +62,7 @@ const lesson: Lesson = {
 | Layer | Typical voltages | Role | Who in Kuwait |
 |---|---|---|---|
 | Generation | 11–24 kV at generator terminals, stepped up | Convert fuel/sun/wind to electricity | MEWRE power stations; IWPPs (Az-Zour North); renewable IPPs (Shagaya) |
-| Transmission | 400 kV, 275 kV, 132 kV | Bulk transfer over long distances, meshed for security | MEWRE Transmission; National Control Centre |
+| Transmission | 400 kV and 132 kV (plus an intermediate EHV level — confirm with MEWRE) | Bulk transfer over long distances, meshed for security | MEWRE Transmission; National Control Centre |
 | Sub-transmission / primary distribution | 33 kV, 11 kV | Feed primary substations and large consumers | MEWRE Distribution |
 | Low-voltage distribution | 415/240 V | Homes, shops | MEWRE Distribution |
 | Interconnection | 400 kV (GCCIA) | Reserve sharing, emergency support, trading | GCCIA |
@@ -94,7 +95,7 @@ Immediately after a sudden loss of $\Delta P$ (a large unit trips), before any c
           kind: "callout",
           tone: "why",
           title: "Why inertia matters more as PV grows",
-          md: md`PV and BESS inverters have no rotating mass coupled to the grid: unless specifically designed as grid-forming with synthetic inertia, they contribute **zero** H. When 3 GW of PV runs at midday and displaces 3 GW of synchronous units, the system's kinetic energy falls, so the same trip produces a faster frequency fall. Faster ROCOF leaves less time for governors to act, can trigger ROCOF-based protection, and pushes frequency lower before arrest (the **nadir**). That is why modern grid codes specify ROCOF withstand (e.g. 2–3 Hz/s for IBR in IEEE 2800) and value **fast frequency response** from BESS.`,
+          md: md`PV and BESS inverters have no rotating mass coupled to the grid: unless specifically designed as grid-forming with synthetic inertia, they contribute **zero** H. When 3 GW of PV runs at midday and displaces 3 GW of synchronous units, the system's kinetic energy falls, so the same trip produces a faster frequency fall. Faster ROCOF leaves less time for governors to act, can trigger ROCOF-based protection, and pushes frequency lower before arrest (the **nadir**). That is why modern grid codes and standards such as IEEE 2800 specify ROCOF withstand for IBR (typically several Hz/s — check the exact value in the applicable code) and value **fast frequency response** from BESS.`,
         },
         {
           kind: "md",
@@ -142,7 +143,7 @@ Lesson 4 showed that inverters contribute only ~1.0–1.5 pu fault current, vers
           kind: "callout",
           tone: "unverified",
           title: "Not confirmed by the research brief — verify with MEWRE Transmission / GCCIA",
-          md: md`- That Kuwait's transmission network also operates at **275 kV** and **132 kV**, and distributes at **33 kV, 11 kV and 415/240 V** — widely described, but not in the brief.
+          md: md`- Which intermediate EHV level (if any) Kuwait's transmission network uses between 400 kV and 132 kV (sources vary — confirm the voltage, e.g. 275 kV or 300 kV, from the MEWRE grid code), and that it distributes at **33 kV, 11 kV and 415/240 V** — widely described, but not in the brief.
 - Nominal frequency **50 Hz** and the statutory/normal operating band (e.g. 49.8–50.2 Hz) and UFLS settings — confirm in the MEWRE grid code.
 - GCCIA technical details: that Kuwait connects at **400 kV** (reported at the Az-Zour substation), the transfer capacity of the Kuwait link, and that the 60 Hz Saudi system joins the 50 Hz GCC grid through an HVDC back-to-back converter (reported at Al-Fadhili).
 - Whether the Al-Wafra 400 kV substation and its Saudi link, expected by December 2024, have been commissioned (flagged unverified in the brief).

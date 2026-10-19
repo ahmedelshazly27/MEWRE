@@ -36,6 +36,7 @@ const lesson: Lesson = {
       description:
         "Megawatts (and share of peak), cost in KWD (and share of budget/contingency), dates (and slip), and risk (probability, impact, owner) — expressed with ranges and confidence.",
       competency: "leadership",
+      related: ["m00.delay-cost", "m10.contingency-drawdown", "m01.capacity-factor"],
     },
     {
       id: "m13.question-handling",
@@ -43,6 +44,7 @@ const lesson: Lesson = {
       description:
         "Listen fully, answer the question asked in one or two sentences, never guess a number, commit to a dated follow-up, and never contradict your superior in front of external parties.",
       competency: "leadership",
+      related: ["m15.leadership-briefing"],
     },
     {
       id: "m13.bad-news",
@@ -50,7 +52,7 @@ const lesson: Lesson = {
       description:
         "Early, owned, quantified with range, with a recovery plan and a clear ask: cause → impact → plan → ask.",
       competency: "leadership",
-      related: ["m13.leader-numbers"],
+      related: ["m13.leader-numbers", "m08.rag-reporting", "m08.early-warning"],
     },
   ],
   sections: [
@@ -106,7 +108,7 @@ Senior officials do not lack intelligence; they lack time and context. Translate
 |---|---|---|
 | **MW** | "Inverter blocks 12–18 not commissioned" | "350 MW of the 1,100 MW will be late; that is about 2% of the summer peak" |
 | **KWD** | "VO-07 valued at KD 2.4 m" | "KD 2.4 m — 4% of the contract, 80% of the remaining contingency" |
-| **Date** | "Critical path float −52 days" | "Grid connection forecast 14 May against 5 March: 10 weeks late, range 8–13 weeks" |
+| **Date** | "Critical path float −70 days" | "Grid connection forecast 14 May against 5 March: 10 weeks late, range 8–13 weeks" |
 | **Risk** | "Risk R-14 scored 16 on 5×5 matrix" | "One risk could add another month: GIS delivery. Owner: contractor. We will know by 1 April" |
 
 Always give **ranges and confidence** for forecasts ("8–13 weeks, most likely 10"), and **compare to something the leader already knows**: the summer peak (17,540 MW in 2026 per MEWRE), the contract value, the contingency, the previous forecast.`,

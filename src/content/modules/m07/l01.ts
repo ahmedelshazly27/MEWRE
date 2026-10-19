@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "A project is divided into stages separated by gates; at each gate a decision-maker approves, recycles or stops the project based on defined deliverables and criteria.",
       competency: "delivery",
-      related: ["m07.feasibility-study", "m07.business-case"],
+      related: ["m07.feasibility-study", "m07.business-case", "m08.stage-gates"],
     },
     {
       id: "m07.feasibility-study",
@@ -28,7 +28,7 @@ const lesson: Lesson = {
       description:
         "Structured technical, environmental, commercial and financial analysis that tests whether a project can be built and financed and what the preferred option is.",
       competency: "delivery",
-      related: ["m07.options-analysis"],
+      related: ["m07.options-analysis", "m02.p50-p90"],
     },
     {
       id: "m07.options-analysis",
@@ -36,7 +36,7 @@ const lesson: Lesson = {
       description:
         "Comparing alternative ways to meet the need (technology, size, site, procurement route) on a like-for-like basis, using annualised cost and multi-criteria scoring.",
       competency: "finance",
-      related: ["m07.business-case"],
+      related: ["m07.business-case", "m10.crf", "m10.lcoe"],
     },
     {
       id: "m07.business-case",
@@ -44,6 +44,7 @@ const lesson: Lesson = {
       description:
         "The decision document that justifies investment: strategic need, economic value, commercial route, affordability and management plan.",
       competency: "delivery",
+      related: ["m00.displaced-fuel-value", "m00.economic-vs-financial"],
     },
     {
       id: "m07.gate-review",

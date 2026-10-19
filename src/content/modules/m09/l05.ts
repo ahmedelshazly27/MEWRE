@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "KAPP procures PPP projects under Law 116/2014 and Decree 78/2015 with Higher Committee and State Audit Bureau approvals; MEWRE is offtaker; for large projects a share of the project company is offered to Kuwaiti citizens by IPO.",
       competency: "contracts",
-      related: ["m09.ppa-tariff"],
+      related: ["m09.ppa-tariff", "m11.ppp-law", "m11.ppp-shareholding", "m00.kapp-higher-committee"],
     },
     {
       id: "m09.ppa-tariff",
@@ -28,6 +28,7 @@ const lesson: Lesson = {
       description:
         "Energy-only (single price per MWh, typical for solar) versus two-part capacity-plus-energy tariffs (thermal, BESS tolling); indexation and currency of payment.",
       competency: "contracts",
+      related: ["m15.tariff-structure", "m10.levelized-tariff"],
     },
     {
       id: "m09.deemed-energy",
@@ -35,7 +36,7 @@ const lesson: Lesson = {
       description:
         "Mechanisms that make the offtaker pay for energy the plant could have delivered but did not because of curtailment, dispatch instructions or grid unavailability within the offtaker's control.",
       competency: "contracts",
-      related: ["m09.ppa-tariff"],
+      related: ["m09.ppa-tariff", "m06.deemed-energy", "m11.deemed-energy"],
     },
     {
       id: "m09.change-in-law-ppa",
@@ -58,6 +59,7 @@ const lesson: Lesson = {
       description:
         "Agreements between lenders and project counterparties (offtaker, EPC, O&M) giving lenders notice of defaults, cure periods and the right to step in or novate the contract to a substitute before termination.",
       competency: "contracts",
+      related: ["m10.project-finance"],
     },
   ],
   sections: [

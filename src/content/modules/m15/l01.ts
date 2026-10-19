@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "A private project company (SPV) finances, builds, owns and operates the plant under a long-term PPA with MEWRE, after a competitive KAPP process approved by the Higher Committee and reviewed by the State Audit Bureau.",
       competency: "contracts",
-      related: ["m00.kapp-higher-committee", "m09.risk-allocation"],
+      related: ["m00.kapp-higher-committee", "m09.risk-allocation", "m11.ppp-law"],
     },
     {
       id: "m15.contract-stack",
@@ -52,7 +52,7 @@ const lesson: Lesson = {
       description:
         "The physical and contractual boundary between the IPP's plant substation and MEWRE's transmission works, with interface dates, responsibilities, energisation sequence and remedies (deemed energy) if MEWRE is late.",
       competency: "grid",
-      related: ["m08.interface-management", "m07.grid-studies"],
+      related: ["m08.interface-management", "m07.grid-studies", "m06.deemed-energy"],
     },
     {
       id: "m15.tariff-structure",
@@ -60,7 +60,7 @@ const lesson: Lesson = {
       description:
         "A two-part payment: an energy charge per delivered MWh of PV energy plus a capacity (availability) charge per MW-month for the BESS, with indexation, availability deductions, and performance liquidated damages.",
       competency: "finance",
-      related: ["m10.lcoe"],
+      related: ["m10.lcoe", "m09.ppa-tariff", "m05.ltsa-guarantee"],
     },
     {
       id: "m15.stakeholder-map",

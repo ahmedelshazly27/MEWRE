@@ -13,10 +13,10 @@ const lesson: Lesson = {
     "You can state the status (and uncertainty) of the offset programme, local agent rules and investment incentives.",
   ],
   concepts: [
-    { id: "m11.audit-prior-review", name: "Audit Bureau prior review", description: "Under Law 30/1964 (Arts. 13–14) contracts above a threshold (reported KD 100,000) need the Bureau's prior approval; approvals can be conditional; contracting without approval is a violation.", competency: "procurement", related: ["m11.fatwa-review"] },
-    { id: "m11.fatwa-review", name: "Fatwa and Legislation review", description: "Legal review of contract terms and legal opinions for government entities; key for PPAs and lender terms; exact stage in sequences not confirmed.", competency: "procurement", related: ["m11.audit-prior-review"] },
+    { id: "m11.audit-prior-review", name: "Audit Bureau prior review", description: "Under Law 30/1964 (Arts. 13–14) contracts above a threshold (reported KD 100,000) need the Bureau's prior approval; approvals can be conditional; contracting without approval is a violation.", competency: "procurement", related: ["m11.fatwa-review", "m00.control-bodies", "m15.audit-readiness"] },
+    { id: "m11.fatwa-review", name: "Fatwa and Legislation review", description: "Legal review of contract terms and legal opinions for government entities; key for PPAs and lender terms; exact stage in sequences not confirmed.", competency: "procurement", related: ["m11.audit-prior-review", "m00.control-bodies"] },
     { id: "m11.national-preference", name: "National product preference and SME margin", description: "Price preference for national products (rate reported as 10%, 15% or 20% — unverified) and a 10% SME margin under Law 94/2026 that cannot be combined with Art. 62 product priority.", competency: "procurement", related: ["m11.local-content"] },
-    { id: "m11.local-content", name: "Local content and agents", description: "Foreign contractors source ≥30% locally (reported); Law 94/2026 adds ≥30% products from the PAI Industrial Guide and ≥30% local subcontracting, and bans local/commission agents.", competency: "procurement", related: ["m11.national-preference", "m11.offset-incentives"] },
+    { id: "m11.local-content", name: "Local content and agents", description: "Foreign contractors source ≥30% locally (reported); Law 94/2026 adds ≥30% products from the PAI Industrial Guide and ≥30% local subcontracting, and bans local/commission agents.", competency: "procurement", related: ["m11.national-preference", "m11.offset-incentives", "m15.local-content", "m15.supply-chain-integrity"] },
     { id: "m11.offset-incentives", name: "Offset programme and investment incentives", description: "Historical offset (35% or 30% on civil contracts ≥ KD 10 m, 6% guarantee) suspended in 2014, current status unverified; KDIPA incentives and project-specific customs exemptions.", competency: "procurement", related: ["m11.local-content"] },
   ],
   sections: [
@@ -339,7 +339,7 @@ A local-content share is just a ratio — but **which denominator** (product pur
           ],
         },
         b: {
-          md: md`Evidence confirms the subcontractor performs no work. Excluding it, local subcontracting is 17%.`,
+          md: md`Evidence confirms the subcontractor performs no work. Removing its KD 0.4 m from the local numerator (total subcontracted works about KD 2.5 m), local subcontracting is 17%.`,
           choices: [
             { text: "Issue a formal notice under the contract's local-content clause with a corrective plan deadline, and reflect it in the next payment certificate per the contract.", score: 10, feedback: "Uses the contract's remedies and leaves time to correct." },
             { text: "Terminate the contract immediately.", score: 3, feedback: "Disproportionate as a first step; follow the contract's escalation." },

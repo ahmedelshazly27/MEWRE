@@ -37,8 +37,9 @@ Request → feasibility → HC → RFQ → RFP (tech → fin.) → preferred bid
 Shares (> KD 60 m, legal guide): **50% IPO / 6–24% public / ≥26% private**; IWPP practice 40% developer / 60% KAPP. AZN 1: ENGIE 17.5, Sumitomo 17.5, Al-Sagar 5; 40-yr ECWPA; IPO 2019 oversubscribed. AZN 2&3: ACWA + GIC 40%, ECWPA 3 Feb 2026. Solar: 30-yr PPA with MEWRE.
 $R = T(E_{del} + E_{deemed})$. Unknown: PPA currency, guarantees, termination regime.
 
-| Zone 1 (1,100 MW) | RFQ Jan 2024 → RFP ~Jun 2025 → bids 15 Jan 2026 → fin. ~Jul 2026 → Masdar + Fouad AlGhanim reported ~Aug 2026 |
+| Project | Milestones |
 |---|---|
+| Zone 1 (1,100 MW) | RFQ Jan 2024 → RFP ~Jun 2025 → bids 15 Jan 2026 → fin. ~Jul 2026 → Masdar + Fouad AlGhanim reported ~Aug 2026 |
 | Zone 2 (500 MW) | RFQ May 2025 → RFP 16 Nov 2025 → bids 26 Jul 2026 (2 or 3) |
 
 ## Oversight & local content (l04)

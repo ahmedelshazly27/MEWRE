@@ -13,10 +13,10 @@ const lesson: Lesson = {
     "Diagnose an abnormally low bid using a should-cost model, and list what it means for MEWRE's risk",
   ],
   concepts: [
-    { id: "m10.levelized-tariff", name: "Levelized tariff comparison", description: "Converting shaped tariff bids into the flat tariff with equal present value of payments for the same energy profile.", competency: "procurement", related: ["m10.lcoe", "m10.npv"] },
+    { id: "m10.levelized-tariff", name: "Levelized tariff comparison", description: "Converting shaped tariff bids into the flat tariff with equal present value of payments for the same energy profile.", competency: "procurement", related: ["m10.lcoe", "m10.npv", "m11.levelized-tariff", "m11.evaluation-methods"] },
     { id: "m10.evaluation-discount-rate", name: "Evaluation discount rate", description: "The rate used to levelize bids; it changes the ranking of shaped bids and must be published before bid opening, consistent with the real/nominal basis of indexation.", competency: "finance", related: ["m10.levelized-tariff", "m10.real-nominal"] },
-    { id: "m10.tornado-scenario", name: "Tornado and scenario analysis", description: "One-at-a-time swings ranked by impact (tornado) and coherent combinations of assumptions (scenarios) to test robustness of a result.", competency: "finance", related: ["m10.lcoe-sensitivity"] },
-    { id: "m10.aggressive-bid", name: "Aggressive (abnormally low) bid risk", description: "A tariff below credible cost exposes the offtaker to failure to close, delay, quality cuts, renegotiation and termination risk.", competency: "procurement", related: ["m10.levelized-tariff", "m10.equity-irr"] },
+    { id: "m10.tornado-scenario", name: "Tornado and scenario analysis", description: "One-at-a-time swings ranked by impact (tornado) and coherent combinations of assumptions (scenarios) to test robustness of a result.", competency: "finance", related: ["m10.lcoe-sensitivity", "m08.monte-carlo"] },
+    { id: "m10.aggressive-bid", name: "Aggressive (abnormally low) bid risk", description: "A tariff below credible cost exposes the offtaker to failure to close, delay, quality cuts, renegotiation and termination risk.", competency: "procurement", related: ["m10.levelized-tariff", "m10.equity-irr", "m15.bid-evaluation"] },
   ],
   sections: [
     {

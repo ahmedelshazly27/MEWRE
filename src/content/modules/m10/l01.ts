@@ -15,8 +15,8 @@ const lesson: Lesson = {
   ],
   concepts: [
     { id: "m10.time-value", name: "Time value of money", description: "A unit of money today is worth more than the same unit later because it can earn a return; discounting converts future cash to present value.", competency: "finance" },
-    { id: "m10.npv", name: "Net present value", description: "Sum of discounted cash flows at the opportunity cost of capital; the primary value-creation criterion.", competency: "finance", related: ["m10.time-value", "m10.wacc"] },
-    { id: "m10.irr", name: "Internal rate of return and its pitfalls", description: "The discount rate at which NPV = 0; can be multiple, assumes reinvestment at IRR and ignores scale.", competency: "finance", related: ["m10.npv", "m10.mirr"] },
+    { id: "m10.npv", name: "Net present value", description: "Sum of discounted cash flows at the opportunity cost of capital; the primary value-creation criterion.", competency: "finance", related: ["m10.time-value", "m10.wacc", "m00.economic-vs-financial", "m12.lifecycle-cost"] },
+    { id: "m10.irr", name: "Internal rate of return and its pitfalls", description: "The discount rate at which NPV = 0; can be multiple, assumes reinvestment at IRR and ignores scale.", competency: "finance", related: ["m10.npv", "m10.mirr", "m14.model-audit"] },
     { id: "m10.mirr", name: "Modified IRR", description: "Rate that links finance-rate PV of outflows with reinvestment-rate FV of inflows; unique and more realistic than IRR.", competency: "finance", related: ["m10.irr"] },
     { id: "m10.payback", name: "Simple and discounted payback", description: "Time for cumulative (discounted) cash flow to turn positive; a liquidity and risk indicator, not a value measure.", competency: "finance", related: ["m10.npv"] },
     { id: "m10.real-nominal", name: "Real vs nominal and inflation", description: "Nominal flows include inflation and are discounted at nominal rates; real flows at real rates (Fisher relation).", competency: "finance", related: ["m10.time-value"] },

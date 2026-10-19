@@ -20,6 +20,7 @@ const lesson: Lesson = {
       description:
         "Preventive, corrective and predictive maintenance, cleaning, monitoring, HV maintenance, spares and reporting; full-scope fixed-fee versus limited-scope contracts and OEM service agreements.",
       competency: "operations",
+      related: ["m12.maintenance-strategy", "m12.cmms"],
     },
     {
       id: "m09.availability-guarantee",
@@ -27,7 +28,7 @@ const lesson: Lesson = {
       description:
         "Guaranteed share of time (time-based) or of potential energy (energy-based) that the plant is available, excluding defined events; enforced by malus and rewarded by bonus.",
       competency: "operations",
-      related: ["m09.om-scope"],
+      related: ["m09.om-scope", "m12.availability"],
     },
     {
       id: "m09.pr-guarantee",
@@ -35,7 +36,7 @@ const lesson: Lesson = {
       description:
         "A guarantee on weather-corrected PR with degradation and exclusion allowances; it ties O&M quality (cleaning, repairs) to output but depends on design, so it must be carefully baselined.",
       competency: "operations",
-      related: ["m09.availability-guarantee"],
+      related: ["m09.availability-guarantee", "m12.performance-ratio"],
     },
     {
       id: "m09.bess-ltsa",
@@ -43,6 +44,7 @@ const lesson: Lesson = {
       description:
         "OEM/integrator agreement guaranteeing usable energy over life (with augmentation or LDs), round-trip efficiency and availability within an agreed operating envelope.",
       competency: "operations",
+      related: ["m05.ltsa-guarantee", "m05.augmentation"],
     },
     {
       id: "m09.epc-om-handover",
@@ -50,7 +52,7 @@ const lesson: Lesson = {
       description:
         "Transfer at Taking-Over of documentation, spares, warranties, SCADA access, training and punch lists, with an interface agreement for defects during the DNP.",
       competency: "operations",
-      related: ["m09.om-scope"],
+      related: ["m09.om-scope", "m07.handover-package"],
     },
   ],
   sections: [
@@ -81,7 +83,7 @@ Contract models: **full-scope fixed fee** (contractor carries most risk, includi
           kind: "callout",
           tone: "kuwait",
           title: "Kuwait evidence (sourced)",
-          md: md`A KISR-linked study of the roughly 11 MW Shagaya PV testbed found soiling "substantial", requiring monthly water cleaning. Shagaya Phase I contracts included 6-year design-build-operate periods, and the 10 MW wind farm's first-year output (42.59 GWh) was reported as 21% above its contractual figure of 31.16 GWh: a reminder that O&M guarantees are measured against a contractual baseline, not the best possible outcome.`,
+          md: md`A KISR-linked study of the roughly 11 MW Shagaya PV testbed found soiling "substantial", requiring monthly water cleaning. Shagaya Phase I contracts included 6-year design-build-operate periods, and a KISR paper reports the 10 MW wind farm's first-year output as 42.59 GWh, "21% above" a contractual figure of 31.16 GWh. The raw figures actually imply about 37% above, so the period or baseline is misreported somewhere: a reminder that O&M guarantees are measured against a precisely defined contractual baseline, and that every reported number needs checking.`,
         },
         { kind: "sources", refs: ["m09-rser-2020-shagaya-pv", "m09-reuters-shagaya-csp", "m09-e3s-2021-shagaya-wind"] },
         {

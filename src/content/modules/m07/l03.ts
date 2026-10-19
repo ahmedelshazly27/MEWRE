@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "Concept → basic/FEED → detailed design, each narrowing options and freezing parameters (design basis, layout, equipment ratings) so procurement and construction can proceed.",
       competency: "delivery",
-      related: ["m07.design-review"],
+      related: ["m07.design-review", "m08.employers-requirements"],
     },
     {
       id: "m07.owners-engineer",
@@ -28,6 +28,7 @@ const lesson: Lesson = {
       description:
         "Independent technical consultant acting for the employer/owner: reviews design, witnesses tests, monitors quality and progress, and advises on technical claims.",
       competency: "delivery",
+      related: ["m09.engineer-vs-er", "m13.oe-management"],
     },
     {
       id: "m07.design-review",
@@ -35,6 +36,7 @@ const lesson: Lesson = {
       description:
         "Structured review of contractor submittals with status codes (A approved/no objection, B approved with comments, C rejected — revise and resubmit) tracked in a document register.",
       competency: "risk",
+      related: ["m02.design-review", "m08.document-control"],
     },
     {
       id: "m07.cable-sizing",
@@ -42,6 +44,7 @@ const lesson: Lesson = {
       description:
         "Choosing conductor sizes so that current rating after temperature, soil resistivity and grouping derating exceeds load, and voltage drop/losses stay within limits.",
       competency: "engineering",
+      related: ["m02.bos-earthing"],
     },
     {
       id: "m07.grid-studies",
@@ -49,6 +52,7 @@ const lesson: Lesson = {
       description:
         "Load flow, short circuit, reactive capability, harmonics, stability (RMS/EMT) and protection coordination studies proving the plant meets the grid code.",
       competency: "grid",
+      related: ["m06.study-governance", "m06.dynamic-studies"],
     },
   ],
   sections: [
@@ -131,7 +135,7 @@ Comments go in a **comment-response sheet (CRS)**: each comment has a number, re
         { kind: "equation", formula: "m07-cable-derating" },
         {
           kind: "md",
-          md: md`For XLPE (90 °C maximum conductor temperature) the ground-temperature factor is approximately $k_T = \sqrt{(90 - T_g)/(90 - 20)}$. In Kuwaiti sand at 35 °C ground temperature $k_T \approx 0.89$; with dry sand at 2.5 K·m/W, $k_\rho \approx 0.8$; grouping three circuits in one trench, $k_g \approx 0.8$. Multiply: the cable carries only ~58 % of catalogue rating.
+          md: md`For XLPE (90 °C maximum conductor temperature) the ground-temperature factor is approximately $k_T = \sqrt{(90 - T_g)/(90 - 20)}$. In Kuwaiti sand at 35 °C ground temperature $k_T \approx 0.89$; with dry sand at 2.5 K·m/W, $k_\rho \approx 0.8$; grouping three circuits in one trench, $k_g \approx 0.8$. Multiply: the cable carries only ~57 % of catalogue rating.
 
 ### Key design deliverables for PV+BESS
 
@@ -170,7 +174,7 @@ Comments go in a **comment-response sheet (CRS)**: each comment has a number, re
             { md: md`Voltage drop: $\Delta V = 2 \times 0.120 \times 13.5 \times 3.685 = 11.94$ V.` },
             { md: md`Percentage: $11.94 / 1{,}176 = 1.02\,\%$. For DC, power loss % equals voltage drop %: $I^2 R = 13.5^2 \times 0.884 = 161$ W, i.e. 1.02 % of 15,876 W.` },
           ],
-          result: md`≈ 1.0 % at STC current and 70 °C — acceptable against a typical 1.5 % DC limit. Had the designer used $R_{20}$, he would have reported 0.85 % and understated losses by ~20 %.`,
+          result: md`≈ 1.0 % at STC current and 70 °C — acceptable against a typical 1.5 % DC limit. Had the designer used $R_{20}$, he would have reported 0.85 % and understated losses by ~17 %.`,
         },
         {
           kind: "worked",

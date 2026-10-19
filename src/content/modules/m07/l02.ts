@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "Boreholes, test pits, CPTs, laboratory tests and field pile load tests that characterise soil strength, chemistry and groundwater for foundation design.",
       competency: "delivery",
-      related: ["m07.pile-pullout", "m07.soil-corrosivity"],
+      related: ["m07.pile-pullout", "m07.soil-corrosivity", "m09.unforeseeable-conditions"],
     },
     {
       id: "m07.pile-pullout",
@@ -28,6 +28,7 @@ const lesson: Lesson = {
       description:
         "Field load tests applying axial tension (and lateral/compression) to trial piles to verify capacity and embedment before production piling.",
       competency: "delivery",
+      related: ["m02.wind-stow", "m02.construction-qa"],
     },
     {
       id: "m07.soil-corrosivity",
@@ -42,6 +43,7 @@ const lesson: Lesson = {
       description:
         "Estimating runoff from rare intense desert storms across wadis and catchments to design drainage, set equipment elevations and avoid scour.",
       competency: "risk",
+      related: ["m08.kuwait-risks"],
     },
     {
       id: "m07.eia-permitting",
@@ -57,6 +59,7 @@ const lesson: Lesson = {
       description:
         "Securing legal right to use the site, clearing competing claims (oil and gas, military, utilities, grazing) and fixing boundaries and corridors.",
       competency: "context",
+      related: ["m00.approval-timelines"],
     },
   ],
   sections: [

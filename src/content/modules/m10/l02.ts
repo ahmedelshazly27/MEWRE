@@ -14,10 +14,10 @@ const lesson: Lesson = {
     "Explain the ingredients of record-low Gulf tariffs and what is (and is not) known about Kuwait's Zone 1 tariff",
   ],
   concepts: [
-    { id: "m10.lcoe", name: "Levelized cost of electricity", description: "Constant price per kWh whose present value of revenue equals the present value of lifetime costs at the discount rate.", competency: "finance", related: ["m10.npv", "m10.wacc"] },
+    { id: "m10.lcoe", name: "Levelized cost of electricity", description: "Constant price per kWh whose present value of revenue equals the present value of lifetime costs at the discount rate.", competency: "finance", related: ["m10.npv", "m10.wacc", "m03.lcoe-comparison", "m02.p50-p90"] },
     { id: "m10.crf", name: "Capital recovery factor", description: "Factor converting a present value into an equal annual payment over n years at rate r.", competency: "finance", related: ["m10.lcoe", "m10.time-value"] },
     { id: "m10.lcoe-sensitivity", name: "LCOE sensitivity and tornado analysis", description: "How LCOE responds to yield, capex, WACC, opex and degradation; one-at-a-time swings ranked in a tornado chart.", competency: "finance", related: ["m10.lcoe"] },
-    { id: "m10.gulf-tariffs", name: "Gulf solar tariff drivers", description: "Resource, low capex, cheap long-tenor high-gearing debt, long PPAs, low taxes, competitive auctions and risk allocation that produce 1–2 US cents/kWh tariffs.", competency: "finance", related: ["m10.lcoe", "m10.wacc"] },
+    { id: "m10.gulf-tariffs", name: "Gulf solar tariff drivers", description: "Resource, low capex, cheap long-tenor high-gearing debt, long PPAs, low taxes, competitive auctions and risk allocation that produce 1–2 US cents/kWh tariffs.", competency: "finance", related: ["m10.lcoe", "m10.wacc", "m15.tariff-structure"] },
   ],
   sections: [
     {
@@ -72,7 +72,7 @@ Real plants lose output and their O&M contracts escalate:`,
         { kind: "equation", formula: "m10-energy-degradation" },
         {
           kind: "md",
-          md: md`With degradation $d$ and opex escalation $g$, the sums are still geometric: $\sum E_1(1-d)^{t-1}(1+r)^{-t}$ is an annuity at an effective rate $r' = (1+r)/(1-d) - 1$. In practice you build an annual table (or a spreadsheet) and the CRF form is used with **levelized** values: levelized energy $= \mathrm{CRF}\times\sum E_t(1+r)^{-t}$, levelized opex likewise. Using year-1 energy and year-1 opex in the CRF shortcut **understates** LCOE — by 8 % in the base case below.
+          md: md`With degradation $d$ and opex escalation $g$, the sums are still geometric: $\sum E_1(1-d)^{t-1}(1+r)^{-t}$ is an annuity at an effective rate $r' = (1+r)/(1-d) - 1$. In practice you build an annual table (or a spreadsheet) and the CRF form is used with **levelized** values: levelized energy $= \mathrm{CRF}\times\sum E_t(1+r)^{-t}$, levelized opex likewise. Using year-1 energy and year-1 opex in the CRF shortcut **understates** LCOE — by about 7 % in the base case below.
 
 ### Sensitivity — the first-order structure
 

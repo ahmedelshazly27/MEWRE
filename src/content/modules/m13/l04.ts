@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "The ministry (principal) relies on consultants and contractors (agents) who know more and whose incentives differ; contracts, KPIs, reporting and verification reduce the gap.",
       competency: "leadership",
-      related: ["m13.oe-management"],
+      related: ["m13.oe-management", "m09.risk-allocation"],
     },
     {
       id: "m13.oe-management",
@@ -28,7 +28,7 @@ const lesson: Lesson = {
       description:
         "Defining the OE's scope, authority, staffing, deliverables and KPIs, and verifying its outputs rather than rubber-stamping them.",
       competency: "leadership",
-      related: ["m13.consultant-role"],
+      related: ["m13.consultant-role", "m07.owners-engineer", "m07.site-supervision"],
     },
     {
       id: "m13.kpi-scorecard",
@@ -36,6 +36,7 @@ const lesson: Lesson = {
       description:
         "A small set of SMART indicators, each scored and weighted, giving a defensible overall performance score linked to contract remedies or future awards.",
       competency: "controls",
+      related: ["m08.hse-kpis", "m08.contractor-mgmt"],
     },
     {
       id: "m13.progress-meeting",
@@ -43,6 +44,7 @@ const lesson: Lesson = {
       description:
         "A recurring meeting with a fixed agenda (safety, progress vs programme, look-ahead, risks, decisions, actions) whose output is decisions and owned actions.",
       competency: "leadership",
+      related: ["m08.progress-report"],
     },
     {
       id: "m13.minutes-action-log",
@@ -50,7 +52,7 @@ const lesson: Lesson = {
       description:
         "Minutes record decisions and actions (owner, due date, status), not debate; once agreed they are contemporaneous evidence in claims and disputes.",
       competency: "contracts",
-      related: ["m13.progress-meeting", "m13.contract-notice"],
+      related: ["m13.progress-meeting", "m13.contract-notice", "m08.document-control", "m09.delay-analysis"],
     },
     {
       id: "m13.accountability-ladder",
@@ -58,6 +60,7 @@ const lesson: Lesson = {
       description:
         "Proportionate escalation: discussion → minuted action → letter → contractual Notice/NCR → contractual remedies (delay damages, withholding per contract, security) → termination as last resort.",
       competency: "contracts",
+      related: ["m09.delay-lds", "m08.ncr", "m09.performance-security"],
     },
   ],
   sections: [

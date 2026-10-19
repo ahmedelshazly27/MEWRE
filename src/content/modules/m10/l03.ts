@@ -14,11 +14,11 @@ const lesson: Lesson = {
     "Set contingency by estimate class and risk register rather than by habit",
   ],
   concepts: [
-    { id: "m10.capex-breakdown", name: "Capex breakdown", description: "Decomposition of project cost into modules, trackers, inverters, BoS, civil, grid, EPC indirects, development, financing and contingency.", competency: "finance", related: ["m10.lcoe"] },
+    { id: "m10.capex-breakdown", name: "Capex breakdown", description: "Decomposition of project cost into modules, trackers, inverters, BoS, civil, grid, EPC indirects, development, financing and contingency.", competency: "finance", related: ["m10.lcoe", "m05.bess-sizing"] },
     { id: "m10.opex-breakdown", name: "Opex breakdown", description: "Annual operating cost lines: O&M contract, cleaning, insurance, land and security, SPV administration, spares and reserves.", competency: "finance", related: ["m10.lcoe"] },
     { id: "m10.cost-benchmarks", name: "Cost benchmarks and their limits", description: "Published cost references (IRENA, NREL, Lazard, BNEF) — their scope, date, region and currency basis.", competency: "finance", related: ["m10.capex-breakdown"] },
-    { id: "m10.cleaning-economics", name: "Cleaning economics in desert PV", description: "Trade-off between soiling energy loss and cleaning cost; optimal cleaning interval and the case for robotic dry cleaning.", competency: "finance", related: ["m10.opex-breakdown"] },
-    { id: "m10.estimate-contingency", name: "Estimate classes and contingency", description: "Accuracy ranges by estimate maturity and risk-based (EMV/P80) contingency instead of fixed percentages.", competency: "finance", related: ["m10.capex-breakdown"] },
+    { id: "m10.cleaning-economics", name: "Cleaning economics in desert PV", description: "Trade-off between soiling energy loss and cleaning cost; optimal cleaning interval and the case for robotic dry cleaning.", competency: "finance", related: ["m10.opex-breakdown", "m12.cleaning-economics", "m02.soiling"] },
+    { id: "m10.estimate-contingency", name: "Estimate classes and contingency", description: "Accuracy ranges by estimate maturity and risk-based (EMV/P80) contingency instead of fixed percentages.", competency: "finance", related: ["m10.capex-breakdown", "m08.contingency"] },
   ],
   sections: [
     {
@@ -106,7 +106,7 @@ Estimate accuracy depends on project definition. AACE International's classifica
 | Civil: piling, roads, drainage, fencing, sand protection | 42.9 | 0.030 | 39 | 7.7 % |
 | Mechanical/electrical installation labour | 28.6 | 0.020 | 26 | 5.1 % |
 | 400 kV substation (IPP scope) | 35.0 | 0.024 | 32 | 6.3 % |
-| EPC indirects: design, site management, CAR insurance, margin | 46.0 | 0.032 | 42 | 8.2 % |
+| EPC indirects: design, site management, CAR insurance, margin | 45.9 | 0.032 | 42 | 8.2 % |
 | **EPC subtotal** | **510.0** | **0.357** | **464** | **91.1 %** |
 | Development and owner's costs | 15.0 | 0.010 | 14 | 2.7 % |
 | Financing fees and IDC | 25.0 | 0.017 | 23 | 4.5 % |

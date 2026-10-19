@@ -38,13 +38,14 @@ const lesson: Lesson = {
       name: "High-temperature derating",
       description: "Reduction of turbine output above an ambient temperature limit to protect generator, converter, gearbox and transformer.",
       competency: "wind-storage",
-      related: ["m04.desert-failure-modes"],
+      related: ["m04.desert-failure-modes", "m01.transformer-derating", "m02.thermal-derating"],
     },
     {
       id: "m04.desert-failure-modes",
       name: "Desert failure modes",
       description: "Leading-edge erosion, sand and dust ingress into bearings, seals and filters, overheating, lightning strikes.",
       competency: "wind-storage",
+      related: ["m12.failure-modes", "m05.desert-hvac"],
     },
   ],
   sections: [

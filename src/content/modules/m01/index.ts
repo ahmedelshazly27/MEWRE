@@ -79,7 +79,7 @@ const cheatSheet = md`# M1 Energy & Power Fundamentals: cheat sheet
 | Shagaya Zone 1 | 1.1 GW PV IPP, 30-yr PPA, IPP builds 400 kV substation |
 | Grid link | Shagaya–Al-Wafra 400 kV OHTL, KD 48.6 m, March 2026 |
 | BESS plan | 1–1.5 GW / 4–6 GWh |
-| **Unverified** | 275/132/33/11 kV levels, 50 Hz band, GCCIA link details, winter peak, annual TWh, fleet heat rate |
+| **Unverified** | Intermediate EHV level and 132/33/11 kV levels, 50 Hz band, GCCIA link details, winter peak, annual TWh, fleet heat rate |
 
 ## Frequency and system strength
 - $n_s = 120f/p$ (3,000 rpm, 2-pole, 50 Hz); $H = E_k/S$ (thermal 4–9 s; inverter 0).

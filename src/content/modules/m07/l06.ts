@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "Contractual acceptance of the works (or a section) when tests on completion are passed and the works are substantially complete; transfers care of the works and starts the defects notification period.",
       competency: "contracts",
-      related: ["m07.dnp"],
+      related: ["m07.dnp", "m09.taking-over-defects", "m15.taking-over"],
     },
     {
       id: "m07.dnp",
@@ -28,7 +28,7 @@ const lesson: Lesson = {
       description:
         "Period after taking over during which the contractor must remedy notified defects at its cost; can be extended for defects that prevent use; ends with the Performance Certificate.",
       competency: "contracts",
-      related: ["m07.final-acceptance"],
+      related: ["m07.final-acceptance", "m12.warranty-claim"],
     },
     {
       id: "m07.handover-package",
@@ -36,6 +36,7 @@ const lesson: Lesson = {
       description:
         "As-built drawings, O&M manuals, test records, training, spare parts, special tools, software and licences, and assigned OEM warranties needed to operate the plant for decades.",
       competency: "operations",
+      related: ["m09.epc-om-handover", "m12.cmms"],
     },
     {
       id: "m07.retention-release",
@@ -43,6 +44,7 @@ const lesson: Lesson = {
       description:
         "Return of retention money withheld from interim payments: typically half at taking over and half after the defects period, subject to deductions for unremedied defects.",
       competency: "finance",
+      related: ["m09.retention"],
     },
     {
       id: "m07.final-acceptance",
@@ -50,6 +52,7 @@ const lesson: Lesson = {
       description:
         "Performance Certificate, final statement and discharge, release of securities, demobilisation, and capture of lessons learned.",
       competency: "delivery",
+      related: ["m15.lessons-learned"],
     },
   ],
   sections: [

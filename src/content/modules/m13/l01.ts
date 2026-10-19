@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "Minister → Undersecretary → Assistant Undersecretaries (sectors) → departments (directors) → controllers → sections; each level has defined signing and approval authority.",
       competency: "leadership",
-      related: ["m13.authority-flow"],
+      related: ["m13.authority-flow", "m00.mewre-role", "m00.policy-bodies"],
     },
     {
       id: "m13.authority-flow",
@@ -28,7 +28,7 @@ const lesson: Lesson = {
       description:
         "Formal authority sits in signatures and delegations; practical authority moves through memos, annotations, committee minutes and the people who prepare them.",
       competency: "leadership",
-      related: ["m13.decision-culture", "m13.consultant-role"],
+      related: ["m13.decision-culture", "m13.consultant-role", "m00.decision-chain"],
     },
     {
       id: "m13.decision-culture",
@@ -36,6 +36,7 @@ const lesson: Lesson = {
       description:
         "Consensus-seeking, audit-conscious and committee-based decision making, where documented justification and precedent matter more than speed.",
       competency: "leadership",
+      related: ["m00.control-bodies", "m11.audit-prior-review"],
     },
     {
       id: "m13.relationship-capital",
@@ -43,6 +44,7 @@ const lesson: Lesson = {
       description:
         "Using networks to obtain access, information and timely attention is legitimate; using them to change outcomes that rules govern (awards, evaluations, approvals, hiring) is not.",
       competency: "leadership",
+      related: ["m08.stakeholder-mgmt", "m11.clarifications"],
     },
     {
       id: "m13.protocol",
@@ -57,6 +59,7 @@ const lesson: Lesson = {
       description:
         "Owner's Engineers, transaction and legal advisers prepare, review and recommend; they do not carry the ministry's authority and must not speak for it unless expressly delegated.",
       competency: "leadership",
+      related: ["m07.owners-engineer", "m09.engineer-vs-er"],
     },
   ],
   sections: [
@@ -216,7 +219,7 @@ The PM's stance: **consultants advise and prepare; officials decide and sign.** 
               md: md`**Total.** $18 + 28 = 46$ wd $\approx 9.2$ weeks. The contract expires in 40 wd, so there is a **gap of 6 working days** with no supervising consultant — during which site inspections, NCR follow-up and IPC certification would stop.`,
             },
             {
-              md: md`**What the PM does.** (a) Start now, and next time start 12+ weeks out. (b) Shorten the critical path: send Legal the draft in parallel with the Director's review (removes 7 wd from the sequential path if Legal can comment on the draft), and pre-agree the query answers with the Audit Bureau liaison by submitting a complete file (the query round is the most compressible step). (c) Mitigate the residual gap: ask whether the contract allows a no-cost time extension within the existing ceiling, which may follow a lighter route.`,
+              md: md`**What the PM does.** (a) Start now, and next time start 12+ weeks out. (b) Shorten the critical path: send Legal the draft in parallel with the Director's and Assistant Undersecretary's review, so Legal's 7 wd overlaps them instead of following them (the internal path drops from 18 to 16 wd, with Financial Affairs' 5 wd now the binding branch), and pre-agree the query answers with the Audit Bureau liaison by submitting a complete file (the query round is the most compressible step). (c) Mitigate the residual gap: ask whether the contract allows a no-cost time extension within the existing ceiling, which may follow a lighter route.`,
             },
           ],
           result: md`Approval needs about **46 working days** against **40 available**; the critical path runs through Legal and the Audit Bureau. Starting earlier and submitting a complete file are worth more than any amount of chasing.`,

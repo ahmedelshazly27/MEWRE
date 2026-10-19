@@ -13,11 +13,11 @@ const lesson: Lesson = {
     "You can compute annual PPA payments including deemed energy and explain why grid delay creates offtaker liability.",
   ],
   concepts: [
-    { id: "m11.ppp-law", name: "PPP Law 116/2014 and Decree 78/2015", description: "Kuwait's PPP framework: KAPP (attached to the Minister of Finance), the Higher Committee chaired by the Minister of Finance, procurement stages, and project-company shareholding rules; replaced Law 7/2008.", competency: "procurement", related: ["m11.kapp-stages", "m11.ppp-shareholding"] },
-    { id: "m11.kapp-stages", name: "KAPP procurement stages", description: "Request → feasibility → Higher Committee → RFQ → RFP (technical then financial) → preferred bidder → Higher Committee → Audit Bureau → PPA signing → financial close.", competency: "procurement", related: ["m11.ppp-law"] },
-    { id: "m11.ppp-shareholding", name: "PPP project-company shareholding", description: "For projects above KD 60 m: 50% IPO to citizens, 6–24% public entities, at least 26% private (secondary source); IWPP practice 40% developer / 60% KAPP; KAPP warehouses IPO shares until operation.", competency: "finance", related: ["m11.ppp-law"] },
-    { id: "m11.offtaker-role", name: "MEWRE as offtaker", description: "Counterparty to the 30-year PPA: pays for delivered (and deemed) energy, provides grid connection and dispatch, manages interfaces, curtailment and change-in-law exposure.", competency: "contracts", related: ["m11.deemed-energy"] },
-    { id: "m11.deemed-energy", name: "Deemed energy and grid-delay liability", description: "Energy the plant could have delivered but did not because of offtaker-side events (grid unavailability, curtailment beyond allowances), which the offtaker pays as if delivered.", competency: "contracts", related: ["m11.offtaker-role"] },
+    { id: "m11.ppp-law", name: "PPP Law 116/2014 and Decree 78/2015", description: "Kuwait's PPP framework: KAPP (attached to the Minister of Finance), the Higher Committee chaired by the Minister of Finance, procurement stages, and project-company shareholding rules; replaced Law 7/2008.", competency: "procurement", related: ["m11.kapp-stages", "m11.ppp-shareholding", "m00.kapp-higher-committee"] },
+    { id: "m11.kapp-stages", name: "KAPP procurement stages", description: "Request → feasibility → Higher Committee → RFQ → RFP (technical then financial) → preferred bidder → Higher Committee → Audit Bureau → PPA signing → financial close.", competency: "procurement", related: ["m11.ppp-law", "m00.decision-chain", "m15.approval-chain"] },
+    { id: "m11.ppp-shareholding", name: "PPP project-company shareholding", description: "For projects above KD 60 m: 50% IPO to citizens, 6–24% public entities, at least 26% private (secondary source); IWPP practice 40% developer / 60% KAPP; KAPP warehouses IPO shares until operation.", competency: "finance", related: ["m11.ppp-law", "m09.kuwait-ppp-model", "m10.project-finance"] },
+    { id: "m11.offtaker-role", name: "MEWRE as offtaker", description: "Counterparty to the 30-year PPA: pays for delivered (and deemed) energy, provides grid connection and dispatch, manages interfaces, curtailment and change-in-law exposure.", competency: "contracts", related: ["m11.deemed-energy", "m00.mewre-role", "m15.offtaker-pm-role"] },
+    { id: "m11.deemed-energy", name: "Deemed energy and grid-delay liability", description: "Energy the plant could have delivered but did not because of offtaker-side events (grid unavailability, curtailment beyond allowances), which the offtaker pays as if delivered.", competency: "contracts", related: ["m11.offtaker-role", "m09.deemed-energy", "m06.deemed-energy"] },
   ],
   sections: [
     {
@@ -154,7 +154,7 @@ Under a typical solar PPA (generic structure; check the actual Kuwaiti PPA):
               hidden: true,
               check: { prompt: "Total annual payment (KWD million)", answer: 19.416, unit: "KWD m", tolerance: { abs: 0.005 } },
             },
-            { md: md`The ministry pays KWD 144k for energy it never received — and still burns the fuel that energy would have displaced (lesson m00-l03). The real cost of the outage is roughly double the deemed payment.` },
+            { md: md`The ministry pays KWD 144k for energy it never received — and still burns the fuel that energy would have displaced (lesson m00-l03). At the m00-l03 fuel values of 26–37 fils/kWh that replacement fuel costs roughly KWD 0.47–0.67 m, i.e. three to four-and-a-half times the deemed payment itself.` },
           ],
           result: md`About KWD 19.4 m, of which KWD 0.14 m is deemed energy. Grid availability on the ministry side is a budget item, not just an engineering KPI.`,
         },

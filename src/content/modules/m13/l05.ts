@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "BATNA is your best alternative if talks fail; it sets your reservation (walk-away) price; the ZOPA is the overlap between the parties' reservation prices.",
       competency: "contracts",
-      related: ["m13.interest-based"],
+      related: ["m13.interest-based", "m09.daab-arbitration"],
     },
     {
       id: "m13.interest-based",
@@ -35,7 +35,7 @@ const lesson: Lesson = {
       description:
         "Settlements must be justified by entitlement and quantum under the Contract (e.g. via the Engineer's determination), defensible to auditors, and documented — not merely split the difference.",
       competency: "contracts",
-      related: ["m13.batna-zopa", "m13.contract-notice"],
+      related: ["m13.batna-zopa", "m13.contract-notice", "m09.engineer-determination", "m09.prolongation-disruption", "m15.claims-variations"],
     },
     {
       id: "m13.gulf-culture",
@@ -58,6 +58,7 @@ const lesson: Lesson = {
       description:
         "Trust grows with credibility, reliability and intimacy (being safe to confide in) and falls with self-orientation; no surprises, protect superiors, be right and brief.",
       competency: "leadership",
+      related: ["m15.first-90-days"],
     },
   ],
   sections: [

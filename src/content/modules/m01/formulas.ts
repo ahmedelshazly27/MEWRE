@@ -488,7 +488,7 @@ const formulas: Formula[] = [
       { sym: md`\sum H_i S_i`, meaning: "Total kinetic energy of synchronised machines", unit: "MWs" },
       { sym: "f_0", meaning: "Nominal frequency", unit: "Hz" },
     ],
-    explanation: md`Valid before governors act (first ~0.5 s). Halve the online inertia and ROCOF doubles. Protection based on ROCOF (loss-of-mains) and IBR withstand (e.g. 2–3 Hz/s in modern codes) depend on it.`,
+    explanation: md`Valid before governors act (first ~0.5 s). Halve the online inertia and ROCOF doubles. Protection based on ROCOF (loss-of-mains) and IBR ROCOF withstand requirements (typically several Hz/s in modern codes — check the applicable code) depend on it.`,
     lesson: "m01-l06",
   },
   {

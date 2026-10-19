@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "Dividing scope into supply and construction packages (modules, trackers, inverters, transformers, BESS, civil, electrical) to balance interface risk, competition and control.",
       competency: "procurement",
-      related: ["m07.long-lead-items"],
+      related: ["m07.long-lead-items", "m09.contracting-strategy"],
     },
     {
       id: "m07.long-lead-items",
@@ -28,6 +28,7 @@ const lesson: Lesson = {
       description:
         "Equipment whose manufacturing and delivery time exceeds or approaches the construction window (HV transformers, GIS, BESS, inverters), and so must be ordered early to protect the critical path.",
       competency: "controls",
+      related: ["m08.cpm", "m06.substation-components"],
     },
     {
       id: "m07.construction-productivity",
@@ -35,7 +36,7 @@ const lesson: Lesson = {
       description:
         "Using quantity, productivity per crew/rig and working window to size resources and test schedule realism.",
       competency: "controls",
-      related: ["m07.construction-sequencing"],
+      related: ["m07.construction-sequencing", "m08.resource-loading", "m08.heat-stress"],
     },
     {
       id: "m07.construction-sequencing",
@@ -50,6 +51,7 @@ const lesson: Lesson = {
       description:
         "Employer/OE surveillance using inspection and test plans with hold and witness points, non-conformance reports and daily/weekly progress reporting.",
       competency: "risk",
+      related: ["m08.itp", "m08.hold-witness", "m08.ncr"],
     },
   ],
   sections: [
@@ -167,7 +169,7 @@ These are planning ranges from industry practice, not guarantees; ask the EPC fo
               hidden: true,
               check: { prompt: "Number of module crews (unrounded)", answer: 24.07, tolerance: { abs: 0.05 } },
             },
-            { md: md`So 25 crews, site rate ≈ 12,000 modules/day ≈ 7.2 MWp/day.` },
+            { md: md`So 25 crews, site rate ≈ $25 \times 500 = 12{,}500$ modules/day ≈ 7.5 MWp/day (average; peaks run higher).` },
             {
               md: md`Containers: $2{,}166{,}667/620$ = ?`,
               hidden: true,

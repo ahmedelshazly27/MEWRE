@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "Guarantee (typically 10% of the Contract Price) securing the Contractor's performance until the Performance Certificate; under FIDIC 2017 Sub-Clause 4.2 the Employer may claim only amounts it is entitled to.",
       competency: "contracts",
-      related: ["m09.on-demand-guarantee"],
+      related: ["m09.on-demand-guarantee", "m11.bid-guarantees"],
     },
     {
       id: "m09.on-demand-guarantee",
@@ -35,7 +35,7 @@ const lesson: Lesson = {
       description:
         "Guarantee, usually equal to the advance, that secures repayment of unrecovered advance; reduces as the advance is recovered through IPC deductions.",
       competency: "contracts",
-      related: ["m09.performance-security"],
+      related: ["m09.performance-security", "m10.payment-mechanics"],
     },
     {
       id: "m09.retention",
@@ -43,6 +43,7 @@ const lesson: Lesson = {
       description:
         "Cash withheld from IPCs (e.g. 10% up to 5% of the Contract Price) as security for defects; half released at Taking-Over, half after the DNP; may be replaced by a retention money guarantee.",
       competency: "contracts",
+      related: ["m07.retention-release", "m09.payment-ipc"],
     },
     {
       id: "m09.parent-company-guarantee",

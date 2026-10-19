@@ -49,7 +49,7 @@ const glossary: GlossaryTerm[] = [
   { id: "m01-net-load", en: "Net load / duck curve", ar: "صافي الحمل / منحنى البطة", definition: md`Load minus variable renewable output; its daily shape at high PV penetration resembles a duck.`, lesson: "m01-l05", category: "technical" },
   { id: "m01-capacity-credit", en: "Capacity credit", ar: "الإسهام في القدرة المضمونة", definition: md`Share of a resource's nameplate that reliably reduces the peak the rest of the system must meet.`, lesson: "m01-l05", category: "technical" },
   // l06
-  { id: "m01-transmission", en: "Transmission network", ar: "شبكة النقل", definition: md`Meshed high-voltage network (400/275/132 kV class) moving bulk power, designed to N-1.`, lesson: "m01-l06", category: "technical" },
+  { id: "m01-transmission", en: "Transmission network", ar: "شبكة النقل", definition: md`Meshed high-voltage network (400 and 132 kV class in Kuwait, plus any intermediate EHV level) moving bulk power, designed to N-1.`, lesson: "m01-l06", category: "technical" },
   { id: "m01-n-minus-1", en: "N-1 criterion", ar: "معيار (ن-1)", definition: md`Security standard: the system must remain within limits after losing any single element.`, lesson: "m01-l06", category: "technical" },
   { id: "m01-inertia", en: "Inertia (system)", ar: "القصور الذاتي للمنظومة", definition: md`Kinetic energy stored in synchronised rotating machines (ΣH·S, MWs), slowing frequency change after disturbances.`, lesson: "m01-l06", category: "technical" },
   { id: "m01-rocof", en: "Rate of change of frequency (ROCOF)", ar: "معدل تغيّر التردد", definition: md`df/dt after a disturbance (Hz/s); initial value = ΔP·f₀/(2ΣHS).`, lesson: "m01-l06", category: "technical" },
@@ -60,7 +60,7 @@ const glossary: GlossaryTerm[] = [
   { id: "m01-grid-forming", en: "Grid-forming inverter", ar: "عاكس مُشكِّل للشبكة", definition: md`Inverter controlled as a voltage source that sets its own voltage and frequency reference, can provide synthetic inertia and stabilise weak grids.`, lesson: "m01-l06", category: "technical" },
   { id: "m01-synchronous-condenser", en: "Synchronous condenser", ar: "المكثف المتزامن (المعوّض المتزامن)", definition: md`Synchronous machine without a prime mover, providing inertia, fault current and reactive power.`, lesson: "m01-l06", category: "technical" },
   { id: "m01-poc", en: "Point of connection (POC)", ar: "نقطة الربط بالشبكة", definition: md`Where the plant connects to the transmission network; reference point for grid-code obligations and usually metering.`, lesson: "m01-l06", category: "contractual" },
-  { id: "m01-gccia", en: "GCC Interconnection Authority (GCCIA)", ar: "هيئة الربط الكهربائي لدول مجلس التعاون لدول الخليج العربية", definition: md`Operator of the interconnector linking GCC grids; Kuwait imported 500 MW through it in summer 2024.`, lesson: "m01-l06", category: "institutional" },
+  { id: "m01-gccia", en: "GCC Interconnection Authority (GCCIA)", ar: "هيئة الربط الكهربائي لدول مجلس التعاون لدول الخليج العربية", definition: md`Operator of the interconnector linking GCC grids; Kuwait signed a 500 MW import deal through it for summer 2024 (mainly June).`, lesson: "m01-l06", category: "institutional" },
 ];
 
 export default glossary;

@@ -26,7 +26,7 @@ const lesson: Lesson = {
       name: "Optical efficiency chain",
       description: "Product of cosine/IAM, reflectivity, intercept, transmittance, absorptance and cleanliness factors.",
       competency: "solar",
-      related: ["m03.dni-only"],
+      related: ["m03.dni-only", "m02.soiling"],
     },
     {
       id: "m03.receiver-thermal-loss",
@@ -39,12 +39,14 @@ const lesson: Lesson = {
       name: "CSP uses DNI only",
       description: "Mirrors can only redirect the direct beam; diffuse light cannot be focused, so aerosols and dust directly cut output.",
       competency: "solar",
+      related: ["m02.irradiance-components", "m02.kuwait-solar-resource"],
     },
     {
       id: "m03.csp-technologies",
       name: "CSP technology families",
       description: "Parabolic trough, central receiver tower, linear Fresnel and parabolic dish — line vs point focus, tracking, temperature and maturity.",
       competency: "solar",
+      related: ["m00.shagaya-phase1"],
     },
     {
       id: "m03.solar-multiple",

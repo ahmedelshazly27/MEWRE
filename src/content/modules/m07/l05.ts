@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "FAT → delivery/SAT → mechanical completion → pre-commissioning (cold) → energisation → hot commissioning → grid/performance tests → reliability run → COD.",
       competency: "delivery",
-      related: ["m07.pr-test", "m07.cod-criteria"],
+      related: ["m07.pr-test", "m07.cod-criteria", "m02.commissioning-tests", "m05.fat-sat"],
     },
     {
       id: "m07.pr-test",
@@ -28,7 +28,7 @@ const lesson: Lesson = {
       description:
         "Contractual test comparing measured AC energy with the energy expected from measured plane-of-array irradiance and nameplate DC power, usually temperature-corrected, over a defined period.",
       competency: "solar",
-      related: ["m07.capacity-test"],
+      related: ["m07.capacity-test", "m02.performance-ratio", "m09.pr-guarantee"],
     },
     {
       id: "m07.capacity-test",
@@ -36,6 +36,7 @@ const lesson: Lesson = {
       description:
         "Short test that regresses measured power against irradiance, temperature and wind to estimate plant output at reporting conditions and compare it with the model.",
       competency: "solar",
+      related: ["m05.capacity-test"],
     },
     {
       id: "m07.grid-compliance-tests",
@@ -43,6 +44,7 @@ const lesson: Lesson = {
       description:
         "On-site demonstration of active power control, ramp rates, frequency response, reactive power/voltage control and power quality at the point of interconnection.",
       competency: "grid",
+      related: ["m06.compliance", "m06.energisation"],
     },
     {
       id: "m07.cod-criteria",
@@ -50,6 +52,7 @@ const lesson: Lesson = {
       description:
         "Contractual conditions for commercial operation/taking over: tests passed, certificates, grid operator approval, Category A punch items closed; Category B items completed in the defects period.",
       competency: "contracts",
+      related: ["m09.taking-over-defects", "m15.commissioning-tests"],
     },
   ],
   sections: [

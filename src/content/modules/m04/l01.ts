@@ -26,6 +26,7 @@ const lesson: Lesson = {
       name: "Air density in hot climates",
       description: "ρ = p/(R·T); at 45–50 °C air is ~9–11 % less dense than the 1.225 kg/m³ standard, cutting below-rated power proportionally.",
       competency: "wind-storage",
+      related: ["m04.high-temp-derating"],
     },
     {
       id: "m04.betz-limit",
@@ -45,7 +46,7 @@ const lesson: Lesson = {
       name: "Power curve and operating regions",
       description: "Cut-in, cubic region, rated, pitch-regulated constant power, cut-out; measured per IEC 61400-12-1 and normalised for density.",
       competency: "wind-storage",
-      related: ["m04.air-density"],
+      related: ["m04.air-density", "m09.performance-lds"],
     },
   ],
   sections: [
@@ -89,7 +90,7 @@ Density follows the ideal gas law:`,
 
 Site elevation lowers pressure too (≈ −1.2 % per 100 m). So below rated speed a turbine in Kuwait's summer produces **~9–11 % less** than its brochure power curve at 1.225 kg/m³. Above rated it can still reach rated power — it just needs a higher wind speed to get there: for a pitch-regulated machine the equivalent speed scales as $(\rho/\rho_0)^{1/3}$, so rated 12 m/s at standard density becomes ~12.4 m/s at 1.10 kg/m³.
 
-A partial offset: Kuwait's strongest winds (the summer **shamal**) blow in the hottest months, so the density penalty is applied to the most productive period. Yield assessments must use the **site-specific density by hour**, or at least by month, never the brochure curve.`,
+The catch: Kuwait's strongest winds (the summer **shamal**) blow in the hottest months, so the density penalty bites hardest in the most productive period — the stronger wind more than compensates, but the penalty is real. Yield assessments must use the **site-specific density by hour**, or at least by month, never the brochure curve.`,
         },
         { kind: "sources", refs: ["m04-wmo-mitribah"] },
         {
@@ -135,7 +136,7 @@ A rotor's $C_p$ depends on the **tip speed ratio** and blade pitch angle:`,
           kind: "md",
           md: md`For a three-bladed rotor $C_p(\lambda)$ peaks at λ ≈ 7–9. Too slow (low λ): air slips between blades unused. Too fast (high λ): the rotor behaves like a solid disc and blocks flow. Modern **variable-speed** turbines (doubly-fed induction or full-converter generators) adjust rotor speed with wind speed to stay at optimum λ in **region 2**.
 
-Tip speed is capped at ~80–90 m/s by noise limits and — critical in Kuwait — **leading-edge erosion**: sand impact damage scales roughly with the 6th–10th power of impact speed, so blade tips suffer far more than the root.
+Tip speed is capped at ~80–90 m/s by noise limits and — critical in Kuwait — **leading-edge erosion**: erosion rate rises steeply with impact speed (reported power-law exponents are roughly 2–3 for solid sand particles and 5–10 for rain droplets), so blade tips suffer far more than the root.
 
 ## The power curve
 

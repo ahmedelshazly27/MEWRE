@@ -18,7 +18,7 @@ const lesson: Lesson = {
       name: "Capacity factor and specific yield",
       description: "Energy delivered divided by the energy at continuous rated output; must state AC or DC basis. Specific yield (kWh/kWp) normalises by DC size.",
       competency: "engineering",
-      related: ["m01.energy-vs-power", "m01.load-factor-diversity"],
+      related: ["m01.energy-vs-power", "m01.load-factor-diversity", "m02.performance-ratio", "m00.target-to-capacity"],
     },
     {
       id: "m01.load-factor-diversity",
@@ -32,14 +32,14 @@ const lesson: Lesson = {
       name: "Kuwait's load curve and peak",
       description: "A summer-peaking, air-conditioning-driven system (peak ≈ 17.5–17.7 GW in 2024–2026) with much lower winter demand; peak at hot afternoons, with demand persisting into the evening.",
       competency: "context",
-      related: ["m01.net-load-duck"],
+      related: ["m01.net-load-duck", "m00.peak-demand"],
     },
     {
       id: "m01.net-load-duck",
       name: "Net load, duck curve and capacity credit",
       description: "Load minus variable renewables; as PV grows the net peak shifts to the evening and PV's capacity credit falls, increasing the value of storage.",
       competency: "grid",
-      related: ["m01.capacity-factor"],
+      related: ["m01.capacity-factor", "m05.energy-shifting", "m06.curtailment"],
     },
   ],
   sections: [
@@ -97,7 +97,7 @@ A **load curve** plots demand against time (daily, weekly, annual). A **load-dur
 - **Summer peak**: about **17.6 GW** — MEWRE figures are 17,640 MW (2024), 17,610 MW (2025) and 17,540 MW (2026); MEES reported a July 2025 record of 17.71 GW (different measurement basis). The all-time high in August 2023 was 16.94 GW.
 - **Growth**: new connections added about 1,059 MW of load from summer 2024 to 2025 and 1,019 MW from 2025 to 2026 — conservation measures (shorter government hours, suspending factory operations at peak) held the measured peak flat.
 - **Supply margin**: roughly 21 GW installed but only about 17 GW reliably available at peak; in June 2025 available capacity was 16.275 GW against a 16.98 GW peak, and shortages exceeded 1.5 GW in May 2025, with programmed cuts and requests to reduce use between **11:00 and 17:00**.
-- **Imports**: 500 MW from GCCIA (Oman 350 MW, Qatar 200 MW) was contracted for summer 2024.
+- **Imports**: a 500 MW GCCIA import deal (sourced from Oman 350 MW and Qatar 200 MW as reported — the split sums to more than the headline, so it is probably a maximum offer) was contracted mainly for June 2024.
 
 The daily summer profile is driven by air-conditioning: demand climbs through the morning, peaks in the hottest hours of the afternoon, and stays high into the evening as people return home and buildings release stored heat. **This coincidence with PV output is Kuwait's biggest solar advantage** — every MW of PV output at 13:00–16:00 offsets thermal generation exactly when reserve margins are thinnest.`,
         },
