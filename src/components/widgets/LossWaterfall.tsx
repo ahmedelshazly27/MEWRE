@@ -74,11 +74,12 @@ export default function LossWaterfall(_: WidgetProps) {
                   contentStyle={tooltipStyle}
                   labelStyle={tooltipLabelStyle}
                   cursor={{ fill: "var(--surface-2)" }}
-                  formatter={(v: unknown, n: unknown, item: { payload?: { kind: string } }) =>
-                    n === "base" ? [null, null] : [`${fmt(Number(v), 3)} kWh/kWp`, item.payload?.kind === "total" ? "Value" : item.payload?.kind === "loss" ? "Loss" : "Gain"]
-                  }
+                  formatter={(v: unknown, _n: unknown, item: { payload?: { kind: string } }) => [
+                    `${fmt(Number(v), 3)} kWh/kWp`,
+                    item.payload?.kind === "total" ? "Value" : item.payload?.kind === "loss" ? "Loss" : "Gain",
+                  ]}
                 />
-                <Bar dataKey="base" stackId="w" fill="transparent" isAnimationActive={false} />
+                <Bar dataKey="base" stackId="w" fill="transparent" tooltipType="none" isAnimationActive={false} />
                 <Bar dataKey="value" stackId="w" isAnimationActive={false} radius={[2, 2, 0, 0]}>
                   {data.map((d) => (
                     <Cell key={d.name} fill={d.kind === "total" ? C.c3 : d.kind === "loss" ? C.danger : C.ok} fillOpacity={0.8} />

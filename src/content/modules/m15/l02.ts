@@ -422,6 +422,7 @@ Most best answers are the **proportionate, documented, contractual** option, oft
         "It can be right when the issue is minor/non-critical, or when approval can be given with targeted comments that let unaffected work proceed",
       ],
       modelAnswer: md`Approving a deficient design or test to save weeks usually moves the problem into construction or operation, where fixing it costs far more time and money; and the EPC's liability ends with the defects period while MEWRE buys power from the plant for 30 years. A shortcut is only rational if the time saved is worth more than the probability times the consequence, which PMs under pressure underestimate. It can be right for minor issues, or as "approved with comments", where targeted conditions protect integrity and unaffected work continues.`,
+      explanation: md`The core idea is lifecycle asymmetry: problems get more expensive to fix at every stage, and the EPC's exposure ends long before MEWRE's does. "Approved with comments" is the professional middle ground — it keeps unaffected work moving while making the specific risks conditions of construction.`,
       concepts: ["m15.tradeoff-framework", "m15.design-integrity"],
       difficulty: 2,
     },

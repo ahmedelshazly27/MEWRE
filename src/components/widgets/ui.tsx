@@ -230,7 +230,7 @@ export function Stat({ label, value, unit, tone = "default", note }: { label: st
       <div className="truncate text-xs text-muted" title={label}>
         {label}
       </div>
-      <div className={`font-mono text-base font-semibold tabular-nums ${toneClass[tone]}`}>
+      <div className={`font-mono text-base font-semibold tabular-nums [overflow-wrap:anywhere] ${toneClass[tone]}`}>
         {value}
         {unit && <span className="ml-1 text-xs font-normal text-muted">{unit}</span>}
       </div>

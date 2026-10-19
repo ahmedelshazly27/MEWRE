@@ -195,7 +195,8 @@ export default function SubstationSld(_: WidgetProps) {
     <Card title="400/132/33 kV collector substation — single-line diagram" subtitle="Click equipment for role, typical rating and PM checks">
       <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
         <div className="min-w-0">
-          <svg viewBox="0 0 760 660" className="h-auto w-full" role="group" aria-label="Substation single-line diagram">
+          <div className="overflow-x-auto">
+          <svg viewBox="0 0 760 660" className="h-auto w-full min-w-[540px]" role="group" aria-label="Substation single-line diagram">
             <LineBay x={150} />
             <LineBay x={390} />
             <Label x={150} y={10}>400 kV OHL 1</Label>
@@ -303,6 +304,7 @@ export default function SubstationSld(_: WidgetProps) {
             {hot("aux", 546, 580, 52, 66)}
             {hot("relays", 566, 36, 178, 128)}
           </svg>
+          </div>
           <Hint>
             What to notice: every bay repeats the same pattern — disconnector, CT, breaker, disconnector — so that any breaker can be isolated
             and earthed for maintenance. CT positions define the overlapping protection zones.

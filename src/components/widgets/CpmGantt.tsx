@@ -36,7 +36,8 @@ export default function CpmGantt(_: WidgetProps) {
   return (
     <Card title="Critical path method — 1 GW PV project network" subtitle="Durations in weeks; edit them to see the critical path move">
       <div className="min-w-0">
-        <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full" role="img" aria-label="Gantt chart">
+        <div className="overflow-x-auto">
+        <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full min-w-[560px]" role="img" aria-label="Gantt chart">
           {ticks.map((t) => (
             <g key={t}>
               <line x1={sx(t)} y1={4} x2={sx(t)} y2={H - 18} stroke="var(--chart-grid)" />
@@ -62,8 +63,9 @@ export default function CpmGantt(_: WidgetProps) {
               </g>
             );
           })}
-          <text x={labelW} y={H - 5} fontSize={10} fill="var(--muted)" textAnchor="end">week</text>
+          <text x={labelW - 12} y={H - 5} fontSize={10} fill="var(--muted)" textAnchor="end">week</text>
         </svg>
+        </div>
         <div className="mt-1 flex flex-wrap gap-4 text-xs text-muted">
           <span className="inline-flex items-center gap-1"><span className="inline-block h-2.5 w-4 rounded-sm bg-danger" /> critical</span>
           <span className="inline-flex items-center gap-1"><span className="inline-block h-2.5 w-4 rounded-sm" style={{ background: "var(--chart-1)" }} /> non-critical</span>

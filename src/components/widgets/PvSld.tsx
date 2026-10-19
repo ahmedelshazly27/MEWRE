@@ -151,7 +151,8 @@ export default function PvSld(_: WidgetProps) {
     <Card title="Utility PV plant — single-line diagram" subtitle="Click a component for its role, typical rating in a 1 GW Kuwait plant and PM checks">
       <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
         <div className="min-w-0">
-          <svg viewBox="0 0 800 270" className="h-auto w-full" role="group" aria-label="PV plant single-line diagram">
+          <div className="overflow-x-auto">
+          <svg viewBox="0 0 800 270" className="h-auto w-full min-w-[640px]" role="group" aria-label="PV plant single-line diagram">
             {/* PPC */}
             <rect x={300} y={22} width={160} height={34} rx={6} fill="var(--surface-2)" stroke="var(--border)" />
             <Label x={380} y={43} muted={false}>Power plant controller / SCADA</Label>
@@ -250,6 +251,7 @@ export default function PvSld(_: WidgetProps) {
             {hot("grid", 722, 150, 72, 36)}
             {hot("ppc", 296, 18, 168, 42)}
           </svg>
+          </div>
           <Hint>
             What to notice: power flows left to right through three voltage levels — 1500 V DC, ~800 V AC and 33 kV — before the grid
             transformer lifts it to transmission voltage. Each step is a contract interface and a commissioning hold point.

@@ -59,11 +59,12 @@ export default function CapacityFactor({ props }: WidgetProps) {
                   contentStyle={tooltipStyle}
                   labelStyle={tooltipLabelStyle}
                   cursor={{ fill: "var(--surface-2)" }}
-                  formatter={(_v: unknown, n: unknown, item: { payload?: { lo: number; hi: number } }) =>
-                    n === "span" && item.payload ? [`${item.payload.lo}–${item.payload.hi} %`, "Typical range"] : [null, null]
-                  }
+                  formatter={(_v: unknown, _n: unknown, item: { payload?: { lo: number; hi: number } }) => [
+                    item.payload ? `${item.payload.lo}–${item.payload.hi} %` : "",
+                    "Typical range",
+                  ]}
                 />
-                <Bar dataKey="lo" stackId="a" fill="transparent" isAnimationActive={false} />
+                <Bar dataKey="lo" stackId="a" fill="transparent" tooltipType="none" isAnimationActive={false} />
                 <Bar dataKey="span" stackId="a" radius={4} isAnimationActive={false}>
                   {RANGES.map((r, i) => (
                     <Cell key={r.tech} fill={[C.c2, C.c2, C.c3, C.c4, C.c5, C.c1][i]} fillOpacity={0.75} />

@@ -1,0 +1,36 @@
+import type { GlossaryTerm } from "../../schema";
+
+const glossary: GlossaryTerm[] = [
+  { id: "m14-llm", en: "Large language model (LLM)", ar: "نموذج لغوي كبير", definition: "A neural network trained on large text corpora to predict the next token; the engine behind AI assistants such as Claude.", lesson: "m14-l01", category: "technical" },
+  { id: "m14-token", en: "Token", ar: "وحدة نصية (رمز)", definition: "The subword unit an LLM reads and writes; about 1.3 tokens per English word, usually more for Arabic.", lesson: "m14-l01", category: "technical" },
+  { id: "m14-context-window", en: "Context window", ar: "نافذة السياق", definition: "Maximum number of tokens (instructions, documents, conversation and output) the model can attend to at once.", lesson: "m14-l01", category: "technical" },
+  { id: "m14-hallucination", en: "Hallucination", ar: "الهلوسة (توليد معلومات غير صحيحة)", definition: "Fluent but false or unsupported output, such as invented clause numbers, figures or citations.", lesson: "m14-l01", category: "technical" },
+  { id: "m14-temperature", en: "Temperature (sampling)", ar: "درجة العشوائية في التوليد", definition: "Parameter that sharpens (low) or flattens (high) the next-token probability distribution; affects variability, not truthfulness.", lesson: "m14-l01", category: "technical" },
+  { id: "m14-knowledge-cutoff", en: "Knowledge cutoff", ar: "تاريخ انتهاء بيانات التدريب", definition: "The date after which a model has no training data; recent laws and events must be supplied as source text.", lesson: "m14-l01", category: "technical" },
+  { id: "m14-prompt", en: "Prompt", ar: "التعليمات الموجهة للنموذج", definition: "The instructions and material given to an AI model; reliable prompts state role, context, task, constraints and output format.", lesson: "m14-l02", category: "technical" },
+  { id: "m14-few-shot", en: "Few-shot prompting", ar: "التوجيه بالأمثلة", definition: "Including one or more worked examples in a prompt to show the expected format and level of detail.", lesson: "m14-l02", category: "technical" },
+  { id: "m14-deviation-list", en: "Deviation list", ar: "قائمة الانحرافات", definition: "Requirement-by-requirement record of where a bid or design departs from the Employer's Requirements.", lesson: "m14-l02", category: "contractual" },
+  { id: "m14-employers-requirements", en: "Employer's Requirements (ERs)", ar: "متطلبات صاحب العمل", definition: "The contract document specifying the purpose, scope, design and technical criteria of the Works in design-build and EPC contracts.", lesson: "m14-l02", category: "contractual" },
+  { id: "m14-particular-conditions", en: "Particular Conditions", ar: "الشروط الخاصة", definition: "Project-specific amendments to the FIDIC General Conditions; where most risk-shifting changes appear.", lesson: "m14-l02", category: "contractual" },
+  { id: "m14-prompt-injection", en: "Prompt injection", ar: "حقن التعليمات", definition: "Hidden instructions inside a document or input that attempt to manipulate an AI model's behaviour.", lesson: "m14-l02", category: "technical" },
+  { id: "m14-facts-sheet", en: "Facts sheet", ar: "ورقة الوقائع", definition: "A verified list of facts (references, dates, numbers, positions) that an AI draft may use and must not go beyond.", lesson: "m14-l03", category: "pm" },
+  { id: "m14-defined-terms", en: "Defined terms", ar: "المصطلحات المعرّفة", definition: "Capitalised contract terms with specific meanings (e.g. Time for Completion) that must be used consistently in both languages.", lesson: "m14-l03", category: "contractual" },
+  { id: "m14-earned-value", en: "Earned value (EV)", ar: "القيمة المكتسبة", definition: "Budgeted value of the work actually performed to date.", lesson: "m14-l04", category: "pm" },
+  { id: "m14-cpi", en: "Cost performance index (CPI)", ar: "مؤشر أداء التكلفة", definition: "EV ÷ AC; below 1 means over cost.", lesson: "m14-l04", category: "pm" },
+  { id: "m14-spi", en: "Schedule performance index (SPI)", ar: "مؤشر أداء الجدول الزمني", definition: "EV ÷ PV; below 1 means behind plan in value terms.", lesson: "m14-l04", category: "pm" },
+  { id: "m14-eac", en: "Estimate at completion (EAC)", ar: "التكلفة التقديرية عند الإنجاز", definition: "Forecast final cost; by CPI method BAC ÷ CPI, or composite AC + (BAC − EV) ÷ (CPI × SPI).", lesson: "m14-l04", category: "pm" },
+  { id: "m14-xer", en: "XER file", ar: "ملف XER (تصدير بريمافيرا)", definition: "Primavera P6's native tab-delimited export containing activities, relationships, WBS, calendars and resources.", lesson: "m14-l04", category: "technical" },
+  { id: "m14-performance-ratio", en: "Performance ratio (PR)", ar: "نسبة الأداء", definition: "PV energy normalised by irradiation and DC capacity; used to compare blocks and periods.", lesson: "m14-l04", category: "technical" },
+  { id: "m14-scada", en: "SCADA", ar: "نظام التحكم الإشرافي وتجميع البيانات", definition: "Supervisory control and data acquisition system that monitors and controls plant equipment and records operating data.", lesson: "m14-l04", category: "technical" },
+  { id: "m14-agentic-coding", en: "Agentic coding assistant", ar: "مساعد برمجة ذاتي التنفيذ", definition: "An AI tool (e.g. Claude Code) that reads files, edits code and runs commands with user permission to reach a described goal.", lesson: "m14-l05", category: "technical" },
+  { id: "m14-test-vector", en: "Test vector", ar: "حالة اختبار ذات نتيجة معروفة", definition: "Input data with an independently computed expected output used to accept or reject a tool.", lesson: "m14-l05", category: "technical" },
+  { id: "m14-version-control", en: "Version control", ar: "إدارة الإصدارات", definition: "System (e.g. git) that records every change to files so work is traceable and reversible.", lesson: "m14-l05", category: "technical" },
+  { id: "m14-data-classification", en: "Data classification", ar: "تصنيف البيانات", definition: "Assigning information to sensitivity tiers that determine how it may be stored, processed and shared.", lesson: "m14-l06", category: "institutional" },
+  { id: "m14-anonymisation", en: "Anonymisation", ar: "إخفاء الهوية", definition: "Removing or transforming identifying details so data cannot be linked to the real project or person.", lesson: "m14-l06", category: "technical" },
+  { id: "m14-pseudonymisation", en: "Pseudonymisation", ar: "الترميز بأسماء مستعارة", definition: "Replacing identifiers with codes or roles while keeping a separate key; reduces but does not remove risk.", lesson: "m14-l06", category: "technical" },
+  { id: "m14-ai-governance", en: "AI governance", ar: "حوكمة الذكاء الاصطناعي", definition: "Policies, roles and controls for responsible AI use: approved tools, data rules, accountability, records and review.", lesson: "m14-l06", category: "institutional" },
+  { id: "m14-two-source-rule", en: "Two-source rule", ar: "قاعدة المصدرين", definition: "A fact from outside your own documents is confirmed by two independent sources or one primary source before use.", lesson: "m14-l06", category: "pm" },
+  { id: "m14-prompt-library", en: "Prompt library", ar: "مكتبة التعليمات", definition: "Versioned, shared set of tested prompt templates with purpose, inputs, output format and verification step.", lesson: "m14-l06", category: "pm" },
+];
+
+export default glossary;

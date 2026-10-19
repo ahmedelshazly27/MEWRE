@@ -31,7 +31,7 @@ export function Diagram({ id, mode }: { id: DiagramId; mode: "labeled" | "number
   return (
     <figure className="not-prose my-4 w-full min-w-0">
       <svg
-        viewBox={`0 0 ${def.w} ${def.h}`}
+        viewBox={`0 ${def.y0 ?? 0} ${def.w} ${def.h}`}
         className="mx-auto block h-auto w-full"
         style={{ maxHeight: 420 }}
         role="img"

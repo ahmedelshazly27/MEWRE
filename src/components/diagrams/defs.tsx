@@ -16,6 +16,8 @@ export interface MarkerPos {
 
 export interface DiagramDef {
   title: string;
+  /** Optional top of the viewBox (to crop empty space). */
+  y0?: number;
   w: number;
   h: number;
   draw: () => ReactNode;
@@ -52,8 +54,9 @@ function PvModule({ x, y, w = 26, h = 18 }: { x: number; y: number; w?: number; 
 // ------------------------------------------------------------------ pv-plant
 const pvPlant: DiagramDef = {
   title: "Utility PV plant",
+  y0: 80,
   w: 680,
-  h: 320,
+  h: 230,
   labels: {
     module: "PV module",
     string: "String",
@@ -184,7 +187,7 @@ const substation: DiagramDef = {
 // ------------------------------------------------------------------ iv-curve
 const IVX = (v: number) => 60 + (v / 55) * 440;
 const IVY = (i: number) => 330 - (i / 16) * 280;
-const IVP = (p: number) => 330 - (p / 700) * 280;
+const IVP = (p: number) => 330 - (p / 900) * 280;
 const ivPts = ivCurve(1000, 25, 60);
 const ivM = mpp(1000, 25);
 const ivCurveDef: DiagramDef = {
@@ -258,12 +261,13 @@ const trough: DiagramDef = {
           <path d={`M${cx} 250 V275 M${cx - 12} 275 H${cx + 12}`} {...line} />
         </g>
       ))}
-      <path d="M90 208 V150 H330" fill="none" stroke="var(--danger)" strokeWidth={2.5} />
+      <path d="M90 208 V150 H357 V160" fill="none" stroke="var(--danger)" strokeWidth={2.5} />
       <path d="M200 208 V150" fill="none" stroke="var(--danger)" strokeWidth={2.5} />
       <path d="M330 310 H260 V300 H30 V214 H84 M206 214 H230 V300" fill="none" stroke="var(--chart-3)" strokeWidth={2.5} />
       <rect x={330} y={160} width={55} height={70} rx={10} fill="var(--danger-soft)" stroke={T} strokeWidth={1.4} />
       <rect x={330} y={270} width={55} height={70} rx={10} fill="var(--info-soft)" stroke={T} strokeWidth={1.4} />
-      <path d="M385 180 H430 M430 250 H410 V300 H385" fill="none" stroke="var(--danger)" strokeWidth={2} />
+      <path d="M385 180 H430" fill="none" stroke="var(--danger)" strokeWidth={2} />
+      <path d="M430 250 H410 V300 H385" fill="none" stroke="var(--chart-3)" strokeWidth={2} />
       <rect x={430} y={180} width={40} height={80} rx={4} fill="var(--surface-2)" stroke={T} strokeWidth={1.4} />
       <path d="M438 195 l8 8 l-8 8 l8 8 l-8 8 l8 8 l-8 8" {...line} strokeWidth={1.2} />
       <path d="M470 190 H520" fill="none" stroke="var(--muted)" strokeWidth={2} />
@@ -298,8 +302,8 @@ const windTurbine: DiagramDef = {
     blade: { x: 234, y: 70, lx: 180, ly: 70, anchor: "end" },
     hub: { x: 222, y: 160, lx: 170, ly: 190, anchor: "end" },
     nacelle: { x: 405, y: 176, lx: 440, ly: 186, anchor: "start" },
-    gearbox: { x: 317, y: 148, lx: 300, ly: 98 },
-    generator: { x: 365, y: 148, lx: 370, ly: 118 },
+    gearbox: { x: 317, y: 148, lx: 290, ly: 92 },
+    generator: { x: 365, y: 148, lx: 352, ly: 120, anchor: "end" },
     tower: { x: 306, y: 320, lx: 360, ly: 320, anchor: "start" },
     "yaw-system": { x: 314, y: 188, lx: 372, ly: 230, anchor: "start" },
     anemometer: { x: 400, y: 110, lx: 440, ly: 92, anchor: "start" },
@@ -394,35 +398,38 @@ const bess: DiagramDef = {
       <rect x={470} y={60} width={90} height={44} rx={4} fill="var(--surface-2)" stroke={T} strokeWidth={1.4} />
       <rect x={480} y={68} width={70} height={26} rx={2} fill="var(--surface)" stroke={T} strokeWidth={1} />
       <path d="M484 88 l12 -10 l10 6 l14 -12 l12 8" fill="none" stroke="var(--accent)" strokeWidth={1.4} />
-      <path d="M515 104 V240 M470 82 H255 V210" fill="none" stroke="var(--muted)" strokeDasharray="4 3" />
+      <path d="M515 104 V240 M470 96 H440 V196 H255 V210" fill="none" stroke="var(--muted)" strokeDasharray="4 3" />
     </g>
   ),
 };
 
 // ------------------------------------------------------------------ power-triangle
+const PT = { x0: 50, x1: 370, y0: 300, y1: 100 };
+const ptPhi = Math.atan2(PT.y0 - PT.y1, PT.x1 - PT.x0);
 const powerTriangle: DiagramDef = {
   title: "Power triangle",
-  w: 520,
-  h: 350,
+  y0: 70,
+  w: 540,
+  h: 280,
   labels: { p: "Real power P (kW)", q: "Reactive power Q (kvar)", s: "Apparent power S (kVA)", phi: "Power-factor angle φ" },
   markers: {
-    p: { x: 240, y: 300, lx: 240, ly: 334 },
-    q: { x: 420, y: 195, lx: 440, ly: 199, anchor: "start" },
-    s: { x: 240, y: 195, lx: 215, ly: 165, anchor: "end" },
-    phi: { x: 112, y: 290, lx: 160, ly: 280, anchor: "start" },
+    p: { x: 210, y: 300, lx: 210, ly: 334 },
+    q: { x: 370, y: 200, lx: 390, ly: 204, anchor: "start" },
+    s: { x: 210, y: 200, lx: 190, ly: 170, anchor: "end" },
+    phi: { x: 100, y: 291, lx: 150, ly: 282, anchor: "start" },
   },
   draw: () => (
     <g>
       <defs>
-        <marker id="dg-pt-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <marker id="dg-pt-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto">
           <path d="M0,0 L10,5 L0,10 z" fill="var(--text)" />
         </marker>
       </defs>
-      <line x1={60} y1={300} x2={420} y2={300} stroke="var(--chart-3)" strokeWidth={3} markerEnd="url(#dg-pt-arrow)" />
-      <line x1={420} y1={300} x2={420} y2={90} stroke="var(--chart-4)" strokeWidth={3} markerEnd="url(#dg-pt-arrow)" />
-      <line x1={60} y1={300} x2={420} y2={90} stroke="var(--chart-2)" strokeWidth={3} markerEnd="url(#dg-pt-arrow)" />
-      <path d="M405 300 V285 H420" {...line} strokeWidth={1.2} />
-      <path d={`M120 300 A60 60 0 0 0 ${60 + 60 * Math.cos(Math.atan2(210, 360))} ${300 - 60 * Math.sin(Math.atan2(210, 360))}`} fill="none" stroke="var(--muted)" strokeWidth={1.5} />
+      <line x1={PT.x0} y1={PT.y0} x2={PT.x1} y2={PT.y0} stroke="var(--chart-3)" strokeWidth={3} markerEnd="url(#dg-pt-arrow)" />
+      <line x1={PT.x1} y1={PT.y0} x2={PT.x1} y2={PT.y1 + 4} stroke="var(--chart-4)" strokeWidth={3} />
+      <line x1={PT.x0} y1={PT.y0} x2={PT.x1} y2={PT.y1} stroke="var(--chart-2)" strokeWidth={3} markerEnd="url(#dg-pt-arrow)" />
+      <path d={`M${PT.x1 - 14} ${PT.y0} V${PT.y0 - 14} H${PT.x1}`} {...line} strokeWidth={1.2} />
+      <path d={`M${PT.x0 + 60} ${PT.y0} A60 60 0 0 0 ${PT.x0 + 60 * Math.cos(ptPhi)} ${PT.y0 - 60 * Math.sin(ptPhi)}`} fill="none" stroke="var(--muted)" strokeWidth={1.5} />
     </g>
   ),
 };
@@ -447,7 +454,7 @@ const fidic: DiagramDef = {
       <path d="M190 63 H390" {...line} strokeWidth={1.6} />
       <EdgeLabel x={290} y={56}>appoints (consultancy agreement)</EdgeLabel>
       <path d="M400 86 L180 200" {...line} strokeDasharray="6 4" />
-      <EdgeLabel x={300} y={132}>instructs, certifies, determines</EdgeLabel>
+      <EdgeLabel x={440} y={122}>instructs, certifies, determines</EdgeLabel>
       <path d="M125 246 V310" {...line} />
       <EdgeLabel x={170} y={282}>subcontract</EdgeLabel>
       <path d="M190 223 H390 M180 86 L400 205" {...line} strokeDasharray="2 4" />
@@ -535,7 +542,7 @@ const evmDef: DiagramDef = {
   },
   markers: {
     "pv-curve": { x: EX(0.75), y: EY(sCurve(0.75)), lx: EX(0.75) + 30, ly: EY(sCurve(0.75)) + 30, anchor: "start" },
-    "ev-curve": { x: EX(0.38), y: EY(0.8 * sCurve(0.38)), lx: EX(0.38) + 10, ly: EY(0.8 * sCurve(0.38)) + 48, anchor: "start" },
+    "ev-curve": { x: EX(0.45), y: EY(0.8 * sCurve(0.45)), lx: EX(evStatus) + 60, ly: 296, anchor: "start" },
     "ac-curve": { x: EX(0.36), y: EY(1.1 * sCurve(0.36)), lx: EX(0.36) - 40, ly: EY(1.1 * sCurve(0.36)) - 34, anchor: "end" },
     "cost-variance": { x: EX(evStatus) + 18, y: EY(0.475), lx: EX(evStatus) + 50, ly: EY(0.475) - 50, anchor: "start" },
     "schedule-variance": { x: EX(evStatus) - 14, y: EY(0.45), lx: EX(evStatus) + 60, ly: EY(0.45) + 34, anchor: "start" },
