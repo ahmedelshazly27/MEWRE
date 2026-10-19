@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Markdown } from "@/components/Markdown";
+import { authFetch } from "@/lib/authFetch";
 import { btn } from "@/components/ui";
 
 type Msg = { role: "user" | "assistant"; content: string };
@@ -48,7 +49,7 @@ export function TutorChat({ lessonId, lessonTitle, compact = false }: { lessonId
     setInput("");
     setBusy(true);
     try {
-      const res = await fetch("/api/tutor", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: next, lessonId }) });
+      const res = await authFetch("/api/tutor", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: next, lessonId }) });
       if (!res.ok || !res.body) {
         const t = await res.text();
         setMessages([...next, { role: "assistant", content: `_${t || "Tutor unavailable."}_` }]);

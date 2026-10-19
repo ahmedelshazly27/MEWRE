@@ -16,7 +16,11 @@ Renewable Energy Park, Al Dibdibah / Shagaya Phase III and the utility-scale PV 
 - **AI tutor** (Claude API) inside every lesson; AI grading of written answers and Feynman checks
 - Bilingual **glossary EN/AR**, searchable **formula sheet**, **reference library**, notes,
   printable **cheat sheets**, downloadable **Excel models**
+- **Offline-first PWA**: install it on your phone, study with no connection, progress syncs across
+  devices through Supabase when you are back online
 - Dark mode, mobile-friendly
+
+**Live app:** https://mewre-pm-academy.vercel.app (auto-deploys on every push to this branch)
 
 See [CURRICULUM.md](CURRICULUM.md) for the plan and design, [PROGRESS.md](PROGRESS.md) for build
 status and [docs/RESEARCH.md](docs/RESEARCH.md) for the sourced Kuwait research brief.
@@ -29,10 +33,16 @@ cp .env.example .env.local     # optional: add ANTHROPIC_API_KEY for the AI tuto
 npm run dev                    # http://localhost:3000
 ```
 
-Open on your phone over the same Wi-Fi with `npm run dev -- -H 0.0.0.0` and browse to
-`http://<your-computer-ip>:3000`.
+## Use it on your phone, offline
 
-Your progress lives in `data/mewre.db` (SQLite, git-ignored). Settings → Export gives a JSON backup.
+1. Open https://mewre-pm-academy.vercel.app on the phone.
+2. iPhone: Safari → Share → **Add to Home Screen**. Android: Chrome menu → **Install app**.
+3. Open it once while online; it downloads every lesson, quiz, widget and spreadsheet in the
+   background (Settings → Offline shows the status, or tap **Download for offline**).
+4. Optional: Settings → Account → create an account / sign in on each device to sync progress.
+
+Progress is saved on the device first (IndexedDB) and synced to Supabase whenever there is a
+connection, so studying offline never loses anything. The AI tutor needs a connection.
 
 ## Scripts
 
@@ -40,7 +50,7 @@ Your progress lives in `data/mewre.db` (SQLite, git-ignored). Settings → Expor
 |---|---|
 | `npm run dev` | Development server |
 | `npm run build && npm start` | Production build and server |
-| `npm test` | Vitest: scoring, mastery, FSRS, readiness, practice selection, repository, calculators, content validity |
+| `npm test` | Vitest: scoring, mastery, FSRS, readiness, practice selection, event-log derivation, sync/merge, calculators, content validity |
 | `npm run typecheck` | TypeScript |
 | `npm run validate:content [mXX]` | Validates curriculum content: ids, answer keys, references, KaTeX |
 | `npm run build:spreadsheets` | Regenerates the Excel models in `public/downloads/` |
@@ -52,10 +62,12 @@ src/content/            curriculum (typed TS + markdown/KaTeX)
   schema.ts             content contract   widgets.ts  widget/diagram catalogue
   validate.ts           validator          modules/mXX/ one folder per module
 src/lib/                pure logic: scoring, mastery, srs (FSRS), readiness, practice, sim, calc/*
-src/server/             SQLite (db.ts), repository (repo.ts), Claude API (ai.ts)
+src/lib/store/          offline-first learner store: event log (derive.ts), IndexedDB, Supabase sync
+src/server/             Claude API (ai.ts) and auth check for the AI endpoints
+public/sw.js            service worker (offline cache)
 src/components/         UI: lesson blocks, quiz engine, widgets, diagrams, tutor
 src/app/                pages + API routes
-supabase/schema.sql     Postgres mirror of the SQLite schema for a later move to Supabase
+supabase/schema.sql     sync tables (append-only events + docs, row-level security)
 docs/                   research brief, authoring guide
 ```
 
@@ -65,8 +77,16 @@ Read [docs/AUTHORING.md](docs/AUTHORING.md). In short: add a lesson file in
 `src/content/modules/mXX/`, import it in the module's `index.ts`, then run
 `npm run validate:content mXX`.
 
-## Moving to Supabase later
+## How sync works
 
-`src/server/repo.ts` is the only module that talks to the database. Create the tables from
-`supabase/schema.sql`, then swap the better-sqlite3 calls in `repo.ts` for Supabase client calls
-(add a `user_id` column and RLS policies if you want multiple users).
+Every learning action (answer, review, lesson completion, time, scenario run) is an immutable event
+with a random id, stored in IndexedDB. Progress, mastery, the error log and FSRS schedules are
+*derived* by replaying events in time order, so merging two devices is just taking the union of
+their events — no conflicts. Notes and settings are last-write-wins documents. The Supabase tables
+(`mewre_events`, `mewre_docs`) live in the existing *Blog* project with row-level security so each
+account only sees its own rows.
+
+## AI tutor in production
+
+Set `ANTHROPIC_API_KEY` (and ideally `AI_ALLOWED_EMAILS=<your login email>`) in Vercel → Project →
+Settings → Environment Variables, then redeploy. The AI endpoints only answer signed-in users.

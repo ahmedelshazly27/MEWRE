@@ -61,7 +61,8 @@ M13, M14, M12, M3, M4, M15. Lessons marked by id.
 |---|---|---|
 | Framework | Next.js 16 (App Router) + TypeScript | Server routes for DB/AI, static lesson pages |
 | Styling | Tailwind CSS v4, CSS variables, dark mode | Calm, readable, no component library weight |
-| Database | SQLite (better-sqlite3), file `data/mewre.db` | Local-first, zero-config; schema mirrored in `supabase/schema.sql` for a later move |
+| Learner data | Event log in IndexedDB + Supabase sync (`mewre_events`, `mewre_docs`, RLS) | Offline-first on phone and laptop; conflict-free merge across devices |
+| Offline | Service worker + web app manifest (installable PWA), all pages prerendered | Full curriculum usable with no connection |
 | Content | Typed TS objects + Markdown strings (GFM + KaTeX) | Type-checked, validator catches bad ids/answers/LaTeX |
 | Math | KaTeX via remark-math/rehype-katex | Fast server-renderable equations |
 | Charts | Recharts + custom SVG | Interactive calculators and diagrams |
@@ -76,7 +77,7 @@ Content (static, in repo): `Module → Lesson → Section → Block`, plus `Ques
 `Concept`, `Scenario`, `Simulation`, `GlossaryTerm`, `Formula`, `Reference` — see
 `src/content/schema.ts`.
 
-Learner state (SQLite):
+Learner state (append-only events in IndexedDB, synced to Supabase; tables below are *derived* views computed in the browser):
 
 | Table | Purpose |
 |---|---|
@@ -112,8 +113,9 @@ Settings or by editing content:
   Enter your real numbers in Settings and the dashboard re-paces the weekly target and plan pace.
   At fewer hours, follow the study order (M0, M1, M8, M9, M10, M7 first) — they carry most of the
   job-readiness weight.
-- **Single user, local-first** — no authentication; run locally (`npm run dev`) and open on a
-  phone over LAN if desired. Supabase migration path documented.
+- **Offline-first, synced** — progress lives on each device and syncs through Supabase (tables in
+  the existing Blog project, since the free plan's two project slots were in use). Deployed on Vercel
+  at mewre-pm-academy.vercel.app; installable as a phone app.
 - **AI tutor optional** — every feature works without an API key; AI grading falls back to
   rubric-based self-grading.
 - **Language** — English UI and lessons; Arabic for glossary, official-letter templates and

@@ -65,15 +65,25 @@ physics error in the capstone, several overstated figures and Arabic glossary te
 
 ## Verification (latest run)
 
-- `npm test` — 20 files, 243 tests passing (scoring, mastery, FSRS, readiness, practice selection, simulation scoring, SQLite repository, 12 calculation modules, content validity)
+- `npm test` — 21 files, 250 tests passing (scoring, mastery, FSRS, readiness, practice selection, simulation scoring, event-log derivation, IndexedDB store + two-device sync, 12 calculation modules, content validity)
 - `npm run validate:content` — all 16 modules valid (ids, answer keys, references, every KaTeX snippet renders)
 - `npm run typecheck` and `npm run lint` — clean (lint: warnings only)
 - `next build` — succeeds
 - Browser smoke test (Playwright, desktop + 390 px mobile): all routes 200, no console errors, no horizontal overflow (all 88 lessons swept at 390 px); end-to-end flows tested: lesson quiz → lesson completion → card unlock → FSRS review → dashboard update; error log; diagnostic; scenario; full capstone run; cheat sheet
 - Not verified live: AI tutor/grader calls to the Claude API (no API key in the build environment). The no-key fallback path is tested.
 
+## Phase 7 — Offline phone app + sync (2026-10-19)
+
+- [x] Learner state moved from server SQLite to an append-only event log in IndexedDB; all progress derived deterministically
+- [x] Supabase sync (`mewre_events` / `mewre_docs` with RLS) — email + password accounts, background sync on reconnect
+- [x] Service worker: network-first pages, cache-first assets, automatic full offline download after each deploy
+- [x] Installable PWA (manifest, icons); all 235 routes prerendered static
+- [x] AI endpoints require a signed-in user (optional `AI_ALLOWED_EMAILS` allowlist)
+- [x] Deployed to Vercel: https://mewre-pm-academy.vercel.app (auto-deploy on push)
+- [x] Verified in a real browser: download → go offline → lessons, widgets, quizzes, reviews, error log, dashboard all work; answers persist across reloads
+
 ## Known limitations / next ideas
 
 - Kuwait-specific facts that could not be verified are flagged in `unverified` callouts throughout; re-check them against KAPP, MEWRE, CAPT and the official gazette before quoting at work. The main open items are listed at the end of `docs/RESEARCH.md`.
-- Single-user, local-first. Moving to Supabase: see README.
+- AI tutor needs `ANTHROPIC_API_KEY` set in Vercel; it only works online.
 - Possible extensions: audio flashcards for Arabic terms, PWA offline mode, importing real (sanitised) P6 XER files into the CPM widget.

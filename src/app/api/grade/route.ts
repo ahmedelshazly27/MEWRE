@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import { aiAvailable, gradeFeynman, gradeShortAnswer, lessonContext } from "@/server/ai";
 import { getLesson, getQuestion } from "@/lib/content";
+import { requireUser } from "@/server/auth";
 
 export async function POST(req: Request) {
   if (!aiAvailable()) return NextResponse.json({ available: false });
+  const auth = await requireUser(req);
+  if (!auth.ok) return NextResponse.json({ available: false, error: auth.message });
   const body = await req.json();
   try {
     if (body.mode === "feynman") {

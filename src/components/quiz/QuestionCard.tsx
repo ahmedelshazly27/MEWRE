@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import type { Question } from "@/content/schema";
 import { InlineMarkdown, Markdown } from "@/components/Markdown";
 import { Diagram, markerNumber } from "@/components/diagrams";
-import { post } from "@/lib/api";
+import { authFetch } from "@/lib/authFetch";
 import { recordAttempt } from "@/lib/store/actions";
 import type { Response } from "@/lib/scoring";
 import { btn, Pill } from "@/components/ui";
@@ -131,7 +131,7 @@ export function QuestionCard({
       case "short": {
         setBusy(true);
         try {
-          const r = await post<{ available: boolean; score?: number; feedback?: string }>("/api/grade", { questionId: q.id, answer: text });
+          const r = await authFetch("/api/grade", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionId: q.id, answer: text }) }).then((x) => x.json() as Promise<{ available: boolean; score?: number; feedback?: string }>);
           if (r.available && typeof r.score === "number") return send({ type: "short", text, score: r.score }, r.feedback);
         } catch {
           // fall through to self-grading

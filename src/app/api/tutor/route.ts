@@ -1,5 +1,6 @@
 import { aiAvailable, lessonContext, tutorStream, type ChatMessage } from "@/server/ai";
 import { getLesson } from "@/lib/content";
+import { requireUser } from "@/server/auth";
 
 export async function GET() {
   return Response.json({ available: aiAvailable() });
@@ -9,6 +10,8 @@ export async function POST(req: Request) {
   if (!aiAvailable()) {
     return new Response("The AI tutor needs an API key: add ANTHROPIC_API_KEY to .env.local and restart the server.", { status: 503 });
   }
+  const auth = await requireUser(req);
+  if (!auth.ok) return new Response(auth.message, { status: auth.status });
   const { messages, lessonId } = (await req.json()) as { messages: ChatMessage[]; lessonId?: string };
   const clean = (messages ?? []).filter((m) => (m.role === "user" || m.role === "assistant") && typeof m.content === "string" && m.content.trim());
   if (!clean.length || clean[0].role !== "user") return new Response("bad request", { status: 400 });

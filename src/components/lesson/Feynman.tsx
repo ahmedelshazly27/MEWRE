@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Markdown } from "@/components/Markdown";
-import { post } from "@/lib/api";
+import { authFetch } from "@/lib/authFetch";
 import { recordEvidence } from "@/lib/store/actions";
 import { btn, Pill } from "@/components/ui";
 
@@ -23,7 +23,7 @@ export function Feynman({ prompt, keyPoints, lessonId, concepts }: { prompt: str
   const submit = async () => {
     setBusy(true);
     try {
-      const r = await post<{ available: boolean; score?: number; feedback?: string }>("/api/grade", { mode: "feynman", prompt, keyPoints, answer: text, lessonId });
+      const r = await authFetch("/api/grade", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode: "feynman", prompt, keyPoints, answer: text, lessonId }) }).then((x) => x.json() as Promise<{ available: boolean; score?: number; feedback?: string }>);
       if (r.available && typeof r.score === "number") {
         setFeedback(r.feedback ?? "");
         await record(r.score);
