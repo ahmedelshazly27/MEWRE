@@ -123,7 +123,7 @@ The 2019 McMicken incident in Arizona is the case every responder now studies: a
 | **NFPA 68 / NFPA 69** | Explosion protection | Deflagration venting / prevention by ventilation (< 25 % LFL) | Explosion-control design |
 | **IEC 60364 / IEC 61936** | Electrical installations | LV and > 1 kV installations | Electrical safety design |
 
-**Spacing**: NFPA 855 sets default separations (e.g. ~3 m / 10 ft from buildings, lot lines and other exposures for outdoor installations, ~0.9 m / 3 ft between units or groups in many configurations — check the edition adopted) that may be reduced when large-scale fire testing (UL 9540A unit/installation level, or the newer large-scale fire tests such as CSA/ANSI C800) demonstrates no propagation to adjacent units. Integrators routinely place containers back-to-back or 0.15 m apart on the strength of such tests; your OE must check the test configuration actually matches the layout.
+**Spacing**: NFPA 855 sets default separations (e.g. ~3 m / 10 ft from buildings, lot lines and other exposures for outdoor installations, ~0.9 m / 3 ft between units or groups in many configurations — check the edition adopted) that may be reduced when large-scale fire testing (UL 9540A unit/installation level, or the large-scale fire testing introduced in recent NFPA 855 editions) demonstrates no propagation to adjacent units. Integrators routinely place containers back-to-back or 0.15 m apart on the strength of such tests; your OE must check the test configuration actually matches the layout.
 
 ### Gas: how much is too much?
 

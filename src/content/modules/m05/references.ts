@@ -23,7 +23,7 @@ const references: Reference[] = [
     id: "m05-ul-9540a",
     title: "UL 9540A: Test Method for Evaluating Thermal Runaway Fire Propagation in Battery Energy Storage Systems",
     publisher: "UL Standards & Engagement",
-    date: "2019 (4th ed.); 2025 (5th ed.)",
+    date: "2019 (4th ed.) and later revisions",
     url: "https://www.shopulstandards.com/ProductDetail.aspx?productId=UL9540A",
     type: "standard",
     note: "Cell, module, unit and installation-level tests; gives vent-gas volume/composition, propagation behaviour and heat release used for spacing and explosion-control design.",

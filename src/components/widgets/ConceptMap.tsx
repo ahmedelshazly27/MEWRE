@@ -70,6 +70,7 @@ export default function ConceptMap({ props }: WidgetProps) {
         x: cw * (col + 0.5),
         y: ch * (row + 0.5) + 8,
         labelY: ch * row + 14,
+        maxChars: Math.max(6, Math.floor(cw / 6.6)),
         rc: Math.max(10, Math.min(cw, ch) / 2 - 26),
         color: COLORS[gi % COLORS.length],
         count: members.length,
@@ -83,15 +84,20 @@ export default function ConceptMap({ props }: WidgetProps) {
         placed.push({ ...members[0], x: g.x, y: g.y });
         continue;
       }
-      // concentric rings: outer ring holds up to 14, inner the rest
-      const outerCount = n <= 14 ? n : Math.ceil(n * 0.62);
-      members.forEach((m, k) => {
-        const outer = k < outerCount;
-        const idx = outer ? k : k - outerCount;
-        const cnt = outer ? outerCount : n - outerCount;
-        const r = outer ? g.rc : g.rc * 0.5;
-        const a = (2 * Math.PI * idx) / cnt - Math.PI / 2 + (outer ? 0 : Math.PI / cnt);
-        placed.push({ ...m, x: g.x + r * Math.cos(a), y: g.y + r * Math.sin(a) });
+      // concentric rings from the outside in, ~13 px between neighbours
+      const rings: { r: number; cap: number }[] = [];
+      let left = n;
+      for (let r = g.rc; left > 0; r -= 14) {
+        const cap = r < 8 ? left : Math.max(1, Math.floor((2 * Math.PI * r) / 13));
+        rings.push({ r: Math.max(r, 0), cap: Math.min(cap, left) });
+        left -= Math.min(cap, left);
+      }
+      let k = 0;
+      rings.forEach((ring, ri) => {
+        for (let j = 0; j < ring.cap; j++, k++) {
+          const a = (2 * Math.PI * j) / ring.cap - Math.PI / 2 + (ri % 2 ? Math.PI / ring.cap : 0);
+          placed.push({ ...members[k], x: g.x + ring.r * Math.cos(a), y: g.y + ring.r * Math.sin(a) });
+        }
       });
     }
     const byId = new Set(placed.map((p) => p.id));
@@ -148,7 +154,7 @@ export default function ConceptMap({ props }: WidgetProps) {
           <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full" role="group" aria-label="Concept map">
             {groups.map((g) => (
               <text key={g.id} x={g.x} y={g.labelY} fontSize={11} textAnchor="middle" fill={g.color} fontWeight={600}>
-                {g.label.length > 30 ? g.label.slice(0, 29) + "…" : g.label}
+                {g.label.length > g.maxChars ? g.label.slice(0, g.maxChars - 1) + "…" : g.label}
               </text>
             ))}
             {edges.map(([a, b]) => {
@@ -175,7 +181,7 @@ export default function ConceptMap({ props }: WidgetProps) {
                   className="cursor-pointer outline-none"
                   opacity={lit ? 1 : 0.35}
                 >
-                  <circle cx={n.x} cy={n.y} r={isSel ? 8 : 6} fill={groupColor[n.group]} stroke={isSel ? "var(--text)" : "var(--surface)"} strokeWidth={isSel ? 2 : 1.5} />
+                  <circle cx={n.x} cy={n.y} r={isSel ? 8 : nodes.length > 120 ? 4.5 : 6} fill={groupColor[n.group]} stroke={isSel ? "var(--text)" : "var(--surface)"} strokeWidth={isSel ? 2 : 1.5} />
                   {showLabel && (
                     <text x={n.x} y={n.y + 17} fontSize={10} textAnchor="middle" fill="var(--text)" style={{ paintOrder: "stroke", stroke: "var(--surface)", strokeWidth: 3 }}>
                       {n.name.length > 24 ? n.name.slice(0, 23) + "…" : n.name}
