@@ -303,6 +303,21 @@ const formulas: Formula[] = [
     explanation: md`P80 contingency = $X_{0.8} - \text{base estimate}$. Owners and lenders commonly budget to P80 (sometimes P90 for first-of-a-kind work); contractors bid nearer P50.`,
     lesson: "m08-l05",
   },
+  // ------------------------------------------------------------ Change (l06)
+  {
+    id: "change-valuation",
+    name: "Variation value with prolongation",
+    tex: String.raw`V = C_{\text{direct}}(1 + k_{OHP}) + c_t \, \Delta T_{\text{completion}}`,
+    vars: [
+      { sym: "V", meaning: "Value of the variation", unit: "currency" },
+      { sym: "C_{\\text{direct}}", meaning: "Direct cost of changed/added work", unit: "currency" },
+      { sym: "k_{OHP}", meaning: "Overhead and profit mark-up", unit: "fraction" },
+      { sym: "c_t", meaning: "Time-related (prolongation) cost per unit time", unit: "currency/week" },
+      { sym: "\\Delta T_{\\text{completion}}", meaning: "Delay to completion from the time impact analysis (not the changed activity's duration)", unit: "weeks" },
+    ],
+    explanation: md`Prolongation is paid only for delay to **completion**, determined by a time impact analysis on the current schedule. Summing extended activity durations overstates the claim whenever float exists.`,
+    lesson: "m08-l06",
+  },
   // ------------------------------------------------------------ HSE (l07)
   {
     id: "hse-ltifr",

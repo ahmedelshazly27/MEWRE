@@ -152,6 +152,35 @@ const formulas: Formula[] = [
     explanation: md`15% of an illustrative 84 TWh at CF 0.25 ≈ 5.75 GW of PV; 30% ≈ 11.5 GW. Include demand growth to the target year.`,
     lesson: "m00-l04",
   },
+  // ---------------------------------------------------------------- l05
+  {
+    id: "m00-delay-cost",
+    name: "Fuel cost of a renewable commissioning delay",
+    tex: String.raw`C_d = \Delta t \cdot P \cdot CF \cdot 24 \cdot (v - T)`,
+    vars: [
+      { sym: "C_d", meaning: "Extra cost to the state from the delay", unit: "KWD" },
+      { sym: String.raw`\Delta t`, meaning: "Delay", unit: "days" },
+      { sym: "P", meaning: "Plant capacity", unit: "kW" },
+      { sym: "CF", meaning: "Capacity factor", unit: "–" },
+      { sym: "v", meaning: "Value of displaced fuel", unit: "KWD/kWh" },
+      { sym: "T", meaning: "PPA tariff (avoided while the plant is late)", unit: "KWD/kWh" },
+    ],
+    explanation: md`1.1 GW, CF 0.25, v = 37 fils, T = 8 fils → ≈ KWD 191,000/day. Add any deemed-energy payments if the delay is on the offtaker's side.`,
+    lesson: "m00-l05",
+  },
+  {
+    id: "m00-pv-annuity",
+    name: "Present value of a level annual payment",
+    tex: String.raw`PV = A \cdot \frac{1 - (1+r)^{-N}}{r}`,
+    vars: [
+      { sym: "PV", meaning: "Present value", unit: "KWD" },
+      { sym: "A", meaning: "Level annual payment (e.g. PPA payments or O&M)", unit: "KWD/yr" },
+      { sym: "r", meaning: "Discount rate", unit: "–" },
+      { sym: "N", meaning: "Number of years", unit: "yr" },
+    ],
+    explanation: md`Annuity factor at 30 years: 15.372 at 5%, 11.258 at 8%. Use to compare a PPA stream with upfront capex + O&M (a simplified public-sector comparator).`,
+    lesson: "m00-l05",
+  },
 ];
 
 export default formulas;

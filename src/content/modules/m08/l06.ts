@@ -44,9 +44,12 @@ Under FIDIC 2017, Clause 13 governs variations: **13.1** right to vary (Engineer
 
 ### Valuing a change: direct cost + time
 
-$$\text{Variation value} = \text{direct cost} + \text{OH\&P} + \text{time-related cost} \times \Delta T_{\text{completion}}$$
-
-Time-related costs (site management, facilities, equipment hire, insurance, bonds) are typically quoted per week. Prolongation is paid only when **completion** is delayed — which is why the time impact analysis, not the duration of the changed activity, decides the money.
+Value = direct cost with overhead and profit, plus time-related cost for each week **completion** is delayed:`,
+        },
+        { kind: "equation", formula: "change-valuation" },
+        {
+          kind: "md",
+          md: md`Time-related costs (site management, facilities, equipment hire, insurance, bonds) are typically quoted per week. Prolongation is paid only when **completion** is delayed — which is why the time impact analysis, not the duration of the changed activity, decides the money.
 
 ### Time impact analysis (prospective)
 
