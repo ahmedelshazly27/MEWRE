@@ -8,7 +8,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   if (!aiAvailable()) {
-    return new Response("The AI tutor needs an API key: add ANTHROPIC_API_KEY to .env.local and restart the server.", { status: 503 });
+    return new Response("The AI tutor needs an API key: set ANTHROPIC_API_KEY (Vercel → Project → Settings → Environment Variables, or .env.local when running locally) and redeploy.", { status: 503 });
   }
   const auth = await requireUser(req);
   if (!auth.ok) return new Response(auth.message, { status: auth.status });
