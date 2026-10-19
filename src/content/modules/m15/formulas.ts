@@ -1,0 +1,96 @@
+import { md, type Formula } from "../../schema";
+
+export const formulas: Formula[] = [
+  {
+    id: "m15-capacity-factor",
+    name: "Capacity factor (AC basis)",
+    tex: md`\text{CF} = \dfrac{E_{\text{year}}}{P_{\text{AC}} \cdot 8760\ \text{h}}`,
+    vars: [
+      { sym: md`E_{\text{year}}`, meaning: "Annual energy delivered at the point of interconnection", unit: "MWh" },
+      { sym: md`P_{\text{AC}}`, meaning: "Contracted AC capacity at the point of interconnection", unit: "MW" },
+    ],
+    explanation: md`The quickest sanity check on any yield claim. Single-axis tracker PV in the Gulf with DC/AC around 1.3 typically lands at 30–34 % on an AC basis; fixed-tilt at 24–27 %. A bid claiming 38 % on a 1.3 ratio should trigger a question, not a celebration.`,
+    lesson: "m15-l01",
+  },
+  {
+    id: "m15-deemed-energy",
+    name: "Deemed energy payment",
+    tex: md`C_{\text{deemed}} = \tau_E \sum_{t \in \mathcal{U}} \left( \hat{P}_t(G_t, T_t) - P_{\text{del},t} \right) \Delta t`,
+    vars: [
+      { sym: md`C_{\text{deemed}}`, meaning: "Compensation owed by the offtaker for energy that could have been delivered", unit: "KWD" },
+      { sym: md`\tau_E`, meaning: "Energy tariff", unit: "KWD/MWh" },
+      { sym: md`\mathcal{U}`, meaning: "Set of intervals with offtaker-caused unavailability or curtailment beyond the agreed allowance", unit: "-" },
+      { sym: md`\hat{P}_t`, meaning: "Power the plant would have produced, from an agreed model driven by measured irradiance and temperature", unit: "MW" },
+      { sym: md`P_{\text{del},t}`, meaning: "Power actually delivered in the interval", unit: "MW" },
+      { sym: md`\Delta t`, meaning: "Interval length", unit: "h" },
+    ],
+    explanation: md`Deemed energy turns a grid problem into a cash liability for MEWRE. The PM's levers are in the definitions: which events count (only offtaker-caused), the annual curtailment allowance, the agreed model and who calibrates it, and the metering. A 5-month grid delay on a 2,900 GWh/yr plant at 5 fils/kWh is roughly KWD 6 m of deemed payments for zero electrons.`,
+    lesson: "m15-l01",
+  },
+  {
+    id: "m15-evm-indices",
+    name: "Cost and schedule performance indices",
+    tex: md`\text{CPI} = \dfrac{EV}{AC}, \qquad \text{SPI} = \dfrac{EV}{PV}`,
+    vars: [
+      { sym: md`EV`, meaning: "Earned value: budgeted cost of work performed", unit: "USD m" },
+      { sym: md`AC`, meaning: "Actual cost of work performed", unit: "USD m" },
+      { sym: md`PV`, meaning: "Planned value: budgeted cost of work scheduled to date", unit: "USD m" },
+    ],
+    explanation: md`Below 1.0 is bad for both. On an IPP, MEWRE does not pay the EPC, so CPI matters mainly as a distress signal (a contractor bleeding cash cuts corners and files claims). SPI matters directly because it predicts the COD date that drives MEWRE's summer capacity plan. SPI drifts to 1.0 at completion, so for late-stage forecasting use earned schedule instead.`,
+    lesson: "m15-l02",
+  },
+  {
+    id: "m15-forecast-duration",
+    name: "Simple duration forecast from SPI(t)",
+    tex: md`D_{\text{forecast}} \approx \dfrac{D_{\text{plan}}}{\text{SPI}(t)}, \qquad \text{SPI}(t) = \dfrac{ES}{AT}`,
+    vars: [
+      { sym: md`D_{\text{plan}}`, meaning: "Planned duration", unit: "months" },
+      { sym: md`ES`, meaning: "Earned schedule: time at which the current EV should have been earned", unit: "months" },
+      { sym: md`AT`, meaning: "Actual time elapsed", unit: "months" },
+    ],
+    explanation: md`A first-order forecast that assumes the remaining work proceeds at the efficiency achieved so far. It is pessimistic when the slow start was a one-off (mobilisation, permits) and optimistic when the critical path is about to hit the hard work (energisation, testing).`,
+    lesson: "m15-l02",
+  },
+  {
+    id: "m15-pr-corrected",
+    name: "Performance ratio (temperature-corrected)",
+    tex: md`\text{PR}_{\text{corr}} = \dfrac{E_{\text{AC}}}{\sum_t P_{\text{STC}} \dfrac{G_{\text{POA},t}}{G_{\text{STC}}} \left[1 + \gamma (T_{c,t} - T_{\text{ref}})\right] \Delta t}`,
+    vars: [
+      { sym: md`E_{\text{AC}}`, meaning: "Measured AC energy at the test meter over the test period", unit: "MWh" },
+      { sym: md`P_{\text{STC}}`, meaning: "DC nameplate at standard test conditions", unit: "MWp" },
+      { sym: md`G_{\text{POA},t}`, meaning: "Measured plane-of-array irradiance", unit: "W/m²" },
+      { sym: md`G_{\text{STC}}`, meaning: "Reference irradiance, 1,000 W/m²", unit: "W/m²" },
+      { sym: md`\gamma`, meaning: "Power temperature coefficient (negative)", unit: "1/°C" },
+      { sym: md`T_{c,t}`, meaning: "Cell temperature", unit: "°C" },
+      { sym: md`T_{\text{ref}}`, meaning: "Reference cell temperature agreed in the test procedure (often the annual weighted average)", unit: "°C" },
+      { sym: md`\Delta t`, meaning: "Interval length", unit: "h" },
+    ],
+    explanation: md`The correction strips out weather so the test measures the plant, not the week. Disputes almost always come from the inputs: irradiance sensor calibration and cleaning, the availability exclusions, and which soiling level is assumed. Fix the procedure (IEC 61724 family) in the contract, not at the test.`,
+    lesson: "m15-l02",
+  },
+  {
+    id: "m15-kpi-score",
+    name: "Capstone KPI score",
+    tex: md`k_i = \begin{cases} \min\!\left(1, \dfrac{x_i}{T_i}\right) & \text{higher is better} \\[6pt] \min\!\left(1, \dfrac{T_i}{x_i}\right) & \text{lower is better} \end{cases}`,
+    vars: [
+      { sym: md`k_i`, meaning: "Score of KPI i (0 to 1)", unit: "-" },
+      { sym: md`x_i`, meaning: "Final value of KPI i", unit: "varies" },
+      { sym: md`T_i`, meaning: "Target value of KPI i", unit: "varies" },
+    ],
+    explanation: md`Hitting the target earns full marks; beating it earns nothing extra. That is deliberate: a PM who drives cost far below target by starving quality gains nothing on cost and loses on quality.`,
+    lesson: "m15-l02",
+  },
+  {
+    id: "m15-sim-total",
+    name: "Capstone total score",
+    tex: md`S = 0.5 \cdot \dfrac{1}{n}\sum_{i=1}^{n} k_i \; + \; 0.5 \cdot \dfrac{1}{10\,m}\sum_{j=1}^{m} q_j`,
+    vars: [
+      { sym: md`S`, meaning: "Total capstone score (0 to 1)", unit: "-" },
+      { sym: md`n`, meaning: "Number of KPIs", unit: "-" },
+      { sym: md`q_j`, meaning: "Expert quality score of decision j (0 to 10)", unit: "-" },
+      { sym: md`m`, meaning: "Number of decisions", unit: "-" },
+    ],
+    explanation: md`Half outcome, half judgement. A lucky outcome built on poor decisions scores no better than 75 %; a well-reasoned run that still misses a KPI keeps most of its marks. Real performance reviews in a ministry work the same way: auditors look at the file, not just the result.`,
+    lesson: "m15-l02",
+  },
+];

@@ -1,0 +1,230 @@
+import { md, type Formula } from "../../schema";
+
+const formulas: Formula[] = [
+  // ---------------------------------------------------------------- l01
+  {
+    id: "m06-apparent-power-3ph",
+    name: "Three-phase apparent power",
+    tex: md`S = \sqrt{3}\, V_L \, I_L`,
+    vars: [
+      { sym: md`S`, meaning: "Apparent power", unit: "MVA" },
+      { sym: md`V_L`, meaning: "Line-to-line voltage", unit: "kV" },
+      { sym: md`I_L`, meaning: "Line current", unit: "kA" },
+    ],
+    explanation: md`Used for line and transformer ratings: a 400 kV circuit carrying 2.5 kA transfers ~1,732 MVA. Conductor heating depends on current, so thermal limits are in amperes and translate to MVA through this formula (and fall in a 50 °C summer).`,
+    lesson: "m06-l01",
+  },
+  {
+    id: "m06-fault-level",
+    name: "Fault level (short-circuit power)",
+    tex: md`S_{sc} = \sqrt{3}\, V_n \, I_{sc}`,
+    vars: [
+      { sym: md`S_{sc}`, meaning: "Three-phase short-circuit power (fault level)", unit: "MVA" },
+      { sym: md`V_n`, meaning: "Nominal line-to-line voltage", unit: "kV" },
+      { sym: md`I_{sc}`, meaning: "Symmetrical three-phase fault current", unit: "kA" },
+    ],
+    explanation: md`Switchgear is rated by breaking current (e.g. 40, 50, 63 kA at 400 kV; 25 or 31.5 kA at 33 kV). Fault level also measures grid strength (see SCR). A 63 kA 400 kV bus corresponds to ~43,600 MVA.`,
+    lesson: "m06-l01",
+  },
+  {
+    id: "m06-fault-mva-impedance",
+    name: "Fault MVA from per-unit impedances",
+    tex: md`S_{sc} = \frac{S_{base}}{z_s + z_T}, \qquad z_s = \frac{S_{base}}{S_{sc,source}}`,
+    vars: [
+      { sym: md`S_{base}`, meaning: "Chosen MVA base (e.g. transformer rating)", unit: "MVA" },
+      { sym: md`z_s`, meaning: "Source (grid) impedance on that base", unit: "pu" },
+      { sym: md`z_T`, meaning: "Transformer impedance on that base", unit: "pu" },
+      { sym: md`S_{sc,source}`, meaning: "Fault level of the upstream bus", unit: "MVA" },
+    ],
+    explanation: md`Series impedances add; fault MVA is base divided by total per-unit impedance. Parallel transformers halve $z_T$ — which can push MV fault levels above switchgear ratings, hence normally-open bus couplers.`,
+    lesson: "m06-l01",
+  },
+  // ---------------------------------------------------------------- l02
+  {
+    id: "m06-reactive-at-pf",
+    name: "Reactive power at a given power factor",
+    tex: md`Q = P \tan(\arccos \mathrm{PF})`,
+    vars: [
+      { sym: md`Q`, meaning: "Reactive power", unit: "Mvar" },
+      { sym: md`P`, meaning: "Active power", unit: "MW" },
+      { sym: md`\mathrm{PF}`, meaning: "Power factor", unit: "–" },
+    ],
+    explanation: md`At 0.95 PF, $\tan(\arccos 0.95) = 0.329$, so Q = ±0.329 P. Grid codes often express the requirement as Q = ±0.33 Pmax available across a voltage range, independent of actual P (a "rectangular" or "D-shaped" capability).`,
+    lesson: "m06-l02",
+  },
+  {
+    id: "m06-transformer-q-loss",
+    name: "Transformer reactive loss",
+    tex: md`Q_{loss} \approx x_T \, \frac{S^2}{S_{rated}}`,
+    vars: [
+      { sym: md`Q_{loss}`, meaning: "Reactive power absorbed by the transformer leakage reactance", unit: "Mvar" },
+      { sym: md`x_T`, meaning: "Per-unit leakage reactance (e.g. 0.08 MV, 0.12–0.15 HV)", unit: "pu" },
+      { sym: md`S`, meaning: "Apparent power flowing through", unit: "MVA" },
+      { sym: md`S_{rated}`, meaning: "Transformer rating", unit: "MVA" },
+    ],
+    explanation: md`$I^2X$ in per-unit form. At full load a 14 % transformer absorbs 14 % of its rating as reactive power — inverters must supply that on top of the POI requirement when exporting lagging vars.`,
+    lesson: "m06-l02",
+  },
+  {
+    id: "m06-thd",
+    name: "Total harmonic distortion",
+    tex: md`THD_V = \frac{\sqrt{\sum_{h=2}^{50} V_h^2}}{V_1}`,
+    vars: [
+      { sym: md`THD_V`, meaning: "Voltage total harmonic distortion", unit: "%" },
+      { sym: md`V_h`, meaning: "RMS voltage of harmonic order h", unit: "V or % of V₁" },
+      { sym: md`V_1`, meaning: "Fundamental RMS voltage", unit: "V" },
+    ],
+    explanation: md`Harmonics add in quadrature. IEEE 519 limits at buses above 161 kV: 1.5 % THD and 1.0 % individual harmonic; 69–161 kV: 2.5 % and 1.5 %. Grid codes usually allocate a share of the planning level to each plant (IEC TR 61000-3-6).`,
+    lesson: "m06-l02",
+  },
+  {
+    id: "m06-ramp-rate",
+    name: "Ramp-rate limit",
+    tex: md`r = \frac{\Delta P}{\Delta t} \le r_{max} = k \, P_{max}`,
+    vars: [
+      { sym: md`r`, meaning: "Active-power ramp rate", unit: "MW/min" },
+      { sym: md`k`, meaning: "Grid-code limit as fraction of Pmax per minute (e.g. 0.10)", unit: "1/min" },
+      { sym: md`P_{max}`, meaning: "Plant maximum capacity", unit: "MW" },
+    ],
+    explanation: md`Upward ramps can be limited by the PPC (curtailing inverters); downward ramps caused by clouds/dust can only be limited by storage.`,
+    lesson: "m06-l02",
+  },
+  // ---------------------------------------------------------------- l03
+  {
+    id: "m06-rocof",
+    name: "Initial rate of change of frequency (swing equation)",
+    tex: md`\left.\frac{df}{dt}\right|_{t=0^+} = -\frac{\Delta P \, f_0}{2 H S_{sys}}`,
+    vars: [
+      { sym: md`df/dt`, meaning: "Initial RoCoF", unit: "Hz/s" },
+      { sym: md`\Delta P`, meaning: "Lost generation (or added load)", unit: "MW" },
+      { sym: md`f_0`, meaning: "Nominal frequency (Kuwait 50 Hz)", unit: "Hz" },
+      { sym: md`H`, meaning: "System inertia constant (on S_sys base)", unit: "s" },
+      { sym: md`S_{sys}`, meaning: "MVA rating of online synchronous machines", unit: "MVA" },
+    ],
+    explanation: md`From the swing equation $\tfrac{2H}{f_0}\tfrac{df}{dt} = \tfrac{P_m - P_e}{S}$ in per unit. Less inertia (more inverter-based generation displacing thermal units) → faster frequency fall → less time for governors to act.`,
+    lesson: "m06-l03",
+  },
+  {
+    id: "m06-kinetic-energy",
+    name: "Stored kinetic energy (inertia)",
+    tex: md`E_{kin} = H \, S = \tfrac{1}{2} J \omega_m^2`,
+    vars: [
+      { sym: md`E_{kin}`, meaning: "Kinetic energy stored in rotating masses at nominal speed", unit: "MWs" },
+      { sym: md`H`, meaning: "Inertia constant (typically 2–9 s for thermal units)", unit: "s" },
+      { sym: md`S`, meaning: "Machine rating", unit: "MVA" },
+      { sym: md`J`, meaning: "Moment of inertia", unit: "kg·m²" },
+      { sym: md`\omega_m`, meaning: "Mechanical angular speed", unit: "rad/s" },
+    ],
+    explanation: md`H is how many seconds the machine could supply rated power from its kinetic energy alone. PV inverters have none; grid-forming inverters with storage can emulate it.`,
+    lesson: "m06-l03",
+  },
+  {
+    id: "m06-droop",
+    name: "Frequency droop response with deadband",
+    tex: md`\Delta P = -\frac{P_n}{R}\cdot\frac{\Delta f_{eff}}{f_n}, \quad \Delta f_{eff} = \mathrm{sign}(\Delta f)\max(|\Delta f| - db,\, 0)`,
+    vars: [
+      { sym: md`\Delta P`, meaning: "Change in active power", unit: "MW" },
+      { sym: md`P_n`, meaning: "Rated (or reference) power", unit: "MW" },
+      { sym: md`R`, meaning: "Droop (per unit, e.g. 0.04 = 4 %)", unit: "–" },
+      { sym: md`\Delta f`, meaning: "Frequency deviation f − f_n", unit: "Hz" },
+      { sym: md`db`, meaning: "Deadband half-width", unit: "Hz" },
+      { sym: md`f_n`, meaning: "Nominal frequency", unit: "Hz" },
+    ],
+    explanation: md`R = 4 % means a 4 % frequency change (2 Hz at 50 Hz) moves the plant through 100 % of rated power. Codes differ on whether droop is measured from nominal or from the deadband edge (this formula uses the deadband edge). PV can only respond upward if curtailed to hold headroom; BESS can respond both ways.`,
+    lesson: "m06-l03",
+  },
+  {
+    id: "m06-scr",
+    name: "Short-circuit ratio",
+    tex: md`SCR = \frac{S_{sc,POI}}{P_{rated}}, \qquad WSCR = \frac{S_{sc,POI}}{\sum P_{rated,i}}`,
+    vars: [
+      { sym: md`SCR`, meaning: "Short-circuit ratio at the POI", unit: "–" },
+      { sym: md`S_{sc,POI}`, meaning: "Three-phase fault level at the POI without the plant's contribution", unit: "MVA" },
+      { sym: md`P_{rated}`, meaning: "Plant rated power", unit: "MW" },
+      { sym: md`WSCR`, meaning: "Weighted SCR for several nearby IBR plants", unit: "–" },
+    ],
+    explanation: md`SCR > ~5: strong; 3–5: moderate; < 3: weak (grid-following controls may become unstable; EMT studies and possibly grid-forming or synchronous condensers needed). Nearby plants share the same grid strength — use WSCR or ESCR.`,
+    lesson: "m06-l03",
+  },
+  {
+    id: "m06-voltage-sensitivity",
+    name: "Voltage change from P and Q injection",
+    tex: md`\Delta V \approx \frac{R\,\Delta P + X\,\Delta Q}{V^2} \;\;(\text{pu: } \Delta v \approx r\,\Delta p + x\,\Delta q)`,
+    vars: [
+      { sym: md`\Delta V`, meaning: "Voltage change at the connection point", unit: "pu" },
+      { sym: md`R, X`, meaning: "Thevenin resistance and reactance of the grid seen from the POI", unit: "Ω (or pu)" },
+      { sym: md`\Delta P, \Delta Q`, meaning: "Change in active and reactive injection", unit: "MW, Mvar (or pu)" },
+      { sym: md`V`, meaning: "Nominal voltage", unit: "kV" },
+    ],
+    explanation: md`On HV networks X ≫ R, so reactive power controls voltage; $x \approx S_{base}/S_{sc}$. A weak grid (low $S_{sc}$) means large voltage swings per Mvar — the root of voltage-control instability at low SCR.`,
+    lesson: "m06-l03",
+  },
+  // ---------------------------------------------------------------- l04
+  {
+    id: "m06-deemed-energy",
+    name: "Deemed (curtailed) energy",
+    tex: md`E_{deemed} = \sum_{t} \left(P_{avail,t} - P_{actual,t}\right)\Delta t`,
+    vars: [
+      { sym: md`E_{deemed}`, meaning: "Energy that would have been delivered absent curtailment/grid unavailability", unit: "MWh" },
+      { sym: md`P_{avail,t}`, meaning: "Available power estimated from reference inverters / irradiance model", unit: "MW" },
+      { sym: md`P_{actual,t}`, meaning: "Actual delivered power", unit: "MW" },
+      { sym: md`\Delta t`, meaning: "Settlement interval", unit: "h" },
+    ],
+    explanation: md`The PPA defines how available power is estimated (reference inverters, met-station irradiance with an agreed model) and which curtailments are compensable. Disputes are almost always about the estimation method.`,
+    lesson: "m06-l04",
+  },
+  {
+    id: "m06-curtailment-payment",
+    name: "Curtailment compensation above an allowance",
+    tex: md`C = \max\!\left(0,\; E_{deemed} - E_{allow}\right) \cdot T`,
+    vars: [
+      { sym: md`C`, meaning: "Compensation payable by the offtaker", unit: "USD" },
+      { sym: md`E_{deemed}`, meaning: "Annual compensable deemed energy", unit: "MWh" },
+      { sym: md`E_{allow}`, meaning: "Uncompensated curtailment allowance (e.g. % of annual P50 energy)", unit: "MWh" },
+      { sym: md`T`, meaning: "Tariff (or deemed-energy price)", unit: "USD/MWh" },
+    ],
+    explanation: md`Some PPAs pay all grid-caused curtailment; others give the offtaker an annual allowance. Either way the offtaker (MEWRE) bears the cost of grid delays and constraints — making grid planning a commercial issue.`,
+    lesson: "m06-l04",
+  },
+  // ---------------------------------------------------------------- l05
+  {
+    id: "m06-impedance-secondary",
+    name: "Relay (secondary) impedance from primary impedance",
+    tex: md`Z_{sec} = Z_{prim} \cdot \frac{CTR}{VTR}`,
+    vars: [
+      { sym: md`Z_{sec}`, meaning: "Impedance seen by the relay", unit: "Ω" },
+      { sym: md`Z_{prim}`, meaning: "Primary impedance (line)", unit: "Ω" },
+      { sym: md`CTR`, meaning: "CT ratio (e.g. 2000/1 = 2000)", unit: "–" },
+      { sym: md`VTR`, meaning: "VT ratio (e.g. 400 kV/110 V = 3,636)", unit: "–" },
+    ],
+    explanation: md`Relays see V and I through instrument transformers: $Z_{sec} = V_{sec}/I_{sec} = (V_p/VTR)/(I_p/CTR)$. Settings errors in CT/VT ratios are a classic commissioning finding.`,
+    lesson: "m06-l05",
+  },
+  {
+    id: "m06-distance-zone1",
+    name: "Distance protection zone reaches",
+    tex: md`Z_1 = 0.8\,Z_L, \quad Z_2 \approx 1.2\,Z_L, \quad Z_3 \approx Z_L + 1.2\,Z_{next}`,
+    vars: [
+      { sym: md`Z_1, Z_2, Z_3`, meaning: "Reaches of zones 1–3", unit: "Ω" },
+      { sym: md`Z_L`, meaning: "Positive-sequence impedance of the protected line", unit: "Ω" },
+      { sym: md`Z_{next}`, meaning: "Impedance of the longest adjacent line", unit: "Ω" },
+    ],
+    explanation: md`Zone 1 trips instantly but under-reaches (80 %) to avoid overreaching into the next line due to CT/VT and impedance errors; zone 2 covers the rest with a delay (~300–400 ms); zone 3 backs up adjacent lines. With IBR fault currents limited to ~1.1–1.2 pu, distance relays may see unusual impedances — a study item.`,
+    lesson: "m06-l05",
+  },
+  {
+    id: "m06-metering-error",
+    name: "Revenue impact of metering error",
+    tex: md`\Delta R = E_{annual}\, \varepsilon \, T`,
+    vars: [
+      { sym: md`\Delta R`, meaning: "Annual revenue mis-settlement", unit: "USD" },
+      { sym: md`E_{annual}`, meaning: "Annual metered energy", unit: "MWh" },
+      { sym: md`\varepsilon`, meaning: "Metering-chain error (meter + CT + VT + burden)", unit: "–" },
+      { sym: md`T`, meaning: "Tariff", unit: "USD/MWh" },
+    ],
+    explanation: md`A 0.2 % chain error on a 1.1 GW plant's ~2.4 TWh/yr is ~4.8 GWh/yr over 30 years. Hence class 0.2S meters with class 0.2S CTs and 0.2 VTs, main and check meters, and periodic calibration.`,
+    lesson: "m06-l05",
+  },
+];
+
+export default formulas;

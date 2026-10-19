@@ -151,6 +151,33 @@ const references: Reference[] = [
     type: "standard",
     note: "Definitions of PV, EV, AC, CPI, SPI, EAC, TCPI.",
   },
+  {
+    id: "m10-aace-18r97",
+    title: "Recommended Practice 18R-97: Cost Estimate Classification System — as applied in engineering, procurement and construction for the process industries",
+    publisher: "AACE International",
+    date: "2020 (rev.)",
+    url: "https://web.aacei.org/",
+    type: "standard",
+    note: "Estimate classes 1–5 with typical accuracy ranges by level of project definition.",
+  },
+  {
+    id: "m10-jeas-soiling",
+    title: "Soiling losses of PV modules in Kuwait (comparison table of field studies)",
+    publisher: "Journal of Engineering and Applied Science (SpringerOpen)",
+    date: "n.d.",
+    url: "https://jeas.springeropen.com/articles/10.1186/s44147-021-00052-6/tables/2",
+    type: "academic",
+    note: "Reports ~17 % power loss after 6 days in one Kuwait experiment and 8.7–15.1 % monthly-cleaning losses depending on season (via docs/RESEARCH.md). No Shagaya-specific daily soiling rate published.",
+  },
+  {
+    id: "m10-rser-shagaya-pv",
+    title: "Shagaya PV testbed performance (thin-film vs polycrystalline), Renewable and Sustainable Energy Reviews vol. 133",
+    publisher: "Elsevier (IDEAS/RePEc listing)",
+    date: "2020",
+    url: "https://ideas.repec.org/a/eee/rensus/v133y2020ics1364032120304305.html",
+    type: "academic",
+    note: "Soiling at Shagaya is substantial and requires monthly water cleaning.",
+  },
   // ---------------------------------------------------------------- Kuwait (from docs/RESEARCH.md)
   {
     id: "m10-pvmag-zone1-2025",

@@ -112,6 +112,15 @@ const references: Reference[] = [
     note: "Shagaya Phase III Zone 1: 1.1 GW PV IPP, 30-year PPA with MEWRE.",
   },
   {
+    id: "m01-pvmag-shagaya-2021",
+    title: "Confusion surrounds Kuwait's mega solar plans",
+    publisher: "pv magazine",
+    date: "2021-01-06",
+    url: "https://pv-magazine.com/2021/01/06/confusion-surrounds-kuwaits-mega-solar-plans",
+    type: "news",
+    note: "Shagaya park is in Jahra Governorate, west of Kuwait City; site about 84 km².",
+  },
+  {
     id: "m01-agbi-zone1-rfp",
     title: "Kuwait invites bids for desert solar power project",
     publisher: "AGBI",

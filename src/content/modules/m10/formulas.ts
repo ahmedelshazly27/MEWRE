@@ -175,6 +175,20 @@ const formulas: Formula[] = [
     explanation: md`The expected monetary value (EMV) is the floor for contingency; a P80 value from Monte Carlo simulation of the cost estimate is the usual budget figure for public projects. Deterministic 'percent of base' contingencies (5–10 % EPC, 10–20 % at feasibility stage) are acceptable only as early placeholders.`,
     lesson: "m10-l03",
   },
+  {
+    id: "m10-cleaning-interval",
+    name: "Optimal cleaning interval (linear soiling)",
+    tex: String.raw`N^{*} = \sqrt{\frac{730\,C}{s\,E\,p}},\qquad J(N) = \frac{365\,C}{N} + \frac{sN}{2}\,E\,p`,
+    vars: [
+      { sym: "N^{*}", meaning: "Cost-minimising days between full-plant cleanings", unit: "days" },
+      { sym: "C", meaning: "Cost of one full-plant cleaning cycle", unit: "USD" },
+      { sym: "s", meaning: "Soiling rate (fraction of output lost per day)", unit: "1/day" },
+      { sym: "E", meaning: "Annual energy (clean)", unit: "kWh/yr" },
+      { sym: "p", meaning: "Value of energy (tariff or avoided cost)", unit: "USD/kWh" },
+    ],
+    explanation: md`Annual cost = cleaning cost (365C/N) + lost revenue (average loss sN/2 × E × p); minimise over N. Base case with manual cleaning (C = USD 143,000, s = 0.3 %/day): N* = 25.4 days, ≈ USD 4.1 m/yr. Square-root law: doubling cleaning cost lengthens the interval by 41 %.`,
+    lesson: "m10-l03",
+  },
   // ---------------------------------------------------------------- l04 project finance
   {
     id: "m10-cfads",

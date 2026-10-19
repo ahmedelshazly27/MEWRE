@@ -231,7 +231,7 @@ Under FIDIC 2017 8.8, delay damages are the **only** damages due from the Contra
 
 **Who enforces.** The Engineer agrees or determines the Employer's claim for delay damages under 3.7 after an Employer's Notice of Claim; the PM ensures the notice is given within 28 days and the IPC deduction is made only once the amount is agreed or determined (or as the Particular Conditions allow).
 
-**Performance tests.** The test procedure (instrumentation class, pyranometer calibration, data filtering, temperature correction, soiling treatment, test duration, uncertainty) decides the LD outcome as much as the plant does. Agree it in the contract annex, not after construction. In Kuwait's conditions, specify how soiling is handled (clean before the test and measure soiling separately) and the temperature correction at 45–50 °C module-back temperatures above 70 °C.`,
+**Performance tests.** The test procedure (instrumentation class, pyranometer calibration, data filtering, temperature correction, soiling treatment, test duration, uncertainty) decides the LD outcome as much as the plant does. Agree it in the contract annex, not after construction. In Kuwait's conditions, specify how soiling is handled (clean before the test and measure soiling separately) and the temperature correction for 45–50 °C ambient, when module-back temperatures exceed 70 °C.`,
         },
         {
           kind: "callout",
