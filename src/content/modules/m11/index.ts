@@ -2,6 +2,8 @@ import type { Module } from "../../schema";
 import l01 from "./l01";
 import l02 from "./l02";
 import l03 from "./l03";
+import l04 from "./l04";
+import l05 from "./l05";
 import references from "./references";
 import formulas from "./formulas";
 
@@ -15,7 +17,7 @@ const mod: Module = {
   competencies: ["procurement", "context"],
   prerequisites: [],
   estimatedHours: 0,
-  lessons: [l01, l02, l03],
+  lessons: [l01, l02, l03, l04, l05],
   exam: [],
   glossary: [],
   formulas,

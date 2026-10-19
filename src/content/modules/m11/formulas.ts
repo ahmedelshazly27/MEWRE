@@ -91,6 +91,44 @@ const formulas: Formula[] = [
     explanation: md`Deemed energy is usually estimated from measured irradiance and the plant model, after grace periods/allowances. Generic structure — confirm against the Kuwaiti PPA.`,
     lesson: "m11-l03",
   },
+  // ---------------------------------------------------------------- l04
+  {
+    id: "m11-price-preference",
+    name: "National product price-preference test",
+    tex: String.raw`P_{\text{nat}} \le (1 + \pi)\,P_{\min}`,
+    vars: [
+      { sym: String.raw`P_{\text{nat}}`, meaning: "Price of the bid offering national products", unit: "KD" },
+      { sym: String.raw`P_{\min}`, meaning: "Lowest compliant non-national bid", unit: "KD" },
+      { sym: String.raw`\pi`, meaning: "Preference rate (reported 10%, 15% or 20% — unverified)", unit: "–" },
+    ],
+    explanation: md`Also used for the reported Law 94/2026 SME margin (π = 10% vs the lowest accepted bid), which cannot be combined with the Art. 62 product priority.`,
+    lesson: "m11-l04",
+  },
+  {
+    id: "m11-local-content",
+    name: "Local-content share",
+    tex: String.raw`LC = \frac{V_{\text{local}}}{V_{\text{base}}} \ge 0.30`,
+    vars: [
+      { sym: "LC", meaning: "Local-content share", unit: "–" },
+      { sym: String.raw`V_{\text{local}}`, meaning: "Value from Industrial Guide suppliers or locally registered subcontractors", unit: "KD" },
+      { sym: String.raw`V_{\text{base}}`, meaning: "Denominator defined in the contract (product purchases, subcontracted works, or contract value)", unit: "KD" },
+    ],
+    explanation: md`Law 94/2026 (reported): ≥30% of products from the PAI Industrial Guide and ≥30% of works subcontracted locally. Define the denominator explicitly in the contract.`,
+    lesson: "m11-l04",
+  },
+  // ---------------------------------------------------------------- l05
+  {
+    id: "m11-pert",
+    name: "PERT three-point estimate for approval steps",
+    tex: String.raw`t_e = \frac{a + 4m + b}{6}, \quad \sigma = \frac{b - a}{6}, \quad P80 \approx \sum t_e + 0.84\sqrt{\sum \sigma^2}`,
+    vars: [
+      { sym: "a, m, b", meaning: "Optimistic, most likely, pessimistic durations", unit: "weeks" },
+      { sym: "t_e", meaning: "Expected duration of a step", unit: "weeks" },
+      { sym: String.raw`\sigma`, meaning: "Standard deviation of a step", unit: "weeks" },
+    ],
+    explanation: md`Sequential, independent steps: means and variances add. Include a return cycle in b. Attack the largest variance contributor first.`,
+    lesson: "m11-l05",
+  },
 ];
 
 export default formulas;

@@ -14,7 +14,6 @@ function Loading() {
   );
 }
 
-
 /** Each widget is code-split and rendered client-side only. */
 const REGISTRY: Record<WidgetId, WidgetComponent> = {
   "iv-curve": dynamic(() => import("./IvCurve"), { ssr: false, loading: Loading }),

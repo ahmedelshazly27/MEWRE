@@ -291,7 +291,7 @@ async function projectFinanceModel() {
     "2. Raise max gearing to 90%. Which constraint binds now? What happens to equity IRR and why?",
     "3. Set tariff to 1.44 US cents/kWh (an 'aggressive' bid 20% below 1.80). Record equity IRR. What capex would the bidder need for a 9% equity IRR (Goal Seek)?",
     "4. Run a P90 case: reduce specific yield by 7% but keep the debt sized on P50 (copy the debt amount as a value into a new input). What is the minimum DSCR? Would a 1.10x lock-up covenant trip?",
-    "5. Add a 0.5%/yr tariff indexation and compare the equity IRR to a flat tariff with the same levelized value.",
+    "5. Add a 0.5%/yr tariff indexation (Inputs). Record equity IRR (about 11.2%) and minimum DSCR (about 1.36x). Why does indexation raise both while the gearing cap still binds? What would the offtaker pay for it in levelized terms (use tariff-bid-evaluation.xlsx)?",
     ...NOTE_COMMON,
   ]);
   const inp = wb.addWorksheet("Inputs");

@@ -178,6 +178,15 @@ const references: Reference[] = [
     type: "academic",
     note: "Soiling at Shagaya is substantial and requires monthly water cleaning.",
   },
+  {
+    id: "m10-fast-standard",
+    title: "The FAST Standard (Flexible, Appropriate, Structured, Transparent) for financial modelling",
+    publisher: "FAST Standard Organisation",
+    date: "n.d. (current version on site)",
+    url: "https://www.fast-standard.org/",
+    type: "guide",
+    note: "Widely used structural rules for project-finance models: separation of inputs/calculations/outputs, consistent timelines, flags, checks.",
+  },
   // ---------------------------------------------------------------- Kuwait (from docs/RESEARCH.md)
   {
     id: "m10-pvmag-zone1-2025",

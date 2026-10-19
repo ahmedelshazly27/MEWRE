@@ -353,6 +353,19 @@ const formulas: Formula[] = [
     explanation: md`EAC1 assumes current efficiency persists; EAC2 that the variance was a one-off; EAC3 that schedule pressure will also cost money. Example (BAC 45.0): 48.18, 46.40, 51.86 KWD m; TCPI 1.059. Report a range, not one number.`,
     lesson: "m10-l06",
   },
+  {
+    id: "m10-eac-owner",
+    name: "Owner-side estimate at completion",
+    tex: String.raw`EAC_{owner} = CV + \sum VO_{approved} + \sum_i p_i\,X_i + C_{owner}`,
+    vars: [
+      { sym: "CV", meaning: "Accepted Contract Amount", unit: "KWD" },
+      { sym: "VO_{approved}", meaning: "Approved variation orders (contingency drawn)", unit: "KWD" },
+      { sym: "p_i\\,X_i", meaning: "Probability-weighted pending claims and open risks", unit: "KWD" },
+      { sym: "C_{owner}", meaning: "Owner's costs (supervision, studies, staff, permits)", unit: "KWD" },
+    ],
+    explanation: md`The Employer's forecast final cost on a lump-sum contract. Worked case: 45.0 + 1.6 + 2.0 + 2.0 = KWD 50.6 m against an approved budget of 51.5 m (contingency surplus 0.9 m).`,
+    lesson: "m10-l06",
+  },
 ];
 
 export default formulas;

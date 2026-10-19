@@ -86,11 +86,12 @@ An interest-free advance (often 10–20 % of the Accepted Contract Amount) helps
         { kind: "equation", formula: "m10-eac" },
         {
           kind: "md",
-          md: md`On a **lump-sum** contract, the contractor's productivity problems (CPI < 1 on its own costs) do not directly change MEWRE's price — but they predict delay, claims and financial distress. The **owner-side EAC** is built bottom-up:
-
-$$\text{EAC}_{owner} = \text{Contract} + \text{approved VOs} + \sum p_i\cdot\text{claims/risks}_i + \text{owner's costs}.$$
-
-Contingency is drawn down only when a change is **approved** (or a risk occurs); the expected value of pending items is shown as forecast, not as drawn. The difference between remaining contingency and the expected value of pending items is the **contingency surplus or shortfall** — the number the Audit Bureau will ask about.`,
+          md: md`On a **lump-sum** contract, the contractor's productivity problems (CPI < 1 on its own costs) do not directly change MEWRE's price — but they predict delay, claims and financial distress. The **owner-side EAC** is built bottom-up:`,
+        },
+        { kind: "equation", formula: "m10-eac-owner" },
+        {
+          kind: "md",
+          md: md`Contingency is drawn down only when a change is **approved** (or a risk occurs); the expected value of pending items is shown as forecast, not as drawn. The difference between remaining contingency and the expected value of pending items is the **contingency surplus or shortfall** — the number the Audit Bureau will ask about.`,
         },
         {
           kind: "callout",
@@ -116,7 +117,36 @@ Contingency is drawn down only when a change is **approved** (or a risk occurs);
             {
               md: md`**Monthly table (KWD m):**
 
-__CASHTABLE__`,
+| Month | Date | FY | Cum. % | Gross IPC | Advance | Adv. recovery | Retention | Ret. release | Net payment | Cum. net |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 0 | Jun 2026 | 2026/27 | 0.0 % | — | 4.500 | — | — | — | 4.500 | 4.500 |
+| 1 | Jul 2026 | 2026/27 | 0.4 % | 0.192 | — | — | 0.019 | — | 0.173 | 4.673 |
+| 2 | Aug 2026 | 2026/27 | 1.7 % | 0.574 | — | — | 0.057 | — | 0.517 | 5.190 |
+| 3 | Sep 2026 | 2026/27 | 3.8 % | 0.946 | — | — | 0.095 | — | 0.851 | 6.041 |
+| 4 | Oct 2026 | 2026/27 | 6.7 % | 1.302 | — | — | 0.130 | — | 1.172 | 7.213 |
+| 5 | Nov 2026 | 2026/27 | 10.3 % | 1.635 | — | 0.409 | 0.164 | — | 1.063 | 8.276 |
+| 6 | Dec 2026 | 2026/27 | 14.6 % | 1.941 | — | 0.485 | 0.194 | — | 1.261 | 9.537 |
+| 7 | Jan 2027 | 2026/27 | 19.6 % | 2.213 | — | 0.553 | 0.221 | — | 1.438 | 10.975 |
+| 8 | Feb 2027 | 2026/27 | 25.0 % | 2.447 | — | 0.612 | 0.245 | — | 1.591 | 12.566 |
+| 9 | Mar 2027 | 2026/27 | 30.9 % | 2.640 | — | 0.660 | 0.264 | — | 1.716 | 14.282 |
+| 10 | Apr 2027 | 2027/28 | 37.1 % | 2.787 | — | 0.697 | 0.279 | — | 1.812 | 16.093 |
+| 11 | May 2027 | 2027/28 | 43.5 % | 2.887 | — | 0.722 | 0.289 | — | 1.876 | 17.970 |
+| 12 | Jun 2027 | 2027/28 | 50.0 % | 2.937 | — | 0.363 | 0.294 | — | 2.280 | 20.250 |
+| 13 | Jul 2027 | 2027/28 | 56.5 % | 2.937 | — | — | — | — | 2.937 | 23.187 |
+| 14 | Aug 2027 | 2027/28 | 62.9 % | 2.887 | — | — | — | — | 2.887 | 26.073 |
+| 15 | Sep 2027 | 2027/28 | 69.1 % | 2.787 | — | — | — | — | 2.787 | 28.860 |
+| 16 | Oct 2027 | 2027/28 | 75.0 % | 2.640 | — | — | — | — | 2.640 | 31.500 |
+| 17 | Nov 2027 | 2027/28 | 80.4 % | 2.447 | — | — | — | — | 2.447 | 33.947 |
+| 18 | Dec 2027 | 2027/28 | 85.4 % | 2.213 | — | — | — | — | 2.213 | 36.160 |
+| 19 | Jan 2028 | 2027/28 | 89.7 % | 1.941 | — | — | — | — | 1.941 | 38.100 |
+| 20 | Feb 2028 | 2027/28 | 93.3 % | 1.635 | — | — | — | — | 1.635 | 39.736 |
+| 21 | Mar 2028 | 2027/28 | 96.2 % | 1.302 | — | — | — | — | 1.302 | 41.037 |
+| 22 | Apr 2028 | 2028/29 | 98.3 % | 0.946 | — | — | — | — | 0.946 | 41.983 |
+| 23 | May 2028 | 2028/29 | 99.6 % | 0.574 | — | — | — | — | 0.574 | 42.558 |
+| 24 | Jun 2028 | 2028/29 | 100.0 % | 0.192 | — | — | — | 1.125 | 1.317 | 43.875 |
+| 25–35 | Jul 2028–May 2029 | 2028/29–2029/30 | 100 % | — | — | — | — | — | 0.000 | 43.875 |
+| 36 | Jun 2029 | 2029/30 | 100.0 % | — | — | — | — | 1.125 | 1.125 | 45.000 |
+| **Σ** | | | | **45.000** | **4.500** | **4.500** | **2.250** | **2.250** | **45.000** | |`,
             },
             {
               md: md`**Fiscal-year budget request (KWD m):**

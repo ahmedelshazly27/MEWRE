@@ -128,6 +128,21 @@ const formulas: Formula[] = [
     explanation: md`Normalises energy by irradiance and capacity so blocks and periods can be compared (IEC 61724-1 defines PR and variants). Hot-climate utility plants typically show high-70s to low-80s percent; check data quality before interpreting a low value.`,
     lesson: "m14-l04",
   },
+  {
+    id: "m14-delay-damages-check",
+    name: "Delay-damages recomputation",
+    tex: md`LD_{day} = d \cdot CP, \qquad LD_{max} = c \cdot CP, \qquad N_{cap} = \dfrac{c}{d}`,
+    vars: [
+      { sym: "LD_{day}", meaning: "Delay damages per day", unit: "KD/day" },
+      { sym: "LD_{max}", meaning: "Cap on delay damages", unit: "KD" },
+      { sym: "N_{cap}", meaning: "Days of delay at which the cap is reached", unit: "days" },
+      { sym: "d", meaning: "Daily rate as a fraction of the base (e.g. 0.001 = 0.1%/day)", unit: "1/day" },
+      { sym: "c", meaning: "Cap as a fraction of the base (e.g. 0.10)", unit: "–" },
+      { sym: "CP", meaning: "Base amount stated in the Contract (e.g. Accepted Contract Amount or Section value)", unit: "KD" },
+    ],
+    explanation: md`A quick recomputation for any AI or consultant summary of delay damages. Always confirm the base (whole contract vs delayed Section) in the Particular Conditions.`,
+    lesson: "m14-l06",
+  },
 ];
 
 export default formulas;
