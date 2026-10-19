@@ -4,7 +4,8 @@ import { useMemo, useRef, useState } from "react";
 import type { Simulation } from "@/content/schema";
 import { Markdown } from "@/components/Markdown";
 import { applyEffects, kpiScore, simScore } from "@/lib/sim";
-import { post, uid } from "@/lib/api";
+import { uid } from "@/lib/api";
+import { recordEvidence, saveRun } from "@/lib/store/actions";
 import { btn, Pill, ProgressBar } from "@/components/ui";
 
 export function SimulationPlayer({ sim }: { sim: Simulation }) {
@@ -47,10 +48,10 @@ export function SimulationPlayer({ sim }: { sim: Simulation }) {
       saved.current = true;
       const r = simScore(sim, state, log.map((l) => l.score));
       try {
-        await post("/api/runs", { id: runId, kind: "sim", ref: sim.id, score: r.total, total: decisions.length, detail: { state, log, kpi: r.kpi, decisions: r.decisions } });
+        await saveRun({ id: runId, kind: "sim", ref: sim.id, score: r.total, total: decisions.length, detail: { state, log, kpi: r.kpi, decisions: r.decisions } });
         for (const { d } of decisions) {
           const l = log.find((x) => x.id === d.id);
-          if (l) await post("/api/evidence", { concepts: d.concepts, score: l.score / 10, source: "sim" });
+          if (l) await recordEvidence(d.concepts, l.score / 10, "sim");
         }
       } catch {}
     }

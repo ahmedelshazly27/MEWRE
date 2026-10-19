@@ -1,13 +1,15 @@
+"use client";
+
 import Link from "next/link";
-import { liveModules, questionPool } from "@/lib/content";
-import { completedLessons, listErrors, listRuns, masteryMap } from "@/server/repo";
-import { pickMixed, shuffle } from "@/lib/practice";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useLearner } from "@/lib/store/react";
+import { useContent } from "@/lib/useContent";
+import { completedLessons, masteryMap, openErrors } from "@/lib/store/derive";
+import { pickMixed, shuffle, type PoolItem } from "@/lib/practice";
 import { QuizRunner } from "@/components/quiz/QuizRunner";
 import { Card, EmptyState, PageHeader, Pill } from "@/components/ui";
 
-export const metadata = { title: "Practice & exams" };
-
-type SP = { searchParams: Promise<{ mode?: string; module?: string; n?: string; scope?: string }> };
 
 const MODES = {
   mixed: { title: "Mixed practice", desc: "Interleaved questions across modules, weighted toward weak concepts and past mistakes. Instant feedback.", n: 15 },
@@ -15,14 +17,26 @@ const MODES = {
   errors: { title: "Error-log drill", desc: "Only questions you got wrong. Each clears after two correct answers in a row.", n: 20 },
 };
 
-export default async function PracticePage({ searchParams }: SP) {
-  const sp = await searchParams;
+export default function PracticePage() {
+  return (
+    <Suspense fallback={null}>
+      <Practice />
+    </Suspense>
+  );
+}
+
+function Practice() {
+  const params = useSearchParams();
+  const sp = { mode: params.get("mode") ?? undefined, module: params.get("module") ?? undefined, scope: params.get("scope") ?? undefined };
   const mode = sp.mode as keyof typeof MODES | undefined;
-  const done = completedLessons();
-  const mods = liveModules();
+  const store = useLearner();
+  const content = useContent();
+  if (!store || !content) return <div className="text-muted">Loading…</div>;
+  const d = store.derived();
+  const mods = content.modules.filter((m) => !m.draft && m.lessonIds.length);
 
   if (!mode || !MODES[mode]) {
-    const runs = listRuns(undefined, undefined, 12).filter((r) => ["mixed", "timed", "errors", "exam", "diagnostic"].includes(r.kind));
+    const runs = d.runs.filter((r) => ["mixed", "timed", "errors", "exam", "diagnostic"].includes(r.kind)).slice(0, 12);
     return (
       <div>
         <PageHeader title="Practice & exams" subtitle="Retrieval practice beats re-reading. Choose a session." />
@@ -65,8 +79,8 @@ export default async function PracticePage({ searchParams }: SP) {
                     <Pill>{r.kind}</Pill> <span className="ml-1 text-muted">{r.ref ?? ""}</span>
                   </span>
                   <span className="flex items-center gap-3">
-                    <span className="tabular-nums">{Math.round((r.score ?? 0) * 100)}%</span>
-                    <span className="text-xs text-muted">{new Date(r.finished_at!).toLocaleDateString()}</span>
+                    <span className="tabular-nums">{Math.round(r.score * 100)}%</span>
+                    <span className="text-xs text-muted">{new Date(r.finishedAt).toLocaleDateString()}</span>
                   </span>
                 </li>
               ))}
@@ -77,23 +91,32 @@ export default async function PracticePage({ searchParams }: SP) {
     );
   }
 
-  const cfg = MODES[mode];
-  const seed = Date.now() % 2147483647;
-  const mastery = masteryMap();
-  const errors = listErrors();
-  const errorIds = new Set(errors.map((e) => e.question_id));
-  let pool = questionPool((r) => {
-    if (sp.module) return r.module.id === sp.module;
-    if (sp.scope === "all" || done.size === 0) return true;
-    return r.origin === "exam" ? r.module.lessons.some((l) => done.has(l.id)) : !!r.lesson && done.has(r.lesson.id);
-  });
-  if (mode === "errors") pool = questionPool((r) => errorIds.has(r.question.id));
-  if (mode === "timed") pool = pool.filter((r) => r.question.type !== "short");
+  return <Session key={params.toString()} mode={mode} sp={sp} />;
+}
 
-  const items =
-    mode === "errors"
-      ? shuffle(pool, seed).slice(0, cfg.n).map((r) => ({ question: r.question, moduleId: r.module.id }))
-      : pickMixed({ pool: pool.map((r) => ({ question: r.question, moduleId: r.module.id })), mastery, errorIds, n: cfg.n, seed });
+/** One practice session; the question set is picked once on mount so answering doesn't reshuffle it. */
+function Session({ mode, sp }: { mode: keyof typeof MODES; sp: { module?: string; scope?: string } }) {
+  const store = useLearner()!;
+  const content = useContent()!;
+  const d = store.derived();
+  const done = completedLessons(d);
+  const mods = content.modules.filter((m) => !m.draft && m.lessonIds.length);
+  const cfg = MODES[mode];
+  const [seed] = useState(() => Date.now() % 2147483647);
+  const [items] = useState<PoolItem[]>(() => {
+    const mastery = masteryMap(d);
+    const errorIds = new Set(openErrors(d).map((e) => e.questionId));
+    const all = Object.entries(content.questions).map(([id, r]) => ({ id, ...r }));
+    let pool = all.filter((r) => {
+      if (sp.module) return r.moduleId === sp.module;
+      if (sp.scope === "all" || done.size === 0) return true;
+      return r.origin === "exam" ? content.modules.find((m) => m.id === r.moduleId)!.lessonIds.some((l) => done.has(l)) : !!r.lessonId && done.has(r.lessonId);
+    });
+    if (mode === "errors") pool = all.filter((r) => errorIds.has(r.id));
+    if (mode === "timed") pool = pool.filter((r) => r.question.type !== "short");
+    const asItems = pool.map((r) => ({ question: r.question, moduleId: r.moduleId }));
+    return mode === "errors" ? shuffle(asItems, seed).slice(0, cfg.n) : pickMixed({ pool: asItems, mastery, errorIds, n: cfg.n, seed });
+  });
   const questions = items.map((i) => i.question);
   const scopeLabel = sp.module ? mods.find((m) => m.id === sp.module)?.title : sp.scope === "all" || done.size === 0 ? "all lessons" : "completed lessons";
 

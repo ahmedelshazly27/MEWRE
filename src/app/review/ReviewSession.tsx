@@ -1,10 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Markdown } from "@/components/Markdown";
-import { get, post } from "@/lib/api";
+import { getStore } from "@/lib/store/store";
+import { useLearner } from "@/lib/store/react";
+import { reviewForecast, reviewQueue } from "@/lib/store/derive";
+import { gradeCard } from "@/lib/store/actions";
+import { loadContent, useContent } from "@/lib/useContent";
+import { newCard, previewIntervals } from "@/lib/srs";
+import { PageHeader } from "@/components/ui";
 import { btn, EmptyState, Pill, ProgressBar } from "@/components/ui";
 import { LessonTimer } from "@/components/lesson/LessonClient";
 
@@ -19,6 +24,7 @@ interface CardDto {
   moduleId: string;
   state: number;
   intervals: Record<string, string>;
+  concepts?: string[];
 }
 
 const RATINGS = [
@@ -29,7 +35,6 @@ const RATINGS = [
 ];
 
 export function ReviewSession() {
-  const router = useRouter();
   const [queue, setQueue] = useState<CardDto[] | null>(null);
   const [meta, setMeta] = useState({ due: 0, fresh: 0, unlocked: 0 });
   const [pos, setPos] = useState(0);
@@ -38,7 +43,17 @@ export function ReviewSession() {
   const [doneCount, setDoneCount] = useState(0);
 
   const load = useCallback(async () => {
-    const r = await get<{ due: CardDto[]; fresh: CardDto[]; unlockedTotal: number }>("/api/review");
+    const store = getStore();
+    await store.load();
+    const content = await loadContent();
+    const raw = reviewQueue(store.derived(), content.cardOrder, store.settings().newCardsPerDay);
+    const dto = (id: string): CardDto => {
+      const c = content.cards[id];
+      const state = store.derived().cards.get(id) ?? newCard(id);
+      const lesson = content.lessons.find((l) => l.id === c.lessonId);
+      return { id, kind: c.kind, front: c.front, back: c.back, ar: c.ar, lessonId: c.lessonId, lessonTitle: lesson?.title ?? "", moduleId: c.moduleId, state: state.state, intervals: previewIntervals(state, new Date(), store.settings().retention), concepts: c.concepts };
+    };
+    const r = { due: raw.due.filter((id) => content.cards[id]).map(dto), fresh: raw.fresh.filter((id) => content.cards[id]).map(dto), unlockedTotal: raw.unlockedTotal };
     // interleave new cards among due reviews (1 new per 3 reviews)
     const q: CardDto[] = [];
     const due = [...r.due];
@@ -63,9 +78,10 @@ export function ReviewSession() {
       const card = queue[pos];
       setBusy(true);
       try {
-        const res = await post<{ due: string }>("/api/review", { cardId: card.id, rating });
+        await gradeCard(card.id, rating as 1 | 2 | 3 | 4, card.concepts);
+        const next = getStore().derived().cards.get(card.id);
         // Learning-step cards due again within 15 minutes come back in this session.
-        const again = new Date(res.due).getTime() - Date.now() < 15 * 60_000;
+        const again = !!next && new Date(next.due).getTime() - Date.now() < 15 * 60_000;
         const nextQ = [...queue];
         if (again) nextQ.push({ ...card, state: 1 });
         setQueue(nextQ);
@@ -104,10 +120,7 @@ export function ReviewSession() {
         <div className="flex justify-center gap-2">
           <button
             className={btn.ghost}
-            onClick={() => {
-              router.refresh();
-              load();
-            }}
+            onClick={() => load()}
           >
             Check again
           </button>
@@ -167,5 +180,29 @@ export function ReviewSession() {
         Recall before flipping. Rate honestly: <strong>Again</strong> if you couldn&apos;t recall it, <strong>Good</strong> if you did with effort. Keys 1–4.
       </p>
     </div>
+  );
+}
+
+/** Page header with live counts and the 7-day forecast. */
+export function ReviewHeader() {
+  const store = useLearner();
+  const content = useContent();
+  const q = store && content ? reviewQueue(store.derived(), content.cardOrder, store.settings().newCardsPerDay) : null;
+  const forecast = store ? reviewForecast(store.derived(), 7) : new Array(7).fill(0);
+  const max = Math.max(1, ...forecast);
+  return (
+    <PageHeader
+      title="Daily review"
+      subtitle={q ? `Spaced repetition (FSRS). ${q.due.length} due · ${q.fresh.length} new today · ${q.known} cards learning · ${q.unlockedTotal} unlocked.` : "Spaced repetition (FSRS)."}
+    >
+      <div className="flex items-end gap-1" title="Reviews due over the next 7 days">
+        {forecast.map((n, i) => (
+          <div key={i} className="flex flex-col items-center gap-1">
+            <div className="w-5 rounded-sm bg-accent/70" style={{ height: `${4 + (n / max) * 36}px` }} />
+            <span className="text-[10px] text-muted">{i === 0 ? "T" : `+${i}`}</span>
+          </div>
+        ))}
+      </div>
+    </PageHeader>
   );
 }

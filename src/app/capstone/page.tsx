@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getModule } from "@/lib/content";
-import { listRuns } from "@/server/repo";
+import { RunHistory } from "@/components/progress";
 import { SimulationPlayer } from "@/components/SimulationPlayer";
 import { EmptyState, PageHeader } from "@/components/ui";
 
@@ -9,7 +9,6 @@ export const metadata = { title: "Capstone" };
 export default function CapstonePage() {
   const m = getModule("m15");
   const sim = m?.simulation;
-  const runs = sim ? listRuns("sim", sim.id, 5) : [];
   return (
     <div>
       <PageHeader
@@ -22,11 +21,7 @@ export default function CapstonePage() {
           </Link>
         )}
       </PageHeader>
-      {runs.length > 0 && (
-        <div className="mb-4 text-sm text-muted">
-          Previous runs: {runs.map((r) => `${Math.round((r.score ?? 0) * 100)}%`).join(" · ")}
-        </div>
-      )}
+      {sim && <RunHistory kind="sim" refId={sim.id} />}
       {sim ? <SimulationPlayer sim={sim} /> : <EmptyState title="The capstone simulation is being built">Finish the core modules first — it draws on all of them.</EmptyState>}
     </div>
   );

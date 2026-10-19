@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+
+export const dynamic = "force-static";
 import { liveModules } from "@/lib/content";
 
 /** Compact concept graph for the concept-map widget (keeps the full curriculum out of the client bundle). */

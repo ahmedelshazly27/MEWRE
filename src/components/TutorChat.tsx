@@ -20,10 +20,14 @@ export function TutorChat({ lessonId, lessonTitle, compact = false }: { lessonId
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [available, setAvailable] = useState<boolean | null>(null);
+  const [offline, setOffline] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch("/api/tutor").then((r) => r.json()).then((r) => setAvailable(r.available)).catch(() => setAvailable(false));
+    fetch("/api/tutor")
+      .then((r) => r.json())
+      .then((r) => setAvailable(r.available))
+      .catch(() => setOffline(true));
     try {
       const raw = sessionStorage.getItem(storageKey);
       if (raw) setMessages(JSON.parse(raw));
@@ -68,6 +72,9 @@ export function TutorChat({ lessonId, lessonTitle, compact = false }: { lessonId
 
   return (
     <div className="flex h-full flex-col">
+      {offline && (
+        <div className="mb-3 rounded-lg border border-warn/50 bg-warn-soft/60 p-3 text-sm">You are offline. The AI tutor needs a connection — lessons, quizzes and reviews keep working.</div>
+      )}
       {available === false && (
         <div className="mb-3 rounded-lg border border-warn/50 bg-warn-soft/60 p-3 text-sm">
           The AI tutor is off. Add <strong>ANTHROPIC_API_KEY</strong> to <strong>.env.local</strong> and restart <strong>npm run dev</strong>. Everything else works without it.
@@ -94,7 +101,7 @@ export function TutorChat({ lessonId, lessonTitle, compact = false }: { lessonId
       </div>
       <div className="mt-3 flex flex-wrap gap-1.5">
         {PRESETS.map((p) => (
-          <button key={p} className={btn.small} disabled={busy || available === false} onClick={() => send(p)} dir="auto">
+          <button key={p} className={btn.small} disabled={busy || available === false || offline} onClick={() => send(p)} dir="auto">
             {p.length > 42 ? p.slice(0, 40) + "…" : p}
           </button>
         ))}
@@ -120,7 +127,7 @@ export function TutorChat({ lessonId, lessonTitle, compact = false }: { lessonId
           placeholder="Ask the tutor…"
           className="min-w-0 flex-1 rounded-lg border border-border bg-bg px-3 py-2 text-sm outline-none focus:border-accent"
         />
-        <button className={btn.primary} disabled={busy || !input.trim() || available === false}>
+        <button className={btn.primary} disabled={busy || !input.trim() || available === false || offline}>
           Send
         </button>
       </form>

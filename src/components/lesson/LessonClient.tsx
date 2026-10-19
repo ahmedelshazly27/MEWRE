@@ -1,49 +1,60 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import { post, get } from "@/lib/api";
+import { addTime, completeLesson, saveNote, startLesson } from "@/lib/store/actions";
+import { useLearner } from "@/lib/store/react";
+import { getStore } from "@/lib/store/store";
 import { btn } from "@/components/ui";
 
-/** Sends a time heartbeat every 30 s while the tab is visible. */
+/** Accumulates visible time and records it every 2 minutes and when the tab is hidden. */
 export function LessonTimer({ lessonId }: { lessonId: string | null }) {
   const last = useRef(0);
+  const acc = useRef(0);
   useEffect(() => {
     last.current = Date.now();
-    if (lessonId) post("/api/lesson", { action: "start", lessonId }).catch(() => {});
-    const flush = () => {
+    if (lessonId) void getStore().load().then(async () => { await startLesson(lessonId); });
+    const tick = () => {
       const now = Date.now();
-      const secs = Math.round((now - last.current) / 1000);
+      if (document.visibilityState === "visible") acc.current += (now - last.current) / 1000;
       last.current = now;
-      if (secs >= 5 && document.visibilityState === "visible") post("/api/lesson", { action: "time", lessonId, seconds: secs }).catch(() => {});
     };
-    const t = setInterval(flush, 30_000);
+    const flush = () => {
+      tick();
+      if (acc.current >= 5) void addTime(lessonId, Math.min(acc.current, 600));
+      acc.current = 0;
+    };
+    const t1 = setInterval(tick, 15_000);
+    const t2 = setInterval(flush, 120_000);
     const onVis = () => {
       if (document.visibilityState === "hidden") flush();
       else last.current = Date.now();
     };
     document.addEventListener("visibilitychange", onVis);
+    window.addEventListener("pagehide", flush);
     return () => {
-      clearInterval(t);
+      clearInterval(t1);
+      clearInterval(t2);
       document.removeEventListener("visibilitychange", onVis);
+      window.removeEventListener("pagehide", flush);
       flush();
     };
   }, [lessonId]);
   return null;
 }
 
-export function CompleteButton({ lessonId, completed }: { lessonId: string; completed: boolean }) {
-  const router = useRouter();
+export function CompleteButton({ lessonId }: { lessonId: string }) {
+  const store = useLearner();
   const [busy, setBusy] = useState(false);
-  if (completed) return <span className="text-sm font-medium text-ok">✓ Completed</span>;
+  if (!store) return null;
+  if (store.derived().lessons.get(lessonId)?.status === "completed") return <span className="text-sm font-medium text-ok">✓ Completed</span>;
   return (
     <button
       className={btn.ghost}
       disabled={busy}
       onClick={async () => {
         setBusy(true);
-        await post("/api/lesson", { action: "complete", lessonId });
-        router.refresh();
+        await completeLesson(lessonId);
+        setBusy(false);
       }}
     >
       Mark complete without quiz
@@ -52,20 +63,19 @@ export function CompleteButton({ lessonId, completed }: { lessonId: string; comp
 }
 
 export function NotesPanel({ lessonId }: { lessonId: string }) {
-  const [body, setBody] = useState("");
+  const store = useLearner();
+  const [body, setBody] = useState<string | null>(null);
   const [state, setState] = useState<"idle" | "saving" | "saved">("idle");
-  const loaded = useRef(false);
   useEffect(() => {
-    get<{ body: string }>(`/api/notes?lessonId=${lessonId}`).then((r) => {
-      setBody(r.body);
-      loaded.current = true;
-    });
-  }, [lessonId]);
+    if (store && body === null) setBody(store.doc<{ body: string }>(`note:${lessonId}`)?.body ?? "");
+  }, [store, body, lessonId]);
   useEffect(() => {
-    if (!loaded.current) return;
+    if (body === null) return;
+    const saved = getStore().doc<{ body: string }>(`note:${lessonId}`)?.body ?? "";
+    if (saved === body) return;
     setState("saving");
     const t = setTimeout(async () => {
-      await post("/api/notes", { lessonId, body });
+      await saveNote(lessonId, body);
       setState("saved");
     }, 700);
     return () => clearTimeout(t);
@@ -73,11 +83,11 @@ export function NotesPanel({ lessonId }: { lessonId: string }) {
   return (
     <div>
       <textarea
-        value={body}
+        value={body ?? ""}
         onChange={(e) => setBody(e.target.value)}
         rows={8}
         dir="auto"
-        placeholder="Your notes for this lesson (markdown supported). Saved automatically."
+        placeholder="Your notes for this lesson (markdown supported). Saved on this device and synced."
         className="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm outline-none focus:border-accent"
       />
       <div className="mt-1 text-xs text-muted">{state === "saving" ? "Saving…" : state === "saved" ? "Saved" : ""}</div>

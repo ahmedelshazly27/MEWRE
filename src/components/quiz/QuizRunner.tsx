@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import type { Question } from "@/content/schema";
 import { QuestionCard, type AttemptFeedback } from "./QuestionCard";
 import { InlineMarkdown, Markdown } from "@/components/Markdown";
-import { post, uid } from "@/lib/api";
+import { uid } from "@/lib/api";
+import { completeLesson, saveRun } from "@/lib/store/actions";
 import { btn, ProgressBar } from "@/components/ui";
 
 export interface QuizResult {
@@ -39,7 +39,6 @@ export function QuizRunner({
   examMode?: boolean;
   onFinish?: (results: QuizResult[]) => void;
 }) {
-  const router = useRouter();
   const runId = useMemo(() => uid(kind), [kind]);
   const startedAt = useRef(0);
   const [i, setI] = useState(0);
@@ -57,7 +56,7 @@ export function QuizRunner({
     setDone(true);
     const score = questions.length ? final.reduce((a, r) => a + r.score, 0) / questions.length : 0;
     try {
-      await post("/api/runs", {
+      await saveRun({
         id: runId,
         kind,
         ref: refId,
@@ -66,12 +65,11 @@ export function QuizRunner({
         startedAt: startedAt.current,
         detail: final.map((r) => ({ q: r.questionId, s: r.score })),
       });
-      if (completeLessonId) await post("/api/lesson", { action: "complete", lessonId: completeLessonId });
+      if (completeLessonId) await completeLesson(completeLessonId);
     } catch {
       // non-fatal: attempts are already stored individually
     }
     onFinish?.(final);
-    router.refresh();
   };
 
   useEffect(() => {

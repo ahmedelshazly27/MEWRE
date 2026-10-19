@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Markdown } from "@/components/Markdown";
 import { post } from "@/lib/api";
+import { recordEvidence } from "@/lib/store/actions";
 import { btn, Pill } from "@/components/ui";
 
 export function Feynman({ prompt, keyPoints, lessonId, concepts }: { prompt: string; keyPoints: string[]; lessonId: string; concepts: string[] }) {
@@ -15,7 +16,7 @@ export function Feynman({ prompt, keyPoints, lessonId, concepts }: { prompt: str
   const record = async (s: number) => {
     setScore(s);
     try {
-      await post("/api/evidence", { concepts, score: s, source: "feynman" });
+      await recordEvidence(concepts, s, "feynman");
     } catch {}
   };
 

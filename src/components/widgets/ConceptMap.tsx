@@ -35,7 +35,7 @@ export default function ConceptMap({ props }: WidgetProps) {
   const [hover, setHover] = useState<string | null>(null);
   const [MODULES, setModules] = useState<GraphModule[]>([]);
   useEffect(() => {
-    fetch("/api/concepts")
+    fetch("/data/concepts.json")
       .then((r) => r.json())
       .then(setModules)
       .catch(() => setModules([]));

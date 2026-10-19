@@ -1,30 +1,38 @@
+"use client";
+
 import Link from "next/link";
-import { getQuestion } from "@/lib/content";
-import { listErrors } from "@/server/repo";
+import { useState } from "react";
+import { useLearner } from "@/lib/store/react";
+import { useContent } from "@/lib/useContent";
+import { openErrors } from "@/lib/store/derive";
+import type { Response } from "@/lib/scoring";
 import { correctAnswerText } from "@/lib/scoring";
 import { InlineMarkdown, Markdown } from "@/components/Markdown";
-import { Button, EmptyState, PageHeader, Pill } from "@/components/ui";
+import { Button, EmptyState, PageHeader, Pill, btn } from "@/components/ui";
 
-export const metadata = { title: "Error log" };
-
-function describeResponse(raw: string | null): string {
-  if (!raw) return "";
-  try {
-    const r = JSON.parse(raw);
-    if (r.type === "numeric") return String(r.value);
-    if (r.type === "short") return r.text?.slice(0, 200) ?? "";
-    return "";
-  } catch {
-    return "";
-  }
+function describeResponse(r?: Response): string {
+  if (!r) return "";
+  if (r.type === "numeric") return String(r.value);
+  if (r.type === "short") return r.text?.slice(0, 200) ?? "";
+  return "";
 }
 
-export default async function ErrorsPage({ searchParams }: { searchParams: Promise<{ all?: string }> }) {
-  const sp = await searchParams;
-  const rows = listErrors(!!sp.all).filter((r) => getQuestion(r.question_id));
+export default function ErrorsPage() {
+  const store = useLearner();
+  const content = useContent();
+  const [showAll, setShowAll] = useState(false);
+  if (!store || !content) return <div className="text-muted">Loading…</div>;
+  const getQuestion = (id: string) => {
+    const r = content.questions[id];
+    if (!r) return undefined;
+    const mod = content.modules.find((m) => m.id === r.moduleId)!;
+    const lesson = r.lessonId ? content.lessons.find((l) => l.id === r.lessonId) : undefined;
+    return { question: r.question, module: mod, lesson };
+  };
+  const rows = openErrors(store.derived(), showAll).filter((r) => getQuestion(r.questionId));
   const byModule = new Map<string, number>();
   for (const r of rows) {
-    const m = getQuestion(r.question_id)!.module;
+    const m = getQuestion(r.questionId)!.module;
     const k = `M${m.number} ${m.title}`;
     byModule.set(k, (byModule.get(k) ?? 0) + 1);
   }
@@ -33,9 +41,9 @@ export default async function ErrorsPage({ searchParams }: { searchParams: Promi
       <PageHeader title="Error log" subtitle="Every mistake is logged and resurfaces in mixed practice and drills until you answer it correctly twice in a row.">
         <div className="flex gap-2">
           <Button href="/practice?mode=errors">Drill these</Button>
-          <Button href={sp.all ? "/errors" : "/errors?all=1"} variant="ghost">
-            {sp.all ? "Hide cleared" : "Show cleared"}
-          </Button>
+          <button className={btn.ghost} onClick={() => setShowAll(!showAll)}>
+            {showAll ? "Hide cleared" : "Show cleared"}
+          </button>
         </div>
       </PageHeader>
       {byModule.size > 0 && (
@@ -52,19 +60,19 @@ export default async function ErrorsPage({ searchParams }: { searchParams: Promi
       ) : (
         <div className="space-y-3">
           {rows.map((r) => {
-            const ref = getQuestion(r.question_id)!;
+            const ref = getQuestion(r.questionId)!;
             const q = ref.question;
-            const yours = describeResponse(r.last_response);
+            const yours = describeResponse(r.lastResponse);
             return (
-              <details key={r.question_id} className="rounded-xl border border-border bg-surface p-4">
+              <details key={r.questionId} className="rounded-xl border border-border bg-surface p-4">
                 <summary className="cursor-pointer list-none">
                   <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
-                    <Pill tone={r.cleared ? "ok" : "danger"}>{r.cleared ? "Cleared" : `Wrong ×${r.wrong_count}`}</Pill>
+                    <Pill tone={r.cleared ? "ok" : "danger"}>{r.cleared ? "Cleared" : `Wrong ×${r.wrongCount}`}</Pill>
                     {!r.cleared && r.streak > 0 && <Pill tone="sun">1 more correct to clear</Pill>}
                     <span>
                       M{ref.module.number} · {ref.lesson?.title ?? "Module exam"}
                     </span>
-                    <span>· last wrong {new Date(r.last_wrong_at).toLocaleDateString()}</span>
+                    <span>· last wrong {new Date(r.lastWrongAt).toLocaleDateString()}</span>
                   </div>
                   <div className="mt-1.5 text-sm">
                     <InlineMarkdown>{q.prompt.split("\n").find((l) => l.trim()) ?? ""}</InlineMarkdown>

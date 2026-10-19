@@ -1,16 +1,20 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getLesson, lessonNeighbours } from "@/lib/content";
-import { lessonProgressMap, masteryMap } from "@/server/repo";
+import { getLesson, lessonNeighbours, liveModules } from "@/lib/content";
+import { ConceptBadge, LessonMeta } from "@/components/progress";
 import { BlockRenderer } from "@/components/lesson/BlockRenderer";
 import { QuizRunner } from "@/components/quiz/QuizRunner";
 import { CompleteButton, LessonTimer, NotesPanel } from "@/components/lesson/LessonClient";
 import { TutorDrawer } from "@/components/lesson/TutorDrawer";
 import { Markdown } from "@/components/Markdown";
-import { Card, LAYER_META, MasteryBadge, Pill, fmtDuration } from "@/components/ui";
+import { Card, LAYER_META, Pill } from "@/components/ui";
 
 type Params = { params: Promise<{ moduleId: string; lessonId: string }> };
+
+export function generateStaticParams() {
+  return liveModules().flatMap((m) => m.lessons.map((l) => ({ moduleId: m.id, lessonId: l.id })));
+}
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lessonId } = await params;
@@ -22,10 +26,7 @@ export default async function LessonPage({ params }: Params) {
   const ref = getLesson(lessonId);
   if (!ref || ref.module.id !== moduleId) notFound();
   const { module, lesson } = ref;
-  const progress = lessonProgressMap().get(lesson.id);
-  const mastery = masteryMap();
   const { prev, next } = lessonNeighbours(lesson.id);
-  const completed = progress?.status === "completed";
 
   return (
     <article className="mx-auto max-w-3xl">
@@ -45,8 +46,7 @@ export default async function LessonPage({ params }: Params) {
             Lesson {ref.index + 1} of {module.lessons.length}
           </Pill>
           <span>{lesson.minutes} min</span>
-          {progress && progress.seconds > 0 && <span>· {fmtDuration(progress.seconds)} spent</span>}
-          {completed && <Pill tone="ok">Completed</Pill>}
+          <LessonMeta lessonId={lesson.id} />
         </div>
         <h1 className="text-3xl font-semibold tracking-tight">{lesson.title}</h1>
         <p className="mt-2 text-lg text-muted">{lesson.summary}</p>
@@ -63,15 +63,12 @@ export default async function LessonPage({ params }: Params) {
           ))}
         </ul>
         <div className="mt-4 flex flex-wrap gap-2">
-          {lesson.concepts.map((c) => {
-            const m = mastery.get(c.id);
-            return (
-              <span key={c.id} className="inline-flex items-center gap-1.5 rounded-lg border border-border px-2 py-1 text-xs" title={c.description}>
-                {c.name}
-                <MasteryBadge mastery={m?.mastery ?? 0} evidence={m?.evidence ?? 0} />
-              </span>
-            );
-          })}
+          {lesson.concepts.map((c) => (
+            <span key={c.id} className="inline-flex items-center gap-1.5 rounded-lg border border-border px-2 py-1 text-xs" title={c.description}>
+              {c.name}
+              <ConceptBadge conceptId={c.id} />
+            </span>
+          ))}
         </div>
         <div className="mt-4 flex flex-wrap gap-2 text-xs">
           {lesson.sections.map((s, i) => (
@@ -106,7 +103,7 @@ export default async function LessonPage({ params }: Params) {
         <h2 className="mb-3 text-2xl font-semibold tracking-tight">Lesson quiz</h2>
         <QuizRunner questions={lesson.quiz} source="quiz" kind="quiz" refId={lesson.id} title={`${lesson.title} — quiz`} completeLessonId={lesson.id} />
         <div className="mt-3">
-          <CompleteButton lessonId={lesson.id} completed={completed} />
+          <CompleteButton lessonId={lesson.id} />
         </div>
       </section>
 
@@ -114,7 +111,7 @@ export default async function LessonPage({ params }: Params) {
         <Card>
           <div className="mb-2 font-semibold">Flashcards from this lesson</div>
           <p className="mb-2 text-sm text-muted">
-            {completed ? "These are in your daily review queue." : "Unlocked into your daily review when you complete the lesson."}
+            Unlocked into your daily review when you complete the lesson (finish the quiz).
           </p>
           <ul className="space-y-1.5 text-sm">
             {lesson.flashcards.slice(0, 6).map((f) => (

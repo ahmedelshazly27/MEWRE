@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getModule } from "@/lib/content";
+import { getModule, liveModules } from "@/lib/content";
 import { Markdown } from "@/components/Markdown";
 import { FormulaCard } from "@/components/lesson/FormulaCard";
 import { PrintButton } from "./PrintButton";
@@ -8,6 +8,10 @@ import { PrintButton } from "./PrintButton";
 type Params = { params: Promise<{ moduleId: string }> };
 
 export const metadata = { title: "Cheat sheet" };
+
+export function generateStaticParams() {
+  return liveModules().map((m) => ({ moduleId: m.id }));
+}
 
 export default async function PrintPage({ params }: Params) {
   const { moduleId } = await params;

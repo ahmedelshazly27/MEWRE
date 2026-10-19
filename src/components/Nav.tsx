@@ -3,6 +3,21 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useLearner } from "@/lib/store/react";
+import { openErrors, reviewQueue } from "@/lib/store/derive";
+import { useContent } from "@/lib/useContent";
+import { SyncDot } from "@/components/SyncDot";
+
+function useBadges() {
+  const store = useLearner();
+  const content = useContent();
+  if (!store) return { due: 0, errors: 0 };
+  const d = store.derived();
+  const errors = openErrors(d).filter((e) => !content || content.questions[e.questionId]).length;
+  if (!content) return { due: 0, errors };
+  const q = reviewQueue(d, content.cardOrder, store.settings().newCardsPerDay);
+  return { due: q.due.length + q.fresh.length, errors };
+}
 
 type Item = { href: string; label: string; icon: string; badge?: number };
 
@@ -126,7 +141,8 @@ function NavList({ due, errors, onNavigate }: { due: number; errors: number; onN
   );
 }
 
-export function Sidebar({ due, errors }: { due: number; errors: number }) {
+export function Sidebar() {
+  const { due, errors } = useBadges();
   return (
     <aside className="no-print sticky top-0 hidden h-screen w-60 shrink-0 flex-col overflow-y-auto border-r border-border bg-surface px-3 py-5 lg:flex">
       <Brand />
@@ -134,7 +150,7 @@ export function Sidebar({ due, errors }: { due: number; errors: number }) {
         <NavList due={due} errors={errors} />
       </div>
       <div className="flex items-center justify-between px-2 pt-4 text-xs text-muted">
-        <span>Local-first · SQLite</span>
+        <SyncDot />
         <ThemeToggle />
       </div>
     </aside>
@@ -155,7 +171,8 @@ function Brand() {
   );
 }
 
-export function MobileNav({ due, errors }: { due: number; errors: number }) {
+export function MobileNav() {
+  const { due, errors } = useBadges();
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   useEffect(() => setOpen(false), [pathname]);
@@ -170,6 +187,7 @@ export function MobileNav({ due, errors }: { due: number; errors: number }) {
       <header className="no-print sticky top-0 z-30 flex items-center justify-between border-b border-border bg-surface/95 px-4 py-2.5 backdrop-blur lg:hidden">
         <Brand />
         <div className="flex items-center gap-1">
+          <SyncDot compact />
           <ThemeToggle />
           <button onClick={() => setOpen((o) => !o)} className="rounded-lg p-2 hover:bg-surface-2" aria-label="Menu">
             <Icon name="menu" />

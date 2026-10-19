@@ -3,7 +3,8 @@
 import { useMemo, useRef, useState } from "react";
 import type { Scenario } from "@/content/schema";
 import { Markdown } from "@/components/Markdown";
-import { post, uid } from "@/lib/api";
+import { uid } from "@/lib/api";
+import { recordEvidence, saveRun } from "@/lib/store/actions";
 import { scenarioScore } from "@/lib/scoring";
 import { btn, Pill } from "@/components/ui";
 
@@ -37,8 +38,8 @@ export function ScenarioPlayer({ scenario, compact = false }: { scenario: Scenar
       saved.current = true;
       const s = scenarioScore(nextPath.map((p) => scenario.nodes[p.node].choices[p.choice].score));
       try {
-        await post("/api/runs", { id: runId, kind: "scenario", ref: scenario.id, score: s, total: nextPath.length, detail: nextPath });
-        await post("/api/evidence", { concepts: scenario.concepts, score: s, source: "scenario" });
+        await saveRun({ id: runId, kind: "scenario", ref: scenario.id, score: s, total: nextPath.length, detail: nextPath });
+        await recordEvidence(scenario.concepts, s, "scenario");
       } catch {}
     }
   };

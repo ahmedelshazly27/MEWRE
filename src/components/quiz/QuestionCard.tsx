@@ -5,6 +5,7 @@ import type { Question } from "@/content/schema";
 import { InlineMarkdown, Markdown } from "@/components/Markdown";
 import { Diagram, markerNumber } from "@/components/diagrams";
 import { post } from "@/lib/api";
+import { recordAttempt } from "@/lib/store/actions";
 import type { Response } from "@/lib/scoring";
 import { btn, Pill } from "@/components/ui";
 
@@ -100,7 +101,7 @@ export function QuestionCard({
     setBusy(true);
     setErr(null);
     try {
-      const res = await post<AttemptFeedback>("/api/attempt", { questionId: q.id, source, response, runId });
+      const res = await recordAttempt(q, response, source, runId);
       const full = { ...res, aiFeedback };
       setFb(full);
       setSubmitted(true);

@@ -1,13 +1,18 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getModule } from "@/lib/content";
-import { bestScores, lessonProgressMap, masteryMap } from "@/server/repo";
+import { getModule, liveModules } from "@/lib/content";
 import { Markdown } from "@/components/Markdown";
 import { Widget } from "@/components/widgets";
-import { Button, Card, MasteryBadge, PageHeader, Pill, fmtDuration } from "@/components/ui";
+import { BestScore, ConceptBadge, LessonIcon, LessonPills } from "@/components/progress";
+import { ContinueLink } from "@/components/ContinueLink";
+import { Button, Card, PageHeader, Pill } from "@/components/ui";
 
 type Params = { params: Promise<{ moduleId: string }> };
+
+export function generateStaticParams() {
+  return liveModules().map((m) => ({ moduleId: m.id }));
+}
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { moduleId } = await params;
@@ -18,11 +23,7 @@ export default async function ModulePage({ params }: Params) {
   const { moduleId } = await params;
   const m = getModule(moduleId);
   if (!m || m.draft) notFound();
-  const progress = lessonProgressMap();
-  const mastery = masteryMap();
-  const quizBest = bestScores("quiz");
-  const examBest = bestScores("exam").get(m.id);
-  const firstOpen = m.lessons.find((l) => progress.get(l.id)?.status !== "completed") ?? m.lessons[0];
+  const lessonIds = m.lessons.map((l) => l.id);
 
   return (
     <div>
@@ -33,7 +34,9 @@ export default async function ModulePage({ params }: Params) {
       </nav>
       <PageHeader title={`M${m.number} · ${m.title}`} subtitle={m.summary}>
         <div className="flex gap-2">
-          <Button href={`/learn/${m.id}/${firstOpen.id}`}>Continue</Button>
+          <ContinueLink moduleId={m.id} lessonIds={lessonIds} className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:opacity-90 dark:text-black">
+            Continue
+          </ContinueLink>
           <Button href={`/print/${m.id}`} variant="ghost">
             Cheat sheet
           </Button>
@@ -47,37 +50,30 @@ export default async function ModulePage({ params }: Params) {
       )}
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="min-w-0 space-y-3">
-          {m.lessons.map((l, i) => {
-            const p = progress.get(l.id);
-            const qb = quizBest.get(l.id);
-            return (
-              <Link key={l.id} href={`/learn/${m.id}/${l.id}`} className="block rounded-xl border border-border bg-surface p-4 hover:border-accent/60">
-                <div className="flex items-start gap-3">
-                  <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm font-semibold ${p?.status === "completed" ? "bg-ok-soft text-ok" : p ? "bg-sun-soft text-sun" : "bg-surface-2 text-muted"}`}>
-                    {p?.status === "completed" ? "✓" : i + 1}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="font-medium">{l.title}</div>
-                    <div className="mt-0.5 text-sm text-muted">{l.summary}</div>
-                    <div className="mt-2 flex flex-wrap gap-1.5 text-xs">
-                      <Pill>{l.minutes} min</Pill>
-                      <Pill>{l.quiz.length} quiz Qs</Pill>
-                      <Pill>{l.flashcards.length} cards</Pill>
-                      {p && p.seconds > 0 && <Pill>{fmtDuration(p.seconds)} spent</Pill>}
-                      {qb !== undefined && <Pill tone={qb >= 0.8 ? "ok" : "warn"}>Quiz {Math.round(qb * 100)}%</Pill>}
-                    </div>
+          {m.lessons.map((l, i) => (
+            <Link key={l.id} href={`/learn/${m.id}/${l.id}`} className="block rounded-xl border border-border bg-surface p-4 hover:border-accent/60">
+              <div className="flex items-start gap-3">
+                <LessonIcon lessonId={l.id} index={i} />
+                <div className="min-w-0 flex-1">
+                  <div className="font-medium">{l.title}</div>
+                  <div className="mt-0.5 text-sm text-muted">{l.summary}</div>
+                  <div className="mt-2 flex flex-wrap gap-1.5 text-xs">
+                    <Pill>{l.minutes} min</Pill>
+                    <Pill>{l.quiz.length} quiz Qs</Pill>
+                    <Pill>{l.flashcards.length} cards</Pill>
+                    <LessonPills lessonId={l.id} />
                   </div>
                 </div>
-              </Link>
-            );
-          })}
+              </div>
+            </Link>
+          ))}
           <Link href={`/learn/${m.id}/exam`} className="block rounded-xl border border-dashed border-accent/60 bg-surface p-4 hover:bg-accent-soft/30">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-3">
               <div>
                 <div className="font-medium">Module exam</div>
                 <div className="text-sm text-muted">Integrative questions across all lessons, feedback at the end.</div>
               </div>
-              {examBest !== undefined ? <Pill tone={examBest >= 0.8 ? "ok" : "warn"}>Best {Math.round(examBest * 100)}%</Pill> : <Pill tone="accent">Not taken</Pill>}
+              <BestScore kind="exam" refId={m.id} label="Best" empty="Not taken" />
             </div>
           </Link>
         </div>
@@ -85,17 +81,16 @@ export default async function ModulePage({ params }: Params) {
           <Card>
             <div className="mb-2 font-semibold">Concept mastery</div>
             <ul className="space-y-1.5 text-sm">
-              {m.lessons.flatMap((l) => l.concepts).map((c) => {
-                const x = mastery.get(c.id);
-                return (
+              {m.lessons
+                .flatMap((l) => l.concepts)
+                .map((c) => (
                   <li key={c.id} className="flex items-center justify-between gap-2">
                     <span className="min-w-0 truncate" title={c.description}>
                       {c.name}
                     </span>
-                    <MasteryBadge mastery={x?.mastery ?? 0} evidence={x?.evidence ?? 0} />
+                    <ConceptBadge conceptId={c.id} />
                   </li>
-                );
-              })}
+                ))}
             </ul>
           </Card>
           <Card>

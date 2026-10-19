@@ -24,10 +24,12 @@ export function shuffle<T>(items: T[], seed: number): T[] {
 
 /** Module exam: every exam-bank question plus random lesson-quiz questions, up to n. */
 export function pickExamQuestions(m: Module, n: number, seed: number): Question[] {
-  const bank = m.exam;
-  const lessonQs = shuffle(m.lessons.flatMap((l) => l.quiz), seed);
+  return pickExamFrom(m.exam, m.lessons.flatMap((l) => l.quiz), n, seed);
+}
+
+export function pickExamFrom(bank: Question[], lessonQs: Question[], n: number, seed: number): Question[] {
   const out = [...bank.slice(0, n)];
-  for (const q of lessonQs) {
+  for (const q of shuffle(lessonQs, seed)) {
     if (out.length >= n) break;
     out.push(q);
   }

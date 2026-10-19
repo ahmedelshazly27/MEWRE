@@ -23,13 +23,11 @@ const TYPE_LABEL: Record<string, string> = {
   news: "News & industry press",
 };
 
-export default async function LibraryPage({ searchParams }: { searchParams: Promise<{ type?: string }> }) {
-  const sp = await searchParams;
+export default function LibraryPage() {
   const refs = [...index().references.values()];
   const groups = new Map<string, typeof refs>();
   for (const r of refs) {
     const k = TYPE_LABEL[r.type] ?? "Other";
-    if (sp.type && k !== sp.type) continue;
     groups.set(k, [...(groups.get(k) ?? []), r]);
   }
   const order = Object.values(TYPE_LABEL).filter((v, i, a) => a.indexOf(v) === i);
