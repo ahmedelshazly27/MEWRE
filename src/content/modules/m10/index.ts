@@ -3,6 +3,7 @@ import l01 from "./l01";
 import l02 from "./l02";
 import l03 from "./l03";
 import l04 from "./l04";
+import l05 from "./l05";
 import formulas from "./formulas";
 import references from "./references";
 
@@ -16,7 +17,7 @@ const mod: Module = {
   competencies: ["finance"],
   prerequisites: [],
   estimatedHours: 0,
-  lessons: [l01, l02, l03, l04],
+  lessons: [l01, l02, l03, l04, l05],
   exam: [],
   glossary: [],
   formulas,

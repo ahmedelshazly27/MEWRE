@@ -53,6 +53,81 @@ const formulas: Formula[] = [
     explanation: md`Prices vary by model and change often — use the provider's current price list. For PM tasks the cost is usually negligible compared with the reviewer's time.`,
     lesson: "m14-l01",
   },
+  {
+    id: "m14-time-saving",
+    name: "Fractional time saving of an AI workflow",
+    tex: md`S = 1 - \dfrac{T_{AI}}{T_{manual}}, \qquad T_{AI} = T_{prep} + T_{review}`,
+    vars: [
+      { sym: "S", meaning: "Fractional time saving", unit: "–" },
+      { sym: "T_{AI}", meaning: "Total time with AI (preparing facts/data + reviewing output)", unit: "h" },
+      { sym: "T_{manual}", meaning: "Time to produce manually", unit: "h" },
+    ],
+    explanation: md`Count your preparation and review honestly; the saving is real only if the review is real. Typical gains for drafting and extraction are large because reviewing is several times faster than writing.`,
+    lesson: "m14-l03",
+  },
+  {
+    id: "m14-evm-variances",
+    name: "EVM variances",
+    tex: md`CV = EV - AC, \qquad SV = EV - PV`,
+    vars: [
+      { sym: "CV", meaning: "Cost variance (negative = over cost)", unit: "KD" },
+      { sym: "SV", meaning: "Schedule variance in value terms (negative = behind)", unit: "KD" },
+      { sym: "EV", meaning: "Earned value: budgeted value of work performed", unit: "KD" },
+      { sym: "AC", meaning: "Actual cost of work performed", unit: "KD" },
+      { sym: "PV", meaning: "Planned value: budgeted value of work scheduled", unit: "KD" },
+    ],
+    explanation: md`Compute by code from the cost report and progress measurement; check that AC and EV match their source totals.`,
+    lesson: "m14-l04",
+  },
+  {
+    id: "m14-evm-indices",
+    name: "EVM performance indices",
+    tex: md`CPI = \dfrac{EV}{AC}, \qquad SPI = \dfrac{EV}{PV}`,
+    vars: [
+      { sym: "CPI", meaning: "Cost performance index", unit: "–" },
+      { sym: "SPI", meaning: "Schedule performance index (value-based)", unit: "–" },
+    ],
+    explanation: md`Below 1 indicates over cost / behind plan. CPI stabilises early; SPI tends to 1.0 at completion even for late projects, so use the critical path for late-stage schedule assessment.`,
+    lesson: "m14-l04",
+  },
+  {
+    id: "m14-eac-cpi",
+    name: "Estimate at completion (CPI method)",
+    tex: md`EAC = \dfrac{BAC}{CPI}, \qquad VAC = BAC - EAC`,
+    vars: [
+      { sym: "EAC", meaning: "Estimate at completion", unit: "KD" },
+      { sym: "BAC", meaning: "Budget at completion", unit: "KD" },
+      { sym: "VAC", meaning: "Variance at completion", unit: "KD" },
+    ],
+    explanation: md`Assumes current cost efficiency continues for the remaining work.`,
+    lesson: "m14-l04",
+  },
+  {
+    id: "m14-eac-composite",
+    name: "Estimate at completion (composite CPI × SPI)",
+    tex: md`EAC = AC + \dfrac{BAC - EV}{CPI \cdot SPI}`,
+    vars: [
+      { sym: "EAC", meaning: "Estimate at completion", unit: "KD" },
+      { sym: "AC", meaning: "Actual cost to date", unit: "KD" },
+      { sym: "BAC - EV", meaning: "Budgeted value of remaining work", unit: "KD" },
+    ],
+    explanation: md`Assumes both cost and schedule pressure persist (e.g. recovery needs acceleration). Usually higher than the CPI method; report both as a range.`,
+    lesson: "m14-l04",
+  },
+  {
+    id: "m14-performance-ratio",
+    name: "PV performance ratio",
+    tex: md`PR = \dfrac{E_{AC}}{\left(H_{POA}/G_{STC}\right) \cdot P_{STC}}`,
+    vars: [
+      { sym: "PR", meaning: "Performance ratio", unit: "–" },
+      { sym: "E_{AC}", meaning: "AC energy exported in the period", unit: "MWh" },
+      { sym: "H_{POA}", meaning: "Plane-of-array irradiation in the period", unit: "kWh/m²" },
+      { sym: "G_{STC}", meaning: "Irradiance at STC (1 kW/m²)", unit: "kW/m²" },
+      { sym: "P_{STC}", meaning: "DC capacity at STC", unit: "MWp" },
+    ],
+    explanation: md`Normalises energy by irradiance and capacity so blocks and periods can be compared (IEC 61724-1 defines PR and variants). Hot-climate utility plants typically show high-70s to low-80s percent; check data quality before interpreting a low value.`,
+    lesson: "m14-l04",
+  },
 ];
 
 export default formulas;
