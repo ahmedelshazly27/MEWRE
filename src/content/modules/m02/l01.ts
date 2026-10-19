@@ -26,7 +26,7 @@ const lesson: Lesson = {
       name: "Irradiance components (GHI, DNI, DHI)",
       description: "Global, direct-normal and diffuse irradiance, linked by the closure equation; air mass and extraterrestrial irradiance.",
       competency: "solar",
-      related: ["m02.poa-transposition", "m02.solar-resource-data"],
+      related: ["m02.poa-transposition", "m02.solar-resource-data", "m03.dni-only"],
     },
     {
       id: "m02.poa-transposition",
@@ -40,14 +40,14 @@ const lesson: Lesson = {
       name: "Solar resource data & bankability",
       description: "Satellite TMY sources, ground measurement stations, site adaptation and the role of resource data in P50/P90.",
       competency: "solar",
-      related: ["m02.p50-p90", "m02.kuwait-solar-resource"],
+      related: ["m02.p50-p90", "m02.kuwait-solar-resource", "m03.dni-resource-risk", "m15.energy-yield-basis"],
     },
     {
       id: "m02.kuwait-solar-resource",
       name: "Kuwait solar resource",
       description: "Kuwait's GHI, DNI, temperature and aerosol climate, and what is verified vs unverified for Shagaya.",
       competency: "solar",
-      related: ["m02.soiling", "m02.cell-temperature"],
+      related: ["m02.soiling", "m02.cell-temperature", "m00.shagaya-phase1"],
     },
   ],
   sections: [

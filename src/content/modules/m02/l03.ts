@@ -40,14 +40,14 @@ const lesson: Lesson = {
       name: "Degradation mechanisms",
       description: "LID, LeTID, PID, UV-induced degradation, delamination, corrosion, cell cracks — causes, detection and mitigation.",
       competency: "solar",
-      related: ["m02.module-warranty", "m02.commissioning-tests"],
+      related: ["m02.module-warranty", "m02.commissioning-tests", "m12.degradation", "m12.failure-modes"],
     },
     {
       id: "m02.module-warranty",
       name: "Module warranties & traceability",
       description: "Product vs linear power warranty, claim mechanics, warrantor credit risk, and supply-chain traceability.",
       competency: "solar",
-      related: ["m02.module-procurement-qa"],
+      related: ["m02.module-procurement-qa", "m12.warranty-claim", "m15.supply-chain-integrity"],
     },
   ],
   sections: [

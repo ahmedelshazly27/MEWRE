@@ -38,7 +38,7 @@ core, assessment, spaced repetition, tutor, extras and capstone are implemented 
 | | **Total** | **88** | **725** | **750** | **662** | **307** | **84** | **152** | |
 
 Plus: 476 concepts with mastery tracking, 552 cited references, a 27-decision capstone simulation,
-and ~100 inline independent problems. Flashcard pool for spaced repetition = lesson cards +
+and 91 inline independent problems. Flashcard pool for spaced repetition = lesson cards +
 glossary terms + formulas (~1,700 cards).
 
 Every lesson has theory, applied (worked → faded → independent) and field-practice layers.

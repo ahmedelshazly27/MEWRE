@@ -26,14 +26,14 @@ const lesson: Lesson = {
       name: "I-V curve parameters",
       description: "Isc, Voc, Imp, Vmp, Pmp, fill factor and efficiency; how they shift with irradiance.",
       competency: "solar",
-      related: ["m02.temperature-coefficient", "m02.commissioning-tests"],
+      related: ["m02.temperature-coefficient", "m02.commissioning-tests", "m12.el-iv-testing"],
     },
     {
       id: "m02.temperature-coefficient",
       name: "Temperature coefficients",
       description: "The fractional change in Pmp, Voc and Isc per °C; the dominant loss driver in hot climates.",
       competency: "solar",
-      related: ["m02.cell-temperature", "m02.string-sizing", "m02.cell-technologies"],
+      related: ["m02.cell-temperature", "m02.string-sizing", "m02.cell-technologies", "m01.capacity-factor"],
     },
     {
       id: "m02.cell-temperature",
@@ -47,7 +47,7 @@ const lesson: Lesson = {
       name: "Mismatch, bypass diodes & partial shading",
       description: "Why series-connected cells are limited by the weakest, how bypass diodes protect against hot spots, and the stepped I-V curve.",
       competency: "solar",
-      related: ["m02.iv-parameters", "m02.commissioning-tests"],
+      related: ["m02.iv-parameters", "m02.commissioning-tests", "m12.loss-signatures"],
     },
   ],
   sections: [
