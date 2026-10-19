@@ -1,5 +1,6 @@
 import type { Module } from "../../schema";
 import l01 from "./l01";
+import l02 from "./l02";
 import formulas from "./formulas";
 import references from "./references";
 
@@ -13,7 +14,7 @@ const mod: Module = {
   competencies: ["ai"],
   prerequisites: [],
   estimatedHours: 0,
-  lessons: [l01],
+  lessons: [l01, l02],
   exam: [],
   glossary: [],
   formulas,

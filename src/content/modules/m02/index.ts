@@ -18,7 +18,7 @@ const cheatSheet = md`# Solar PV — PM cheat sheet (Kuwait)
 |---|---|
 | Declination | $\delta = 23.45^\circ\sin(360^\circ(284+n)/365)$ |
 | Hour angle | $\omega = 15^\circ(t_{solar}-12)$ |
-| Elevation | $\sin\alpha = \sin\varphi\sin\delta + \cos\varphi\cos\delta\cos\omega$; noon $\alpha = 90^\circ - |\varphi-\delta|$ |
+| Elevation | $\sin\alpha = \sin\varphi\sin\delta + \cos\varphi\cos\delta\cos\omega$; noon $\alpha = 90^\circ - \lvert\varphi-\delta\rvert$ |
 | Shagaya (≈ 29.3°N) noon elevation | ≈ 84° June · 61° equinox · 37° December |
 | Air mass | $AM = 1/\cos\theta_z$; STC = AM 1.5 (zenith 48.2°) |
 | Closure | $GHI = DNI\cos\theta_z + DHI$ (residual > 5 % ⇒ station fault) |
