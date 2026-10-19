@@ -11,7 +11,7 @@ const formulas: Formula[] = [
       { sym: md`G_{sc}`, meaning: "Solar constant (≈ 1361)", unit: "W/m²" },
       { sym: md`n`, meaning: "Day of year (1 = 1 January)", unit: "—" },
     ],
-    explanation: md`Earth's orbit is slightly elliptical, so top-of-atmosphere irradiance swings about ±3.3 %: ≈ 1,410 W/m² in early January (perihelion) and ≈ 1,317 W/m² in early July. Kuwait's summer is therefore the *low* point of extraterrestrial irradiance — the high summer yield comes from long days and high sun, not from a closer sun.`,
+    explanation: md`Earth's orbit is slightly elliptical, so top-of-atmosphere irradiance swings about ±3.3 %: ≈ 1,406 W/m² in early January (perihelion) and ≈ 1,317 W/m² in early July. Kuwait's summer is therefore the *low* point of extraterrestrial irradiance — the high summer yield comes from long days and high sun, not from a closer sun.`,
     lesson: "m02-l01",
   },
   {
@@ -172,7 +172,7 @@ const formulas: Formula[] = [
       { sym: md`U_1`, meaning: "Wind-dependent heat-loss coefficient (≈ 0–7)", unit: "W/(m²·K)/(m/s)" },
       { sym: md`v`, meaning: "Wind speed", unit: "m/s" },
     ],
-    explanation: md`PVsyst uses the same form (with absorption and efficiency terms) and defaults to $U_c = 29$, $U_v = 0$ for free-standing arrays. Faiman's fit for open-rack c-Si is about $U_0 = 25$, $U_1 = 6.84$. Insist the yield report states which U-values were used and why — a 2 W/m²K change moves annual yield by roughly 0.5–1 % in Kuwait.`,
+    explanation: md`PVsyst uses the same form (with absorption and efficiency terms) and defaults to $U_c = 29$, $U_v = 0$ for free-standing arrays. Faiman's fit for open-rack c-Si is about $U_0 = 25$, $U_1 = 6.84$. Insist the yield report states which U-values were used and why — a 2 W/m²K change in $U_c$ moves annual yield by roughly 0.3–0.6 % in Kuwait.`,
     lesson: "m02-l02",
   },
   {

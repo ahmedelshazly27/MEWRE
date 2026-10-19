@@ -154,7 +154,7 @@ const lesson: Lesson = {
 |---|---|---|
 | Capex | Lowest USD/W at GW scale | Slightly higher, falling |
 | DC cabling | Long DC runs to combiner boxes; DC fuses | Shorter DC; more AC LV cabling |
-| MPPT granularity | 1–4 MPPTs per MW | Many MPPTs → less mismatch on uneven terrain |
+| MPPT granularity | 1 (sometimes up to 4) MPPTs per 3–5 MW unit | Many MPPTs → less mismatch on uneven terrain |
 | Failure impact | One fault = 3–5 MW down until repair | One fault = 0.3 MW; swap in hours |
 | O&M | Specialist technicians, OEM service, spares of large parts | Replace-not-repair; spare units on site |
 | Heat/dust | Housed in skid with filtered forced cooling; derating curves crucial | Outdoor IP66; passive/fan cooling; direct sun and sand on enclosure |

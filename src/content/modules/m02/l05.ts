@@ -201,7 +201,7 @@ The **shamal** is a northwesterly wind that blows over Kuwait mostly in summer (
               hidden: true,
               check: { prompt: "Average soiling loss (%)", answer: 7.22, unit: "%", tolerance: { abs: 0.1 } },
             },
-            { md: md`**Comparison with a robotic dry fleet**: illustrative capex USD 12,000/MWp over 10 years (USD 0.6 m/yr) + opex USD 1,500/MWp/yr (USD 0.75 m/yr) with residual loss ≈ 1 % (USD 0.16 m/yr) → ≈ USD 1.51 m/yr, slightly cheaper than the manual optimum *and* saving ≈ 27,000 m³/yr of water.` },
+            { md: md`**Comparison with a robotic dry fleet**: illustrative capex USD 12,000/MWp over 10 years (USD 0.6 m/yr) + opex USD 1,500/MWp/yr (USD 0.75 m/yr) with residual loss ≈ 1 % (USD 0.16 m/yr) → ≈ USD 1.51 m/yr — slightly cheaper than the base-season manual optimum (≈ USD 1.61 m/yr), much cheaper than the dusty-season one ($2 \times 75{,}000 \times 365/24.1 \approx$ USD 2.27 m/yr annualised), *and* saving ≈ 27,000 m³/yr of water.` },
           ],
           result: md`Doubling the soiling rate cuts the optimal interval by $\sqrt{2}$ (34 → 24 days) and raises the average loss to ≈ 7 %. A seasonal cleaning plan (or robots) beats a fixed annual schedule.`,
         },

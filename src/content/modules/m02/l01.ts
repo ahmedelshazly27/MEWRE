@@ -230,7 +230,7 @@ Perez coefficients were fitted mostly to temperate-climate data. In a high-aeros
             id: "m02-l01-p1",
             type: "numeric",
             prompt: md`Independent problem. Compute the **air mass at solar noon on 21 December** at Shagaya ($\varphi = 29.3^\circ$, $\delta = -23.45^\circ$). Use $AM = 1/\sin\alpha$.`,
-            answer: 1.654,
+            answer: 1.652,
             tolerance: { rel: 0.02 },
             unit: "—",
             explanation: md`$\alpha_{noon} = 90^\circ - |29.3^\circ - (-23.45^\circ)| = 90^\circ - 52.75^\circ = 37.25^\circ$. $AM = 1/\sin 37.25^\circ = 1/0.6053 = 1.65$. The winter noon sun at Shagaya passes through more atmosphere than the STC reference (AM 1.5) — so winter spectra are redder and DNI more sensitive to dust. This low angle also defines the worst-case row-to-row shading geometry.`,

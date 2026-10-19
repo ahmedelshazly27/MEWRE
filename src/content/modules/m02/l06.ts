@@ -113,9 +113,9 @@ The result is only as good as the inputs; nearly every red flag in a yield repor
         { kind: "equation", formula: "pv-specific-yield" },
         {
           kind: "md",
-          md: md`Multiplying the illustrative losses above (without bifacial) gives PR ≈ 0.80; adding a 6 % bifacial gain gives ≈ 0.85 on a front-side basis. With POA ≈ 2,550 kWh/m² that is ≈ 2,035–2,160 kWh/kWp.
+          md: md`Multiplying the mid-range losses above (without bifacial) gives PR ≈ 0.77; using the better end of each range gives ≈ 0.80–0.82. Adding a 6 % bifacial gain lifts this to ≈ 0.82–0.85 on a front-side basis. With POA ≈ 2,550 kWh/m² that is ≈ 2,090–2,170 kWh/kWp.
 
-**Temperature-corrected PR** (IEC 61724-1) divides each hour's reference yield by $[1 + \gamma(T_c - 25)]$ — so a plant is not penalised for a hot month. Used in performance tests to separate *weather* from *defects*. A PPA or EPC performance test must state precisely which PR definition applies, the irradiance basis (front POA vs effective incl. rear), the measurement class, and how unavailability and curtailment are treated.`,
+**Temperature-corrected PR** (IEC 61724-1) multiplies each hour's reference (expected) yield by the correction factor $C_k = 1 + \gamma(T_{c,k} - T_{ref})$ — equivalently, divides the raw PR by an irradiance-weighted $C$ — so a plant is not penalised for a hot month. With $T_{ref} = 25$ °C you get the STC-corrected PR (≈ 5–8 points above raw PR in Kuwait); with $T_{ref}$ = the site's annual-average cell temperature you get an annual-equivalent PR that removes seasonal swings without inflating the annual value. Used in performance tests to separate *weather* from *defects*. A PPA or EPC performance test must state precisely which PR definition applies, the irradiance basis (front POA vs effective incl. rear), the measurement class, and how unavailability and curtailment are treated.`,
         },
         {
           kind: "widget",

@@ -19,7 +19,7 @@ const lesson: Lesson = {
       name: "Load-flow (power-flow) studies and N-1",
       description: "Steady-state voltages, line/transformer loadings, losses and reactive capability across load/generation scenarios and contingencies.",
       competency: "grid",
-      related: ["m06.hosting-capacity"],
+      related: ["m06.hosting-capacity", "m01.voltage-reactive-link"],
     },
     {
       id: "m06.dynamic-studies",
@@ -33,7 +33,7 @@ const lesson: Lesson = {
       name: "Study process and governance",
       description: "Developer's consultant performs studies with TSO data and models (PSS/E, PowerFactory, PSCAD); TSO reviews, may run system-wide studies; results set connection conditions.",
       competency: "grid",
-      related: ["m06.dynamic-studies"],
+      related: ["m06.dynamic-studies", "m07.grid-studies"],
     },
     {
       id: "m06.hosting-capacity",
@@ -47,14 +47,14 @@ const lesson: Lesson = {
       name: "Curtailment types",
       description: "Grid-constraint, system-security, oversupply/economic, grid unavailability and plant-caused reductions — with different compensation treatment.",
       competency: "contracts",
-      related: ["m06.deemed-energy"],
+      related: ["m06.deemed-energy", "m11.deemed-energy"],
     },
     {
       id: "m06.deemed-energy",
       name: "Deemed energy compensation",
       description: "PPA mechanism paying the IPP for energy it could have delivered but for offtaker/grid events, estimated by an agreed method, often above an allowance.",
       competency: "contracts",
-      related: ["m06.curtailment"],
+      related: ["m06.curtailment", "m09.deemed-energy", "m15.deemed-energy"],
     },
   ],
   sections: [
