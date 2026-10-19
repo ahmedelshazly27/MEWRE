@@ -1,0 +1,147 @@
+import { md, type Formula } from "../../schema";
+
+const formulas: Formula[] = [
+  {
+    id: "csp-concentration-ratio",
+    name: "Geometric concentration ratio",
+    tex: md`C_g = \dfrac{A_{ap}}{A_{rec}}`,
+    vars: [
+      { sym: md`C_g`, meaning: "Geometric concentration ratio", unit: "–" },
+      { sym: md`A_{ap}`, meaning: "Collector aperture area (projected mirror area)", unit: "m²" },
+      { sym: md`A_{rec}`, meaning: "Receiver (absorber) surface area", unit: "m²" },
+    ],
+    explanation: md`How many times the receiver area is smaller than the aperture. Line-focus (trough, Fresnel): ~25–80. Point-focus tower: ~500–1,000+. Dish: ~1,000–3,000. Higher $C$ means a smaller hot surface, so less radiative loss per unit of collected power, which is what allows higher temperatures.`,
+    lesson: "m03-l01",
+  },
+  {
+    id: "csp-optical-efficiency",
+    name: "Optical efficiency chain",
+    tex: md`\eta_{opt} = \cos\theta \cdot K(\theta) \cdot \rho_m \cdot \gamma \cdot \tau \cdot \alpha \cdot \xi`,
+    vars: [
+      { sym: md`\theta`, meaning: "Incidence angle between sun ray and aperture normal", unit: "°" },
+      { sym: md`K(\theta)`, meaning: "Incidence angle modifier (IAM), end losses, shading", unit: "–" },
+      { sym: md`\rho_m`, meaning: "Clean mirror solar-weighted reflectivity (~0.93–0.95)", unit: "–" },
+      { sym: md`\gamma`, meaning: "Intercept factor: share of reflected rays hitting the absorber (~0.92–0.97)", unit: "–" },
+      { sym: md`\tau`, meaning: "Glass envelope transmittance (~0.96)", unit: "–" },
+      { sym: md`\alpha`, meaning: "Absorber coating absorptance (~0.95–0.96)", unit: "–" },
+      { sym: md`\xi`, meaning: "Cleanliness factor of mirrors (and envelopes) relative to clean (~0.92–0.98)", unit: "–" },
+    ],
+    explanation: md`Every factor multiplies, so a 3 % loss in cleanliness is a 3 % loss in heat collected. Peak optical efficiency of a modern trough is ~0.75–0.80 at normal incidence; the annual average is lower because of the cosine and IAM terms. For towers the chain also includes field cosine efficiency, blocking & shading, atmospheric attenuation over the slant range and spillage at the receiver.`,
+    lesson: "m03-l01",
+  },
+  {
+    id: "csp-receiver-radiation-loss",
+    name: "Receiver radiative heat loss",
+    tex: md`\dot Q_{rad} = \varepsilon\,\sigma\,A_{rec}\left(T_{rec}^4 - T_{env}^4\right)`,
+    vars: [
+      { sym: md`\varepsilon`, meaning: "Emissivity of absorber coating at operating temperature (~0.08–0.12 for selective coatings at 400 °C)", unit: "–" },
+      { sym: md`\sigma`, meaning: "Stefan–Boltzmann constant, 5.67×10⁻⁸", unit: "W/(m²·K⁴)" },
+      { sym: md`A_{rec}`, meaning: "Receiver surface area", unit: "m²" },
+      { sym: md`T_{rec}`, meaning: "Absorber surface temperature (kelvin!)", unit: "K" },
+      { sym: md`T_{env}`, meaning: "Effective surroundings temperature (glass envelope / sky)", unit: "K" },
+    ],
+    explanation: md`Radiative loss rises with the fourth power of absolute temperature. Going from 390 °C to 550 °C multiplies $T^4$ by ~2.4. This is why trough receivers use evacuated tubes with selective coatings, and why higher-temperature systems need higher concentration (smaller $A_{rec}$ per watt collected).`,
+    lesson: "m03-l01",
+  },
+  {
+    id: "csp-collector-efficiency",
+    name: "Collector (thermal) efficiency",
+    tex: md`\eta_{col} = \eta_{opt} - \dfrac{\dot q_{loss}}{\text{DNI}}`,
+    vars: [
+      { sym: md`\eta_{col}`, meaning: "Fraction of DNI on the aperture delivered to the HTF", unit: "–" },
+      { sym: md`\eta_{opt}`, meaning: "Optical efficiency", unit: "–" },
+      { sym: md`\dot q_{loss}`, meaning: "Receiver heat loss per m² of aperture", unit: "W/m²" },
+      { sym: md`\text{DNI}`, meaning: "Direct normal irradiance", unit: "W/m²" },
+    ],
+    explanation: md`Thermal losses are roughly fixed for a given temperature, so efficiency falls sharply at low DNI — below ~300 W/m² a trough loop barely covers its losses. This is the physical reason CSP output collapses under dusty, hazy skies even when GHI looks fine.`,
+    lesson: "m03-l01",
+  },
+  {
+    id: "csp-solar-multiple",
+    name: "Solar multiple",
+    tex: md`SM = \dfrac{\dot Q_{field,design}}{\dot Q_{PB,design}} = \dfrac{\dot Q_{field,design}\,\eta_{PB}}{P_{e,gross}}`,
+    vars: [
+      { sym: md`SM`, meaning: "Solar multiple", unit: "–" },
+      { sym: md`\dot Q_{field,design}`, meaning: "Thermal output of the solar field at design-point DNI", unit: "MW_th" },
+      { sym: md`\dot Q_{PB,design}`, meaning: "Thermal input required by the power block at rated output", unit: "MW_th" },
+      { sym: md`\eta_{PB}`, meaning: "Gross power block (cycle) efficiency", unit: "–" },
+      { sym: md`P_{e,gross}`, meaning: "Gross electrical rating", unit: "MW_e" },
+    ],
+    explanation: md`SM = 1 means the field exactly feeds the turbine at the design point (typically solar noon, design DNI ~800–950 W/m²). No storage plants use SM ~1.2–1.4; plants with 6–10 h storage use SM ~2–3 so the surplus heat at midday fills the tanks. Oversizing SM without enough storage wastes heat (dumping/defocusing).`,
+    lesson: "m03-l01",
+  },
+  {
+    id: "csp-tes-energy",
+    name: "Sensible thermal storage energy",
+    tex: md`E_{th} = m\,c_p\,\Delta T = m\,c_p\,(T_{hot} - T_{cold})`,
+    vars: [
+      { sym: md`E_{th}`, meaning: "Stored thermal energy", unit: "J (÷3.6×10⁹ → MWh_th)" },
+      { sym: md`m`, meaning: "Mass of storage medium (salt)", unit: "kg" },
+      { sym: md`c_p`, meaning: "Specific heat (solar salt ≈ 1.5 kJ/(kg·K))", unit: "J/(kg·K)" },
+      { sym: md`\Delta T`, meaning: "Hot-tank minus cold-tank temperature", unit: "K" },
+    ],
+    explanation: md`The salt mass needed scales as $1/\Delta T$. A tower (290→565 °C, ΔT ≈ 275 K) needs roughly one third of the salt per MWh_th of a trough with oil HTF (≈292→386 °C, ΔT ≈ 94 K). 1 MWh = 3.6×10⁹ J.`,
+    lesson: "m03-l02",
+  },
+  {
+    id: "csp-carnot",
+    name: "Carnot efficiency limit",
+    tex: md`\eta_{C} = 1 - \dfrac{T_{c}}{T_{h}}`,
+    vars: [
+      { sym: md`T_h`, meaning: "Heat-source (live steam) temperature", unit: "K" },
+      { sym: md`T_c`, meaning: "Heat-rejection (condensing) temperature", unit: "K" },
+    ],
+    explanation: md`Upper bound for any heat engine. Real Rankine cycles reach ~65–75 % of Carnot. Raising $T_h$ (tower vs trough) or lowering $T_c$ (wet vs dry cooling) both help. In Kuwait summer, dry cooling pushes $T_c$ up by 25–35 K, which cuts gross efficiency precisely when demand peaks.`,
+    lesson: "m03-l02",
+  },
+  {
+    id: "csp-storage-hours",
+    name: "Hours of full-load storage",
+    tex: md`h_{TES} = \dfrac{E_{th,usable}\;\eta_{PB}}{P_{e,gross}}`,
+    vars: [
+      { sym: md`h_{TES}`, meaning: "Hours the turbine can run at rated output from storage alone", unit: "h" },
+      { sym: md`E_{th,usable}`, meaning: "Usable stored heat (above minimum tank levels)", unit: "MWh_th" },
+      { sym: md`\eta_{PB}`, meaning: "Gross cycle efficiency", unit: "–" },
+      { sym: md`P_{e,gross}`, meaning: "Gross rated electrical output", unit: "MW_e" },
+    ],
+    explanation: md`Always ask whether quoted "hours of storage" are at full load or part load, gross or net, and from nameplate or usable inventory. The same tank can be marketed as 8 h or 10 h depending on these choices.`,
+    lesson: "m03-l02",
+  },
+  {
+    id: "csp-capacity-factor",
+    name: "Capacity factor",
+    tex: md`CF = \dfrac{E_{year}}{P_{rated}\times 8760\ \text{h}}`,
+    vars: [
+      { sym: md`E_{year}`, meaning: "Annual net energy delivered", unit: "MWh" },
+      { sym: md`P_{rated}`, meaning: "Rated (net) power", unit: "MW" },
+    ],
+    explanation: md`CSP without storage: ~20–28 %. Trough with 7–10 h storage in a good DNI site: ~40–55 %. Tower with 15 h: ~60–70 % design. PV in Kuwait: ~20–24 % (AC). Capacity factor alone says nothing about *when* the energy arrives — that is the dispatchability argument.`,
+    lesson: "m03-l02",
+  },
+  {
+    id: "m03-crf",
+    name: "Capital recovery factor",
+    tex: md`CRF = \dfrac{r(1+r)^n}{(1+r)^n - 1}`,
+    vars: [
+      { sym: md`r`, meaning: "Discount rate (real WACC)", unit: "1/yr" },
+      { sym: md`n`, meaning: "Economic life", unit: "yr" },
+    ],
+    explanation: md`Converts an upfront capex into an equal annual payment over $n$ years at rate $r$. At 7 % over 30 years CRF ≈ 0.0806; over 20 years ≈ 0.0944.`,
+    lesson: "m03-l04",
+  },
+  {
+    id: "m03-lcoe-simple",
+    name: "Simplified levelised cost of electricity",
+    tex: md`LCOE = \dfrac{\text{CAPEX}\cdot CRF + \text{OPEX}_{yr}}{E_{yr}}`,
+    vars: [
+      { sym: md`\text{CAPEX}`, meaning: "Total installed cost", unit: "USD" },
+      { sym: md`CRF`, meaning: "Capital recovery factor", unit: "1/yr" },
+      { sym: md`\text{OPEX}_{yr}`, meaning: "Annual O&M and fixed costs", unit: "USD/yr" },
+      { sym: md`E_{yr}`, meaning: "Annual net energy", unit: "MWh/yr" },
+    ],
+    explanation: md`A screening formula (constant energy, no degradation, no tax). Good enough to compare technologies in a ministry options paper; bankable comparisons use full cash-flow models (see the finance module).`,
+    lesson: "m03-l04",
+  },
+];
+
+export default formulas;

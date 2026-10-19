@@ -1,0 +1,170 @@
+import { md, type Formula } from "../../schema";
+
+const formulas: Formula[] = [
+  {
+    id: "wind-power-flux",
+    name: "Power in the wind",
+    tex: md`P_{wind} = \tfrac{1}{2}\,\rho\,A\,v^3`,
+    vars: [
+      { sym: md`P_{wind}`, meaning: "Kinetic energy flux through the rotor area", unit: "W" },
+      { sym: md`\rho`, meaning: "Air density", unit: "kg/m³" },
+      { sym: md`A`, meaning: "Rotor swept area πD²/4", unit: "m²" },
+      { sym: md`v`, meaning: "Free-stream wind speed", unit: "m/s" },
+    ],
+    explanation: md`Mass flow $\rho A v$ times kinetic energy per kg $v^2/2$. Power scales with $v^3$ (10 % more wind → 33 % more power), with $D^2$, and linearly with density. Power density $P/A$ at 8 m/s and 1.225 kg/m³ is ~314 W/m².`,
+    lesson: "m04-l01",
+  },
+  {
+    id: "wind-turbine-power",
+    name: "Turbine power with power coefficient",
+    tex: md`P = C_p\,\tfrac{1}{2}\,\rho\,A\,v^3\,\eta_{mech}\,\eta_{el}`,
+    vars: [
+      { sym: md`C_p`, meaning: "Aerodynamic power coefficient (≤ 16/27)", unit: "–" },
+      { sym: md`\eta_{mech}, \eta_{el}`, meaning: "Drivetrain and electrical efficiencies (~0.94–0.97 combined)", unit: "–" },
+    ],
+    explanation: md`Modern turbines reach $C_p \approx 0.45$–0.50 at the rotor; overall wind-to-grid ~0.42–0.47 at best. Above rated speed the controller pitches blades to hold $P = P_{rated}$.`,
+    lesson: "m04-l01",
+  },
+  {
+    id: "air-density-ideal-gas",
+    name: "Air density (ideal gas)",
+    tex: md`\rho = \dfrac{p}{R_d\,T}`,
+    vars: [
+      { sym: md`p`, meaning: "Atmospheric pressure (101,325 Pa at sea level)", unit: "Pa" },
+      { sym: md`R_d`, meaning: "Specific gas constant of dry air, 287.05", unit: "J/(kg·K)" },
+      { sym: md`T`, meaning: "Absolute temperature", unit: "K" },
+    ],
+    explanation: md`At 15 °C sea level ρ = 1.225 kg/m³ (IEC standard). At 45 °C ρ ≈ 1.11; at 50 °C ≈ 1.09 — about 9–11 % less, so ~9–11 % less power below rated speed. Pressure falls ~1.2 % per 100 m elevation. Humidity lowers density slightly.`,
+    lesson: "m04-l01",
+  },
+  {
+    id: "betz-power-coefficient",
+    name: "Actuator-disc power coefficient",
+    tex: md`C_p = 4a(1-a)^2`,
+    vars: [{ sym: md`a`, meaning: "Axial induction factor: fractional velocity drop at the disc, v_disc = v(1 − a)", unit: "–" }],
+    explanation: md`From momentum theory: far-wake velocity $v(1-2a)$, thrust $T = 2\rho A v^2 a(1-a)$, power $P = T\,v(1-a) = 2\rho A v^3 a(1-a)^2$. Dividing by $\tfrac12\rho A v^3$ gives $C_p = 4a(1-a)^2$; thrust coefficient $C_T = 4a(1-a)$.`,
+    lesson: "m04-l01",
+  },
+  {
+    id: "betz-limit",
+    name: "Betz limit",
+    tex: md`C_{p,max} = \dfrac{16}{27} \approx 0.593 \quad \text{at } a = \tfrac{1}{3}`,
+    vars: [{ sym: md`C_{p,max}`, meaning: "Maximum extractable fraction of wind power for an ideal disc", unit: "–" }],
+    explanation: md`Setting $dC_p/da = 4(1-a)(1-3a) = 0$ gives $a = 1/3$. Extract too little (small $a$) and most air passes unused; extract too much and air piles up and diverts around the rotor.`,
+    lesson: "m04-l01",
+  },
+  {
+    id: "tip-speed-ratio",
+    name: "Tip speed ratio",
+    tex: md`\lambda = \dfrac{\omega R}{v}`,
+    vars: [
+      { sym: md`\lambda`, meaning: "Tip speed ratio", unit: "–" },
+      { sym: md`\omega`, meaning: "Rotor angular speed", unit: "rad/s" },
+      { sym: md`R`, meaning: "Rotor radius", unit: "m" },
+    ],
+    explanation: md`Three-bladed utility rotors peak in $C_p$ at λ ≈ 7–9. Below rated speed the controller varies rotor speed to keep λ optimal. Tip speeds are limited to ~80–90 m/s by noise and leading-edge erosion — critical in sandy air.`,
+    lesson: "m04-l01",
+  },
+  {
+    id: "weibull-pdf",
+    name: "Weibull probability density",
+    tex: md`f(v) = \dfrac{k}{c}\left(\dfrac{v}{c}\right)^{k-1} e^{-(v/c)^k}`,
+    vars: [
+      { sym: md`k`, meaning: "Shape factor (≈1.5–3; 2 = Rayleigh)", unit: "–" },
+      { sym: md`c`, meaning: "Scale factor (≈1.13 × mean for k=2)", unit: "m/s" },
+    ],
+    explanation: md`Cumulative: $F(v) = 1 - e^{-(v/c)^k}$, so fraction of time above $v$ is $e^{-(v/c)^k}$. Higher $k$ = steadier winds (trade-wind / shamal regimes); lower $k$ = gusty, variable.`,
+    lesson: "m04-l02",
+  },
+  {
+    id: "weibull-moments",
+    name: "Weibull mean and cube mean",
+    tex: md`\bar v = c\,\Gamma\!\left(1+\tfrac{1}{k}\right), \qquad \overline{v^3} = c^3\,\Gamma\!\left(1+\tfrac{3}{k}\right)`,
+    vars: [
+      { sym: md`\Gamma`, meaning: "Gamma function (Γ(1.5) = 0.886, Γ(2.5) = 1.329)", unit: "–" },
+      { sym: md`\overline{v^3}`, meaning: "Mean of the cubed wind speed", unit: "m³/s³" },
+    ],
+    explanation: md`Mean power density $= \tfrac12\rho\,\overline{v^3}$, NOT $\tfrac12\rho\,\bar v^3$. The energy pattern factor $\overline{v^3}/\bar v^3 = \Gamma(1+3/k)/\Gamma(1+1/k)^3$ is 1.91 for k = 2 — using the mean speed cubed underestimates power density by ~half.`,
+    lesson: "m04-l02",
+  },
+  {
+    id: "wind-shear-power-law",
+    name: "Wind shear — power law",
+    tex: md`\dfrac{v_2}{v_1} = \left(\dfrac{h_2}{h_1}\right)^{\alpha}`,
+    vars: [
+      { sym: md`\alpha`, meaning: "Shear exponent (≈0.10–0.14 open desert daytime; 0.2–0.35+ stable nights)", unit: "–" },
+      { sym: md`h_1, h_2`, meaning: "Measurement and hub heights", unit: "m" },
+    ],
+    explanation: md`Empirical, simple, widely used for extrapolating mast data to hub height. α varies by time of day and stability; use measured shear between ≥2 heights, by hour and season.`,
+    lesson: "m04-l02",
+  },
+  {
+    id: "wind-shear-log-law",
+    name: "Wind shear — log law",
+    tex: md`\dfrac{v_2}{v_1} = \dfrac{\ln(h_2/z_0)}{\ln(h_1/z_0)}`,
+    vars: [{ sym: md`z_0`, meaning: "Surface roughness length (sand ~0.0003 m; open terrain ~0.03 m)", unit: "m" }],
+    explanation: md`Derived from boundary-layer theory for neutral stability. Over smooth desert it gives low shear; real nights in Kuwait are often stable with much higher shear than the neutral log law predicts.`,
+    lesson: "m04-l02",
+  },
+  {
+    id: "wind-aep",
+    name: "Annual energy production",
+    tex: md`\text{AEP} = 8760 \int_{0}^{\infty} P(v)\,f(v)\,dv \times (1 - L)`,
+    vars: [
+      { sym: md`P(v)`, meaning: "Turbine power curve at site air density", unit: "kW" },
+      { sym: md`f(v)`, meaning: "Hub-height wind speed probability density", unit: "1/(m/s)" },
+      { sym: md`L`, meaning: "Combined losses (wake, availability, electrical, performance, environmental, curtailment)", unit: "–" },
+    ],
+    explanation: md`Gross AEP from the power-curve × distribution integral; net AEP after losses (typically 10–20 % total onshore). Result in kWh when P in kW.`,
+    lesson: "m04-l02",
+  },
+  {
+    id: "wind-exceedance",
+    name: "Exceedance (P-value) energy",
+    tex: md`P_X = P_{50}\,(1 - z_X\,\sigma)`,
+    vars: [
+      { sym: md`P_{50}`, meaning: "Median (expected) net AEP", unit: "MWh" },
+      { sym: md`z_X`, meaning: "Standard normal quantile (P75: 0.674; P90: 1.282; P99: 2.326)", unit: "–" },
+      { sym: md`\sigma`, meaning: "Combined relative uncertainty (1-year or 10-year)", unit: "–" },
+    ],
+    explanation: md`Uncertainty components (measurement, long-term correlation, inter-annual variability, vertical extrapolation, wake/flow modelling, power curve) are combined root-sum-square. Lenders size debt on P90 (sometimes P99, 1-year).`,
+    lesson: "m04-l02",
+  },
+  {
+    id: "jensen-wake",
+    name: "Jensen (Park) wake deficit",
+    tex: md`\dfrac{\Delta v}{v_0} = \dfrac{1 - \sqrt{1 - C_T}}{\left(1 + k_w\,x / r_0\right)^2}`,
+    vars: [
+      { sym: md`C_T`, meaning: "Thrust coefficient of the upstream turbine (~0.75–0.85 below rated)", unit: "–" },
+      { sym: md`k_w`, meaning: "Wake decay constant (≈0.075 onshore, 0.04–0.05 offshore)", unit: "–" },
+      { sym: md`x`, meaning: "Downstream distance", unit: "m" },
+      { sym: md`r_0`, meaning: "Rotor radius", unit: "m" },
+    ],
+    explanation: md`Top-hat wake expanding linearly. Downstream speed $v = v_0(1 - \Delta v/v_0)$; power ratio $\approx (1-\Delta v/v_0)^3$ below rated. Multiple wakes are combined by root-sum-square of deficits. Low desert turbulence and stable nights slow wake recovery — use a lower $k_w$.`,
+    lesson: "m04-l03",
+  },
+  {
+    id: "wind-availability-time",
+    name: "Time-based availability",
+    tex: md`A_t = \dfrac{T_{period} - T_{unavail}}{T_{period}}`,
+    vars: [
+      { sym: md`T_{period}`, meaning: "Hours in period (often excluding agreed exclusions)", unit: "h" },
+      { sym: md`T_{unavail}`, meaning: "Hours the turbine was unavailable for contractor-attributable reasons", unit: "h" },
+    ],
+    explanation: md`Simple but blind to *when* downtime happens: a turbine down on calm days loses little energy. Typical OEM guarantee 95–97 %.`,
+    lesson: "m04-l04",
+  },
+  {
+    id: "wind-availability-energy",
+    name: "Energy-based availability",
+    tex: md`A_E = \dfrac{E_{actual}}{E_{actual} + E_{lost}}`,
+    vars: [
+      { sym: md`E_{actual}`, meaning: "Energy actually produced", unit: "MWh" },
+      { sym: md`E_{lost}`, meaning: "Energy lost to contractor-attributable downtime/derating (from power curve and measured wind)", unit: "MWh" },
+    ],
+    explanation: md`Aligns the O&M contractor's incentive with the owner's revenue — downtime in strong winds costs more. Increasingly preferred by owners and lenders (IEC 61400-26-2 describes it).`,
+    lesson: "m04-l04",
+  },
+];
+
+export default formulas;

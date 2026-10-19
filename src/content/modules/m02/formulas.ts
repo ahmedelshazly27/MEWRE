@@ -1,0 +1,342 @@
+import { md, type Formula } from "../../schema";
+
+const formulas: Formula[] = [
+  // ---------------------------------------------------------------- l01
+  {
+    id: "pv-extraterrestrial-irradiance",
+    name: "Extraterrestrial normal irradiance",
+    tex: md`G_{on} = G_{sc}\left[1 + 0.033\cos\left(\frac{360^\circ\, n}{365}\right)\right]`,
+    vars: [
+      { sym: md`G_{on}`, meaning: "Irradiance on a plane normal to the sun, at the top of the atmosphere", unit: "W/m²" },
+      { sym: md`G_{sc}`, meaning: "Solar constant (≈ 1361)", unit: "W/m²" },
+      { sym: md`n`, meaning: "Day of year (1 = 1 January)", unit: "—" },
+    ],
+    explanation: md`Earth's orbit is slightly elliptical, so top-of-atmosphere irradiance swings about ±3.3 %: ≈ 1,410 W/m² in early January (perihelion) and ≈ 1,317 W/m² in early July. Kuwait's summer is therefore the *low* point of extraterrestrial irradiance — the high summer yield comes from long days and high sun, not from a closer sun.`,
+    lesson: "m02-l01",
+  },
+  {
+    id: "pv-air-mass",
+    name: "Air mass (plane-parallel approximation)",
+    tex: md`AM = \frac{1}{\cos\theta_z} = \frac{1}{\sin\alpha}`,
+    vars: [
+      { sym: md`AM`, meaning: "Relative optical path length through the atmosphere", unit: "—" },
+      { sym: md`\theta_z`, meaning: "Solar zenith angle", unit: "°" },
+      { sym: md`\alpha`, meaning: "Solar elevation angle (90° − zenith)", unit: "°" },
+    ],
+    explanation: md`AM 1 = sun overhead; AM 1.5 (zenith 48.2°) is the spectrum used for STC ratings. Valid to about 70° zenith; beyond that use Kasten–Young. Higher AM means more scattering and absorption, a redder spectrum and lower DNI.`,
+    lesson: "m02-l01",
+  },
+  {
+    id: "pv-declination",
+    name: "Solar declination (Cooper)",
+    tex: md`\delta = 23.45^\circ \sin\left(360^\circ\,\frac{284 + n}{365}\right)`,
+    vars: [
+      { sym: md`\delta`, meaning: "Solar declination: latitude where the sun is overhead at solar noon", unit: "°" },
+      { sym: md`n`, meaning: "Day of year", unit: "—" },
+    ],
+    explanation: md`Ranges from +23.45° (21 June) to −23.45° (21 December), 0° at the equinoxes. Accurate to about ±1°, adequate for teaching and screening; yield software uses the NREL SPA (±0.0003°).`,
+    lesson: "m02-l01",
+  },
+  {
+    id: "pv-hour-angle",
+    name: "Hour angle",
+    tex: md`\omega = 15^\circ\,(t_{solar} - 12)`,
+    vars: [
+      { sym: md`\omega`, meaning: "Hour angle: negative in the morning, positive in the afternoon", unit: "°" },
+      { sym: md`t_{solar}`, meaning: "Apparent solar time", unit: "h" },
+    ],
+    explanation: md`The Earth turns 15° per hour. Solar time differs from clock time by the longitude correction (4 min per degree from the time-zone meridian) and the equation of time (±16 min). Kuwait (UTC+3, meridian 45°E) at Shagaya (~47°E) has solar noon roughly 8 min before 12:00 clock time, ± the equation of time.`,
+    lesson: "m02-l01",
+  },
+  {
+    id: "pv-solar-elevation",
+    name: "Solar elevation angle",
+    tex: md`\sin\alpha = \sin\varphi\sin\delta + \cos\varphi\cos\delta\cos\omega`,
+    vars: [
+      { sym: md`\alpha`, meaning: "Solar elevation (altitude) angle", unit: "°" },
+      { sym: md`\varphi`, meaning: "Site latitude (north positive)", unit: "°" },
+      { sym: md`\delta`, meaning: "Declination", unit: "°" },
+      { sym: md`\omega`, meaning: "Hour angle", unit: "°" },
+    ],
+    explanation: md`Derived from the spherical-triangle (pole–zenith–sun) cosine rule. At solar noon ($\omega=0$) it reduces to $\alpha = 90^\circ - |\varphi - \delta|$. At Shagaya (≈ 29.3°N) noon elevation runs from ≈ 37° in December to ≈ 84° in June.`,
+    lesson: "m02-l01",
+  },
+  {
+    id: "pv-solar-azimuth",
+    name: "Solar azimuth angle",
+    tex: md`\cos A_z = \frac{\sin\delta - \sin\alpha\sin\varphi}{\cos\alpha\cos\varphi}`,
+    vars: [
+      { sym: md`A_z`, meaning: "Solar azimuth measured clockwise from north (take 360° − arccos in the afternoon)", unit: "°" },
+      { sym: md`\delta,\ \alpha,\ \varphi`, meaning: "Declination, elevation, latitude", unit: "°" },
+    ],
+    explanation: md`Arccos returns 0–180° (morning/east side). For afternoon (ω > 0) use $A_z = 360^\circ - \arccos(\cdot)$. In Kuwait's summer the sun rises and sets north of east/west (azimuth < 90° at sunrise), which is why single-axis N–S trackers capture so much summer morning and evening energy.`,
+    lesson: "m02-l01",
+  },
+  {
+    id: "pv-closure",
+    name: "Irradiance closure equation",
+    tex: md`GHI = DNI\cos\theta_z + DHI`,
+    vars: [
+      { sym: md`GHI`, meaning: "Global horizontal irradiance", unit: "W/m²" },
+      { sym: md`DNI`, meaning: "Direct normal irradiance", unit: "W/m²" },
+      { sym: md`DHI`, meaning: "Diffuse horizontal irradiance", unit: "W/m²" },
+      { sym: md`\theta_z`, meaning: "Solar zenith angle", unit: "°" },
+    ],
+    explanation: md`The three components are not independent: measure any two, compute the third. A ground station that measures all three (pyrheliometer on a tracker, shaded and unshaded pyranometers) can **self-check** — closure errors above ≈ 5 % flag soiled domes, tracker misalignment or a shadow-ball fault.`,
+    lesson: "m02-l01",
+  },
+  {
+    id: "pv-poa-isotropic",
+    name: "Plane-of-array irradiance (isotropic sky)",
+    tex: md`G_{POA} = DNI\cos\theta + DHI\,\frac{1+\cos\beta}{2} + GHI\,\rho\,\frac{1-\cos\beta}{2}`,
+    vars: [
+      { sym: md`G_{POA}`, meaning: "Irradiance on the tilted module plane", unit: "W/m²" },
+      { sym: md`\theta`, meaning: "Angle of incidence between sun ray and module normal", unit: "°" },
+      { sym: md`\beta`, meaning: "Module tilt from horizontal", unit: "°" },
+      { sym: md`\rho`, meaning: "Ground albedo (reflectance)", unit: "—" },
+    ],
+    explanation: md`Beam + sky diffuse (view factor of the sky) + ground-reflected (view factor of the ground). The isotropic model assumes uniform sky radiance and underestimates POA by a few percent because real skies have circumsolar brightening and horizon brightening; **Perez** (the PVsyst default) models those and is the bankable choice.`,
+    lesson: "m02-l01",
+  },
+  // ---------------------------------------------------------------- l02
+  {
+    id: "pv-single-diode",
+    name: "Single-diode model",
+    tex: md`I = I_{ph} - I_0\left[\exp\left(\frac{V + I R_s}{n N_s V_T}\right) - 1\right] - \frac{V + I R_s}{R_{sh}}`,
+    vars: [
+      { sym: md`I_{ph}`, meaning: "Photogenerated current (∝ irradiance)", unit: "A" },
+      { sym: md`I_0`, meaning: "Diode reverse saturation current (rises steeply with temperature)", unit: "A" },
+      { sym: md`n`, meaning: "Diode ideality factor (≈ 1–1.5)", unit: "—" },
+      { sym: md`N_s`, meaning: "Number of cells in series", unit: "—" },
+      { sym: md`V_T`, meaning: "Thermal voltage kT/q (25.7 mV at 25 °C)", unit: "V" },
+      { sym: md`R_s,\ R_{sh}`, meaning: "Series and shunt resistance", unit: "Ω" },
+    ],
+    explanation: md`Five parameters ($I_{ph}, I_0, n, R_s, R_{sh}$) describe the whole I-V curve. PVsyst fits them from datasheet values (the PAN file). High $R_s$ flattens the knee (lower FF, worse at high current); low $R_{sh}$ tilts the flat part (leakage, worse at low light).`,
+    lesson: "m02-l02",
+  },
+  {
+    id: "pv-fill-factor",
+    name: "Fill factor",
+    tex: md`FF = \frac{V_{mp} I_{mp}}{V_{oc} I_{sc}} = \frac{P_{mp}}{V_{oc} I_{sc}}`,
+    vars: [
+      { sym: md`FF`, meaning: "Fill factor — squareness of the I-V curve", unit: "—" },
+      { sym: md`V_{mp},\ I_{mp}`, meaning: "Voltage and current at maximum power point", unit: "V, A" },
+      { sym: md`V_{oc},\ I_{sc}`, meaning: "Open-circuit voltage, short-circuit current", unit: "V, A" },
+    ],
+    explanation: md`Modern mono-Si modules: FF ≈ 0.78–0.83. A field-measured FF that drops over time points to rising series resistance (corroded ribbons, cracked cells, bad connectors) or shunting.`,
+    lesson: "m02-l02",
+  },
+  {
+    id: "pv-module-efficiency",
+    name: "Module efficiency",
+    tex: md`\eta = \frac{P_{mp}}{G \cdot A}`,
+    vars: [
+      { sym: md`\eta`, meaning: "Conversion efficiency", unit: "—" },
+      { sym: md`G`, meaning: "Irradiance (1000 at STC)", unit: "W/m²" },
+      { sym: md`A`, meaning: "Module gross area", unit: "m²" },
+    ],
+    explanation: md`2025-era utility modules: PERC ≈ 21–22 %, TOPCon ≈ 22–23.5 %, HJT ≈ 22.5–24 % (module level). Efficiency drives land, structure, cable and labour cost per MWp — not energy per Wp.`,
+    lesson: "m02-l02",
+  },
+  {
+    id: "pv-temp-power",
+    name: "Power with irradiance and temperature",
+    tex: md`P = P_{STC}\,\frac{G}{1000}\,\left[1 + \gamma\,(T_c - 25)\right]`,
+    vars: [
+      { sym: md`P`, meaning: "DC power at operating conditions", unit: "W" },
+      { sym: md`P_{STC}`, meaning: "Rated power at 1000 W/m², 25 °C, AM1.5", unit: "W" },
+      { sym: md`\gamma`, meaning: "Power temperature coefficient (negative, e.g. −0.0029 /°C)", unit: "1/°C" },
+      { sym: md`T_c`, meaning: "Cell temperature", unit: "°C" },
+    ],
+    explanation: md`First-order model (ignores low-light efficiency change and spectral effects). Typical $\gamma$: PERC −0.34 to −0.37 %/°C, TOPCon −0.29 to −0.32 %/°C, HJT −0.24 to −0.26 %/°C. In Kuwait summer, $T_c$ − 25 ≈ 45–50 K, so the coefficient is worth several percent of annual yield.`,
+    lesson: "m02-l02",
+  },
+  {
+    id: "pv-cell-temp-noct",
+    name: "Cell temperature (NOCT model)",
+    tex: md`T_c = T_a + \frac{NOCT - 20}{800}\,G`,
+    vars: [
+      { sym: md`T_c,\ T_a`, meaning: "Cell and ambient temperature", unit: "°C" },
+      { sym: md`NOCT`, meaning: "Nominal operating cell temperature (800 W/m², 20 °C, 1 m/s, open rack)", unit: "°C" },
+      { sym: md`G`, meaning: "Plane-of-array irradiance", unit: "W/m²" },
+    ],
+    explanation: md`Simple, wind-blind, and conservative (hot) at high irradiance. Typical NOCT 41–45 °C. Good for a quick upper bound; not what PVsyst uses.`,
+    lesson: "m02-l02",
+  },
+  {
+    id: "pv-cell-temp-faiman",
+    name: "Cell temperature (Faiman / PVsyst U-value model)",
+    tex: md`T_c = T_a + \frac{G}{U_0 + U_1 v}`,
+    vars: [
+      { sym: md`U_0`, meaning: "Constant heat-loss coefficient (≈ 25–29)", unit: "W/(m²·K)" },
+      { sym: md`U_1`, meaning: "Wind-dependent heat-loss coefficient (≈ 0–7)", unit: "W/(m²·K)/(m/s)" },
+      { sym: md`v`, meaning: "Wind speed", unit: "m/s" },
+    ],
+    explanation: md`PVsyst uses the same form (with absorption and efficiency terms) and defaults to $U_c = 29$, $U_v = 0$ for free-standing arrays. Faiman's fit for open-rack c-Si is about $U_0 = 25$, $U_1 = 6.84$. Insist the yield report states which U-values were used and why — a 2 W/m²K change moves annual yield by roughly 0.5–1 % in Kuwait.`,
+    lesson: "m02-l02",
+  },
+  {
+    id: "pv-voc-temp",
+    name: "Open-circuit voltage vs temperature",
+    tex: md`V_{oc}(T_c) = V_{oc,STC}\left[1 + \beta_{V_{oc}}\,(T_c - 25)\right]`,
+    vars: [
+      { sym: md`\beta_{V_{oc}}`, meaning: "Voc temperature coefficient (negative, e.g. −0.0025 /°C)", unit: "1/°C" },
+      { sym: md`T_c`, meaning: "Cell temperature", unit: "°C" },
+    ],
+    explanation: md`Voltage rises when cold. This is the equation that sets maximum string length: the coldest cell temperature with the array energised (a clear winter dawn) gives the highest Voc. Same form with $\beta_{V_{mp}}$ gives the hot-day MPP voltage that must stay inside the inverter MPPT window.`,
+    lesson: "m02-l02",
+  },
+  // ---------------------------------------------------------------- l03
+  {
+    id: "pv-warranty-degradation",
+    name: "Linear power warranty",
+    tex: md`P_{w}(y) = 1 - d_1 - d_a\,(y - 1)`,
+    vars: [
+      { sym: md`P_w(y)`, meaning: "Warranted minimum power at end of year y, fraction of nameplate", unit: "—" },
+      { sym: md`d_1`, meaning: "First-year degradation allowance (e.g. 0.01)", unit: "—" },
+      { sym: md`d_a`, meaning: "Annual degradation allowance from year 2 (e.g. 0.004)", unit: "1/yr" },
+      { sym: md`y`, meaning: "Year of operation", unit: "yr" },
+    ],
+    explanation: md`TOPCon/HJT n-type: 1 % then 0.4 %/yr → 87.4 % at year 30. PERC p-type: typically 2 % then 0.55 %/yr → 84.8 % at year 25. Note warranties are usually measured at STC with a measurement tolerance (often ±3 %) — which matters for claims.`,
+    lesson: "m02-l03",
+  },
+  {
+    id: "pv-bifacial-gain",
+    name: "Bifacial energy gain (first-order)",
+    tex: md`g_{bi} \approx \varphi_{bi}\,\frac{G_{rear}}{G_{front}}\,(1 - L_{rear})`,
+    vars: [
+      { sym: md`g_{bi}`, meaning: "Fractional energy gain vs monofacial", unit: "—" },
+      { sym: md`\varphi_{bi}`, meaning: "Bifaciality factor (rear/front efficiency at STC)", unit: "—" },
+      { sym: md`G_{rear}/G_{front}`, meaning: "Rear-to-front irradiance ratio (depends on albedo, height, GCR)", unit: "—" },
+      { sym: md`L_{rear}`, meaning: "Rear-side losses: structure shading, mismatch, non-uniformity", unit: "—" },
+    ],
+    explanation: md`Bifaciality: PERC ≈ 0.70, TOPCon ≈ 0.80, HJT ≈ 0.85–0.90. Rear irradiance ratio on single-axis trackers over light desert sand (albedo 0.25–0.4) is typically 7–12 %. Gains of 5–9 % are realistic; claims above ~10 % need measured albedo and a 3D/view-factor model to support them.`,
+    lesson: "m02-l03",
+  },
+  // ---------------------------------------------------------------- l04
+  {
+    id: "pv-string-length",
+    name: "Maximum modules per string",
+    tex: md`N_{max} = \left\lfloor \frac{V_{max,sys}}{V_{oc,STC}\left[1 + \beta_{V_{oc}}(T_{min} - 25)\right]} \right\rfloor`,
+    vars: [
+      { sym: md`N_{max}`, meaning: "Maximum modules in series (round down)", unit: "—" },
+      { sym: md`V_{max,sys}`, meaning: "Maximum system voltage (1500 V for modern plants; the lower of module, inverter, cable, connector ratings)", unit: "V" },
+      { sym: md`T_{min}`, meaning: "Minimum cell temperature while energised (≈ record low ambient)", unit: "°C" },
+    ],
+    explanation: md`Also check the minimum: $N \cdot V_{mp}(T_{c,max})$ must exceed the inverter's minimum MPPT voltage at full power on the hottest day, or the inverter will derate. Always round down; exceeding 1500 V voids certifications and can destroy inverter input stages.`,
+    lesson: "m02-l04",
+  },
+  {
+    id: "pv-dc-ac-ratio",
+    name: "DC/AC ratio (ILR)",
+    tex: md`r_{DC/AC} = \frac{P_{DC,STC}}{P_{AC,rated}}`,
+    vars: [
+      { sym: md`P_{DC,STC}`, meaning: "Array nameplate at STC", unit: "MWp" },
+      { sym: md`P_{AC,rated}`, meaning: "Inverter (or POI) AC rating", unit: "MWac" },
+    ],
+    explanation: md`Utility plants: 1.15–1.40. Higher ratio = cheaper inverters/grid per MWh and flatter output, at the cost of clipping. In a PPA with a contracted AC capacity at the point of interconnection, the economic ratio is set by marginal module cost vs marginal energy value.`,
+    lesson: "m02-l04",
+  },
+  {
+    id: "pv-gcr",
+    name: "Ground coverage ratio",
+    tex: md`GCR = \frac{L}{p}`,
+    vars: [
+      { sym: md`L`, meaning: "Collector width across the row (module length in portrait × modules high)", unit: "m" },
+      { sym: md`p`, meaning: "Row pitch (centre-to-centre)", unit: "m" },
+    ],
+    explanation: md`Single-axis trackers: 0.28–0.40 (0.33 common). Higher GCR saves land and cable but increases row-to-row shading and backtracking losses, and reduces rear-side irradiance for bifacial modules.`,
+    lesson: "m02-l04",
+  },
+  // ---------------------------------------------------------------- l05
+  {
+    id: "pv-soiling-average",
+    name: "Average soiling loss (linear accumulation)",
+    tex: md`\bar{L}_s = \frac{r\,N}{2}`,
+    vars: [
+      { sym: md`\bar{L}_s`, meaning: "Average soiling loss between cleanings", unit: "—" },
+      { sym: md`r`, meaning: "Soiling rate (loss per day without rain/cleaning)", unit: "1/day" },
+      { sym: md`N`, meaning: "Cleaning interval", unit: "days" },
+    ],
+    explanation: md`A sawtooth: loss grows linearly from 0 to $rN$ then resets. Real accumulation is non-linear (dew cementation, step changes in dust storms), which is why soiling stations and soiling-ratio monitoring per IEC 61724-1 matter.`,
+    lesson: "m02-l05",
+  },
+  {
+    id: "pv-cleaning-optimum",
+    name: "Optimal cleaning interval",
+    tex: md`N^{*} = \sqrt{\frac{2 \cdot 365 \cdot C}{E \cdot p \cdot r}}`,
+    vars: [
+      { sym: md`N^*`, meaning: "Cost-minimising cleaning interval", unit: "days" },
+      { sym: md`C`, meaning: "Cost of one full-plant cleaning cycle", unit: "USD" },
+      { sym: md`E`, meaning: "Annual energy (unsoiled)", unit: "MWh/yr" },
+      { sym: md`p`, meaning: "Value of energy", unit: "USD/MWh" },
+      { sym: md`r`, meaning: "Soiling rate", unit: "1/day" },
+    ],
+    explanation: md`Minimises annual cost $(365/N)\,C + E\,p\,r\,N/2$. At the optimum, cleaning spend equals soiling loss. The value $p$ is the key judgement: the IPP sees the PPA tariff; MEWRE sees avoided fuel and peak-capacity value, which can be much higher — so the Employer may want cleaning obligations tighter than the IPP's own optimum.`,
+    lesson: "m02-l05",
+  },
+  // ---------------------------------------------------------------- l06
+  {
+    id: "pv-performance-ratio",
+    name: "Performance ratio",
+    tex: md`PR = \frac{E_{grid}}{P_{STC}\,\dfrac{H_{POA}}{G_{STC}}} = \frac{Y_f}{Y_r}`,
+    vars: [
+      { sym: md`E_{grid}`, meaning: "Energy exported in the period", unit: "kWh" },
+      { sym: md`P_{STC}`, meaning: "DC nameplate", unit: "kWp" },
+      { sym: md`H_{POA}`, meaning: "Plane-of-array irradiation in the period", unit: "kWh/m²" },
+      { sym: md`G_{STC}`, meaning: "1 kW/m²", unit: "kW/m²" },
+      { sym: md`Y_f,\ Y_r`, meaning: "Final yield (kWh/kWp) and reference yield (h)", unit: "kWh/kWp, h" },
+    ],
+    explanation: md`Removes the weather so plants can be compared. Kuwait trackers: annual PR ≈ 0.78–0.84 (front-side basis); summer months lower because of temperature. Bifacial gain inflates a front-side PR — the contract must say whether PR uses front POA only or an effective irradiance, and whether it is temperature-corrected (IEC 61724-1).`,
+    lesson: "m02-l06",
+  },
+  {
+    id: "pv-specific-yield",
+    name: "Specific yield",
+    tex: md`Y_f = \frac{E_{grid}}{P_{STC}} \approx H_{POA}\cdot PR`,
+    vars: [
+      { sym: md`Y_f`, meaning: "Specific (final) yield", unit: "kWh/kWp" },
+      { sym: md`H_{POA}`, meaning: "Annual POA irradiation", unit: "kWh/m²" },
+    ],
+    explanation: md`Quick plausibility test for any yield claim: GHI × transposition gain × PR. For Kuwait (GHI ≈ 2,000–2,100), single-axis gain ≈ 1.22–1.28 and PR 0.80–0.85 give ≈ 1,950–2,300 kWh/kWp.`,
+    lesson: "m02-l06",
+  },
+  {
+    id: "pv-uncertainty-rss",
+    name: "Combined uncertainty (root-sum-square)",
+    tex: md`\sigma_{tot} = \sqrt{\sum_i \sigma_i^2}`,
+    vars: [
+      { sym: md`\sigma_i`, meaning: "Independent uncertainty components (1σ, % of P50)", unit: "%" },
+      { sym: md`\sigma_{tot}`, meaning: "Combined standard uncertainty", unit: "%" },
+    ],
+    explanation: md`Valid only for independent components. Interannual variability over an N-year horizon scales as $\sigma_{iav}/\sqrt{N}$. Resource uncertainty usually dominates; a year of on-site measurement correlated with long-term satellite data can roughly halve it.`,
+    lesson: "m02-l06",
+  },
+  {
+    id: "pv-exceedance",
+    name: "Exceedance probability (normal distribution)",
+    tex: md`P_X = P_{50}\,(1 - z_X\,\sigma_{tot})`,
+    vars: [
+      { sym: md`P_X`, meaning: "Energy exceeded with probability X %", unit: "MWh" },
+      { sym: md`z_X`, meaning: "Standard normal quantile: 0.674 (P75), 1.282 (P90), 2.326 (P99)", unit: "—" },
+      { sym: md`\sigma_{tot}`, meaning: "Combined uncertainty as a fraction", unit: "—" },
+    ],
+    explanation: md`Lenders size debt on P90 (1-year or 10-year) or P99. Equity looks at P50. A shift from 5 % to 7 % uncertainty moves P90 by ≈ 2.6 % of P50 — which flows straight into debt size.`,
+    lesson: "m02-l06",
+  },
+  // ---------------------------------------------------------------- l07
+  {
+    id: "pv-stc-translation",
+    name: "Translating measured power to STC (simplified IEC 60891)",
+    tex: md`P_{STC} = \frac{P_{meas}}{\dfrac{G_{meas}}{1000}\left[1 + \gamma\,(T_{c,meas} - 25)\right]}`,
+    vars: [
+      { sym: md`P_{meas}`, meaning: "Measured maximum power (I-V tracer)", unit: "W" },
+      { sym: md`G_{meas}`, meaning: "POA irradiance from a matched reference cell", unit: "W/m²" },
+      { sym: md`T_{c,meas}`, meaning: "Cell temperature (back-of-module sensor + offset, or from Voc)", unit: "°C" },
+    ],
+    explanation: md`Only trust it above ≈ 700–800 W/m² with stable sky. Field I-V uncertainty is ≈ ±3–5 % (reference cell, temperature, spectral, soiling), so a string reading −2 % is noise; a string −10 % or a cluster of −4 % strings is a finding.`,
+    lesson: "m02-l07",
+  },
+];
+
+export default formulas;
