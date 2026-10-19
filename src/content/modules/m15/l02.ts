@@ -36,7 +36,7 @@ const lesson: Lesson = {
       description:
         "Evaluating IPP bids strictly against published criteria on a comparable basis (common resource data, usable MWh at the POI), using formal clarifications that do not change bid substance, and documenting everything.",
       competency: "procurement",
-      related: ["m10.gulf-tariffs"],
+      related: ["m10.gulf-tariffs", "m11.evaluation-methods"],
     },
     {
       id: "m15.local-content",
@@ -44,6 +44,7 @@ const lesson: Lesson = {
       description:
         "Local-content and Kuwaitisation requirements set at levels the economy can actually supply (civil works, fabrication, cabling, services, O&M staffing), measured, scored and reported — not headline percentages that collapse in execution.",
       competency: "procurement",
+      related: ["m11.local-content"],
     },
     {
       id: "m15.deemed-energy",
@@ -51,7 +52,7 @@ const lesson: Lesson = {
       description:
         "A deemed-energy clause limited to offtaker-caused unavailability and curtailment beyond an allowance, calculated from measured irradiance through an agreed, validated model — bankable for lenders and auditable for MEWRE.",
       competency: "contracts",
-      related: ["m09.risk-allocation"],
+      related: ["m09.risk-allocation", "m06.deemed-energy"],
     },
     {
       id: "m15.design-integrity",
@@ -83,6 +84,7 @@ const lesson: Lesson = {
       description:
         "Proportionate, immediate response to heat stress, lifting and other fatal-risk hazards: stop the specific activity, investigate, fix the system, share the learning — and never trade safety for schedule.",
       competency: "risk",
+      related: ["m08.heat-stress", "m08.hse-kpis"],
     },
     {
       id: "m15.claims-variations",
@@ -106,7 +108,7 @@ const lesson: Lesson = {
       description:
         "Early studies with validated models, plant controller design, staged energisation with limited export under interim notifications, and final compliance demonstrated before COD.",
       competency: "grid",
-      related: ["m07.grid-compliance-tests", "m01.reactive-capability"],
+      related: ["m07.grid-compliance-tests", "m01.reactive-capability", "m06.compliance"],
     },
   ],
   sections: [

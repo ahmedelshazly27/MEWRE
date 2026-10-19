@@ -14,12 +14,12 @@ const lesson: Lesson = {
     "Defend a contingency movement or a payment-term change to the Audit Bureau with evidence",
   ],
   concepts: [
-    { id: "m10.budget-cycle", name: "Budget cycle and fiscal-year cash planning", description: "Annual appropriations by fiscal year; multi-year contracts must be translated into fiscal-year cash needs, with lapse and re-request risk.", competency: "controls", related: ["m10.scurve-forecast"] },
+    { id: "m10.budget-cycle", name: "Budget cycle and fiscal-year cash planning", description: "Annual appropriations by fiscal year; multi-year contracts must be translated into fiscal-year cash needs, with lapse and re-request risk.", competency: "controls", related: ["m10.scurve-forecast", "m00.budget-cycle"] },
     { id: "m10.commitment-expenditure", name: "Commitment vs expenditure", description: "Budget → commitment (contract/VO signed) → accrual (work certified) → expenditure (cash paid); each answers a different control question.", competency: "controls", related: ["m10.budget-cycle"] },
-    { id: "m10.payment-mechanics", name: "Payment certificates, advance and retention", description: "IPC process, advance payment against a guarantee recovered by amortisation, and retention held as security and released in two halves.", competency: "contracts", related: ["m10.commitment-expenditure"] },
+    { id: "m10.payment-mechanics", name: "Payment certificates, advance and retention", description: "IPC process, advance payment against a guarantee recovered by amortisation, and retention held as security and released in two halves.", competency: "contracts", related: ["m10.commitment-expenditure", "m09.payment-ipc", "m09.advance-payment-guarantee"] },
     { id: "m10.scurve-forecast", name: "S-curve cash-flow forecasting", description: "Cumulative progress and payment profile over time; converts a contract value into monthly and fiscal-year cash.", competency: "controls", related: ["m10.payment-mechanics", "m10.budget-cycle"] },
-    { id: "m10.eac-forecast", name: "Estimate at completion", description: "EVM-based EAC methods and the owner-side EAC (contract + approved variations + expected claims and risks + owner's costs).", competency: "controls", related: ["m10.contingency-drawdown"] },
-    { id: "m10.contingency-drawdown", name: "Contingency drawdown and reporting", description: "Controlled release of contingency against approved changes and realised risks, with a log that explains every movement.", competency: "controls", related: ["m10.eac-forecast", "m10.estimate-contingency"] },
+    { id: "m10.eac-forecast", name: "Estimate at completion", description: "EVM-based EAC methods and the owner-side EAC (contract + approved variations + expected claims and risks + owner's costs).", competency: "controls", related: ["m10.contingency-drawdown", "m08.evm-forecasting"] },
+    { id: "m10.contingency-drawdown", name: "Contingency drawdown and reporting", description: "Controlled release of contingency against approved changes and realised risks, with a log that explains every movement.", competency: "controls", related: ["m10.eac-forecast", "m10.estimate-contingency", "m08.contingency"] },
   ],
   sections: [
     {

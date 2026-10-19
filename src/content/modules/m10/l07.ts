@@ -13,8 +13,8 @@ const lesson: Lesson = {
     "Apply a model-review checklist (structure, signs, timing, hard-codes, checks) to a third-party model",
   ],
   concepts: [
-    { id: "m10.model-structure", name: "Financial model structure and standards", description: "Separation of inputs, calculations and outputs; one timeline; consistent signs and units; no hard-coded numbers in formulas; checks and flags (FAST-style principles).", competency: "finance", related: ["m10.npv", "m10.cfads-waterfall"] },
-    { id: "m10.model-audit", name: "Model review and audit", description: "Systematic checks a PM applies to a consultant's or bidder's model: tie-outs, balance checks, sign conventions, timing, circularity, sensitivity behaviour.", competency: "finance", related: ["m10.model-structure"] },
+    { id: "m10.model-structure", name: "Financial model structure and standards", description: "Separation of inputs, calculations and outputs; one timeline; consistent signs and units; no hard-coded numbers in formulas; checks and flags (FAST-style principles).", competency: "finance", related: ["m10.npv", "m10.cfads-waterfall", "m14.code-not-arithmetic"] },
+    { id: "m10.model-audit", name: "Model review and audit", description: "Systematic checks a PM applies to a consultant's or bidder's model: tie-outs, balance checks, sign conventions, timing, circularity, sensitivity behaviour.", competency: "finance", related: ["m10.model-structure", "m14.model-audit"] },
     { id: "m10.what-if-analysis", name: "What-if analysis in spreadsheets", description: "Goal Seek, scenario switches, one-at-a-time sensitivities and data tables to answer 'what would it take' questions.", competency: "finance", related: ["m10.tornado-scenario", "m10.model-structure"] },
   ],
   sections: [

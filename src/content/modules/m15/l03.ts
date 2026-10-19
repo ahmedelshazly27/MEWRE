@@ -28,7 +28,7 @@ const lesson: Lesson = {
       description:
         "A project record — decisions, reasons, approvals, correspondence, calculations and data — maintained from day one so that any State Audit Bureau or internal query can be answered completely and on time.",
       competency: "procurement",
-      related: ["m08.document-control"],
+      related: ["m08.document-control", "m11.audit-prior-review"],
     },
     {
       id: "m15.leadership-briefing",
@@ -44,6 +44,7 @@ const lesson: Lesson = {
       description:
         "A structured after-action process that records what happened, why, the impact and a specific change (owner, date) to a procedure, template or contract — and verifies the change was made.",
       competency: "delivery",
+      related: ["m07.final-acceptance"],
     },
     {
       id: "m15.first-90-days",
@@ -59,6 +60,7 @@ const lesson: Lesson = {
       description:
         "A deliberate routine for keeping technical, contractual and Kuwait-sector knowledge current: spaced review, primary sources, peers, post-project reviews and responsible use of AI tools.",
       competency: "ai",
+      related: ["m14.verification-habits"],
     },
   ],
   sections: [
