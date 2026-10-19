@@ -62,7 +62,7 @@ Rules of credit: units completed (piles, rows, modules, cable m) · weighted mil
 Kuwait risks: heat (53.9 °C record, WMO) · summer midday work restriction (**verify**) · approvals KAPP → Higher Committee → Audit Bureau (≥ KD 100k prior review, **verify**) · Law 94/2026 tenders amendment · customs (Zone 2: up to 10 % exemption reported) · FX on USD equipment · MEWRE grid interfaces · shamal dust.
 
 ## Change, interfaces, documents
-- FIDIC 2017: Cl. 13 variations (13.3.1 instruction / 13.3.2 proposal); Cl. 20 claims: notice 28 d, detailed claim 84 d; 8.3 programme within 28 d of Commencement; 4.20 monthly report within 7 d; 8.4 advance warning; Cl. 21 DAAB.
+- FIDIC 2017: Cl. 13 variations (13.3.1 instruction / 13.3.2 proposal); Cl. 20 claims: notice 28 d, detailed claim 84 d; 8.3 programme within 28 d of the 8.1 Commencement notice (Engineer review 21 d); 4.20 monthly report within 7 d; 8.4 advance warning; Cl. 21 DAAB.
 - NEC4 cl. 15 early warning: register + meetings; failure to warn reduces CE assessment.
 - Variation value $=C_{dir}(1+k_{OHP})+c_t\,\Delta T_{completion}$.
 - Review codes: **A** proceed · **B** proceed with comments, resubmit · **C** rejected, resubmit · (D info).

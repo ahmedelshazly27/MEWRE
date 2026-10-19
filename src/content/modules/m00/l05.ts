@@ -13,10 +13,10 @@ const lesson: Lesson = {
     "You can compute the cost of a commissioning delay in displaced-fuel terms and compare the present value of a PPA with a budget-funded alternative.",
   ],
   concepts: [
-    { id: "m00.budget-cycle", name: "Budget cycle and fiscal year", description: "Fiscal year 1 April–31 March; ministry capital requests to the Ministry of Finance, draft budget to cabinet, issued by decree-law while the National Assembly is suspended; multi-year projects need annual allocations.", competency: "finance", related: ["m00.delivery-routes"] },
-    { id: "m00.delivery-routes", name: "Delivery routes: EPC, PPP/IPP, G2G", description: "Budget-funded EPC (CAPT tender, state capex and risk), PPP/IPP via KAPP (private finance, long-term PPA payments) and government-to-government agreements (negotiated, terms often opaque).", competency: "delivery", related: ["m00.budget-cycle", "m00.approval-timelines"] },
-    { id: "m00.approval-timelines", name: "Real approval and procurement timelines", description: "Kuwaiti benchmarks: Zone 1 RFQ to reported selection ~31 months; AZN 2&3 letter agreement to ECWPA ~6 months; Al-Khairan RFP to bids ~9 months with three extensions; 400 kV line lowest bid to award ~11 months.", competency: "delivery", related: ["m00.delay-cost"] },
-    { id: "m00.delay-cost", name: "Cost of delay", description: "Each day a renewable plant is late, the state burns fuel worth roughly (fuel value − tariff) × daily energy; for a 1.1 GW plant this is of the order of KWD 0.1–0.2 m per day.", competency: "finance", related: ["m00.approval-timelines"] },
+    { id: "m00.budget-cycle", name: "Budget cycle and fiscal year", description: "Fiscal year 1 April–31 March; ministry capital requests to the Ministry of Finance, draft budget to cabinet, issued by decree-law while the National Assembly is suspended; multi-year projects need annual allocations.", competency: "finance", related: ["m00.delivery-routes", "m10.budget-cycle", "m10.commitment-expenditure"] },
+    { id: "m00.delivery-routes", name: "Delivery routes: EPC, PPP/IPP, G2G", description: "Budget-funded EPC (CAPT tender, state capex and risk), PPP/IPP via KAPP (private finance, long-term PPA payments) and government-to-government agreements (negotiated, terms often opaque).", competency: "delivery", related: ["m00.budget-cycle", "m00.approval-timelines", "m09.contracting-strategy", "m11.procurement-regimes"] },
+    { id: "m00.approval-timelines", name: "Real approval and procurement timelines", description: "Kuwaiti benchmarks: Zone 1 RFQ to reported selection ~31 months; AZN 2&3 letter agreement to ECWPA ~6 months; Al-Khairan RFP to bids ~9 months with three extensions; 400 kV line lowest bid to award ~11 months.", competency: "delivery", related: ["m00.delay-cost", "m11.delay-causes", "m11.pert-approvals"] },
+    { id: "m00.delay-cost", name: "Cost of delay", description: "Each day a renewable plant is late, the state burns fuel worth roughly (fuel value − tariff) × daily energy; for a 1.1 GW plant this is of the order of KWD 0.1–0.2 m per day.", competency: "finance", related: ["m00.approval-timelines", "m09.deemed-energy", "m01.fuel-displacement"] },
     { id: "m00.vision-2035", name: "Vision 2035 and development planning", description: "Kuwait Vision 2035 'New Kuwait' (seven pillars) and the National Development Plan, overseen by the Supreme Council for Planning and Development, frame project priority and funding.", competency: "context", related: ["m00.budget-cycle"] },
   ],
   sections: [
@@ -29,7 +29,7 @@ const lesson: Lesson = {
           kind: "md",
           md: md`## The fiscal year and the budget cycle
 
-Kuwait's **fiscal year runs from 1 April to 31 March**; "FY2026/27" means 1 April 2026 – 31 March 2027. The FY2026/27 draft budget (presented to the cabinet in February 2026) projected **spending KD 26.1 bn**, **revenue KD 16.3 bn** and a deficit of about **KD 9.8 bn**, with wages and subsidies about **76%** of spending and **capital spending raised 36.8% to KD 3.1 bn**, at an assumed oil price of USD 57/bbl.
+Kuwait's **fiscal year runs from 1 April to 31 March**; "FY2026/27" means 1 April 2026 – 31 March 2027. The FY2026/27 draft budget, as reported by Kuwait Times in February 2026, projected **spending KD 26.1 bn**, **revenue KD 16.3 bn** and a deficit of about **KD 9.8 bn**, with wages and subsidies about **76%** of spending and **capital spending of about KD 3.1 bn**. These are draft figures from a press report outside the research brief — confirm the enacted budget before quoting them.
 
 The generic cycle for a ministry capital project:
 
@@ -82,7 +82,7 @@ The PPP route also has a Kuwait-specific twist: for projects above KD 60 m, PPP 
 | AZN 2&3 IWPP (KAPP) | Letter agreement 10 Aug 2025 → ECWPA 3 Feb 2026 | **~6 months** from preferred bidder to signature |
 | Al-Khairan Phase 1 IWPP (KAPP) | RFP 31 Aug 2025 → bids 1 Jun 2026 | **9 months**, three deadline extensions |
 | Shagaya–Al-Wafra 400 kV OHTL (MEWRE/CAPT) | Lowest bid Apr 2025 → award Mar 2026 | **~11 months** from bid opening to award |
-| KNPC Dibdibah EPC+F | Bids Apr 2019 → cancelled ~2020 | Re-procured as KAPP IPP: ~5 years lost |
+| KNPC Dibdibah EPC+F | Bids Apr 2019 → cancelled ~2020 | Re-procured as KAPP IPP: several years lost (Zone 1 selection reported only in 2026) |
 
 Patterns: bid deadlines are routinely extended (bidders need time for Kuwait-specific terms and financing); the post-bid approval phase takes months; cancellations happen (Dibdibah, Abdaliya ISCC). Build these into every schedule as explicit activities with float, not as "admin".`,
         },
@@ -361,7 +361,7 @@ The state can buy the same energy two ways: pay capex now and O&M yearly (EPC), 
   ],
   flashcards: [
     { id: "m00-l05-f1", front: "Kuwait fiscal year", back: "1 April – 31 March (FY2026/27 = Apr 2026 – Mar 2027).", concepts: ["m00.budget-cycle"] },
-    { id: "m00-l05-f2", front: "FY2026/27 draft capital spending", back: "KD 3.1 bn (+36.8%) within KD 26.1 bn total spending; oil price assumption USD 57/bbl.", concepts: ["m00.budget-cycle"] },
+    { id: "m00-l05-f2", front: "FY2026/27 draft capital spending", back: "About KD 3.1 bn within KD 26.1 bn total spending (draft, as reported by Kuwait Times; verify the enacted budget).", concepts: ["m00.budget-cycle"] },
     { id: "m00-l05-f3", front: "Three delivery routes", back: "Budget-funded EPC (CAPT); PPP/IPP (KAPP, PPA); G2G (framework agreement, negotiated).", concepts: ["m00.delivery-routes"] },
     { id: "m00-l05-f4", front: "PPP shareholding under Law 116/2014 (as reported)", back: "50% citizen IPO / 6–24% public entities / ≥26% private investor (projects > KD 60 m). Practice on IWPPs: 40% developer / 60% KAPP.", concepts: ["m00.delivery-routes"] },
     { id: "m00-l05-f5", front: "Cost of delay formula", back: md`$C_d = \Delta t \cdot P \cdot CF \cdot 24 \cdot (v - T)$`, concepts: ["m00.delay-cost"] },

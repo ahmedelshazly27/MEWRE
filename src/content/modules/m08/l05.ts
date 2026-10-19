@@ -13,12 +13,12 @@ const lesson: Lesson = {
     "You can identify and plan for Kuwait-specific risks, separating verified facts from assumptions that must be checked.",
   ],
   concepts: [
-    { id: "m08.risk-register", name: "Risk register & risk statements", description: "Living record of risks with cause–event–effect statements, scores, owners, responses, triggers and status.", competency: "risk" },
+    { id: "m08.risk-register", name: "Risk register & risk statements", description: "Living record of risks with cause–event–effect statements, scores, owners, responses, triggers and status.", competency: "risk", related: ["m09.risk-allocation"] },
     { id: "m08.pi-matrix", name: "Probability–impact matrix", description: "Ordinal 5×5 scoring used to triage risks into response priorities; not a quantity.", competency: "risk", related: ["m08.risk-register"] },
     { id: "m08.emv", name: "Expected monetary value", description: "Sum of probability × impact over discrete risks; first-cut contingency.", competency: "risk", related: ["m08.risk-register"] },
-    { id: "m08.monte-carlo", name: "Monte Carlo risk analysis", description: "Simulating schedule/cost thousands of times from ranged estimates and risk events to produce a probability distribution (P50, P80, P90).", competency: "risk", related: ["m08.cpm", "m08.emv"] },
-    { id: "m08.contingency", name: "Contingency vs management reserve", description: "Contingency covers identified risks (known-unknowns) within the baseline; management reserve covers unknown-unknowns and sits outside it.", competency: "risk", related: ["m08.monte-carlo"] },
-    { id: "m08.kuwait-risks", name: "Kuwait-specific project risks", description: "Extreme heat and summer work restrictions, shamal dust storms, layered approvals, customs clearance, FX on USD-priced equipment, MEWRE-side grid interfaces.", competency: "risk", related: ["m08.risk-register"] },
+    { id: "m08.monte-carlo", name: "Monte Carlo risk analysis", description: "Simulating schedule/cost thousands of times from ranged estimates and risk events to produce a probability distribution (P50, P80, P90).", competency: "risk", related: ["m08.cpm", "m08.emv", "m11.pert-approvals"] },
+    { id: "m08.contingency", name: "Contingency vs management reserve", description: "Contingency covers identified risks (known-unknowns) within the baseline; management reserve covers unknown-unknowns and sits outside it.", competency: "risk", related: ["m08.monte-carlo", "m10.estimate-contingency", "m10.contingency-drawdown"] },
+    { id: "m08.kuwait-risks", name: "Kuwait-specific project risks", description: "Extreme heat and summer work restrictions, shamal dust storms, layered approvals, customs clearance, FX on USD-priced equipment, MEWRE-side grid interfaces.", competency: "risk", related: ["m08.risk-register", "m00.approval-timelines"] },
   ],
   sections: [
     {

@@ -107,9 +107,11 @@ Derived: concept mastery (from attempts), competency mastery, readiness score, r
 The brief asked to proceed without waiting, so these defaults were taken; all are changeable in
 Settings or by editing content:
 
-- **Time budget**: the `[X hours/week] for [Y weeks]` placeholders were not filled in. Default
-  plan = 10 h/week for 12 weeks (~120 h, roughly the curriculum's estimated hours); the
-  Settings page lets you enter real numbers and the dashboard re-paces the weekly target.
+- **Time budget**: the `[X hours/week] for [Y weeks]` placeholders were not filled in. The
+  finished curriculum estimates ~152 study hours, so the default plan is 12 h/week for 13 weeks.
+  Enter your real numbers in Settings and the dashboard re-paces the weekly target and plan pace.
+  At fewer hours, follow the study order (M0, M1, M8, M9, M10, M7 first) — they carry most of the
+  job-readiness weight.
 - **Single user, local-first** — no authentication; run locally (`npm run dev`) and open on a
   phone over LAN if desired. Supabase migration path documented.
 - **AI tutor optional** — every feature works without an API key; AI grading falls back to

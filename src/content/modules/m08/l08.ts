@@ -14,11 +14,11 @@ const lesson: Lesson = {
     "You can run a progress meeting that ends with decisions, owners and dates.",
   ],
   concepts: [
-    { id: "m08.stakeholder-mgmt", name: "Stakeholder mapping & engagement", description: "Identifying stakeholders, analysing power/interest/attitude, and planning engagement to secure decisions and avoid surprises.", competency: "leadership", related: ["m08.governance"] },
-    { id: "m08.rag-reporting", name: "RAG status & honest reporting", description: "Red/amber/green ratings driven by pre-defined quantitative criteria and forecasts, with trend and path to green.", competency: "leadership", related: ["m08.evm-basics", "m08.tolerances"] },
-    { id: "m08.progress-report", name: "Monthly progress report & dashboard", description: "Structured monthly reporting (FIDIC 4.20-type contractor report and the PM's report to leadership) with S-curves, forecasts, risks, decisions needed.", competency: "leadership", related: ["m08.rag-reporting"] },
-    { id: "m08.early-warning", name: "Early / advance warning", description: "Contractual duty to notify matters that may affect cost, time or performance: NEC4 clause 15 (with register and meetings) vs FIDIC 2017 Sub-Clause 8.4.", competency: "contracts", related: ["m08.risk-register", "m08.change-control"] },
-    { id: "m08.contractor-mgmt", name: "Contractor management & escalation", description: "Managing contractors through clear expectations, evidence, performance reviews, contractual levers and a defined escalation ladder.", competency: "leadership", related: ["m08.stakeholder-mgmt"] },
+    { id: "m08.stakeholder-mgmt", name: "Stakeholder mapping & engagement", description: "Identifying stakeholders, analysing power/interest/attitude, and planning engagement to secure decisions and avoid surprises.", competency: "leadership", related: ["m08.governance", "m15.stakeholder-map", "m13.ministry-hierarchy"] },
+    { id: "m08.rag-reporting", name: "RAG status & honest reporting", description: "Red/amber/green ratings driven by pre-defined quantitative criteria and forecasts, with trend and path to green.", competency: "leadership", related: ["m08.evm-basics", "m08.tolerances", "m13.bad-news"] },
+    { id: "m08.progress-report", name: "Monthly progress report & dashboard", description: "Structured monthly reporting (FIDIC 4.20-type contractor report and the PM's report to leadership) with S-curves, forecasts, risks, decisions needed.", competency: "leadership", related: ["m08.rag-reporting", "m13.bluf", "m12.performance-reporting"] },
+    { id: "m08.early-warning", name: "Early / advance warning", description: "Contractual duty to notify matters that may affect cost, time or performance: NEC4 clause 15 (with register and meetings) vs FIDIC 2017 Sub-Clause 8.4.", competency: "contracts", related: ["m08.risk-register", "m08.change-control", "m09.programme-eot"] },
+    { id: "m08.contractor-mgmt", name: "Contractor management & escalation", description: "Managing contractors through clear expectations, evidence, performance reviews, contractual levers and a defined escalation ladder.", competency: "leadership", related: ["m08.stakeholder-mgmt", "m13.accountability-ladder", "m13.progress-meeting"] },
   ],
   sections: [
     {

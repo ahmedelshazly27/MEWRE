@@ -25,20 +25,21 @@ const lesson: Lesson = {
       name: "Star (wye) and delta connections",
       description: "In star, V_L = √3 V_ph and I_L = I_ph; in delta, V_L = V_ph and I_L = √3 I_ph. Transformer vector groups (Dyn11, YNd11) combine them.",
       competency: "engineering",
-      related: ["m01.transformer-ratings"],
+      related: ["m01.transformer-ratings", "m06.substation-components"],
     },
     {
       id: "m01.neutral-unbalance",
       name: "Neutral current and unbalance",
       description: "Phasor sum of phase currents flows in the neutral; unequal phase loading or voltages create negative-sequence components that heat machines and trip inverters.",
       competency: "engineering",
+      related: ["m06.power-quality"],
     },
     {
       id: "m01.current-sanity-check",
       name: "SLD current sanity checks",
       description: "Using I = S/(√3 V) and anchors (1 MVA ≈ 17.5 A at 33 kV) to verify cable, busbar, breaker and CT ratings on drawings.",
       competency: "engineering",
-      related: ["m01.three-phase-power"],
+      related: ["m01.three-phase-power", "m06.sld-reading", "m07.cable-sizing"],
     },
   ],
   sections: [

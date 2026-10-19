@@ -52,7 +52,7 @@ const lesson: Lesson = {
       description:
         "Cooling load at 50 °C (battery heat, envelope, solar), COP collapse with ambient, N+1 redundancy, sand-trap louvres and filters, condenser recirculation.",
       competency: "wind-storage",
-      related: ["m05.aging", "m05.rte"],
+      related: ["m05.aging", "m05.rte", "m02.thermal-derating", "m04.high-temp-derating"],
     },
     {
       id: "m05.erp",
@@ -60,7 +60,7 @@ const lesson: Lesson = {
       description:
         "Site-specific plan agreed with the fire authority: detection/alarm, isolation, no-entry rules, exposure protection, water supply, monitoring, re-ignition watch, post-incident handling.",
       competency: "risk",
-      related: ["m05.fire-suppression"],
+      related: ["m05.fire-suppression", "m08.ptw"],
     },
     {
       id: "m05.fat-sat",
@@ -68,7 +68,7 @@ const lesson: Lesson = {
       description:
         "Factory acceptance (BMS, HVAC, fire system, insulation, IP, EMS interface) and site acceptance (integrated safety, HVAC under load, PCS, energisation, capacity/RTE) with hold points.",
       competency: "risk",
-      related: ["m05.bess-codes"],
+      related: ["m05.bess-codes", "m07.commissioning-sequence", "m08.hold-witness"],
     },
   ],
   sections: [

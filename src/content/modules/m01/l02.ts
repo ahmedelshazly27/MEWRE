@@ -32,20 +32,21 @@ const lesson: Lesson = {
       name: "Power factor and its correction",
       description: "PF = P/S; low PF means more current, losses and voltage drop for the same MW. Corrected by capacitors, STATCOMs or inverter reactive control.",
       competency: "engineering",
-      related: ["m01.reactive-capability"],
+      related: ["m01.reactive-capability", "m06.power-quality"],
     },
     {
       id: "m01.reactive-capability",
       name: "Reactive capability of inverter-based plants",
       description: "The P-Q envelope an IBR plant can deliver at the point of connection across voltage and ambient temperature, as required by grid codes.",
       competency: "grid",
-      related: ["m01.voltage-reactive-link"],
+      related: ["m01.voltage-reactive-link", "m06.reactive-capability", "m02.thermal-derating", "m06.compliance"],
     },
     {
       id: "m01.voltage-reactive-link",
       name: "Voltage–reactive power coupling",
       description: "On high-X/R networks, voltage magnitude is controlled mainly by reactive power flow (ΔV ≈ (RP + XQ)/V).",
       competency: "grid",
+      related: ["m06.qv-control", "m06.load-flow"],
     },
   ],
   sections: [

@@ -14,12 +14,12 @@ const lesson: Lesson = {
     "You can determine the project impact of a delay from float, and decide what to ask the contractor.",
   ],
   concepts: [
-    { id: "m08.cpm", name: "Critical path method", description: "Network scheduling using forward/backward passes to find early/late dates, float and the longest (critical) path.", competency: "controls", related: ["m08.wbs"] },
-    { id: "m08.float", name: "Total and free float", description: "Total float: delay possible without delaying completion. Free float: delay possible without delaying any successor's early start.", competency: "controls", related: ["m08.cpm"] },
+    { id: "m08.cpm", name: "Critical path method", description: "Network scheduling using forward/backward passes to find early/late dates, float and the longest (critical) path.", competency: "controls", related: ["m08.wbs", "m09.programme-eot"] },
+    { id: "m08.float", name: "Total and free float", description: "Total float: delay possible without delaying completion. Free float: delay possible without delaying any successor's early start.", competency: "controls", related: ["m08.cpm", "m09.delay-analysis"] },
     { id: "m08.lags-constraints", name: "Relationships, lags and constraints", description: "FS/SS/FF/SF logic with lags/leads; date constraints that override logic and can create negative or false float.", competency: "controls", related: ["m08.cpm"] },
     { id: "m08.p6", name: "Primavera P6 concepts", description: "EPS, WBS, activities, activity codes, calendars, baselines, data date, scheduling options, XER exchange files.", competency: "controls", related: ["m08.cpm"] },
-    { id: "m08.dcma14", name: "DCMA 14-point assessment", description: "Standard set of schedule-quality metrics: logic, leads, lags, relationship types, constraints, float, durations, invalid dates, resources, missed tasks, CP test, CPLI, BEI.", competency: "controls", related: ["m08.cpm", "m08.p6"] },
-    { id: "m08.resource-loading", name: "Resource loading & levelling", description: "Assigning labour/equipment to activities to test feasibility; levelling uses float to smooth peaks, sometimes extending the schedule.", competency: "controls", related: ["m08.cpm"] },
+    { id: "m08.dcma14", name: "DCMA 14-point assessment", description: "Standard set of schedule-quality metrics: logic, leads, lags, relationship types, constraints, float, durations, invalid dates, resources, missed tasks, CP test, CPLI, BEI.", competency: "controls", related: ["m08.cpm", "m08.p6", "m14.schedule-health"] },
+    { id: "m08.resource-loading", name: "Resource loading & levelling", description: "Assigning labour/equipment to activities to test feasibility; levelling uses float to smooth peaks, sometimes extending the schedule.", competency: "controls", related: ["m08.cpm", "m07.construction-productivity"] },
   ],
   sections: [
     {
@@ -65,7 +65,7 @@ Using the time-zero convention (an activity of 10 weeks starting at 0 finishes a
           kind: "md",
           md: md`### Lag example (SS + FF)
 
-Piling P = 12 weeks from week 0. Tracker installation T = 14 weeks, with **SS +4** and **FF +2** from P. SS bound: $ES_T \ge 0 + 4 = 4$. FF bound: $EF_T \ge 12 + 2 = 14$, i.e., $ES_T \ge 0$. So $ES_T = 4$, $EF_T = 18$ — six weeks shorter than strict FS (P finish 12 + 14 = 26). Overlapping logic is how real PV programmes compress; it is also how optimistic planners hide risk, because the overlap assumes piling stays ahead of tracker crews all the way.
+Piling P = 12 weeks from week 0. Tracker installation T = 14 weeks, with **SS +4** and **FF +2** from P. SS bound: $ES_T \ge 0 + 4 = 4$. FF bound: $EF_T \ge 12 + 2 = 14$, i.e., $ES_T \ge 0$. So $ES_T = 4$, $EF_T = 18$ — eight weeks shorter than strict FS (P finish 12 + 14 = 26). Overlapping logic is how real PV programmes compress; it is also how optimistic planners hide risk, because the overlap assumes piling stays ahead of tracker crews all the way.
 
 ### Constraints
 
@@ -219,7 +219,7 @@ The checks are **diagnostic, not pass/fail law**: a 44-day threshold is unrealis
 
 ### Reviewing a contractor's baseline programme (Sub-Clause 8.3-type submission)
 
-Under FIDIC 2017, the contractor submits an initial programme within 28 days of the Commencement Date (Sub-Clause 8.3) and the Engineer/Employer has a review period to give notice of non-compliance. Use it. A schedule accepted without comment becomes the yardstick for every future extension-of-time claim.
+Under FIDIC 2017, the contractor submits an initial programme within 28 days after receiving the notice of the Commencement Date under Sub-Clause 8.1 (Sub-Clause 8.3), and the Engineer has 21 days to give notice of the extent to which it does not comply with the Contract. Use it. A schedule accepted without comment becomes the yardstick for every future extension-of-time claim.
 
 1. **Run the DCMA 14 checks** on the XER (P6 schedule check, or tools such as Acumen Fuse / Schedule Analyzer).
 2. **Trace the critical path from the end milestone backwards.** Does it make physical sense (procurement → installation → commissioning), or does it run through a hard constraint or an LOE?
@@ -378,7 +378,7 @@ Under FIDIC 2017, the contractor submits an initial programme within 28 days of 
     { id: "m08-l03-f7", front: "CPLI and BEI thresholds", back: "Both ≥ 0.95." },
     { id: "m08-l03-f8", front: "Why avoid hard (mandatory) constraints?", back: "They override logic, falsify float and hide negative float." },
     { id: "m08-l03-f9", front: "What file must accompany every programme submission?", back: "The native P6 XER (not just a PDF)." },
-    { id: "m08-l03-f10", front: "FIDIC 2017: initial programme deadline", back: "Within 28 days after the Commencement Date (Sub-Clause 8.3)." },
+    { id: "m08-l03-f10", front: "FIDIC 2017: initial programme deadline", back: "Within 28 days after receiving the notice of the Commencement Date under Sub-Clause 8.1 (Sub-Clause 8.3); the Engineer then has 21 days to notify non-compliance." },
   ],
   scenarios: [
     {

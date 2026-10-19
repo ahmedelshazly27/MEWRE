@@ -13,10 +13,10 @@ const lesson: Lesson = {
     "You can explain the causes of the June 2024, August 2024, April 2025 and May 2025 power cuts and what each implies for renewable project design and scheduling.",
   ],
   concepts: [
-    { id: "m00.peak-demand", name: "Kuwait summer peak demand", description: "Air-conditioning-driven afternoon peak of roughly 17.5–17.7 GW in July–August, growing by about 1 GW of new connections a year.", competency: "context", related: ["m00.reserve-margin"] },
-    { id: "m00.available-capacity", name: "Installed vs available capacity", description: "Nameplate (~21 GW) minus forced/planned outages and high-temperature derating gives reliably available capacity (~17 GW) at peak.", competency: "context", related: ["m00.reserve-margin"] },
-    { id: "m00.reserve-margin", name: "Reserve margin", description: "(Available capacity − peak demand) / peak demand; negative in Kuwait's 2025 peak months, hence load-shedding.", competency: "engineering" },
-    { id: "m00.fuel-mix-heat-rate", name: "Fuel mix and heat rate", description: "Kuwait generates mainly from gas (domestic + LNG) and liquid fuels (crude, fuel oil, gasoil); heat rate converts energy to fuel burned.", competency: "engineering", related: ["m00.available-capacity"] },
+    { id: "m00.peak-demand", name: "Kuwait summer peak demand", description: "Air-conditioning-driven afternoon peak of roughly 17.5–17.7 GW in July–August, growing by about 1 GW of new connections a year.", competency: "context", related: ["m00.reserve-margin", "m01.load-curve-kuwait", "m01.load-factor-diversity"] },
+    { id: "m00.available-capacity", name: "Installed vs available capacity", description: "Nameplate (~21 GW) minus forced/planned outages and high-temperature derating gives reliably available capacity (~17 GW) at peak.", competency: "context", related: ["m00.reserve-margin", "m01.capacity-factor", "m01.transformer-derating"] },
+    { id: "m00.reserve-margin", name: "Reserve margin", description: "(Available capacity − peak demand) / peak demand; negative in Kuwait's 2025 peak months, hence load-shedding.", competency: "engineering", related: ["m01.frequency-balance"] },
+    { id: "m00.fuel-mix-heat-rate", name: "Fuel mix and heat rate", description: "Kuwait generates mainly from gas (domestic + LNG) and liquid fuels (crude, fuel oil, gasoil); heat rate converts energy to fuel burned.", competency: "engineering", related: ["m00.available-capacity", "m01.heat-rate", "m01.lhv-hhv"] },
     { id: "m00.load-shedding-imports", name: "Load-shedding and GCCIA imports", description: "Programmed rotating cuts and short-term imports via the GCC Interconnection Authority are the emergency levers when the reserve margin goes negative.", competency: "context", related: ["m00.reserve-margin", "m00.peak-demand"] },
   ],
   sections: [
@@ -42,7 +42,7 @@ Recent peaks, as reported:
 | Summer 2025 | 17,610 MW | MEWRE via Kuwait Times |
 | Summer 2026 | **17,540 MW** (−70 MW, second year of decline per the minister) | MEWRE via Kuwait Times |
 
-Two things jump out. First, peak growth has flattened at the top even though **new connections added 1,059 MW (2024→25) and 1,019 MW (2025→26)** of load: demand-side measures (one hour shorter government working day, factory operations suspended at peak) and cooler-than-record days are holding the line. Second, **the ministry's and MEES's 2025 figures disagree** (17,610 MW vs 17.71 GW). Different measurement bases — net vs gross (station auxiliaries included or not), instantaneous vs integrated (e.g. 15-minute or hourly average) — easily explain 100 MW. That gap is larger than the entire installed solar fleet of Kuwait at end-2024 (about 102 MW per MEWRE).`,
+Two things jump out. First, peak growth has flattened at the top even though **new connections added 1,059 MW (2024→25) and 1,019 MW (2025→26)** of load: demand-side measures (one hour shorter government working day, factory operations suspended at peak) and cooler-than-record days are holding the line. Second, **the ministry's and MEES's 2025 figures disagree** (17,610 MW vs 17.71 GW). Different measurement bases — net vs gross (station auxiliaries included or not), instantaneous vs integrated (e.g. 15-minute or hourly average) — easily explain 100 MW. That gap is about the size of Kuwait's entire installed solar fleet at end-2024 (about 102 MW per MEWRE).`,
         },
         {
           kind: "callout",

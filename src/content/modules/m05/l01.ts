@@ -51,7 +51,7 @@ const lesson: Lesson = {
       description:
         "Energy stored in liquid vanadium electrolytes in tanks; power set by stacks, energy by tank volume; non-flammable, very long cycle life, ~65–75 % RTE, electrolyte temperature limits.",
       competency: "wind-storage",
-      related: ["m05.electrochemistry"],
+      related: ["m05.electrochemistry", "m03.two-tank-storage"],
     },
     {
       id: "m05.cell-format",
@@ -67,7 +67,7 @@ const lesson: Lesson = {
       description:
         "Concentration of LFP cathode, anode and cell manufacturing in China; tier-1 vs integrator; change-of-cell clauses, traceability, factory audits and bankability lists.",
       competency: "wind-storage",
-      related: ["m05.cell-format"],
+      related: ["m05.cell-format", "m02.module-procurement-qa", "m15.supply-chain-integrity"],
     },
   ],
   sections: [
@@ -117,7 +117,7 @@ The **capacity** per gram of active material comes from Faraday's law: every lit
           kind: "md",
           md: md`### Thermal runaway in one paragraph
 
-If a cell gets hot enough (internal short, overcharge, external fire, crush), exothermic reactions start: SEI breakdown (~80–120 °C), anode–electrolyte reaction, separator melt (~130–165 °C), then cathode decomposition. In **layered oxides (NMC)** the cathode releases **oxygen** from ~150–200 °C, which burns the electrolyte inside the cell — fast, hot, self-sustaining. The olivine **LFP** lattice holds its oxygen tightly (strong P–O bonds), so runaway starts later (typically ~200 °C+ self-heating onset in accelerating-rate calorimetry), peaks much cooler and releases far less heat. **But LFP still vents large volumes of flammable gas** (H₂, CO, CO₂, hydrocarbons) — the explosion hazard of lesson 5 does not disappear with LFP.
+If a cell gets hot enough (internal short, overcharge, external fire, crush), exothermic reactions start: SEI breakdown (~80–120 °C), anode–electrolyte reaction, separator melt (~130–165 °C), then cathode decomposition. In **layered oxides (NMC)** the cathode releases **oxygen** from ~150–200 °C, which burns the electrolyte inside the cell — fast, hot, self-sustaining. The olivine **LFP** lattice holds its oxygen tightly (strong P–O bonds), so full runaway triggers later (typically ~200 °C+ in accelerating-rate calorimetry, versus ~150–200 °C for high-nickel NMC), peaks much cooler and releases far less heat. **But LFP still vents large volumes of flammable gas** (H₂, CO, CO₂, hydrocarbons) — the explosion hazard of lesson 5 does not disappear with LFP.
 
 ### The four chemistries a MEWRE PM will hear about
 

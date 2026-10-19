@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "Charging from midday PV (or off-peak grid) and discharging into the evening/night peak; also counting as firm capacity for resource adequacy.",
       competency: "wind-storage",
-      related: ["m05.bess-sizing"],
+      related: ["m05.bess-sizing", "m01.net-load-duck", "m03.pvbess-competition"],
     },
     {
       id: "m05.frequency-response",
@@ -28,20 +28,21 @@ const lesson: Lesson = {
       description:
         "Sub-second to seconds active-power response to frequency deviations; symmetric energy reservation around a mid-SoC set-point.",
       competency: "wind-storage",
-      related: ["m05.bess-sizing"],
+      related: ["m05.bess-sizing", "m01.frequency-response", "m06.frequency-control"],
     },
     {
       id: "m05.pv-firming",
       name: "PV firming and ramp-rate control",
       description: "Using BESS power to limit PV ramp rates (cloud/dust fronts) and to firm hourly schedules; power-heavy, energy-light.",
       competency: "wind-storage",
-      related: ["m05.energy-shifting"],
+      related: ["m05.energy-shifting", "m06.active-power-control"],
     },
     {
       id: "m05.black-start",
       name: "Black start and grid-forming BESS",
       description: "Energising a dead network section from a BESS with grid-forming inverters; transformer inrush, voltage/frequency setting.",
       competency: "wind-storage",
+      related: ["m06.grid-forming"],
     },
     {
       id: "m05.bess-sizing",
@@ -57,7 +58,7 @@ const lesson: Lesson = {
       description:
         "AC coupling: BESS has its own PCS on the MV collector; DC coupling: battery on the PV inverter DC bus via DC/DC converter — recovers clipped energy but limits flexibility.",
       competency: "wind-storage",
-      related: ["m05.bess-sizing"],
+      related: ["m05.bess-sizing", "m02.dc-ac-ratio"],
     },
   ],
   sections: [

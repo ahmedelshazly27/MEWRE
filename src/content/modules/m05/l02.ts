@@ -19,7 +19,7 @@ const lesson: Lesson = {
       description:
         "MW (how fast) vs MWh (how much); nameplate vs usable; DC terminals vs PCS output vs MV vs POI — the boundary changes the number by 5–15 %.",
       competency: "wind-storage",
-      related: ["m05.c-rate", "m05.rte"],
+      related: ["m05.c-rate", "m05.rte", "m01.energy-vs-power"],
     },
     {
       id: "m05.c-rate",
@@ -41,7 +41,7 @@ const lesson: Lesson = {
       description:
         "Energy out over energy in at a defined boundary; AC-AC ~88–91 % excluding auxiliaries, ~83–87 % including HVAC in a 50 °C summer.",
       competency: "wind-storage",
-      related: ["m05.power-energy"],
+      related: ["m05.power-energy", "m09.bess-ltsa"],
     },
     {
       id: "m05.soh",
@@ -56,7 +56,7 @@ const lesson: Lesson = {
       description:
         "Calendar aging (time, SoC, temperature) plus cycle aging (throughput, DoD, C-rate); aging rate roughly doubles per +10 °C near room temperature.",
       competency: "wind-storage",
-      related: ["m05.soh", "m05.soc-dod"],
+      related: ["m05.soh", "m05.soc-dod", "m12.degradation"],
     },
   ],
   sections: [

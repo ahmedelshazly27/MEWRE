@@ -31,8 +31,8 @@ export interface Settings {
 }
 
 export const DEFAULT_SETTINGS: Settings = {
-  weeklyHours: 10,
-  weeks: 12,
+  weeklyHours: 12,
+  weeks: 13,
   startDate: localDay(),
   jobStartDate: "",
   newCardsPerDay: 20,

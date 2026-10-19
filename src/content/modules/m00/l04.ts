@@ -14,10 +14,10 @@ const lesson: Lesson = {
   ],
   concepts: [
     { id: "m00.re-targets", name: "Renewable and climate targets", description: "15% RE by 2030 (2012); updated 30/40/50% by 2030/2040/2050 (MEWRE official, 2025); carbon neutrality 2060 and oil-and-gas net zero 2050 (COP27); NDC 7.4% below 2035 BAU.", competency: "context", related: ["m00.target-to-capacity"] },
-    { id: "m00.target-to-capacity", name: "From energy share to capacity", description: "Required RE capacity = share × total energy / (CF × 8760); used to test whether a pipeline meets a target.", competency: "engineering", related: ["m00.re-targets", "m00.shagaya-phase3"] },
-    { id: "m00.shagaya-phase1", name: "Shagaya Phase I (KISR pilot)", description: "70 MW: 50 MW parabolic-trough CSP with 10 h molten-salt storage, 10 MW PV, 10 MW wind; wind CF ~42–45%; CSP post-2019 performance unpublished.", competency: "solar", related: ["m00.shagaya-phase3"] },
-    { id: "m00.shagaya-phase3", name: "Shagaya Phase III (KAPP IPPs) and the G2G track", description: "Zone 1 1,100 MW (preferred bidder reported Aug 2026), Zone 2 500 MW (bids July 2026), plus a China NEA/SPIC government-to-government track for Phases 3–4 whose relation to the zones is unclear.", competency: "context", related: ["m00.pipeline-confidence"] },
-    { id: "m00.pipeline-confidence", name: "Status-and-confidence register", description: "Recording each project's last confirmed milestone, date, source and confidence, separating official facts from trade-press reports.", competency: "delivery", related: ["m00.shagaya-phase3"] },
+    { id: "m00.target-to-capacity", name: "From energy share to capacity", description: "Required RE capacity = share × total energy / (CF × 8760); used to test whether a pipeline meets a target.", competency: "engineering", related: ["m00.re-targets", "m00.shagaya-phase3", "m01.capacity-factor", "m01.energy-vs-power"] },
+    { id: "m00.shagaya-phase1", name: "Shagaya Phase I (KISR pilot)", description: "70 MW: 50 MW parabolic-trough CSP with 10 h molten-salt storage, 10 MW PV, 10 MW wind; wind CF ~42–45%; CSP post-2019 performance unpublished.", competency: "solar", related: ["m00.shagaya-phase3", "m03.shagaya-csp", "m04.shagaya-wind"] },
+    { id: "m00.shagaya-phase3", name: "Shagaya Phase III (KAPP IPPs) and the G2G track", description: "Zone 1 1,100 MW (preferred bidder reported Aug 2026), Zone 2 500 MW (bids July 2026), plus a China NEA/SPIC government-to-government track for Phases 3–4 whose relation to the zones is unclear.", competency: "context", related: ["m00.pipeline-confidence", "m11.kapp-stages", "m02.kuwait-solar-resource"] },
+    { id: "m00.pipeline-confidence", name: "Status-and-confidence register", description: "Recording each project's last confirmed milestone, date, source and confidence, separating official facts from trade-press reports.", competency: "delivery", related: ["m00.shagaya-phase3", "m08.risk-register"] },
   ],
   sections: [
     // ------------------------------------------------------------------ THEORY
@@ -114,7 +114,7 @@ Reported wind performance: CF **45.2%** in year 1 (~40 GWh) and **42.1%** in yea
           kind: "callout",
           tone: "unverified",
           title: "Zone 1 and Zone 2 — what is not known",
-          md: md`**Zone 1:** no official KAPP/MEWRE announcement of the selection; tariff (fils/kWh or US¢/kWh) not reported; Higher Committee and Audit Bureau approval status, PPA signing date, financial close and target COD unknown. One version names L&T as EPC; a later search reported module suppliers (Aiko, Yingli, DMEGC) and Sungrow inverters from an unnamed source — treat as rumour. **Zone 2:** two or three bids? evaluation status unknown; exact wording of the customs-exemption clause unknown. **Shortlist date:** reported in Aug 2024 (SaudiGulf) but "revealed" by pv magazine in Jun 2025. **How to verify:** KAPP project pages (kapp.gov.kw), KUNA, Kuwait Al-Youm; internally, the KAPP–MEWRE project committee minutes.`,
+          md: md`**Zone 1:** no official KAPP/MEWRE announcement of the selection; tariff (fils/kWh or US¢/kWh) not reported; Higher Committee and Audit Bureau approval status, PPA signing date, financial close and target COD unknown. One version of the MEED report names L&T as EPC — unconfirmed. **Zone 2:** two or three bids? evaluation status unknown; exact wording of the customs-exemption clause unknown. **Shortlist date:** reported in Aug 2024 (SaudiGulf) but "revealed" by pv magazine in Jun 2025. **How to verify:** KAPP project pages (kapp.gov.kw), KUNA, Kuwait Al-Youm; internally, the KAPP–MEWRE project committee minutes.`,
         },
         {
           kind: "md",

@@ -19,7 +19,7 @@ const lesson: Lesson = {
       description:
         "SoH vs time/throughput: early fast fade (SEI formation), quasi-linear middle, possible knee at end of life; plus resistance growth (power fade).",
       competency: "wind-storage",
-      related: ["m05.aging", "m05.augmentation"],
+      related: ["m05.aging", "m05.augmentation", "m12.degradation"],
     },
     {
       id: "m05.augmentation",
@@ -35,7 +35,7 @@ const lesson: Lesson = {
       description:
         "Product (defects) warranty, capacity-retention warranty bounded by years and EFC/MWh throughput, with operating-condition exclusions and data obligations.",
       competency: "contracts",
-      related: ["m05.capacity-fade"],
+      related: ["m05.capacity-fade", "m12.warranty-claim", "m02.module-warranty"],
     },
     {
       id: "m05.ltsa-guarantee",
@@ -43,7 +43,7 @@ const lesson: Lesson = {
       description:
         "Long-term service agreement in which the contractor guarantees POI capacity (by augmenting) and availability, with LDs; bridges cell warranty and owner's requirement.",
       competency: "contracts",
-      related: ["m05.warranty", "m05.augmentation"],
+      related: ["m05.warranty", "m05.augmentation", "m09.bess-ltsa"],
     },
     {
       id: "m05.capacity-test",
@@ -51,7 +51,7 @@ const lesson: Lesson = {
       description:
         "Witnessed full charge–rest–discharge tests at rated power measured at the POI meter, with temperature/aux corrections, used for acceptance and annual verification.",
       competency: "wind-storage",
-      related: ["m05.ltsa-guarantee", "m05.rte"],
+      related: ["m05.ltsa-guarantee", "m05.rte", "m07.capacity-test"],
     },
   ],
   sections: [
@@ -145,7 +145,7 @@ The throughput limit:`,
             { md: md`**Total installed** over life: $2{,}513 + 204.8 + 240.0 + 261.2 = 3{,}219$ MWh.` },
             { md: md`**Compare with overbuild**: meeting the requirement at year 20 up front needs $2{,}261.3/0.666 = 3{,}395$ MWh at BOL — 882 MWh more on day one, and 176 MWh more in total than the augmentation path.` },
           ],
-          result: md`Schedule: **2,513 MWh at COD; +205 MWh (yr 5); +240 MWh (yr 10); +261 MWh (yr 15)**. Effective capacity saw-tooths between ~2,261 and ~2,470 MWh. Physical provisions on day one: land and foundations for ~140 additional containers, MV feeder bays/RMUs, PCS and transformer positions, SCADA/EMS capacity, and a grid-connection agreement that already covers the augmented equipment.`,
+          result: md`Schedule: **2,513 MWh at COD; +205 MWh (yr 5); +240 MWh (yr 10); +261 MWh (yr 15)**. Effective capacity saw-tooths between ~2,261 MWh (just before each campaign) and ~2,480–2,520 MWh (just after). Physical provisions on day one: land and foundations for ~140 additional containers, MV feeder bays/RMUs, PCS and transformer positions, SCADA/EMS capacity, and a grid-connection agreement that already covers the augmented equipment.`,
         },
         {
           kind: "worked",

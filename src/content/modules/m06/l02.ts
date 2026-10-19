@@ -19,14 +19,14 @@ const lesson: Lesson = {
       name: "Grid code scope",
       description: "Connection requirements: operating ranges, FRT, reactive capability, power quality, active power control, protection, models, data, compliance testing.",
       competency: "grid",
-      related: ["m06.frt", "m06.reactive-capability"],
+      related: ["m06.frt", "m06.reactive-capability", "m15.grid-code-compliance"],
     },
     {
       id: "m06.operating-ranges",
       name: "Voltage and frequency operating ranges",
       description: "Bands and durations within which the plant must stay connected and deliver output (e.g. 49–51 Hz continuous; 0.90–1.05 pu at EHV), plus RoCoF withstand.",
       competency: "grid",
-      related: ["m06.grid-code"],
+      related: ["m06.grid-code", "m01.frequency-balance"],
     },
     {
       id: "m06.frt",
@@ -40,7 +40,7 @@ const lesson: Lesson = {
       name: "Reactive capability at the POI",
       description: "Required Q range (e.g. ±0.33 Pmax, i.e. 0.95 lead/lag at Pmax) across a voltage band; inverters must also cover transformer and cable reactive losses.",
       competency: "grid",
-      related: ["m06.grid-code"],
+      related: ["m06.grid-code", "m01.reactive-capability", "m01.voltage-reactive-link"],
     },
     {
       id: "m06.power-quality",
@@ -54,14 +54,14 @@ const lesson: Lesson = {
       name: "Active power control and ramp limits",
       description: "Set-point following, ramp-rate limits (e.g. 10 %/min), curtailment, LFSM-O/U and frequency-sensitive mode.",
       competency: "grid",
-      related: ["m06.grid-code"],
+      related: ["m06.grid-code", "m05.pv-firming"],
     },
     {
       id: "m06.compliance",
       name: "Grid-code compliance process",
       description: "Studies and validated models, unit certificates, compliance plan, on-site tests witnessed by the TSO, and ongoing performance monitoring.",
       competency: "grid",
-      related: ["m06.grid-code"],
+      related: ["m06.grid-code", "m07.grid-compliance-tests"],
     },
   ],
   sections: [

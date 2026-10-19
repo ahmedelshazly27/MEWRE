@@ -13,11 +13,11 @@ const lesson: Lesson = {
     "You can detect inflated EPC progress and front-loaded payment schedules, and decide what to do about them from MEWRE's side.",
   ],
   concepts: [
-    { id: "m08.evm-basics", name: "EVM core metrics", description: "PV (planned), EV (earned), AC (actual) and the variances/indices CV, SV, CPI, SPI derived from them.", competency: "controls", related: ["m08.wbs"] },
-    { id: "m08.evm-forecasting", name: "EVM forecasting (EAC, ETC, VAC, TCPI)", description: "Projecting final cost under different performance assumptions and testing whether the target is still achievable.", competency: "controls", related: ["m08.evm-basics"] },
+    { id: "m08.evm-basics", name: "EVM core metrics", description: "PV (planned), EV (earned), AC (actual) and the variances/indices CV, SV, CPI, SPI derived from them.", competency: "controls", related: ["m08.wbs", "m14.evm-analysis"] },
+    { id: "m08.evm-forecasting", name: "EVM forecasting (EAC, ETC, VAC, TCPI)", description: "Projecting final cost under different performance assumptions and testing whether the target is still achievable.", competency: "controls", related: ["m08.evm-basics", "m10.eac-forecast"] },
     { id: "m08.earned-schedule", name: "Earned schedule", description: "Time-based schedule metrics (ES, SV(t), SPI(t), IEAC(t)) that remain meaningful to the end of the project.", competency: "controls", related: ["m08.evm-basics", "m08.cpm"] },
     { id: "m08.progress-measurement", name: "Progress measurement methods", description: "Rules of credit: weighted milestones, units completed, 0/100, 50/50, percent complete, level of effort.", competency: "controls", related: ["m08.evm-basics", "m08.wbs"] },
-    { id: "m08.progress-inflation", name: "Progress inflation & front-loading", description: "Ways reported progress or payment runs ahead of real physical progress: crediting at PO, subjective %, front-loaded milestones, materials not on site.", competency: "controls", related: ["m08.progress-measurement"] },
+    { id: "m08.progress-inflation", name: "Progress inflation & front-loading", description: "Ways reported progress or payment runs ahead of real physical progress: crediting at PO, subjective %, front-loaded milestones, materials not on site.", competency: "controls", related: ["m08.progress-measurement", "m10.payment-mechanics"] },
   ],
   sections: [
     {

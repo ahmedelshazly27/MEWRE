@@ -13,11 +13,11 @@ const lesson: Lesson = {
     "You can distinguish RFIs, technical queries, site instructions, NCRs and variations, and prevent RFIs from becoming unpriced change.",
   ],
   concepts: [
-    { id: "m08.change-control", name: "Change control", description: "Formal process to identify, assess (cost, time, risk, quality), approve or reject, implement and record changes to the baseline.", competency: "controls", related: ["m08.scope-creep"] },
-    { id: "m08.time-impact-analysis", name: "Time impact analysis (TIA)", description: "Prospective delay analysis: insert a fragnet representing the change into the current schedule and measure the effect on completion.", competency: "controls", related: ["m08.cpm", "m08.change-control"] },
-    { id: "m08.interface-management", name: "Interface management", description: "Identifying, documenting and controlling the physical, functional and organisational interfaces between scopes and parties through a register and ICDs.", competency: "delivery", related: ["m08.scope-boundary"] },
-    { id: "m08.document-control", name: "Document control & EDMS", description: "Numbering, revision, transmittal, review-code and records system — usually on an EDMS (e.g., Aconex) — that forms the contractual record.", competency: "delivery" },
-    { id: "m08.rfi-ncr", name: "RFIs, NCRs and instructions", description: "RFI: request for clarification. NCR: record of non-conformance. Instruction/variation: change to the Works. Mixing them creates disputes.", competency: "contracts", related: ["m08.change-control", "m08.document-control"] },
+    { id: "m08.change-control", name: "Change control", description: "Formal process to identify, assess (cost, time, risk, quality), approve or reject, implement and record changes to the baseline.", competency: "controls", related: ["m08.scope-creep", "m09.variation-valuation"] },
+    { id: "m08.time-impact-analysis", name: "Time impact analysis (TIA)", description: "Prospective delay analysis: insert a fragnet representing the change into the current schedule and measure the effect on completion.", competency: "controls", related: ["m08.cpm", "m08.change-control", "m09.delay-analysis"] },
+    { id: "m08.interface-management", name: "Interface management", description: "Identifying, documenting and controlling the physical, functional and organisational interfaces between scopes and parties through a register and ICDs.", competency: "delivery", related: ["m08.scope-boundary", "m15.grid-interface", "m06.scada-architecture"] },
+    { id: "m08.document-control", name: "Document control & EDMS", description: "Numbering, revision, transmittal, review-code and records system — usually on an EDMS (e.g., Aconex) — that forms the contractual record.", competency: "delivery", related: ["m07.design-review"] },
+    { id: "m08.rfi-ncr", name: "RFIs, NCRs and instructions", description: "RFI: request for clarification. NCR: record of non-conformance. Instruction/variation: change to the Works. Mixing them creates disputes.", competency: "contracts", related: ["m08.change-control", "m08.document-control", "m09.claims-time-bar"] },
   ],
   sections: [
     {

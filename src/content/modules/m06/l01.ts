@@ -19,6 +19,7 @@ const lesson: Lesson = {
       name: "Transmission voltage levels",
       description: "Losses scale with I²R, i.e. with 1/V² for a given power; hence EHV (400 kV) for bulk transfer, 132 kV sub-transmission, 33/11 kV distribution.",
       competency: "grid",
+      related: ["m01.three-phase-power", "m01.system-structure"],
     },
     {
       id: "m06.bus-configuration",
@@ -32,7 +33,7 @@ const lesson: Lesson = {
       name: "Substation components",
       description: "Circuit breakers, disconnectors, earthing switches, CTs, VTs, surge arresters, power transformers with OLTC, busbars, reactive compensation, protection and auxiliaries.",
       competency: "grid",
-      related: ["m06.sld-reading"],
+      related: ["m06.sld-reading", "m07.long-lead-items", "m01.transformer-derating"],
     },
     {
       id: "m06.sld-reading",
@@ -46,7 +47,7 @@ const lesson: Lesson = {
       name: "Fault level and switchgear ratings",
       description: "Short-circuit current/MVA at a bus from source and transformer impedances; must stay below breaker and busbar ratings.",
       competency: "grid",
-      related: ["m06.transmission-voltage"],
+      related: ["m06.transmission-voltage", "m01.fault-level", "m01.per-unit"],
     },
     {
       id: "m06.gis-ais",
@@ -224,7 +225,7 @@ On a KAPP solar IPP like Shagaya Phase III Zone 1, the developer's EPC builds th
           kind: "callout",
           tone: "kuwait",
           title: "Interfaces drive the schedule",
-          md: md`The research brief notes that MEWRE procures grid works separately (e.g. the Shagaya–Al-Wafra line via CAPT tender) while the IPP builds the plant. A late line strands a completed solar plant and usually triggers deemed-energy compensation to the IPP. The line award (March 2026) went to the second-lowest bidder; the reason was not found. Track the line's critical path as closely as the plant's.`,
+          md: md`The research brief notes that MEWRE procures grid works separately (e.g. the Shagaya–Al-Wafra line via CAPT tender) while the IPP builds the plant. A late line strands a completed solar plant and usually triggers deemed-energy compensation to the IPP. The line award (March 2026, KD 48.6 m) did not go to the reported lowest bidder (about KD 41.45 m in April 2025); the reason was not found. Track the line's critical path as closely as the plant's.`,
         },
         { kind: "sources", refs: ["m06-megaproject-400kv", "m06-meed-shagaya-grid", "m06-agbi-zone1-rfp"] },
         {

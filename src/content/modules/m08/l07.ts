@@ -13,13 +13,13 @@ const lesson: Lesson = {
     "You can manage heat stress with WBGT-based controls and compute LTIFR and TRIR correctly.",
   ],
   concepts: [
-    { id: "m08.itp", name: "Inspection and test plan (ITP)", description: "Activity-by-activity plan of inspections/tests with acceptance criteria, records and each party's involvement (hold, witness, review, surveillance).", competency: "risk" },
+    { id: "m08.itp", name: "Inspection and test plan (ITP)", description: "Activity-by-activity plan of inspections/tests with acceptance criteria, records and each party's involvement (hold, witness, review, surveillance).", competency: "risk", related: ["m07.site-supervision", "m05.fat-sat"] },
     { id: "m08.hold-witness", name: "Hold and witness points", description: "Hold: work may not proceed without the inspecting party's release. Witness: party is notified and may attend; work can proceed if they do not.", competency: "risk", related: ["m08.itp"] },
     { id: "m08.ncr", name: "Non-conformance reports", description: "Formal record of work/material not meeting requirements, with disposition (rework, repair, use-as-is with concession, reject), root cause and closure.", competency: "risk", related: ["m08.itp"] },
     { id: "m08.qms-iso9001", name: "QMS & ISO 9001", description: "Process-based quality management system with PDCA and risk-based thinking; project quality plan applies it to the contract.", competency: "risk" },
-    { id: "m08.ptw", name: "Permit to work & energisation control", description: "Formal written system authorising specific hazardous work (electrical isolation, hot work, height, confined space, lifting, excavation) with isolations, checks and handback.", competency: "risk" },
+    { id: "m08.ptw", name: "Permit to work & energisation control", description: "Formal written system authorising specific hazardous work (electrical isolation, hot work, height, confined space, lifting, excavation) with isolations, checks and handback.", competency: "risk", related: ["m06.energisation"] },
     { id: "m08.heat-stress", name: "Heat stress management", description: "WBGT monitoring, acclimatisation, hydration, shaded rest, work/rest regimes, rescheduling and emergency response for 45–50 °C conditions.", competency: "risk", related: ["m08.kuwait-risks"] },
-    { id: "m08.hse-kpis", name: "HSE KPIs (LTIFR, TRIR, leading indicators)", description: "Normalised lagging injury rates and leading indicators of safety system health.", competency: "risk", related: ["m08.heat-stress"] },
+    { id: "m08.hse-kpis", name: "HSE KPIs (LTIFR, TRIR, leading indicators)", description: "Normalised lagging injury rates and leading indicators of safety system health.", competency: "risk", related: ["m08.heat-stress", "m15.hse-leadership"] },
   ],
   sections: [
     {

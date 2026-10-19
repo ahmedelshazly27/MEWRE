@@ -20,6 +20,7 @@ const lesson: Lesson = {
       description:
         "How the work is split into contracts and who carries design, interface and financing risk: EPC turnkey, multi-contract/split packages, EPCM, DBO, and IPP models (BOO/BOT).",
       competency: "contracts",
+      related: ["m00.delivery-routes", "m07.procurement-packaging"],
     },
     {
       id: "m09.fidic-suite",
@@ -35,7 +36,7 @@ const lesson: Lesson = {
       description:
         "Allocate each risk to the party best able to control it, or best able to bear it at least cost; moving uncontrollable risk to a contractor buys certainty at a premium.",
       competency: "contracts",
-      related: ["m09.fidic-suite"],
+      related: ["m09.fidic-suite", "m08.risk-register"],
     },
     {
       id: "m09.engineer-vs-er",
@@ -43,7 +44,7 @@ const lesson: Lesson = {
       description:
         "Under Red and Yellow, the Engineer administers the contract and must make neutral determinations; under Silver, the Employer's Representative acts for the Employer with no duty of neutrality (but determinations must still be fair).",
       competency: "contracts",
-      related: ["m09.fidic-suite"],
+      related: ["m09.fidic-suite", "m07.owners-engineer"],
     },
     {
       id: "m09.back-to-back",
@@ -51,7 +52,7 @@ const lesson: Lesson = {
       description:
         "Flowing down the SPV's obligations and exposures under the PPA (dates, LDs, performance, change in law) into the EPC and O&M contracts so that the SPV is a pass-through and lenders see no gap.",
       competency: "contracts",
-      related: ["m09.risk-allocation", "m09.contracting-strategy"],
+      related: ["m09.risk-allocation", "m09.contracting-strategy", "m15.contract-stack"],
     },
   ],
   sections: [

@@ -13,12 +13,12 @@ const lesson: Lesson = {
     "You can recognise scope creep and gold-plating and route them through change control.",
   ],
   concepts: [
-    { id: "m08.wbs", name: "Work breakdown structure", description: "Hierarchical, deliverable-oriented decomposition of the total scope; the backbone for schedule, cost, EVM and reporting.", competency: "controls" },
+    { id: "m08.wbs", name: "Work breakdown structure", description: "Hierarchical, deliverable-oriented decomposition of the total scope; the backbone for schedule, cost, EVM and reporting.", competency: "controls", related: ["m07.procurement-packaging"] },
     { id: "m08.hundred-percent-rule", name: "100 % rule", description: "The WBS includes 100 % of the work defined by the scope — and nothing more; children sum exactly to their parent.", competency: "controls", related: ["m08.wbs"] },
     { id: "m08.wbs-dictionary", name: "WBS dictionary", description: "Per-element description of scope, deliverables, boundaries, acceptance criteria, responsible party, interfaces and cost account.", competency: "controls", related: ["m08.wbs"] },
-    { id: "m08.employers-requirements", name: "Employer's Requirements", description: "Contract document (design-build) stating purpose, scope, performance and design/quality criteria of the Works; the contractor designs to meet it.", competency: "contracts" },
-    { id: "m08.scope-boundary", name: "Scope boundary / battery limits", description: "Precise physical and functional demarcation between parties' scopes, e.g., at the 400 kV gantry or the metering point.", competency: "delivery", related: ["m08.employers-requirements"] },
-    { id: "m08.scope-creep", name: "Scope creep & gold-plating", description: "Uncontrolled growth of scope through informal requests (creep) or unrequested extras by the team (gold-plating).", competency: "controls", related: ["m08.wbs"] },
+    { id: "m08.employers-requirements", name: "Employer's Requirements", description: "Contract document (design-build) stating purpose, scope, performance and design/quality criteria of the Works; the contractor designs to meet it.", competency: "contracts", related: ["m09.fidic-suite", "m14.deviation-list"] },
+    { id: "m08.scope-boundary", name: "Scope boundary / battery limits", description: "Precise physical and functional demarcation between parties' scopes, e.g., at the 400 kV gantry or the metering point.", competency: "delivery", related: ["m08.employers-requirements", "m15.grid-interface", "m06.revenue-metering"] },
+    { id: "m08.scope-creep", name: "Scope creep & gold-plating", description: "Uncontrolled growth of scope through informal requests (creep) or unrequested extras by the team (gold-plating).", competency: "controls", related: ["m08.wbs", "m09.variation-valuation"] },
   ],
   sections: [
     {
@@ -37,7 +37,7 @@ A **work breakdown structure** decomposes the total scope into manageable delive
 4. **Decompose to the work package**, the level at which cost and schedule are planned, measured and owned — typically 1–4 % of the total value, or 80–400 h of design effort, or one physical block of construction. Too fine and control becomes paperwork; too coarse and problems hide.
 5. **Code it** (e.g., 1.3.2.4) so P6 activities, cost accounts, documents and EVM all roll up the same way.
 
-### Two WBSs for one plant
+### Three WBSs for one plant
 
 On a KAPP IPP, three parties each have their own WBS, and they must reconcile at the interfaces:
 

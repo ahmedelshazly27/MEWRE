@@ -4,6 +4,14 @@ import { PageHeader, Pill } from "@/components/ui";
 
 export const metadata = { title: "Reference library" };
 
+const DOWNLOADS = [
+  { file: "lcoe-model.xlsx", title: "LCOE model", note: "Capex, opex, degradation, WACC → LCOE; exact vs CRF shortcut" },
+  { file: "project-finance-model.xlsx", title: "Project finance model", note: "30-year CFADS, debt sizing, DSCR, project & equity IRR" },
+  { file: "evm-tracker.xlsx", title: "EVM tracker", note: "Monthly PV/EV/AC with CPI, SPI, EAC variants and TCPI" },
+  { file: "tariff-bid-evaluation.xlsx", title: "Tariff bid evaluation", note: "Levelized tariff comparison, weighting and sensitivity" },
+  { file: "cashflow-forecast.xlsx", title: "Construction cash-flow forecast", note: "Milestones, advance recovery, retention, S-curve by fiscal year" },
+];
+
 const TYPE_LABEL: Record<string, string> = {
   standard: "Standards",
   government: "Kuwaiti & government sources",
@@ -31,6 +39,18 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
         title="Reference library"
         subtitle={`${refs.length} primary sources cited across the curriculum. Items marked unverified support claims that could not be fully confirmed — check them before quoting.`}
       />
+      <section className="mb-8">
+        <h2 className="mb-2 text-lg font-semibold">Practice spreadsheets (Excel, live formulas)</h2>
+        <div className="grid gap-2 sm:grid-cols-2">
+          {DOWNLOADS.map((d) => (
+            <a key={d.file} href={`/downloads/${d.file}`} download className="rounded-xl border border-border bg-surface p-3 text-sm hover:bg-surface-2">
+              <div className="font-medium">📊 {d.title}</div>
+              <div className="text-xs text-muted">{d.note}</div>
+            </a>
+          ))}
+        </div>
+        <p className="mt-2 text-xs text-muted">Guided exercises for each model are in Module 10, lesson 7.</p>
+      </section>
       {order
         .filter((k) => groups.has(k))
         .map((k) => (

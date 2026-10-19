@@ -13,10 +13,10 @@ const lesson: Lesson = {
     "You can distinguish financial transfers inside the state (e.g. KPC's 25 fils/kWh) from true economic savings (fuel not burned, exports gained).",
   ],
   concepts: [
-    { id: "m00.tariff-structure", name: "Kuwait electricity tariff structure", description: "2 fils/kWh for citizens' private housing since 1966; post-2016 law rates for apartments, commercial (5 fils) and industrial/agricultural (3 fils); KPC pays ~25 fils.", competency: "finance", related: ["m00.subsidy-burden"] },
+    { id: "m00.tariff-structure", name: "Kuwait electricity tariff structure", description: "2 fils/kWh for citizens' private housing since 1966; post-2016 law rates for apartments, commercial (5 fils) and industrial/agricultural (3 fils); KPC pays ~25 fils.", competency: "finance", related: ["m00.subsidy-burden", "m10.gulf-tariffs"] },
     { id: "m00.subsidy-burden", name: "Subsidy and fiscal burden", description: "The gap between cost of supply (estimates 14–38 fils/kWh) and the tariff, multiplied by consumption, paid from the state budget.", competency: "finance", related: ["m00.displaced-fuel-value"] },
-    { id: "m00.displaced-fuel-value", name: "Value of displaced fuel", description: "Heat rate × fuel price: what a renewable kWh saves by not burning crude, fuel oil, gasoil or LNG at the margin.", competency: "finance", related: ["m00.subsidy-burden"] },
-    { id: "m00.economic-vs-financial", name: "Economic vs financial value", description: "Intra-state payments (tariffs, KPC transfer price) move money between public pockets; economic value is fuel saved, exports enabled, imports avoided and reliability gained.", competency: "finance", related: ["m00.displaced-fuel-value", "m00.tariff-structure"] },
+    { id: "m00.displaced-fuel-value", name: "Value of displaced fuel", description: "Heat rate × fuel price: what a renewable kWh saves by not burning crude, fuel oil, gasoil or LNG at the margin.", competency: "finance", related: ["m00.subsidy-burden", "m01.fuel-displacement", "m10.lcoe"] },
+    { id: "m00.economic-vs-financial", name: "Economic vs financial value", description: "Intra-state payments (tariffs, KPC transfer price) move money between public pockets; economic value is fuel saved, exports enabled, imports avoided and reliability gained.", competency: "finance", related: ["m00.displaced-fuel-value", "m00.tariff-structure", "m10.npv", "m10.evaluation-discount-rate"] },
   ],
   sections: [
     // ------------------------------------------------------------------ THEORY
@@ -78,7 +78,7 @@ The **unit subsidy** is simply the gap between what a kWh costs and what the cus
         { kind: "equation", formula: "m00-fiscal-subsidy" },
         {
           kind: "md",
-          md: md`At 2 fils against a cost of supply of 14–38 fils, a citizen pays between **5% and 14%** of the cost of their electricity. The FY2026/27 draft budget (spending KD 26.1 bn, revenue KD 16.3 bn, deficit about KD 9.8 bn) states that **wages and subsidies make up about 76% of spending**. Energy subsidies are therefore a first-order fiscal issue — and a deficit makes the Ministry of Finance, which also chairs the PPP Higher Committee, more receptive to anything that reduces them.`,
+          md: md`At 2 fils against a cost of supply of 14–38 fils, a citizen pays between **5% and 14%** of the cost of their electricity. The FY2026/27 **draft** budget as reported by Kuwait Times (spending KD 26.1 bn, revenue KD 16.3 bn, deficit about KD 9.8 bn) puts **wages and subsidies at about 76% of spending** — draft figures outside the research brief, so confirm the enacted budget before quoting them. Energy subsidies are therefore a first-order fiscal issue — and a deficit makes the Ministry of Finance, which also chairs the PPP Higher Committee, more receptive to anything that reduces them.`,
         },
         { kind: "sources", refs: ["m00-kt-2026-budget"] },
         {
@@ -133,7 +133,7 @@ Rule: in a ministry business case, **value fuel at opportunity cost, treat intra
             { md: md`Bill: $6{,}000 \times 0.002 = 12$ KWD.` },
             { md: md`Cost at 26 fils: $6{,}000 \times 0.026 = 156$ KWD. Subsidy $s = 26 - 2 = 24$ fils/kWh → $6{,}000 \times 0.024 = 144$ KWD for the month.` },
             { md: md`Sensitivity: at 14 fils the unit subsidy is 12 fils (customer pays 14.3% of cost); at 38 fils it is 36 fils (customer pays 5.3%).` },
-            { md: md`National scale (illustrative): 84 TWh at an average tariff of 4 fils and cost of 26 fils → $84\times10^9 \times 0.022 = $ KWD **1.85 bn/yr**. The 2013 OBG estimate of KD 3.1 bn used a ~38 fils cost basis — same order of magnitude.` },
+            { md: md`National scale (illustrative): 84 TWh at an average tariff of 4 fils and cost of 26 fils → $84\times10^9 \times 0.022 = $ KWD **1.85 bn/yr**. OBG's KD 3.1 bn estimate for 2013 (published alongside its ~38 fils production-cost figure) is the same order of magnitude.` },
           ],
           result: md`The household pays 12 KWD for a month that costs the state about 156 KWD; nationally the subsidy is in the billions of KWD per year. Present it as a range, because the cost of supply is not officially published.`,
         },
@@ -323,7 +323,7 @@ Tools you will use: a simple spreadsheet model (energy × value), the developer'
     { id: "m00-l03-f6", front: "Value of displaced fuel formula", back: md`$v = HR \times p_{\text{fuel}}$ (GJ/kWh × USD/GJ = USD/kWh).`, concepts: ["m00.displaced-fuel-value"] },
     { id: "m00-l03-f7", front: "Displaced crude value at USD 70/bbl, HR 10.5 MJ/kWh", back: "≈ USD 0.12/kWh ≈ 37 fils/kWh.", concepts: ["m00.displaced-fuel-value"] },
     { id: "m00-l03-f8", front: "Analyst estimate of solar cost in Kuwait", back: "7–8 fils/kWh (SolarQuarter, Jan 2026). Zone 1 tariff not reported.", concepts: ["m00.displaced-fuel-value"] },
-    { id: "m00-l03-f9", front: "FY2026/27 draft budget headline", back: "Spending KD 26.1 bn, revenue KD 16.3 bn, deficit ~KD 9.8 bn; wages + subsidies ≈ 76% of spending.", concepts: ["m00.subsidy-burden"] },
+    { id: "m00-l03-f9", front: "FY2026/27 draft budget headline", back: "Spending KD 26.1 bn, revenue KD 16.3 bn, deficit ~KD 9.8 bn; wages + subsidies ≈ 76% of spending (Kuwait Times report of the draft; verify the enacted figures).", concepts: ["m00.subsidy-burden"] },
   ],
   scenarios: [
     {
