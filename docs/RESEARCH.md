@@ -152,7 +152,7 @@
 
   Source: [Performance analysis of a 10 MW wind farm in a hot and dusty desert, peer-reviewed (UCAR impacts listing, ~2021)](https://impacts.ucar.edu/en/publications/performance-analysis-of-a-10-mw-wind-farm-in-a-hot-and-dusty-dese/)
 
-  A KISR conference paper reports **42.59 GWh in year 1, 21% above the 31.16 GWh contractual figure**. [E3S Conf. ICSF 2021, 05016](https://www.e3s-conferences.org/articles/e3sconf/pdf/2021/56/e3sconf_icsf2021_05016.pdf). **Conflict:** the two studies differ slightly on period and method.
+  A KISR conference paper reports **42.59 GWh in year 1, 21% above the 31.16 GWh contractual figure**. [E3S Conf. ICSF 2021, 05016](https://www.e3s-conferences.org/articles/e3sconf/pdf/2021/56/e3sconf_icsf2021_05016.pdf). **Conflict:** the two studies differ slightly on period and method. **Arithmetic note:** 42.59 / 31.16 = 1.37, i.e. 37 % above, not the 21 % stated in the paper; 42.59 GWh on 10 MW also implies a 48.6 % capacity factor vs the 45.2 % reported elsewhere. Treat the exact figures as unverified.
 - **PV testbed:** A KISR-linked paper describes an approximately 11.15 MW testbed comparing thin-film and polycrystalline modules. Soiling is "substantial" and requires **monthly water cleaning**. [Renewable and Sustainable Energy Reviews vol. 133, 2020 (IDEAS listing)](https://ideas.repec.org/a/eee/rensus/v133y2020ics1364032120304305.html)
 - **[UNVERIFIED]** No published operating data or availability for the 50 MW CSP plant after 2019 was found, and no current operating status (2025–2026).
 

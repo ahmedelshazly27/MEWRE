@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "You supply a verified list of facts (numbers, dates, references, positions); the AI supplies structure and language; nothing factual originates from the model.",
       competency: "ai",
-      related: ["m14.hallucination"],
+      related: ["m14.hallucination", "m13.contract-notice"],
     },
     {
       id: "m14.register-control",
@@ -28,6 +28,7 @@ const lesson: Lesson = {
       description:
         "Specifying audience, formality, house style and set phrases (e.g. Gulf official Arabic) with examples so the draft reads as an official document.",
       competency: "ai",
+      related: ["m13.arabic-correspondence", "m13.plain-language"],
     },
     {
       id: "m14.term-consistency",
@@ -50,7 +51,7 @@ const lesson: Lesson = {
       description:
         "Drafting each language from the same facts and structure, in its own idiom, rather than translating sentence by sentence; checking that both versions say the same thing.",
       competency: "leadership",
-      related: ["m14.term-consistency"],
+      related: ["m14.term-consistency", "m13.arabic-correspondence"],
     },
   ],
   sections: [

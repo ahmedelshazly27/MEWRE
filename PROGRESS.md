@@ -42,8 +42,11 @@ and 91 inline independent problems. Flashcard pool for spaced repetition = lesso
 glossary terms + formulas (~1,700 cards).
 
 Every lesson has theory, applied (worked → faded → independent) and field-practice layers.
-Content was written by module and then independently audited for answer keys, arithmetic and
-technical accuracy.
+Content was written by module and then independently audited: every numeric answer, worked
+step and faded check was recomputed, answer keys and explanations cross-checked, and ~360
+cross-module concept links added. The audit corrected ~40 issues (e.g., a 1000× unit error in an
+M1 fuel example, the direction of the IEC 61724-1 temperature correction in M2, a sensor-fault
+physics error in the capstone, several overstated figures and Arabic glossary terms).
 
 ## Platform features
 
@@ -66,7 +69,7 @@ technical accuracy.
 - `npm run validate:content` — all 16 modules valid (ids, answer keys, references, every KaTeX snippet renders)
 - `npm run typecheck` and `npm run lint` — clean (lint: warnings only)
 - `next build` — succeeds
-- Browser smoke test (Playwright, desktop + 390 px mobile): all routes 200, no console errors, no horizontal overflow; end-to-end flows tested: lesson quiz → lesson completion → card unlock → FSRS review → dashboard update; error log; diagnostic; scenario; full capstone run; cheat sheet
+- Browser smoke test (Playwright, desktop + 390 px mobile): all routes 200, no console errors, no horizontal overflow (all 88 lessons swept at 390 px); end-to-end flows tested: lesson quiz → lesson completion → card unlock → FSRS review → dashboard update; error log; diagnostic; scenario; full capstone run; cheat sheet
 - Not verified live: AI tutor/grader calls to the Claude API (no API key in the build environment). The no-key fallback path is tested.
 
 ## Known limitations / next ideas

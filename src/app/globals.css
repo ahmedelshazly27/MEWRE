@@ -94,6 +94,16 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Long inline formulas scroll inside their paragraph instead of widening the page on phones */
+.prose-lesson p,
+.prose-lesson li,
+.prose-compact p {
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* room for tall inline math so the scroll box never clips fractions */
+  padding-block: 0.25em;
+}
+
 /* Long-form lesson typography */
 .prose-lesson,
 .prose-compact {
@@ -104,7 +114,7 @@ body {
   line-height: 1.75;
 }
 .prose-lesson p {
-  margin: 0.75em 0;
+  margin: 0.25em 0;
 }
 .prose-lesson h2 {
   font-size: 1.35rem;
@@ -131,7 +141,7 @@ body {
   margin: 0.6em 0;
 }
 .prose-lesson li {
-  margin: 0.25em 0;
+  margin: 0;
 }
 .prose-lesson a {
   color: var(--accent);
@@ -194,7 +204,7 @@ body {
   line-height: 1.65;
 }
 .prose-compact p {
-  margin: 0.4em 0;
+  margin: 0.15em 0;
 }
 
 [dir="rtl"] {

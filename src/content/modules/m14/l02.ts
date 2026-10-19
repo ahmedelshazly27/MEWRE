@@ -28,7 +28,7 @@ const lesson: Lesson = {
       description:
         "A structured table of obligations, time limits, remedies and parties, each with clause number and verbatim quote, extracted from a contract.",
       competency: "contracts",
-      related: ["m14.prompt-anatomy"],
+      related: ["m14.prompt-anatomy", "m09.claims-time-bar"],
     },
     {
       id: "m14.deviation-list",
@@ -36,6 +36,7 @@ const lesson: Lesson = {
       description:
         "Requirement-by-requirement comparison of a bid or design to the ERs, classifying each as compliant, deviation, not addressed, or clarification needed, with references to both documents.",
       competency: "procurement",
+      related: ["m08.employers-requirements", "m11.clarifications"],
     },
     {
       id: "m14.task-decomposition",

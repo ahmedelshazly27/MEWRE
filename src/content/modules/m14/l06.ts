@@ -20,7 +20,7 @@ const lesson: Lesson = {
       description:
         "Tiering information (e.g. public, internal, confidential, secret/restricted) to decide where it may be stored, processed and shared — including which AI tools may receive it.",
       competency: "ai",
-      related: ["m14.enterprise-vs-consumer"],
+      related: ["m14.enterprise-vs-consumer", "m06.cybersecurity"],
     },
     {
       id: "m14.anonymisation",
@@ -50,6 +50,7 @@ const lesson: Lesson = {
       description:
         "Approved tools, data rules, human accountability, record-keeping of AI use, disclosure where required and periodic review — aligned with frameworks such as NIST AI RMF and ISO/IEC 42001.",
       competency: "ai",
+      related: ["m15.audit-readiness"],
     },
     {
       id: "m14.prompt-library",

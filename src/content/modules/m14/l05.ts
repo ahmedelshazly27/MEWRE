@@ -43,6 +43,7 @@ const lesson: Lesson = {
       description:
         "Build and run on approved machines, keep confidential data out of public tools and repositories, never hard-code secrets, review commands before approving, and use version control.",
       competency: "ai",
+      related: ["m14.data-classification", "m06.cybersecurity"],
     },
     {
       id: "m14.tool-lifecycle",

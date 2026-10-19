@@ -143,7 +143,7 @@ export default function Dashboard() {
       )}
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
+        <Card className="min-w-0 lg:col-span-2">
           <div className="mb-3 flex items-center justify-between">
             <div className="font-semibold">Recommended next</div>
             <Link href="/learn" className="text-sm text-accent">

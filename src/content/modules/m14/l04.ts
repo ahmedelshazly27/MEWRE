@@ -28,6 +28,7 @@ const lesson: Lesson = {
       description:
         "Computing CV, SV, CPI, SPI, EAC and VAC from exported cost/progress data via code, then interpreting the trends and checking against known totals.",
       competency: "controls",
+      related: ["m08.evm-basics", "m08.evm-forecasting"],
     },
     {
       id: "m14.schedule-health",
@@ -35,7 +36,7 @@ const lesson: Lesson = {
       description:
         "Automated tests on a P6 export (missing logic, constraints, negative float, long durations, out-of-sequence progress) to judge whether a contractor's programme is credible.",
       competency: "controls",
-      related: ["m14.code-not-arithmetic"],
+      related: ["m14.code-not-arithmetic", "m08.dcma14"],
     },
     {
       id: "m14.scada-anomaly",
@@ -43,6 +44,7 @@ const lesson: Lesson = {
       description:
         "Comparing inverter or block performance (e.g. PR) against peers and expected values to find underperformance — after excluding data-quality artefacts.",
       competency: "operations",
+      related: ["m12.loss-signatures", "m12.diagnosis-workflow"],
     },
     {
       id: "m14.model-audit",
@@ -50,6 +52,7 @@ const lesson: Lesson = {
       description:
         "Checking a spreadsheet model for inconsistent formulas, hard-coded inputs, unit and timing errors, broken links and implausible outputs.",
       competency: "finance",
+      related: ["m10.model-audit"],
     },
     {
       id: "m14.data-sanity",
@@ -57,7 +60,7 @@ const lesson: Lesson = {
       description:
         "Reconciling totals, units, time zones, gaps and ranges before trusting any analysis result.",
       competency: "ai",
-      related: ["m14.scada-anomaly", "m14.evm-analysis"],
+      related: ["m14.scada-anomaly", "m14.evm-analysis", "m12.data-quality"],
     },
   ],
   sections: [

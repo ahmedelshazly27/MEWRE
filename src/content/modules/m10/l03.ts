@@ -156,7 +156,10 @@ Let $s$ = soiling rate (fraction of output lost per day without cleaning), $N$ =
 $$N^{*} = \sqrt{\frac{730\,C}{s\,E\,p}}.$$
 
 Kuwait field studies report heavy soiling (8.7–15.1 % losses with monthly cleaning depending on season; Shagaya's PV testbed needed monthly water cleaning). Take $s$ = 0.3 %/day, $E$ = 3,003 GWh, $p$ = 1.8 US cents/kWh and manual wet cleaning of ~2.38 million 600 W modules at USD 0.06 each per cycle → $C$ ≈ USD 143,000:
-- $N^{*} = \sqrt{730\times 143{,}000/(0.003\times 3{,}003\times 10^6\times 0.018)} = 25.4$ days.
+- Optimal interval:
+
+$$N^{*} = \sqrt{\frac{730\times 143{,}000}{0.003\times 3{,}003\times 10^6\times 0.018}} = 25.4\ \text{days}$$
+
 - Annual cost at $N^{*}$ ≈ USD 4.1 m (half cleaning, half lost revenue; average soiling loss 3.8 %). Monthly cleaning ≈ USD 4.2 m; weekly ≈ USD 8.0 m.
 
 Compare **robotic dry cleaning every night**: average soiling loss ~0.15 % (≈ USD 0.08 m/yr), robot O&M ≈ USD 1.4 m/yr, robot capex (illustrative USD 20 m) annualised at CRF 0.0742 ≈ USD 1.5 m/yr → ≈ USD 3.0 m/yr — and almost no water, which matters in Kuwait. This is why large Gulf tracker plants specify robots and why the P50 soiling loss in a bid should be challenged against the cleaning strategy actually contracted.`,

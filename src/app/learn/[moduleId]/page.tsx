@@ -45,8 +45,8 @@ export default async function ModulePage({ params }: Params) {
           <Markdown className="prose-lesson prose-compact">{m.whyItMatters}</Markdown>
         </Card>
       )}
-      <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
-        <div className="space-y-3">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="min-w-0 space-y-3">
           {m.lessons.map((l, i) => {
             const p = progress.get(l.id);
             const qb = quizBest.get(l.id);
@@ -81,7 +81,7 @@ export default async function ModulePage({ params }: Params) {
             </div>
           </Link>
         </div>
-        <aside className="space-y-4">
+        <aside className="min-w-0 space-y-4">
           <Card>
             <div className="mb-2 font-semibold">Concept mastery</div>
             <ul className="space-y-1.5 text-sm">
