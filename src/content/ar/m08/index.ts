@@ -2,193 +2,193 @@ import { md, type Module } from "../../schema";
 import l01 from "./l01";
 import l02 from "./l02";
 import l03 from "./l03";
-import l04 from "../../modules/m08/l04";
-import l05 from "../../modules/m08/l05";
-import l06 from "../../modules/m08/l06";
-import l07 from "../../modules/m08/l07";
-import l08 from "../../modules/m08/l08";
+import l04 from "./l04";
+import l05 from "./l05";
+import l06 from "./l06";
+import l07 from "./l07";
+import l08 from "./l08";
 import exam from "./exam";
 import glossary from "./glossary";
 import formulas from "./formulas";
 import references from "./references";
 
-const cheatSheet = md`# M08 Project Management & Controls — Cheat Sheet
+const cheatSheet = md`# الوحدة M08 إدارة المشاريع والتحكم — ورقة مرجعية
 
-## Frameworks
+## الأطر
 
 ### PMBOK 7
-- **Principles:** 12
-- **Performance domains (8):** Stakeholders; Team; Development approach & life cycle; Planning; Project work; Delivery; Measurement; Uncertainty
-- **Process groups (5):** Initiating; Planning; Executing; Monitoring & Controlling; Closing
+- **المبادئ:** 12
+- **مجالات الأداء (Performance Domains) (8):** أصحاب المصلحة؛ الفريق؛ نهج التطوير ودورة الحياة؛ التخطيط؛ عمل المشروع؛ التسليم؛ القياس؛ عدم اليقين
+- **مجموعات العمليات (Process Groups) (5):** البدء؛ التخطيط؛ التنفيذ؛ المراقبة والتحكم؛ الإغلاق
 
 ### PRINCE2 7
-- **Structure:** 7 principles, 7 practices, 7 processes
-- **Practices:** business case, organizing, plans, quality, risk, issues, progress
-- **Board — Executive:** owns the business case
-- **Board — Senior User:** Control Centre / operations
-- **Board — Senior Supplier:** OE / IPP / EPC
-- **Tolerances:** time, cost, scope, quality, benefits, risk, sustainability
-- **Exception rule:** a **forecast** breach of tolerance triggers an exception report
+- **الهيكل:** 7 مبادئ، 7 ممارسات، 7 عمليات
+- **الممارسات:** دراسة الجدوى، التنظيم، الخطط، الجودة، المخاطر، المسائل، التقدم
+- **المجلس — المسؤول التنفيذي (Executive):** يملك دراسة الجدوى
+- **المجلس — كبير المستخدمين (Senior User):** مركز التحكم / التشغيل
+- **المجلس — كبير المورّدين (Senior Supplier):** مهندس المالك / المنتج المستقل / مقاول EPC
+- **حدود السماح (Tolerances):** الوقت، التكلفة، النطاق، الجودة، المنافع، المخاطر، الاستدامة
+- **قاعدة الاستثناء:** **توقّع** تجاوز حد السماح يطلق تقرير استثناء
 
-## CPM scheduling
+## الجدولة بطريقة المسار الحرج (CPM)
 
-| Rule | Formula | Note |
+| القاعدة | المعادلة | ملاحظة |
 |---|---|---|
-| Forward pass | $ES_j=\max(EF_i+L)$, $EF=ES+D$ | earliest dates |
-| Backward pass | $LF_i=\min(LS_j-L)$, $LS=LF-D$ | latest dates |
-| Total float | $TF=LS-ES$ | |
-| Free float | $FF=\min ES_{succ}-EF$ | $0\le FF\le TF$ |
-| SS link | $ES_j\ge ES_i+L$ | |
-| FF link | $EF_j\ge EF_i+L$ | |
-| CPLI | $(CPL+TF_{end})/CPL$ | target $\ge 0.95$ |
-| BEI | completed / baseline-due | target $\ge 0.95$ |
+| المرور الأمامي | $ES_j=\max(EF_i+L)$، $EF=ES+D$ | التواريخ المبكرة |
+| المرور الخلفي | $LF_i=\min(LS_j-L)$، $LS=LF-D$ | التواريخ المتأخرة |
+| الفائض الكلي (Total Float) | $TF=LS-ES$ | |
+| الفائض الحر (Free Float) | $FF=\min ES_{succ}-EF$ | $0\le FF\le TF$ |
+| علاقة SS | $ES_j\ge ES_i+L$ | |
+| علاقة FF | $EF_j\ge EF_i+L$ | |
+| CPLI | $(CPL+TF_{end})/CPL$ | الهدف $\ge 0.95$ |
+| BEI | المنجز / المستحق في خط الأساس | الهدف $\ge 0.95$ |
 
-- **Delay rule:** completion delay = slip − total float (if positive)
-- **Prolongation:** only for completion delay
+- **قاعدة التأخير:** تأخير الإنجاز = الانزلاق − الفائض الكلي (إن كان موجباً)
+- **تكاليف التمديد:** فقط عن تأخير الإنجاز
 
-### DCMA 14-point check
+### فحص DCMA ذو 14 نقطة
 
-| # | Check | Threshold |
+| # | الفحص | الحد |
 |---|---|---|
-| 1 | Missing logic | ≤ 5 % |
-| 2 | Leads | 0 |
-| 3 | Lags | ≤ 5 % |
-| 4 | FS relationships | ≥ 90 % |
-| 5 | Hard constraints | ≤ 5 % |
-| 6 | High float (TF > 44 d) | ≤ 5 % |
-| 7 | Negative float | 0 |
-| 8 | High duration (> 44 d) | ≤ 5 % |
-| 9 | Invalid dates | 0 |
-| 10 | Resources | — |
-| 11 | Missed tasks | ≤ 5 % |
-| 12 | Critical path test | — |
+| 1 | المنطق الناقص | ≤ 5 % |
+| 2 | التقديم (Leads) | 0 |
+| 3 | الفواصل (Lags) | ≤ 5 % |
+| 4 | علاقات FS | ≥ 90 % |
+| 5 | القيود الصارمة | ≤ 5 % |
+| 6 | الفائض المرتفع (TF > 44 يوماً) | ≤ 5 % |
+| 7 | الفائض السالب | 0 |
+| 8 | المدة المرتفعة (> 44 يوماً) | ≤ 5 % |
+| 9 | التواريخ غير الصالحة | 0 |
+| 10 | الموارد | — |
+| 11 | المهام الفائتة | ≤ 5 % |
+| 12 | اختبار المسار الحرج | — |
 | 13 | CPLI | ≥ 0.95 |
 | 14 | BEI | ≥ 0.95 |
 
-## Earned value
+## القيمة المكتسبة (EVM)
 
-| Metric | Formula | Read |
+| المقياس | المعادلة | القراءة |
 |---|---|---|
-| CV | $EV-AC$ | negative = bad |
-| SV | $EV-PV$ | negative = bad |
-| CPI | $EV/AC$ | < 1 = bad |
-| SPI | $EV/PV$ | < 1 = bad |
-| EAC (CPI) | $BAC/CPI$ | report a range |
-| EAC (budget rate) | $AC+(BAC-EV)$ | report a range |
-| EAC (CPI·SPI) | $AC+\frac{BAC-EV}{CPI\cdot SPI}$ | report a range |
-| EAC (weighted) | $AC+\frac{BAC-EV}{0.8CPI+0.2SPI}$ | report a range |
+| CV | $EV-AC$ | السالب = سيئ |
+| SV | $EV-PV$ | السالب = سيئ |
+| CPI | $EV/AC$ | < 1 = سيئ |
+| SPI | $EV/PV$ | < 1 = سيئ |
+| EAC (CPI) | $BAC/CPI$ | أبلغ عن نطاق |
+| EAC (بأسعار الميزانية) | $AC+(BAC-EV)$ | أبلغ عن نطاق |
+| EAC (CPI·SPI) | $AC+\frac{BAC-EV}{CPI\cdot SPI}$ | أبلغ عن نطاق |
+| EAC (مرجّح) | $AC+\frac{BAC-EV}{0.8CPI+0.2SPI}$ | أبلغ عن نطاق |
 | ETC | $EAC-AC$ | |
 | VAC | $BAC-EAC$ | |
-| TCPI | $\frac{BAC-EV}{BAC-AC}$ | > CPI + 0.05–0.10 → not credible |
-| Earned schedule | $ES=C+\frac{EV-PV_C}{PV_{C+1}-PV_C}$ | |
+| TCPI | $\frac{BAC-EV}{BAC-AC}$ | > CPI + 0.05–0.10 → غير قابل للتصديق |
+| الجدول المكتسب (Earned Schedule) | $ES=C+\frac{EV-PV_C}{PV_{C+1}-PV_C}$ | |
 | SPI(t) | $SPI(t)=ES/AT$ | |
 | IEAC(t) | $IEAC(t)=PD/SPI(t)$ | |
 
-### Rules of credit
-- **Units completed:** piles, rows, modules, cable m
-- **Weighted milestones:** procurement = approval 5 / PO 5 / FAT 15 / shipped 15 / on site 60
-- **0/100:** tasks shorter than 1 period
+### قواعد احتساب الإنجاز (Rules of Credit)
+- **الوحدات المنجزة:** الخوازيق، الصفوف، الألواح، أمتار الكابلات
+- **المعالم المرجّحة:** التوريد = اعتماد 5 / أمر شراء 5 / FAT 15 / شحن 15 / في الموقع 60
+- **0/100:** المهام الأقصر من فترة واحدة
 - **50/50**
-- **LoE:** PM only
+- **مستوى الجهد (LoE):** لإدارة المشروع فقط
 
-### Progress inflation to spot
-- Credit taken at PO
-- Installed-not-tested counted as progress
-- Subjective % complete
-- Front-loading
-- Rework reported as progress
+### تضخيم التقدم الذي يجب اكتشافه
+- الاحتساب عند أمر الشراء
+- احتساب المركّب غير المختبر كتقدم
+- نسبة الإنجاز التقديرية
+- التحميل المسبق (Front-loading)
+- احتساب إعادة العمل كتقدم
 
-## Risk
+## المخاطر
 
-| Quantity | Formula | Note |
+| الكمية | المعادلة | ملاحظة |
 |---|---|---|
-| Risk score | $P\times I$ | ordinal, never sum |
-| EMV | $\sum p_r C_r$ | |
-| PERT mean | $t_e=(a+4m+b)/6$ | |
-| PERT spread | $\sigma=(b-a)/6$ | path: add means, add variances |
-| Triangular mean | $(a+m+b)/3$ | |
-| Percentile | $X_p=\mu+z\sigma$ | $z_{80}=0.842$, $z_{90}=1.282$ |
+| درجة الخطر | $P\times I$ | ترتيبية، لا تُجمع أبداً |
+| القيمة النقدية المتوقعة (EMV) | $\sum p_r C_r$ | |
+| متوسط PERT | $t_e=(a+4m+b)/6$ | |
+| تشتت PERT | $\sigma=(b-a)/6$ | المسار: اجمع المتوسطات، واجمع التباينات |
+| متوسط التوزيع المثلثي | $(a+m+b)/3$ | |
+| المئين | $X_p=\mu+z\sigma$ | $z_{80}=0.842$، $z_{90}=1.282$ |
 
-- **Contingency:** P80 − base, held in the baseline
-- **Management reserve:** outside the baseline
-- **Merge bias:** two P50 paths → 25 % joint probability
+- **مخصص الطوارئ (Contingency):** P80 − الأساس، ضمن خط الأساس
+- **الاحتياطي الإداري (Management Reserve):** خارج خط الأساس
+- **انحياز الالتقاء (Merge Bias):** مساران عند P50 → احتمال مشترك 25 %
 
-### Kuwait risks
-- **Heat:** 53.9 °C record (WMO)
-- **Summer midday work restriction** (verify)
-- **Approvals chain:** KAPP → Higher Committee → Audit Bureau (prior review at ≥ KD 100k, verify)
-- **Law 94/2026:** tenders law amendment
-- **Customs:** Zone 2 — up to 10 % exemption reported
-- **FX:** USD-priced equipment
-- **MEWRE grid interfaces**
-- **Shamal dust**
+### المخاطر الكويتية
+- **الحرارة:** الرقم القياسي 53.9 °C (WMO)
+- **حظر العمل في الأماكن المكشوفة وقت الظهيرة صيفاً** (يلزم التحقق)
+- **سلسلة الموافقات:** KAPP → اللجنة العليا → ديوان المحاسبة (رقابة مسبقة عند ≥ 100,000 KWD، يلزم التحقق)
+- **القانون 94/2026:** تعديل قانون المناقصات
+- **الجمارك:** المنطقة 2 — يُفاد بإعفاء حتى 10 %
+- **سعر الصرف:** المعدات المسعّرة بالدولار
+- **واجهات شبكة MEWRE**
+- **غبار رياح الشمال**
 
-## Change, interfaces, documents
+## التغيير والواجهات والمستندات
 
-### FIDIC 2017 & NEC4
-- **Cl. 13 variations:** 13.3.1 by instruction; 13.3.2 by request for proposal
-- **Cl. 20 claims:** notice within 28 d; fully detailed claim within 84 d
-- **Cl. 8.3 programme:** within 28 d of the 8.1 Commencement notice; Engineer review 21 d
-- **Cl. 4.20 monthly report:** within 7 d
-- **Cl. 8.4:** advance warning
-- **Cl. 21:** DAAB
-- **NEC4 cl. 15 early warning:** register + meetings; failure to warn reduces the CE assessment
+### FIDIC 2017 وNEC4
+- **البند 13 الأوامر التغييرية:** 13.3.1 بالتعليمات؛ 13.3.2 بطلب مقترح
+- **البند 20 المطالبات:** الإشعار خلال 28 يوماً؛ والمطالبة المفصلة بالكامل خلال 84 يوماً
+- **البند 8.3 البرنامج الزمني:** خلال 28 يوماً من إشعار تاريخ البدء بموجب 8.1؛ ومراجعة المهندس 21 يوماً
+- **البند 4.20 التقرير الشهري:** خلال 7 أيام
+- **البند 8.4:** الإشعار المسبق
+- **البند 21:** DAAB
+- **NEC4 البند 15 الإنذار المبكر:** سجل + اجتماعات؛ والإخفاق في الإنذار يخفض تقييم حدث التعويض
 
-### Valuing a variation
+### تقييم الأمر التغييري
 $$V=C_{dir}(1+k_{OHP})+c_t\,\Delta T_{completion}$$
 
-### Document review codes
-- **A:** proceed
-- **B:** proceed with comments, resubmit
-- **C:** rejected, resubmit
-- **D:** information only
+### رموز مراجعة المستندات
+- **A:** امضِ
+- **B:** امضِ مع الملاحظات، وأعد التقديم
+- **C:** مرفوض، أعد التقديم
+- **D:** للعلم فقط
 
-### Interfaces and RFIs
-- **Interface register fields:** ID, parties, type, give/need dates, ICD, owner, status
-- **MEWRE "gives":** tracked as P6 milestones
-- **RFI:** clarifies, never changes scope
+### الواجهات وطلبات الاستيضاح
+- **حقول سجل الواجهات:** الرمز، الأطراف، النوع، تواريخ التسليم/الاحتياج، وثيقة التحكم بالواجهة (ICD)، المالك، الحالة
+- **"تسليمات" MEWRE:** تُتبع كمعالم في P6
+- **طلب الاستيضاح (RFI):** يوضّح، ولا يغيّر النطاق أبداً
 
-## QA/QC & HSE
+## ضمان الجودة وضبطها والصحة والسلامة
 
-### Quality
-- **ITP codes:** **H** hold, **W** witness, **R** review, **S** surveillance
-- **Hold points:** on irreversible and energisation-critical steps
-- **NCR dispositions:** rework, repair, use-as-is (concession), reject
+### الجودة
+- **رموز خطة الفحص والاختبار (ITP):** **H** توقف، **W** معاينة، **R** مراجعة، **S** مراقبة
+- **نقاط التوقف:** على الخطوات غير القابلة للعكس والحرجة للتنشيط الكهربائي
+- **معالجة تقارير عدم المطابقة (NCR):** إعادة العمل، الإصلاح، القبول كما هو (تنازل)، الرفض
 
-### Safety metrics (state the base)
+### مقاييس السلامة (اذكر الأساس)
 
-| Quantity | Formula | Base |
+| الكمية | المعادلة | الأساس |
 |---|---|---|
-| LTIFR | $LTIFR=N_{LTI}\times10^6/H$ | per 1,000,000 h |
-| TRIR | $TRIR=N_{rec}\times200{,}000/H$ | per 200,000 h |
-| WBGT (outdoor) | $WBGT=0.7T_{nwb}+0.2T_g+0.1T_a$ | |
+| LTIFR | $LTIFR=N_{LTI}\times10^6/H$ | لكل 1,000,000 h |
+| TRIR | $TRIR=N_{rec}\times200{,}000/H$ | لكل 200,000 h |
+| WBGT (في الخارج) | $WBGT=0.7T_{nwb}+0.2T_g+0.1T_a$ | |
 
-- **Heat-stress guide:** ~28 °C WBGT for moderate continuous work, acclimatised (ISO 7243 order of magnitude — check the procedure)
-- **PV DC strings:** live whenever there is daylight
-- **BESS hazards:** stranded energy, thermal runaway; civil-defence approval required
+- **دليل الإجهاد الحراري:** ~28 °C WBGT للعمل المتوسط المستمر لعاملين متأقلمين (رتبة المقدار وفق ISO 7243 — راجع الإجراء)
+- **سلاسل DC في محطات PV:** حية كلما وُجد ضوء النهار
+- **مخاطر BESS:** الطاقة العالقة، الانفلات الحراري؛ ويلزم اعتماد الدفاع المدني
 
-## Reporting
+## التقارير
 
-| Status | Schedule | Cost |
+| الحالة | الجدول | التكلفة |
 |---|---|---|
-| Green | on time | CPI ≥ 0.97 |
-| Amber | 1–4 wk late or SPI(t) 0.90–0.95 | CPI 0.92–0.97 |
-| Red | > 4 wk, SPI(t) < 0.90 or key date at risk | CPI < 0.92 or EAC > budget + contingency |
+| أخضر | في الموعد | CPI ≥ 0.97 |
+| أصفر | تأخر 1–4 أسابيع أو SPI(t) 0.90–0.95 | CPI 0.92–0.97 |
+| أحمر | > 4 أسابيع، أو SPI(t) < 0.90، أو تاريخ رئيسي معرّض للخطر | CPI < 0.92 أو EAC > الميزانية + مخصص الطوارئ |
 
-- **Thresholds above:** an example, set per project
-- **Every status:** colour + trend + path to green
-- **Order:** report decisions first
+- **الحدود أعلاه:** مثال، تُحدَّد لكل مشروع
+- **كل حالة:** اللون + الاتجاه + مسار العودة إلى الأخضر
+- **الترتيب:** أبلغ عن القرارات أولاً
 `;
 
 const mod: Module = {
   id: "m08",
   number: 8,
-  title: "Project Management & Controls",
+  title: "إدارة المشاريع والتحكم",
   titleAr: "إدارة المشاريع والتحكم",
   summary:
-    "The control toolkit of a MEWRE renewable-energy PM: governance and stage gates (PMBOK/PRINCE2), scope and WBS, CPM scheduling and P6 schedule review (DCMA 14), earned value management, quantitative risk (Monte Carlo, P80), change/interface/document control, QA/QC and HSE in 50 °C conditions, and honest reporting to leadership.",
+    "أدوات التحكم لدى مدير مشروع طاقة متجددة في MEWRE: الحوكمة وبوابات المراحل (PMBOK/PRINCE2)، والنطاق وهيكل تجزئة العمل، والجدولة بطريقة المسار الحرج ومراجعة جداول P6 (DCMA 14)، وإدارة القيمة المكتسبة، والتحليل الكمي للمخاطر (مونت كارلو، P80)، وضبط التغيير والواجهات والمستندات، وضمان الجودة وضبطها والصحة والسلامة في ظروف 50 °C، والتقارير الصادقة إلى القيادة.",
   whyItMatters:
-    "A MEWRE PM is judged on whether the plant and its grid connection arrive on time, on budget and safely — and on whether leadership heard about problems early enough to act. On KAPP IPPs the ministry controls the grid interfaces and approvals that most often cause offtaker exposure; on directly procured grid and BESS packages it administers the whole contract. This module gives you the quantitative tools (CPM, EVM, Monte Carlo) and the administrative systems (change, interface, document, quality, HSE, reporting) to see through contractor narratives, protect the ministry's position and make decisions defensible to the Audit Bureau.",
+    "يُحكم على مدير المشروع في MEWRE بما إذا كانت المحطة وربطها بالشبكة يصلان في الموعد وضمن الميزانية وبأمان — وبما إذا كانت القيادة قد علمت بالمشكلات مبكراً بما يكفي للتصرف. في مشاريع المنتجين المستقلين (IPP) عبر هيئة مشروعات الشراكة بين القطاعين العام والخاص (KAPP) تتحكم الوزارة في واجهات الشبكة والموافقات التي كثيراً ما تسبب تعرض المشتري؛ وفي حزم الشبكة وأنظمة تخزين الطاقة بالبطاريات (BESS) المطروحة مباشرة تدير العقد بكامله. تمنحك هذه الوحدة الأدوات الكمية (CPM، EVM، مونت كارلو) والأنظمة الإدارية (التغيير، الواجهات، المستندات، الجودة، الصحة والسلامة، التقارير) لترى ما وراء روايات المقاولين، وتحمي موقف الوزارة، وتتخذ قرارات قابلة للدفاع أمام ديوان المحاسبة.",
   competencies: ["controls", "risk", "delivery", "leadership"],
   prerequisites: ["m00", "m07"],
   estimatedHours: 14,
