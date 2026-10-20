@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useLearner } from "@/lib/store/react";
 import { openErrors, reviewQueue } from "@/lib/store/derive";
 import { useContent } from "@/lib/useContent";
 import { SyncDot } from "@/components/SyncDot";
+import { langFromPath, lp, switchPath, t as tr, type Lang } from "@/lib/i18n";
+import { storeLang, storedLang, useT } from "@/lib/useLang";
 
 function useBadges() {
   const store = useLearner();
@@ -51,8 +53,8 @@ export function Icon({ name, className = "h-5 w-5" }: { name: string; className?
   );
 }
 
-function groups(due: number, errors: number): { title: string; items: Item[] }[] {
-  return [
+function groups(due: number, errors: number, lang: Lang): { title: string; items: Item[] }[] {
+  const raw: { title: string; items: Item[] }[] = [
     {
       title: "Study",
       items: [
@@ -84,14 +86,55 @@ function groups(due: number, errors: number): { title: string; items: Item[] }[]
       ],
     },
   ];
+  return raw.map((g) => ({ title: tr(lang, g.title), items: g.items.map((it) => ({ ...it, href: lp(lang, it.href), label: tr(lang, it.label) })) }));
 }
 
 function isActive(pathname: string, href: string) {
-  return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
+  const home = href === "/" || href === "/ar";
+  return home ? pathname === href : pathname === href || pathname.startsWith(href + "/");
+}
+
+/** Switches between the English and Arabic version of the current page and remembers the choice. */
+export function LangToggle({ className = "" }: { className?: string }) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const lang = langFromPath(pathname);
+  const to: Lang = lang === "ar" ? "en" : "ar";
+  return (
+    <button
+      onClick={() => {
+        storeLang(to);
+        router.push(switchPath(pathname, to) + window.location.search + window.location.hash);
+      }}
+      className={`rounded-lg px-2 py-1.5 text-sm font-medium text-muted hover:bg-surface-2 hover:text-text ${className}`}
+      title={to === "ar" ? "عرض المنصة بالعربية" : "Switch to English"}
+      aria-label={to === "ar" ? "Switch to Arabic" : "Switch to English"}
+    >
+      {to === "ar" ? <span lang="ar">عربي</span> : "EN"}
+    </button>
+  );
+}
+
+/** Keeps <html lang/dir> in sync with the URL and opens the Arabic home when that was the last choice. */
+export function LangSync() {
+  const pathname = usePathname();
+  const router = useRouter();
+  const lang = langFromPath(pathname);
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  }, [lang]);
+  useEffect(() => {
+    if (pathname === "/" && storedLang() === "ar") router.replace("/ar");
+    // only on first load
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return null;
 }
 
 export function ThemeToggle() {
   const [dark, setDark] = useState<boolean | null>(null);
+  const label = useT().t("Toggle dark mode");
   useEffect(() => setDark(document.documentElement.classList.contains("dark")), []);
   const toggle = () => {
     const next = !document.documentElement.classList.contains("dark");
@@ -102,7 +145,7 @@ export function ThemeToggle() {
     setDark(next);
   };
   return (
-    <button onClick={toggle} className="rounded-lg p-2 text-muted hover:bg-surface-2 hover:text-text" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <button onClick={toggle} className="rounded-lg p-2 text-muted hover:bg-surface-2 hover:text-text" aria-label={label} title={label}>
       <Icon name={dark ? "sun" : "moon"} />
     </button>
   );
@@ -110,9 +153,10 @@ export function ThemeToggle() {
 
 function NavList({ due, errors, onNavigate }: { due: number; errors: number; onNavigate?: () => void }) {
   const pathname = usePathname();
+  const lang = langFromPath(pathname);
   return (
     <nav className="space-y-5">
-      {groups(due, errors).map((g) => (
+      {groups(due, errors, lang).map((g) => (
         <div key={g.title}>
           <div className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-muted">{g.title}</div>
           <ul className="space-y-0.5">
@@ -144,28 +188,32 @@ function NavList({ due, errors, onNavigate }: { due: number; errors: number; onN
 export function Sidebar() {
   const { due, errors } = useBadges();
   return (
-    <aside className="no-print sticky top-0 hidden h-screen w-60 shrink-0 flex-col overflow-y-auto border-r border-border bg-surface px-3 py-5 lg:flex">
+    <aside className="no-print sticky top-0 hidden h-screen w-60 shrink-0 flex-col overflow-y-auto border-e border-border bg-surface px-3 py-5 lg:flex">
       <Brand />
       <div className="mt-6 flex-1">
         <NavList due={due} errors={errors} />
       </div>
       <div className="flex items-center justify-between px-2 pt-4 text-xs text-muted">
         <SyncDot />
-        <ThemeToggle />
+        <span className="flex items-center">
+          <LangToggle />
+          <ThemeToggle />
+        </span>
       </div>
     </aside>
   );
 }
 
 function Brand() {
+  const { t, href } = useT();
   return (
-    <Link href="/" className="flex items-center gap-2.5 px-2">
+    <Link href={href("/")} className="flex items-center gap-2.5 px-2">
       <span className="grid h-8 w-8 place-items-center rounded-lg bg-accent text-white dark:text-black">
         <Icon name="sun" className="h-5 w-5" />
       </span>
       <span className="leading-tight">
         <span className="block text-sm font-semibold">MEWRE PM Academy</span>
-        <span className="block text-[11px] text-muted">Renewables · Kuwait</span>
+        <span className="block text-[11px] text-muted">{t("Renewables · Kuwait")}</span>
       </span>
     </Link>
   );
@@ -175,12 +223,13 @@ export function MobileNav() {
   const { due, errors } = useBadges();
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const { t, href } = useT();
   useEffect(() => setOpen(false), [pathname]);
   const tabs: Item[] = [
-    { href: "/", label: "Home", icon: "home" },
-    { href: "/learn", label: "Learn", icon: "book" },
-    { href: "/review", label: "Review", icon: "cards", badge: due },
-    { href: "/practice", label: "Practice", icon: "target" },
+    { href: href("/"), label: t("Home"), icon: "home" },
+    { href: href("/learn"), label: t("Learn"), icon: "book" },
+    { href: href("/review"), label: t("Review"), icon: "cards", badge: due },
+    { href: href("/practice"), label: t("Practice"), icon: "target" },
   ];
   return (
     <>
@@ -188,8 +237,9 @@ export function MobileNav() {
         <Brand />
         <div className="flex items-center gap-1">
           <SyncDot compact />
+          <LangToggle />
           <ThemeToggle />
-          <button onClick={() => setOpen((o) => !o)} className="rounded-lg p-2 hover:bg-surface-2" aria-label="Menu">
+          <button onClick={() => setOpen((o) => !o)} className="rounded-lg p-2 hover:bg-surface-2" aria-label={t("Menu")}>
             <Icon name="menu" />
           </button>
         </div>
@@ -197,7 +247,7 @@ export function MobileNav() {
       {open && (
         <div className="no-print fixed inset-0 z-40 lg:hidden" onClick={() => setOpen(false)}>
           <div className="absolute inset-0 bg-black/40" />
-          <div className="absolute right-0 top-0 h-full w-72 overflow-y-auto bg-surface p-4" onClick={(e) => e.stopPropagation()}>
+          <div className="absolute end-0 top-0 h-full w-72 overflow-y-auto bg-surface p-4" onClick={(e) => e.stopPropagation()}>
             <NavList due={due} errors={errors} onNavigate={() => setOpen(false)} />
           </div>
         </div>
@@ -207,7 +257,7 @@ export function MobileNav() {
           <Link key={t.href} href={t.href} className={`relative flex flex-col items-center gap-0.5 py-2 text-[11px] ${isActive(pathname, t.href) ? "text-accent" : "text-muted"}`}>
             <Icon name={t.icon} />
             {t.label}
-            {!!t.badge && <span className="absolute right-[28%] top-1 rounded-full bg-sun px-1 text-[10px] font-bold text-white dark:text-black">{t.badge}</span>}
+            {!!t.badge && <span className="absolute end-[28%] top-1 rounded-full bg-sun px-1 text-[10px] font-bold text-white dark:text-black">{t.badge}</span>}
           </Link>
         ))}
       </nav>

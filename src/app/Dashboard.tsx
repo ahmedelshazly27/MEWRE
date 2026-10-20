@@ -6,13 +6,16 @@ import { useLearner } from "@/lib/store/react";
 import { useContent } from "@/lib/useContent";
 import { bestScores, localDay, masteryMap, openErrors, reviewForecast, reviewQueue, secondsThisWeek, streak, totals } from "@/lib/store/derive";
 import { competencyScores, readinessBand, readinessScore } from "@/lib/readiness";
+import { useT } from "@/lib/useLang";
+import { fwd } from "@/lib/i18n";
 import { Button, Card, EmptyState, MasteryBadge, Pill, ProgressBar, Stat, fmtDuration } from "@/components/ui";
 
 export function Dashboard() {
+  const { lang, t: tr, href } = useT();
   const store = useLearner();
   const content = useContent();
   const [now] = useState(() => Date.now());
-  if (!store || !content) return <div className="text-muted">Loading your progress…</div>;
+  if (!store || !content) return <div className="text-muted">{tr("Loading your progress…")}</div>;
   const d = store.derived();
   const settings = store.settings();
   const progress = d.lessons;
@@ -72,10 +75,14 @@ export function Dashboard() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{settings.name ? `Welcome back, ${settings.name}` : "Your path to MEWRE PM"}</h1>
-          <p className="mt-1 text-muted">Shagaya, Al Dibdibah and the utility-scale pipeline — learn it like you will run it.</p>
+          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{settings.name ? tr("Welcome back, {name}", { name: settings.name }) : tr("Your path to MEWRE PM")}</h1>
+          <p className="mt-1 text-muted">{tr("Shagaya, Al Dibdibah and the utility-scale pipeline — learn it like you will run it.")}</p>
         </div>
-        {nextUp && <Button href={`/learn/${nextUp.moduleId}/${nextUp.id}`}>{inProgress ? "Resume lesson" : "Start next lesson"} →</Button>}
+        {nextUp && (
+          <Button href={href(`/learn/${nextUp.moduleId}/${nextUp.id}`)}>
+            {inProgress ? tr("Resume lesson") : tr("Start next lesson")} {fwd(lang)}
+          </Button>
+        )}
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[1.1fr_1fr]">
@@ -83,10 +90,11 @@ export function Dashboard() {
           <div className="flex items-center gap-5">
             <Ring value={readiness / 100} />
             <div className="min-w-0">
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted">Job readiness</div>
-              <div className="text-xl font-semibold">{band.label}</div>
-              <p className="text-sm text-muted">{band.note}</p>
-              <p className="mt-1 text-xs text-muted">85% job-weighted concept mastery · 15% capstone{capBest !== null ? ` (best ${Math.round(capBest * 100)}%)` : ""}</p>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted">{tr("Job readiness")}</div>
+              <div className="text-xl font-semibold">{tr(band.label)}</div>
+              <p className="text-sm text-muted">{tr(band.note)}</p>
+              <p className="mt-1 text-xs text-muted">{tr("85% job-weighted concept mastery · 15% capstone")}
+                {capBest !== null ? tr(" (best {n}%)", { n: Math.round(capBest * 100) }) : ""}</p>
             </div>
           </div>
           <div className="mt-5 space-y-2">
@@ -95,42 +103,42 @@ export function Dashboard() {
               .sort((a, b) => b.weight - a.weight)
               .map((c) => (
                 <div key={c.id} className="grid grid-cols-[minmax(0,1fr)_110px_38px] items-center gap-2 text-sm sm:grid-cols-[minmax(0,1fr)_160px_38px]">
-                  <span className="truncate" title={`${c.assessed}/${c.total} concepts assessed · weight ${c.weight}`}>
-                    {c.label}
+                  <span className="truncate" title={tr("{a}/{n} concepts assessed · weight {w}", { a: c.assessed, n: c.total, w: c.weight })}>
+                    {tr(c.label)}
                   </span>
                   <ProgressBar value={c.mastery} tone={c.mastery >= 0.8 ? "ok" : c.mastery >= 0.4 ? "sun" : "accent"} />
-                  <span className="text-right tabular-nums text-muted">{Math.round(c.mastery * 100)}</span>
+                  <span className="text-end tabular-nums text-muted">{Math.round(c.mastery * 100)}</span>
                 </div>
               ))}
-            {comps.every((c) => c.total === 0) && <div className="text-sm text-muted">Competencies appear as modules are published.</div>}
+            {comps.every((c) => c.total === 0) && <div className="text-sm text-muted">{tr("Competencies appear as modules are published.")}</div>}
           </div>
         </Card>
 
         <div className="grid grid-cols-2 gap-3 self-start">
-          <Stat label="Streak" value={`${st.current} d`} hint={`Longest ${st.longest} d`} />
-          <Stat label="This week" value={fmtDuration(weekSecs)} hint={`Target ${settings.weeklyHours} h`} />
-          <Link href="/review" className="contents">
-            <Stat label="Reviews due" value={q.due.length + q.fresh.length} hint={`${q.due.length} due · ${q.fresh.length} new`} />
+          <Stat label={tr("Streak")} value={tr("{n} d", { n: st.current })} hint={tr("Longest {n} d", { n: st.longest })} />
+          <Stat label={tr("This week")} value={fmtDuration(weekSecs)} hint={tr("Target {n} h", { n: settings.weeklyHours })} />
+          <Link href={href("/review")} className="contents">
+            <Stat label={tr("Reviews due")} value={q.due.length + q.fresh.length} hint={tr("{d} due · {n} new", { d: q.due.length, n: q.fresh.length })} />
           </Link>
-          <Link href="/errors" className="contents">
-            <Stat label="Error log" value={errors.length} hint="open mistakes" />
+          <Link href={href("/errors")} className="contents">
+            <Stat label={tr("Error log")} value={errors.length} hint={tr("open mistakes")} />
           </Link>
-          <Stat label="Lessons" value={`${completed}/${totalLessons}`} hint={`${liveModuleCount} modules live`} />
-          <Stat label="Total study" value={fmtDuration(t.seconds)} hint={`${t.attempts} answers · ${Math.round(t.avgScore * 100)}% avg`} />
+          <Stat label={tr("Lessons")} value={`${completed}/${totalLessons}`} hint={tr("{n} modules live", { n: liveModuleCount })} />
+          <Stat label={tr("Total study")} value={fmtDuration(t.seconds)} hint={tr("{n} answers · {p}% avg", { n: t.attempts, p: Math.round(t.avgScore * 100) })} />
           <div className="col-span-2">
             <Card>
               <div className="flex items-center justify-between text-sm">
-                <span className="font-medium">Weekly target</span>
+                <span className="font-medium">{tr("Weekly target")}</span>
                 <span className="tabular-nums text-muted">{Math.round((weekSecs / Math.max(1, weekTarget)) * 100)}%</span>
               </div>
               <ProgressBar value={weekSecs / Math.max(1, weekTarget)} className="mt-2" />
               <div className="mt-3 flex items-center justify-between text-sm">
-                <span className="font-medium">Plan pace</span>
+                <span className="font-medium">{tr("Plan pace")}</span>
                 <span className="text-muted">
-                  {Math.round(actual * 100)}% done vs {Math.round(expected * 100)}% expected (week {Math.min(settings.weeks, Math.floor(weeksElapsed) + 1)}/{settings.weeks})
+                  {tr("{a}% done vs {e}% expected (week {w}/{n})", { a: Math.round(actual * 100), e: Math.round(expected * 100), w: Math.min(settings.weeks, Math.floor(weeksElapsed) + 1), n: settings.weeks })}
                 </span>
               </div>
-              <div className="relative mt-2">
+              <div className="relative mt-2" dir="ltr">
                 <ProgressBar value={actual} tone="ok" />
                 <div className="absolute top-[-3px] h-3.5 w-0.5 bg-text/60" style={{ left: `${expected * 100}%` }} />
               </div>
@@ -143,10 +151,10 @@ export function Dashboard() {
         <Card className="border-sun/40 bg-sun-soft/30">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <div className="font-semibold">Set your baseline</div>
-              <p className="text-sm text-muted">A short diagnostic across all modules seeds your mastery map so recommendations target real gaps.</p>
+              <div className="font-semibold">{tr("Set your baseline")}</div>
+              <p className="text-sm text-muted">{tr("A short diagnostic across all modules seeds your mastery map so recommendations target real gaps.")}</p>
             </div>
-            <Button href="/diagnostic">Take the diagnostic</Button>
+            <Button href={href("/diagnostic")}>{tr("Take the diagnostic")}</Button>
           </div>
         </Card>
       )}
@@ -154,37 +162,37 @@ export function Dashboard() {
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="min-w-0 lg:col-span-2">
           <div className="mb-3 flex items-center justify-between">
-            <div className="font-semibold">Recommended next</div>
-            <Link href="/learn" className="text-sm text-accent">
-              Curriculum →
+            <div className="font-semibold">{tr("Recommended next")}</div>
+            <Link href={href("/learn")} className="text-sm text-accent">
+              {tr("Curriculum")} {fwd(lang)}
             </Link>
           </div>
           {nextUp ? (
-            <Link href={`/learn/${nextUp.moduleId}/${nextUp.id}`} className="block rounded-lg border border-border p-3 hover:bg-surface-2">
+            <Link href={href(`/learn/${nextUp.moduleId}/${nextUp.id}`)} className="block rounded-lg border border-border p-3 hover:bg-surface-2">
               <div className="text-xs text-muted">
-                M{nextUp.moduleNumber} · {nextUp.moduleTitle} · lesson {nextUp.index + 1}
+                M{nextUp.moduleNumber} · {nextUp.moduleTitle} · {tr("lesson {n}", { n: nextUp.index + 1 })}
               </div>
               <div className="font-medium">{nextUp.title}</div>
               <div className="text-sm text-muted">{nextUp.summary}</div>
             </Link>
           ) : (
-            <EmptyState title="All available lessons complete">Run mixed exams and the capstone to consolidate.</EmptyState>
+            <EmptyState title={tr("All available lessons complete")}>{tr("Run mixed exams and the capstone to consolidate.")}</EmptyState>
           )}
           <div className="mt-4 grid gap-2 sm:grid-cols-3">
-            <QuickLink href="/review" title="Daily review" note={`${q.due.length + q.fresh.length} cards`} />
-            <QuickLink href="/practice?mode=mixed" title="Mixed practice" note="interleaved, weak-first" />
-            <QuickLink href="/scenarios" title="Day in the life" note="PM decisions" />
+            <QuickLink href={href("/review")} title={tr("Daily review")} note={tr("{n} cards", { n: q.due.length + q.fresh.length })} />
+            <QuickLink href={href("/practice?mode=mixed")} title={tr("Mixed practice")} note={tr("interleaved, weak-first")} />
+            <QuickLink href={href("/scenarios")} title={tr("Day in the life")} note={tr("PM decisions")} />
           </div>
           {weak.length > 0 && (
             <div className="mt-5">
-              <div className="mb-2 text-sm font-semibold">Weak areas to revisit</div>
+              <div className="mb-2 text-sm font-semibold">{tr("Weak areas to revisit")}</div>
               <ul className="space-y-1.5">
                 {weak.map((w) => (
                   <li key={w.id} className="flex items-center justify-between gap-2 text-sm">
-                    <Link href={`/learn/${w.c.moduleId}/${w.c.lessonId}`} className="min-w-0 truncate hover:text-accent">
+                    <Link href={href(`/learn/${w.c.moduleId}/${w.c.lessonId}`)} className="min-w-0 truncate hover:text-accent">
                       {w.c.name} <span className="text-muted">· M{w.lesson?.moduleNumber}</span>
                     </Link>
-                    <MasteryBadge mastery={w.m.mastery} evidence={w.m.evidence} />
+                    <MasteryBadge mastery={w.m.mastery} evidence={w.m.evidence} lang={lang} />
                   </li>
                 ))}
               </ul>
@@ -192,25 +200,25 @@ export function Dashboard() {
           )}
         </Card>
         <Card>
-          <div className="mb-3 font-semibold">Activity (12 weeks)</div>
+          <div className="mb-3 font-semibold">{tr("Activity (12 weeks)")}</div>
           <div className="grid grid-flow-col grid-rows-7 gap-[3px]" style={{ gridTemplateColumns: "repeat(12, minmax(0, 1fr))" }}>
             {days.map((d) => (
-              <div key={d.day} className={`aspect-square rounded-[3px] ${heat(d)}`} title={`${d.day}: ${Math.round(d.secs / 60)} min, ${d.n} answers/reviews`} />
+              <div key={d.day} className={`aspect-square rounded-[3px] ${heat(d)}`} title={tr("{day}: {m} min, {n} answers/reviews", { day: d.day, m: Math.round(d.secs / 60), n: d.n })} />
             ))}
           </div>
-          <div className="mt-5 mb-2 text-sm font-semibold">Upcoming reviews</div>
+          <div className="mt-5 mb-2 text-sm font-semibold">{tr("Upcoming reviews")}</div>
           <div className="flex items-end gap-1.5">
             {forecast.map((n, i) => (
               <div key={i} className="flex flex-1 flex-col items-center gap-1">
                 <span className="text-[10px] tabular-nums text-muted">{n}</span>
                 <div className="w-full rounded-sm bg-sun/70" style={{ height: `${4 + (n / Math.max(1, ...forecast)) * 48}px` }} />
-                <span className="text-[10px] text-muted">{i === 0 ? "Today" : `+${i}d`}</span>
+                <span className="text-[10px] text-muted">{i === 0 ? tr("Today") : tr("+{n}d", { n: i })}</span>
               </div>
             ))}
           </div>
           <div className="mt-4 flex flex-wrap gap-1.5 text-xs">
-            <Pill>{q.unlockedTotal} cards unlocked</Pill>
-            <Pill>{conceptList.length} concepts</Pill>
+            <Pill>{tr("{n} cards unlocked", { n: q.unlockedTotal })}</Pill>
+            <Pill>{tr("{n} concepts", { n: conceptList.length })}</Pill>
           </div>
         </Card>
       </div>

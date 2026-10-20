@@ -1,0 +1,36 @@
+import type { GlossaryTerm } from "../../schema";
+
+const glossary: GlossaryTerm[] = [
+  { id: "m13-undersecretary", en: "Undersecretary", ar: "وكيل الوزارة", definition: "كبير موظفي الخدمة المدنية الذي يدير الوزارة يوماً بيوم تحت إشراف الوزير، ويوقّع معظم المراسلات المهمة في حدود الصلاحيات المفوَّضة إليه.", lesson: "m13-l01", category: "institutional" },
+  { id: "m13-assistant-undersecretary", en: "Assistant Undersecretary", ar: "الوكيل المساعد", definition: "رئيس قطاع في الوزارة (مثل النقل أو التخطيط أو المشاريع)؛ وهو عادةً العميل الداخلي الرئيسي لمدير المشروع وصاحب بند الميزانية.", lesson: "m13-l01", category: "institutional" },
+  { id: "m13-sector", en: "Sector", ar: "قطاع", definition: "وحدة تنظيمية رئيسية في الوزارة يرأسها وكيل مساعد، وتضم عدة إدارات.", lesson: "m13-l01", category: "institutional" },
+  { id: "m13-ministerial-decision", en: "Ministerial decision", ar: "قرار وزاري", definition: "قرار رسمي مكتوب يوقّعه الوزير — مثل تشكيل لجنة أو اعتماد سياسة.", lesson: "m13-l01", category: "institutional" },
+  { id: "m13-delegation-authority", en: "Delegation of authority", ar: "تفويض الصلاحيات", definition: "الوثيقة المكتوبة التي تحدد من يحق له من المسؤولين اعتماد أو توقيع ماذا، عادةً بحسب نوع المعاملة وسقف قيمتها.", lesson: "m13-l01", category: "institutional" },
+  { id: "m13-annotation", en: "Annotation (on a memo)", ar: "تأشيرة", definition: "توجيه مكتوب بخط يد المسؤول الأعلى على المذكرة (مثل: موافق، للعرض، لاتخاذ اللازم)؛ والمذكرة المؤشَّر عليها هي سجل القرار.", lesson: "m13-l01", category: "institutional" },
+  { id: "m13-committee-minutes", en: "Committee minutes", ar: "محضر اللجنة", definition: "السجل الموقَّع لمداولات اللجنة وتوصياتها؛ والمحضر غير الموقَّع ليس إلا مسودة.", lesson: "m13-l01", category: "institutional" },
+  { id: "m13-rapporteur", en: "Rapporteur (committee secretary)", ar: "مقرر اللجنة", definition: "عضو اللجنة الذي يصوغ المحضر، ولذلك يؤثر تأثيراً كبيراً في طريقة تسجيل القرارات.", lesson: "m13-l01", category: "institutional" },
+  { id: "m13-wasta", en: "Wasta (intercession)", ar: "واسطة", definition: "استخدام العلاقات الشخصية للحصول على معاملة تفضيلية. وهي مشروعة فقط للوصول ولفت الانتباه، ولا تجوز أبداً في النتائج التي تحكمها القواعد (الترسية، التقييم، التعيين).", lesson: "m13-l01", category: "institutional" },
+  { id: "m13-conflict-of-interest", en: "Conflict of interest", ar: "تعارض المصالح", definition: "حالة يمكن فيها للمصالح الشخصية أن تؤثر تأثيراً غير سليم في أداء الواجبات الرسمية؛ ويجب الإفصاح عنها وقد تستلزم التنحي.", lesson: "m13-l01", category: "institutional" },
+  { id: "m13-bluf", en: "Bottom line up front (BLUF)", ar: "الخلاصة أولاً", definition: "مبدأ في الكتابة: تأتي الخلاصة أو القرار المطلوب أولاً، ثم الأسباب الداعمة.", lesson: "m13-l02", category: "pm" },
+  { id: "m13-internal-memo", en: "Internal memorandum", ar: "مذكرة داخلية", definition: "وثيقة موجهة إلى المستويات الأعلى أو إلى جهات أخرى داخل الوزارة للإحاطة أو لاستصدار قرار، وتُرفع عبر التسلسل الإداري (عن طريق).", lesson: "m13-l02", category: "pm" },
+  { id: "m13-outgoing-incoming", en: "Outgoing / incoming correspondence register", ar: "الصادر / الوارد", definition: "سجلات ضبط الوثائق التي تمنح أرقاماً مرجعية وتواريخ للكتب الصادرة والواردة.", lesson: "m13-l02", category: "institutional" },
+  { id: "m13-notice", en: "Notice (contractual)", ar: "إشعار", definition: "مراسلة مكتوبة موصوفة صراحةً بأنها إشعار، وتُسلَّم بالشكل وإلى العنوان وفي المهلة التي يشترطها العقد؛ وهي تصرف قانوني تترتب عليه آثار.", lesson: "m13-l02", category: "contractual" },
+  { id: "m13-time-for-completion", en: "Time for Completion", ar: "مدة الإنجاز", definition: "المدة التعاقدية التي يجب إنجاز الأعمال خلالها، معدَّلةً بأي تمديدات زمنية.", lesson: "m13-l02", category: "contractual" },
+  { id: "m13-delay-damages", en: "Delay damages (liquidated damages for delay)", ar: "تعويضات التأخير (غرامات التأخير)", definition: "تعويضات متفق عليها مسبقاً يدفعها المقاول عن كل يوم تأخير بعد انقضاء مدة الإنجاز، وتكون عادةً بسقف أقصى.", lesson: "m13-l02", category: "contractual" },
+  { id: "m13-pyramid-principle", en: "Pyramid principle", ar: "مبدأ الهرم", definition: "بناء الحجة بوضع الفكرة الحاكمة في القمة، تدعمها حجج مجمّعة متنافية وشاملة (MECE) ثم الأدلة.", lesson: "m13-l03", category: "pm" },
+  { id: "m13-action-title", en: "Action title", ar: "عنوان استنتاجي", definition: "عنوان شريحة مكتوب في صورة جملة كاملة تعبّر عن استنتاج، لا مجرد تسمية للموضوع.", lesson: "m13-l03", category: "pm" },
+  { id: "m13-deemed-energy", en: "Deemed energy", ar: "الطاقة المفترضة", definition: "الطاقة التي كان بمقدور المحطة تسليمها لكنها لم تتمكن بسبب حدث من جانب المشتري (مثل عدم جاهزية الشبكة)، وقد تُلزِم اتفاقية شراء الطاقة بدفع قيمتها.", lesson: "m13-l03", category: "contractual" },
+  { id: "m13-owners-engineer", en: "Owner's Engineer (OE)", ar: "مهندس المالك", definition: "استشاري يعيّنه صاحب العمل لمراجعة التصميم والإشراف على التنفيذ وحضور الاختبارات وتقييم الدفعات والمطالبات؛ وقد يقوم أيضاً بدور المهندس وفق عقود FIDIC.", lesson: "m13-l04", category: "pm" },
+  { id: "m13-kpi", en: "Key performance indicator (KPI)", ar: "مؤشر الأداء الرئيسي", definition: "مؤشر قابل للقياس للأداء، له قاعدة تقييم ووزن ومصدر بيانات متفق عليها.", lesson: "m13-l04", category: "pm" },
+  { id: "m13-minutes", en: "Minutes of meeting", ar: "محضر اجتماع", definition: "سجل القرارات والإجراءات الصادرة عن اجتماع؛ ويصبح بعد اعتماده دليلاً معاصراً للأحداث.", lesson: "m13-l04", category: "pm" },
+  { id: "m13-action-log", en: "Action log", ar: "سجل الإجراءات", definition: "سجل للإجراءات يتضمن الرقم والوصف والمسؤول بالاسم والموعد والحالة، ويُراجَع في كل اجتماع.", lesson: "m13-l04", category: "pm" },
+  { id: "m13-ncr", en: "Non-conformance report (NCR)", ar: "تقرير عدم المطابقة", definition: "سجل رسمي يثبت أن عملاً أو مادة لا تستوفي المواصفات، ويتطلب قراراً بالمعالجة وإجراءً تصحيحياً.", lesson: "m13-l04", category: "technical" },
+  { id: "m13-batna", en: "BATNA", ar: "أفضل بديل للاتفاق التفاوضي", definition: "أفضل بديل للاتفاق التفاوضي — ما سيفعله الطرف إذا فشل التفاوض؛ وهو الذي يحدد سعر التحفظ.", lesson: "m13-l05", category: "pm" },
+  { id: "m13-zopa", en: "ZOPA (zone of possible agreement)", ar: "نطاق الاتفاق الممكن", definition: "المدى الواقع بين سعرَي التحفظ لدى الطرفين، والذي يكون فيه أي اتفاق أفضل لكليهما من عدم الاتفاق.", lesson: "m13-l05", category: "pm" },
+  { id: "m13-claim", en: "Claim", ar: "مطالبة", definition: "طلب يقدمه أحد الطرفين لإثبات استحقاقه لمبالغ إضافية أو تمديد زمني أو أي إعفاء آخر بموجب العقد، مع الالتزام بمتطلبات الإشعار والتفاصيل.", lesson: "m13-l05", category: "contractual" },
+  { id: "m13-determination", en: "Engineer's determination", ar: "قرار المهندس", definition: "القرار العادل الذي يصدره المهندس في مطالبة أو مسألة بعد إخفاق التشاور في الوصول إلى اتفاق (البند الفرعي 3.7 في FIDIC 2017).", lesson: "m13-l05", category: "contractual" },
+  { id: "m13-daab", en: "Dispute Avoidance/Adjudication Board (DAAB)", ar: "مجلس تجنب وفض النزاعات", definition: "مجلس دائم أو مخصص بموجب البند 21 من FIDIC 2017 يساعد على تجنب النزاعات ويصدر قرارات في النزاعات المحالة إليه.", lesson: "m13-l05", category: "contractual" },
+  { id: "m13-full-final-settlement", en: "Full and final settlement", ar: "تسوية نهائية وشاملة", definition: "اتفاق يسوّي جميع المطالبات الناشئة عن أحداث محددة، مع التنازل عن أي مطالبات أخرى بشأنها.", lesson: "m13-l05", category: "contractual" },
+];
+
+export default glossary;

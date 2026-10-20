@@ -14,69 +14,128 @@ import exam from "./exam";
 const cheatSheet = md`# Solar PV — PM cheat sheet (Kuwait)
 
 ## Sun & resource
-| Item | Value / formula |
-|---|---|
-| Declination | $\delta = 23.45^\circ\sin(360^\circ(284+n)/365)$ |
-| Hour angle | $\omega = 15^\circ(t_{solar}-12)$ |
-| Elevation | $\sin\alpha = \sin\varphi\sin\delta + \cos\varphi\cos\delta\cos\omega$; noon $\alpha = 90^\circ - \lvert\varphi-\delta\rvert$ |
-| Shagaya (≈ 29.3°N) noon elevation | ≈ 84° June · 61° equinox · 37° December |
-| Air mass | $AM = 1/\cos\theta_z$; STC = AM 1.5 (zenith 48.2°) |
-| Closure | $GHI = DNI\cos\theta_z + DHI$ (residual > 5 % ⇒ station fault) |
-| POA (isotropic) | $DNI\cos\theta + DHI(1+\cos\beta)/2 + GHI\rho(1-\cos\beta)/2$; Perez for bankable work |
-| Kuwait GHI | ≈ 1,900–2,100 kWh/m²/yr — **unverified** (secondary source); get Global Solar Atlas + KISR data |
-| KISR finding | Satellite GHI OK after site adaptation; **DNI diverges** (aerosols) |
-| Record heat | 53.9 °C, Mitribah, 21 Jul 2016 (WMO) |
+
+| Quantity | Formula | Where |
+|---|---|---|
+| Declination | $\delta = 23.45^\circ\sin(360^\circ(284+n)/365)$ | n = day of year |
+| Hour angle | $\omega = 15^\circ(t_{solar}-12)$ | Solar time, not clock time |
+| Elevation | $\sin\alpha = \sin\varphi\sin\delta + \cos\varphi\cos\delta\cos\omega$ | Any hour |
+| Noon elevation | $\alpha = 90^\circ - \lvert\varphi-\delta\rvert$ | Solar noon |
+| Air mass | $AM = 1/\cos\theta_z$ | STC = AM 1.5 (zenith 48.2°) |
+| Closure | $GHI = DNI\cos\theta_z + DHI$ | Residual > 5 % ⇒ station fault |
+| POA (isotropic) | $DNI\cos\theta + DHI(1+\cos\beta)/2 + GHI\rho(1-\cos\beta)/2$ | Use Perez for bankable work |
+
+| Item | Value | Note |
+|---|---|---|
+| Shagaya noon elevation (≈ 29.3°N) | ≈ 84° June, 61° equinox, 37° December | |
+| Kuwait GHI | ≈ 1,900–2,100 kWh/m²/yr | Secondary source (verify); get Global Solar Atlas + KISR data |
+| Record heat | 53.9 °C | Mitribah, 21 Jul 2016 (WMO) |
+
+- **KISR finding:** satellite GHI is OK after site adaptation; **DNI diverges** (aerosols).
 
 ## Cell & module
-| Item | Value |
-|---|---|
-| Power model | $P = P_{STC}(G/1000)[1+\gamma(T_c-25)]$ |
-| γ (Pmp) | PERC −0.35 · TOPCon −0.30 · HJT −0.25 %/°C |
-| Cell temp | Faiman $T_c = T_a + G/(U_0+U_1v)$; NOCT $T_a + (NOCT-20)G/800$ |
-| 50 °C ambient, full sun | cell ≈ 70–75 °C → TOPCon ≈ 82–87 % of nameplate |
-| FF / efficiency | $FF = P_{mp}/(V_{oc}I_{sc})$ ≈ 0.79; $\eta = P_{mp}/(GA)$ ≈ 22–23 % |
-| Bifaciality | PERC 0.70 · TOPCon 0.80 · HJT 0.85–0.90; sand albedo 0.25–0.4; gain ≈ 5–9 % on trackers |
-| Warranty (n-type) | 1 % yr 1 then 0.4 %/yr ⇒ 87.4 % at 30 yr; PERC 2 % + 0.55 %/yr ⇒ 84.8 % at 25 yr |
-| Must-have evidence | IEC 61215/61730, IEC TS 63126, PVEL PQP for supplied BOM (PID, LeTID, UVID), BOM lock, traceability |
+
+| Quantity | Formula | Where |
+|---|---|---|
+| Power model | $P = P_{STC}(G/1000)[1+\gamma(T_c-25)]$ | Any irradiance/temperature |
+| Cell temp (Faiman) | $T_c = T_a + G/(U_0+U_1v)$ | Yield models (PVsyst U-values) |
+| Cell temp (NOCT) | $T_c = T_a + (NOCT-20)G/800$ | Quick estimate |
+| Fill factor | $FF = P_{mp}/(V_{oc}I_{sc})$ | Typical ≈ 0.79 |
+| Efficiency | $\eta = P_{mp}/(GA)$ | Typical ≈ 22–23 % |
+
+| Item | PERC | TOPCon | HJT |
+|---|---|---|---|
+| γ (Pmp), %/°C | −0.35 | −0.30 | −0.25 |
+| Bifaciality | 0.70 | 0.80 | 0.85–0.90 |
+
+- **50 °C ambient, full sun:** cell ≈ 70–75 °C, so TOPCon delivers ≈ 82–87 % of nameplate.
+- **Sand albedo:** 0.25–0.4.
+- **Bifacial gain:** ≈ 5–9 % on trackers.
+- **Warranty, n-type:** 1 % in year 1, then 0.4 %/yr ⇒ 87.4 % at 30 yr.
+- **Warranty, PERC:** 2 % in year 1, then 0.55 %/yr ⇒ 84.8 % at 25 yr.
+- **Must-have evidence:** IEC 61215/61730, IEC TS 63126, PVEL PQP for the supplied BOM (PID, LeTID, UVID), BOM lock, traceability.
 
 ## Plant architecture
-| Item | Value |
-|---|---|
-| String length | $N = \lfloor 1500/(V_{oc}[1+\beta(T_{min}-25)]) \rfloor$; check $N V_{mp}(T_{max})$ > MPPT min |
-| Example | 51.6 V module, −0.25 %/°C, 0 °C ⇒ 27 modules (1,480 V) |
-| Kuwait $T_{min}$ | ≈ 0–5 °C commonly cited — **unverified**; use record minimum, not TMY |
-| Trackers vs fixed | +15–25 % yield; GCR 0.28–0.40; backtracking; stow from wind-tunnel study |
-| DC/AC | 1.15–1.40; clear-day clipping ≈ 3 % at 1.30; annual 0.5–3 % |
-| Fuse/cable current | ≥ 1.25 Isc (+ bifacial margin) |
+
+| Quantity | Formula | Where |
+|---|---|---|
+| Max string length | $N = \lfloor 1500/(V_{oc}[1+\beta(T_{min}-25)]) \rfloor$ | 1,500 V system |
+| MPPT check | $N V_{mp}(T_{max}) >$ MPPT min | Hottest cell temperature |
+
+- **Example:** 51.6 V module, −0.25 %/°C, 0 °C ⇒ 27 modules (1,480 V).
+- **Kuwait minimum temperature ($T_{min}$):** ≈ 0–5 °C commonly cited (verify); use the record minimum, not TMY.
+- **Fuse/cable current:** ≥ 1.25 Isc (+ bifacial margin).
+
+| Item | Value | Note |
+|---|---|---|
+| Trackers vs fixed | +15–25 % yield | Backtracking; stow from wind-tunnel study |
+| GCR (trackers) | 0.28–0.40 | |
+| DC/AC ratio | 1.15–1.40 | |
+| Clipping | ≈ 3 % on a clear day at 1.30 | Annual 0.5–3 % |
 
 ## Desert design
-| Item | Value |
-|---|---|
-| Avg soiling loss | $\bar{L} = rN/2$ |
-| Optimal cleaning | $N^* = \sqrt{730C/(Epr)}$ — cleaning cost = loss value at optimum |
-| Kuwait soiling evidence | Shagaya testbed monthly water cleaning; studies: 17 % after 6 days, 8.7–15.1 % with monthly cleaning |
-| Transformers | IEC 60076 default 40/30/20 °C ambient — exceeded; specify reduced temperature rise |
-| IP | Outdoor electronics IP65/66; filters in skids = top O&M item |
+
+| Quantity | Formula | Where |
+|---|---|---|
+| Average soiling loss | $\bar{L} = rN/2$ | r = soiling rate per day, N = cleaning interval (days) |
+| Optimal cleaning interval | $N^* = \sqrt{730C/(Epr)}$ | At optimum, cleaning cost = loss value |
+
+- **Shagaya testbed:** monthly water cleaning.
+- **Kuwait soiling studies:** 17 % loss after 6 days; 8.7–15.1 % with monthly cleaning.
+- **Transformers:** IEC 60076 default 40/30/20 °C ambient is exceeded; specify a reduced temperature rise.
+- **Ingress protection:** outdoor electronics IP65/66.
+- **Skid filters:** a top O&M item.
 
 ## Yield & finance
-| Item | Value |
-|---|---|
-| PR | $Y_f/Y_r$; Kuwait trackers ≈ 0.78–0.84 front-side (bifacial inflates PR) |
-| Specific yield | $\approx GHI \times (POA/GHI) \times PR$ ⇒ plausible ≈ 2,000–2,300 kWh/kWp; 2,300–2,500 **unverified/optimistic** |
-| Largest loss | Temperature 7–10 %; then soiling, IAM, inverter, clipping, AC |
-| Uncertainty | $\sigma = \sqrt{\sum\sigma_i^2}$; interannual ÷ $\sqrt{N}$ |
-| Exceedance | $P_X = P_{50}(1 - z\sigma)$; z = 0.674 / 1.282 / 2.326 (P75/P90/P99) |
+
+| Quantity | Formula | Where |
+|---|---|---|
+| Performance ratio | $PR = Y_f/Y_r$ | Bifacial gain inflates PR |
+| Specific yield | $\approx GHI \times (POA/GHI) \times PR$ | Sanity check on bids |
+| Combined uncertainty | $\sigma = \sqrt{\sum\sigma_i^2}$ | Interannual term ÷ $\sqrt{N}$ |
+| Exceedance | $P_X = P_{50}(1 - z\sigma)$ | z = 0.674 / 1.282 / 2.326 for P75 / P90 / P99 |
+
+| Item | Value | Note |
+|---|---|---|
+| PR, Kuwait trackers | ≈ 0.78–0.84 | Front-side |
+| Specific yield, plausible | ≈ 2,000–2,300 kWh/kWp | |
+| Specific yield, optimistic | 2,300–2,500 kWh/kWp | Optimistic (verify) |
+| Largest loss: temperature | 7–10 % | Then soiling, IAM, inverter, clipping, AC |
 
 ## QA & commissioning
-- Factory audit → production witness → PSI (ISO 2859-1 AQL, EL, flash) → lab STC check → receiving inspection with mobile EL.
-- Construction holds: pile survey & pull tests, first tracker row, torque marks, **one connector family + specified crimp tool**, MV VLF/PD tests.
-- IEC 62446-1 Cat 1: continuity, polarity, Voc, current, insulation resistance. Cat 2: I-V tracing, IR (≥ 600 W/m²).
-- STC translation: $P_{STC} = P_{meas}/\{(G/1000)[1+\gamma(T_c-25)]\}$; field uncertainty ±3–5 %.
-- Voc short by one module ≈ missing/reversed module; by ⅓ module ≈ bypassed substring.
-- Handover: as-builts, flash/EL/IR/I-V baselines, warranties assigned, punch list A/B.
+
+### Module supply chain
+- **Sequence:** factory audit → production witness → PSI (ISO 2859-1 AQL, EL, flash) → lab STC check → receiving inspection with mobile EL.
+
+### Construction holds
+- **Piles:** survey and pull tests.
+- **Trackers:** first-row inspection; torque marks.
+- **Connectors:** one connector family + the specified crimp tool.
+- **MV cables:** VLF/PD tests.
+
+### Testing (IEC 62446-1)
+- **Category 1:** continuity, polarity, Voc, current, insulation resistance.
+- **Category 2:** I-V tracing, IR thermography (≥ 600 W/m²).
+- **STC translation:**
+
+$$P_{STC} = P_{meas}/\{(G/1000)[1+\gamma(T_c-25)]\}$$
+
+- **Field uncertainty:** ±3–5 %.
+- **Voc short by one module:** missing or reversed module.
+- **Voc short by ⅓ module:** bypassed substring.
+
+### Handover
+- **Documents:** as-builts; flash/EL/IR/I-V baselines; warranties assigned; punch list A/B.
 
 ## Top questions to ask
-1. Which resource source, site-adapted with how many months of ground data? 2. U-values, soiling profile and bifacial assumptions? 3. Minimum temperature for string sizing, from which station? 4. Inverter/transformer derating at 50–55 °C? 5. Is the supplied BOM the PVEL-tested one? 6. Stow threshold, angle, and comms-loss behaviour? 7. Same connector brand on every mated pair?
+
+1. Which resource source, site-adapted with how many months of ground data?
+2. What U-values, soiling profile and bifacial assumptions?
+3. What minimum temperature for string sizing, from which station?
+4. What inverter/transformer derating at 50–55 °C?
+5. Is the supplied BOM the PVEL-tested one?
+6. What stow threshold, stow angle, and comms-loss behaviour?
+7. Same connector brand on every mated pair?
 `;
 
 const mod: Module = {

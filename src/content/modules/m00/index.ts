@@ -11,9 +11,12 @@ import exam from "./exam";
 
 const cheatSheet = md`# M0 Kuwait Energy Landscape: cheat sheet
 
-**Rate assumed:** 1 KWD ≈ 3.25 USD; 1 KWD = 1,000 fils. **Confidence:** H = official/signed; M = trade press / secondary; L = single weak source. Re-verify M/L items before using them in official documents.
+- **Exchange rate assumed:** 1 KWD ≈ 3.25 USD; 1 KWD = 1,000 fils
+- **Confidence labels:** H = official/signed; M = trade press / secondary; L = single weak source
+- **Rule:** re-verify M/L items before using them in official documents
 
-## System (l01)
+## System: demand, capacity, fuel (l01)
+
 | Item | Value | Conf. |
 |---|---|---|
 | Peak 2024 / 2025 / 2026 (MEWRE) | 17,640 / 17,610 / **17,540 MW** | M-H |
@@ -26,12 +29,31 @@ const cheatSheet = md`# M0 Kuwait Energy Landscape: cheat sheet
 | GCCIA | 500 MW deal (2024); KWD 161.381 m approved Jun–Dec 2025 | M |
 | Planned additions | 14.05 GW by 2031 | M |
 
-Cuts: Jun 2024 (300 MW Az-Zour South trip), Aug 2024 (gas), Apr 2025 (heat + maintenance), May 2025 (>1.5 GW short).
+### Power cuts
+
+- **Jun 2024:** 300 MW Az-Zour South trip
+- **Aug 2024:** gas supply
+- **Apr 2025:** heat + maintenance
+- **May 2025:** more than 1.5 GW short
 
 ## Formulas
-$RM = (C_{avail} - P_{peak})/P_{peak}$ · $LF = E/(P_{peak}\cdot 8760)$ · $\eta = 3600/HR$ · $N_{bbl} = E\cdot HR/6.12$ GJ · $s = c - t$ · $v = HR \cdot p_{fuel}$ · $E = P \cdot CF \cdot 8760$ · $P_{RE} = \sigma E_{tot}/(CF \cdot 8760)$ · $E[T] = \sum t_i/(1-p_i)$ · $C_d = \Delta t\, P\, CF\, 24\,(v-T)$ · $PV = A[1-(1+r)^{-N}]/r$
+
+| Quantity | Formula | Where |
+|---|---|---|
+| Reserve margin | $RM = (C_{avail} - P_{peak})/P_{peak}$ | l01 |
+| Load factor | $LF = E/(P_{peak}\cdot 8760)$ | l01 |
+| Efficiency from heat rate | $\eta = 3600/HR$ | l01 |
+| Barrels burned | $N_{bbl} = E\cdot HR/6.12$ (GJ) | l01 |
+| Expected approval time with rework | $E[T] = \sum t_i/(1-p_i)$ | l02 |
+| Unit subsidy | $s = c - t$ | l03 |
+| Value of displaced fuel | $v = HR \cdot p_{fuel}$ | l03 |
+| Annual energy | $E = P \cdot CF \cdot 8760$ | l03 |
+| Capacity for an RE share | $P_{RE} = \sigma E_{tot}/(CF \cdot 8760)$ | l04 |
+| Cost of delay | $C_d = \Delta t\, P\, CF\, 24\,(v-T)$ | l05 |
+| Present value of an annuity | $PV = A[1-(1+r)^{-N}]/r$ | l05 |
 
 ## Institutions (l02)
+
 | Body | Basis | Role |
 |---|---|---|
 | MEWRE | est. 1962 | Policy, grid, offtaker (30-yr PPA; 25-yr ECWPA), grid tenders |
@@ -44,13 +66,44 @@ $RM = (C_{avail} - P_{peak})/P_{peak}$ · $LF = E/(P_{peak}\cdot 8760)$ · $\eta
 | SCPD | — | Vision 2035, development plan |
 | National Assembly | suspended 10 May 2024 | Laws by decree-law |
 
-IPP chain: request → feasibility → HC → RFQ → RFP (tech, then fin.) → preferred bidder → HC → Audit Bureau → PPA → financial close.
+### IPP approval chain
 
-## Tariffs & economics (l03)
-Citizens **2 fils/kWh** (since 1966) · apartments 5/10/15 fils (2016 law, from 22 Aug 2017) · commercial 5 · industrial/agri 3 · KPC ~25. Cost of supply 14–38 fils (no official current figure). Displaced crude (USD 70/bbl, 10.5 MJ/kWh) ≈ 37 fils/kWh; LNG (USD 12/MMBtu, 7.5 MJ/kWh) ≈ 26 fils/kWh; solar est. 7–8 fils. KPC tariff = transfer, not national saving.
+1. Request (MEWRE)
+2. Feasibility (KAPP)
+3. Higher Committee
+4. RFQ
+5. RFP (technical, then financial)
+6. Preferred bidder
+7. Higher Committee
+8. Audit Bureau
+9. PPA
+10. Financial close
 
-## Targets & pipeline (l04)
-15% RE by 2030 (official); 30/40/50% by 2030/40/50 (stated). Net zero **2060** national, **2050** oil & gas. NDC −7.4% vs 2035 BAU. Rystad: ~3.3 GW (~7%) by 2030.
+## Tariffs and economics (l03)
+
+| Customer / item | Value | Note |
+|---|---|---|
+| Citizens (private housing) | **2 fils/kWh** | Since 1966 |
+| Apartments | 5 / 10 / 15 fils/kWh | 2016 law, applied from 22 Aug 2017 |
+| Commercial | 5 fils/kWh | |
+| Industrial / agricultural | 3 fils/kWh | |
+| KPC | ~25 fils/kWh | A transfer, not a national saving |
+| Cost of supply | 14–38 fils/kWh | No official current figure |
+| Displaced crude | ≈ 37 fils/kWh | USD 70/bbl, 10.5 MJ/kWh |
+| Displaced LNG | ≈ 26 fils/kWh | USD 12/MMBtu, 7.5 MJ/kWh |
+| Solar (analyst estimate) | 7–8 fils/kWh | Zone 1 tariff not reported |
+
+## Targets and pipeline (l04)
+
+### Targets
+
+- **RE share, official:** 15% by 2030
+- **RE share, stated (MEWRE):** 30% / 40% / 50% by 2030 / 2040 / 2050
+- **Net zero:** **2060** national; **2050** oil and gas sector
+- **NDC:** −7.4% vs 2035 BAU
+- **Rystad forecast:** ~3.3 GW (~7%) by 2030
+
+### Pipeline
 
 | Project | Status | Conf. |
 |---|---|---|
@@ -63,11 +116,30 @@ Citizens **2 fils/kWh** (since 1966) · apartments 5/10/15 fils (2016 law, from 
 | Al-Khairan Ph 1 IWPP 1,800 MW | 2 bids 1 Jun 2026 | H |
 | BESS 1–1.5 GW / 4–6 GWh | First 500 MW summer 2027 | M-L |
 
-## Funding (l05)
-FY 1 Apr–31 Mar · FY26/27 draft: spend KD 26.1 bn, revenue 16.3 bn, capex 3.1 bn · Routes: EPC (CAPT, state capex) / PPP (KAPP, PPA) / G2G · PPP shares: 50% IPO, 6–24% public, ≥26% private (verify) · Benchmarks: Zone 1 RFQ→selection ~31 mo; AZN 2&3 LA→ECWPA ~6 mo; Al-Khairan RFP→bids 9 mo; 400 kV bid→award ~11 mo · 1.1 GW delay ≈ KWD 191k/day.
+## Funding and approvals (l05)
+
+- **Fiscal year:** 1 April – 31 March
+- **FY26/27 draft budget:** spending KD 26.1 bn, revenue KD 16.3 bn, capex KD 3.1 bn
+- **Delivery routes:** EPC (CAPT, state capex); PPP (KAPP, PPA); G2G
+- **PPP shareholding:** 50% IPO, 6–24% public, ≥26% private (verify)
+- **Cost of delay:** 1.1 GW plant ≈ KWD 191k/day
+
+| Benchmark | Elapsed |
+|---|---|
+| Zone 1 RFQ → reported selection | ~31 months |
+| AZN 2&3 letter agreement → ECWPA | ~6 months |
+| Al-Khairan RFP → bids | 9 months |
+| 400 kV line bid → award | ~11 months |
 
 ## PM checklist
-Label every number (source, date, basis) · MWac at peak, not MWp · grid outages Nov–Mar · budget request in the right FY · complete files (reduce p) · tiered capacity status · never call G2G "contracted" without a signed agreement.
+
+- **Every number labelled:** source, date and basis
+- **Capacity at peak:** quote MWac at the peak hour, not MWp
+- **Grid outages:** schedule November–March
+- **Budget:** submit the request in the right fiscal year
+- **Files:** submit complete files to reduce the return probability p
+- **Pipeline status:** give tiered capacity status
+- **G2G:** never call it "contracted" without a signed agreement
 `;
 
 const mod: Module = {

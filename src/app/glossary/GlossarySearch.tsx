@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Markdown } from "@/components/Markdown";
 import { Pill } from "@/components/ui";
+import { useT } from "@/lib/useLang";
 
 export interface TermDto {
   id: string;
@@ -18,14 +19,29 @@ export interface TermDto {
   moduleNumber: number;
 }
 
-const CATS = ["all", "technical", "contractual", "financial", "pm", "institutional"];
+const CATS = [
+  "all",
+  "technical",
+  "contractual",
+  "financial",
+  "pm",
+  "institutional",
+];
 
 export function GlossarySearch({ terms }: { terms: TermDto[] }) {
+  const { lang, t: tr, href } = useT();
   const [q, setQ] = useState("");
   const [cat, setCat] = useState("all");
   const filtered = useMemo(() => {
     const s = q.trim().toLowerCase();
-    return terms.filter((t) => (cat === "all" || t.category === cat) && (!s || t.en.toLowerCase().includes(s) || t.ar.includes(q.trim()) || t.definition.toLowerCase().includes(s)));
+    return terms.filter(
+      (t) =>
+        (cat === "all" || t.category === cat) &&
+        (!s ||
+          t.en.toLowerCase().includes(s) ||
+          t.ar.includes(q.trim()) ||
+          t.definition.toLowerCase().includes(s)),
+    );
   }, [terms, q, cat]);
   return (
     <div>
@@ -33,38 +49,82 @@ export function GlossarySearch({ terms }: { terms: TermDto[] }) {
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search English or Arabic… / ابحث"
+          placeholder={tr("Search English or Arabic… / ابحث")}
           dir="auto"
           className="w-full rounded-lg border border-border bg-surface px-3 py-2 outline-none focus:border-accent"
         />
         <div className="mt-2 flex flex-wrap gap-1.5">
           {CATS.map((c) => (
-            <button key={c} onClick={() => setCat(c)} className={`rounded-full px-2.5 py-0.5 text-xs ${cat === c ? "bg-accent text-white dark:text-black" : "bg-surface-2 text-muted"}`}>
-              {c}
+            <button
+              key={c}
+              onClick={() => setCat(c)}
+              className={`rounded-full px-2.5 py-0.5 text-xs ${cat === c ? "bg-accent text-white dark:text-black" : "bg-surface-2 text-muted"}`}
+            >
+              {tr(c)}
             </button>
           ))}
-          <span className="ml-auto text-xs text-muted">{filtered.length} terms</span>
+          <span className="ms-auto text-xs text-muted">
+            {tr("{n} terms", { n: filtered.length })}
+          </span>
         </div>
       </div>
       <div className="divide-y divide-border rounded-xl border border-border bg-surface">
-        {filtered.map((t) => (
-          <div key={t.id} id={t.id} className="grid gap-2 p-4 sm:grid-cols-[1fr_1fr]">
-            <div>
-              <div className="font-semibold">{t.en}</div>
-              <Markdown className="prose-compact text-sm text-muted">{t.definition}</Markdown>
-              <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
-                <Pill>{t.category}</Pill>
-                <Link href={`/learn/${t.moduleId}/${t.lesson}`} className="text-accent">
-                  M{t.moduleNumber} · {t.lessonTitle}
-                </Link>
+        {filtered.map((t) =>
+          lang === "ar" ? (
+            <div
+              key={t.id}
+              id={t.id}
+              className="grid gap-2 p-4 sm:grid-cols-[1fr_1fr]"
+            >
+              <div>
+                <div className="text-lg font-semibold">{t.ar}</div>
+                <Markdown className="prose-compact text-sm text-muted">
+                  {t.definition}
+                </Markdown>
+                <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
+                  <Pill>{tr(t.category)}</Pill>
+                  <Link
+                    href={href(`/learn/${t.moduleId}/${t.lesson}`)}
+                    className="text-accent"
+                  >
+                    M{t.moduleNumber} · {t.lessonTitle}
+                  </Link>
+                </div>
+              </div>
+              <div dir="ltr" lang="en" className="sm:text-end">
+                <div className="font-semibold">{t.en}</div>
               </div>
             </div>
-            <div dir="rtl" lang="ar" className="sm:text-right">
-              <div className="text-lg font-semibold">{t.ar}</div>
-              {t.definitionAr && <div className="text-sm text-muted">{t.definitionAr}</div>}
+          ) : (
+            <div
+              key={t.id}
+              id={t.id}
+              className="grid gap-2 p-4 sm:grid-cols-[1fr_1fr]"
+            >
+              <div>
+                <div className="font-semibold">{t.en}</div>
+                <Markdown className="prose-compact text-sm text-muted">
+                  {t.definition}
+                </Markdown>
+                <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
+                  <Pill>{t.category}</Pill>
+                  <Link
+                    href={href(`/learn/${t.moduleId}/${t.lesson}`)}
+                    className="text-accent"
+                  >
+                    M{t.moduleNumber} · {t.lessonTitle}
+                  </Link>
+                </div>
+              </div>
+              <div dir="rtl" lang="ar" className="sm:text-right">
+                <div className="text-lg font-semibold">{t.ar}</div>
+                {t.definitionAr && (
+                  <div className="text-sm text-muted">{t.definitionAr}</div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ),
+        )}
       </div>
     </div>
   );

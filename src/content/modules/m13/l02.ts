@@ -627,7 +627,7 @@ Contracts with international EPCs and IPPs are often bilingual. The contract sta
   ],
   flashcards: [
     { id: "m13-l02-f1", front: "BLUF — what the first paragraph must answer", back: "What decision/action is required, by when (and why then), and what you recommend." },
-    { id: "m13-l02-f2", front: "Decision memo sections", back: "Decision required · Issue · Background · Options (incl. do-nothing) · Recommendation · Risks · Decision line · Attachments." },
+    { id: "m13-l02-f2", front: "Decision memo sections", back: "- Decision required\n- Issue\n- Background\n- Options (incl. do-nothing)\n- Recommendation\n- Risks\n- Decision line\n- Attachments" },
     { id: "m13-l02-f3", front: "Standard Arabic opening and closing", back: "تحية طيبة وبعد،،، … وتفضلوا بقبول فائق الاحترام والتقدير،،،" },
     { id: "m13-l02-f4", front: "Arabic formula: 'Further to your letter No. X dated Y regarding…'", back: "بالإشارة إلى كتابكم رقم (X) المؤرخ في (Y) بشأن ..." },
     { id: "m13-l02-f5", front: "عن طريق on a memo", back: "'Through' — routes the memo via your Assistant Undersecretary to the Undersecretary; never bypass the chain." },

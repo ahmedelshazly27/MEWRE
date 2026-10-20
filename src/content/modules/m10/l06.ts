@@ -383,7 +383,7 @@ Tools: P6 resource-loaded programme → monthly planned value; Aconex or similar
     { id: "m10-l06-f6", front: "TCPI", back: md`$(BAC-EV)/(BAC-AC)$ — efficiency needed on remaining work to finish within BAC; > 1.10 rarely achieved.`, concepts: ["m10.eac-forecast"] },
     { id: "m10-l06-f7", front: "Kuwait fiscal year (to verify)", back: "Widely reported as 1 April–31 March; confirm with Ministry of Finance.", concepts: ["m10.budget-cycle"] },
     { id: "m10-l06-f8", front: "Contingency surplus/shortfall", back: "Remaining contingency − expected value of pending changes and risks.", concepts: ["m10.contingency-drawdown"] },
-    { id: "m10-l06-f9", front: "Worked case FY need (KWD 45 m, start Jun 2026)", back: "FY26/27 14.282 · FY27/28 26.755 · FY28/29 2.838 · FY29/30 1.125 (KWD m).", concepts: ["m10.scurve-forecast"] },
+    { id: "m10-l06-f9", front: "Worked case FY need (KWD 45 m, start Jun 2026)", back: "KWD m:\n\n- FY26/27: 14.282\n- FY27/28: 26.755\n- FY28/29: 2.838\n- FY29/30: 1.125", concepts: ["m10.scurve-forecast"] },
   ],
   scenarios: [
     {

@@ -12,16 +12,17 @@ export async function POST(req: Request) {
   }
   const auth = await requireUser(req);
   if (!auth.ok) return new Response(auth.message, { status: auth.status });
-  const { messages, lessonId } = (await req.json()) as { messages: ChatMessage[]; lessonId?: string };
+  const { messages, lessonId, lang } = (await req.json()) as { messages: ChatMessage[]; lessonId?: string; lang?: string };
+  const arabic = lang === "ar";
   const clean = (messages ?? []).filter((m) => (m.role === "user" || m.role === "assistant") && typeof m.content === "string" && m.content.trim());
   if (!clean.length || clean[0].role !== "user") return new Response("bad request", { status: 400 });
-  const ref = lessonId ? getLesson(lessonId) : undefined;
+  const ref = lessonId ? getLesson(lessonId, arabic ? "ar" : "en") : undefined;
   const ctx = ref ? lessonContext(ref.module, ref.lesson) : undefined;
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        for await (const chunk of tutorStream(clean, ctx)) controller.enqueue(encoder.encode(chunk));
+        for await (const chunk of tutorStream(clean, ctx, arabic)) controller.enqueue(encoder.encode(chunk));
       } catch (e) {
         controller.enqueue(encoder.encode(`\n\n_Tutor error: ${(e as Error).message}_`));
       } finally {

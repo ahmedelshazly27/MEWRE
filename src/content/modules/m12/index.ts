@@ -28,7 +28,8 @@ const mod: Module = {
   references,
   cheatSheet: md`# M12 Operations & Performance — cheat sheet
 
-## KPIs (IEC 61724-1)
+## 1. KPIs (IEC 61724-1)
+
 | KPI | Formula | Typical Kuwait value |
 |---|---|---|
 | Final yield | $Y_f = E/P_0$ | ≈ 2,000–2,300 kWh/kWp/yr (bifacial tracker; indicative) |
@@ -39,11 +40,27 @@ const mod: Module = {
 | Energy availability | $E/(E + E_{lost})$ | ≥ 99 % guarantee common |
 | Capacity factor | $E/(P \cdot 8760)$ | AC ~30–34 %; DC ~23–26 % |
 
-Data first: sensor cleaning/calibration (dirty sensor → PR too high), gaps, timestamps, meter reconciliation (inverter sum vs meter ~1.5–2.5 %), curtailment evidence (PPC set-points + NCC logs). Specify **Class A** monitoring.
+### Data first
+- **Sensor cleaning/calibration:** a dirty sensor makes PR look too high.
+- **Gaps and timestamps:** check completeness and clock alignment before calculating.
+- **Meter reconciliation:** inverter sum vs revenue meter normally differs by ~1.5–2.5 %.
+- **Curtailment evidence:** PPC set-points plus NCC logs.
+- **Monitoring class:** specify **Class A**.
 
-## Diagnosis
-Workflow: validate data → plant vs weather-adjusted model → remove evidenced exclusions → block/inverter comparison → strings/trackers → field check → RCA → verify recovery.
-$E_{exp} - E_{act} = \sum \Delta E_j + \varepsilon$; residual ≤ ~1–2 % OK.
+## 2. Diagnosis
+
+### Workflow
+1. Validate data.
+2. Compare plant vs weather-adjusted model.
+3. Remove evidenced exclusions.
+4. Compare blocks and inverters.
+5. Drill down to strings and trackers.
+6. Field check.
+7. RCA.
+8. Verify recovery.
+
+### Loss signatures
+
 | Signature | Cause |
 |---|---|
 | Flat-top at inverter rating, clear cool day | Clipping (designed) |
@@ -52,28 +69,96 @@ $E_{exp} - E_{act} = \sum \Delta E_j + \varepsilon$; residual ≤ ~1–2 % OK.
 | Zero blocks + fault codes | Inverter faults |
 | Morning/afternoon asymmetry on rows | Tracker angle |
 | Plateau at peak ambient + derating flags | Thermal derating |
-Extra soiling $\Delta E = E_{exp}(1 - SR/SR_{model})$. FTA: OR $1-\prod(1-p)$; AND $\prod p$. 5 Whys; fishbone 6M.
 
-## Failures & inspections
-PID (1,500 V + dew), hot spots, bypass diodes (⅓ module), delamination, cracks (EL), connectors (cross-mating), IGBTs/fans/capacitors (heat: ~2× per 10 °C), tracker drives/controllers, BESS HVAC (condenser fouling).
-IR: IEC TS 62446-3 (≥ ~600 W/m²). EL: IEC TS 60904-13. IV: IEC 62446-1 + IEC 60891.
-Warranty: $W_n = 1 - d_1 - d(n-1)$; refund $V = NP_0(W_n - M)c_W$; tolerance rules; no consequential loss. Evidence: notice in time, serials, sampling plan, ISO/IEC 17025 lab, proof of correct O&M, chain of custody.
+### Diagnosis formulas
 
-## O&M strategy
-PM / CM / CBM by criticality; pre-summer campaign; condition triggers (filter ΔP).
-CMMS KPIs: MTBF, MTTR, PM compliance, backlog. Owner must have CMMS/SCADA access.
-Spares: $\mu = N\lambda_a L$; pick $S$ for 95–99 % Poisson service (mean ≈ 63 % only).
-Cleaning: $T^* = \sqrt{2C/(pE_ds)}$; at optimum cleaning cost = loss value; avg loss $sT^*/2$. Example 1 GW: $C$ = USD 130 k, $s$ = 0.4 %/d → 25 d at USD 14/MWh, 12 d at USD 55/MWh.
-Kuwait soiling: ~17 % in 6 days (one test); 8.7–15.1 % with monthly cleaning. Dew cementation in winter.
-Sand fences (NW shamal side), post-storm tracker/BESS/anemometer checks; security for 20–30 km perimeter; ~50–80 technical staff/GW.
+| Quantity | Formula | Where |
+|---|---|---|
+| Loss attribution | $E_{exp} - E_{act} = \sum \Delta E_j + \varepsilon$ | Residual ≤ ~1–2 % is OK |
+| Extra soiling loss | $\Delta E = E_{exp}(1 - SR/SR_{model})$ | Soiling station data |
+| FTA OR gate | $1-\prod(1-p)$ | Any one event causes the top event |
+| FTA AND gate | $\prod p$ | All events needed (redundancy) |
 
-## Asset management
-ISO 55000/55001/55002: value, alignment, leadership, assurance. SAMP → plant AMP → work orders.
-$LCC = C_0 + \sum (O+M+R)/(1+r)^t - V_{res}/(1+r)^T$. NPV replace $= \Delta CF \cdot AF - C_{rep}$; $AF_{6\%,15} = 9.712$.
-Inverters ~yr 12–15; BESS augmentation yrs 3–10; repowering constrained by PPA, POI limit, trackers.
-Degradation $P_n = P_0[1-d_1-d(n-1)]$; median ~0.5 %/yr; year-on-year method (RdTools).
-**Value of energy decides**: IPP = tariff; MEWRE = avoided fuel + peak reliability. State it.
-Report: Delivering? Why not? What's being done? What do you need from me?`,
+- **RCA tools:** 5 Whys; fishbone (6M).
+
+## 3. Failures & inspections
+
+### Desert failure modes
+- **PID:** 1,500 V systems plus dew.
+- **Hot spots:** seen in IR thermography.
+- **Bypass diodes:** a failed diode takes out ⅓ of a module.
+- **Delamination:** moisture ingress and corrosion.
+- **Cell cracks:** found with EL imaging.
+- **Connectors:** cross-mating of different brands.
+- **Inverters:** IGBTs, fans, capacitors; failure rate ~2× per 10 °C of heat.
+- **Trackers:** drives and controllers.
+- **BESS HVAC:** condenser fouling.
+
+### Inspection standards
+
+| Method | Standard | Note |
+|---|---|---|
+| IR thermography | IEC TS 62446-3 | Irradiance ≥ ~600 W/m² |
+| EL imaging | IEC TS 60904-13 | Cracks, inactive cell areas |
+| IV-curve tracing | IEC 62446-1 + IEC 60891 | Translate to STC |
+
+### Warranty claims
+
+| Quantity | Formula | Where |
+|---|---|---|
+| Warranted power | $W_n = 1 - d_1 - d(n-1)$ | Linear power warranty |
+| Refund value | $V = NP_0(W_n - M)c_W$ | Refund-type remedy |
+
+- **Tolerance rules:** check whether tolerance applies to eligibility only or is subtracted.
+- **Consequential loss:** normally excluded (no lost-energy compensation).
+- **Evidence needed:** notice in time, serials, sampling plan, ISO/IEC 17025 lab, proof of correct O&M, chain of custody.
+
+## 4. O&M strategy
+
+- **Maintenance mix:** PM / CM / CBM chosen by criticality.
+- **Pre-summer campaign:** before the heat peak.
+- **Condition triggers:** e.g. filter ΔP.
+- **CMMS KPIs:** MTBF, MTTR, PM compliance, backlog.
+- **Owner access:** the owner must have CMMS/SCADA access.
+
+### Spares and cleaning formulas
+
+| Quantity | Formula | Where |
+|---|---|---|
+| Expected failures in lead time | $\mu = N\lambda_a L$ | Pick $S$ for 95–99 % Poisson service (stocking the mean ≈ 63 % only) |
+| Optimal cleaning interval | $T^* = \sqrt{2C/(pE_ds)}$ | At optimum, cleaning cost = loss value |
+| Average soiling loss | $sT^*/2$ | At the optimum interval |
+
+- **Cleaning example (1 GW):** $C$ = USD 130 k, $s$ = 0.4 %/d → 25 d at USD 14/MWh; 12 d at USD 55/MWh.
+
+### Kuwait site specifics
+- **Soiling rate:** ~17 % loss in 6 days (one test).
+- **Monthly cleaning:** 8.7–15.1 % losses by season.
+- **Dew cementation:** in winter.
+- **Sand fences:** on the NW (shamal) side.
+- **Post-storm checks:** trackers, BESS, anemometers.
+- **Security:** 20–30 km perimeter.
+- **Staffing:** ~50–80 technical staff per GW.
+
+## 5. Asset management
+
+- **ISO 55000/55001/55002 principles:** value, alignment, leadership, assurance.
+- **Plan hierarchy:** SAMP → plant AMP → work orders.
+
+| Quantity | Formula | Where |
+|---|---|---|
+| Lifecycle cost | $LCC = C_0 + \sum (O+M+R)/(1+r)^t - V_{res}/(1+r)^T$ | Compare lifecycle options |
+| NPV of replacement | $\text{NPV} = \Delta CF \cdot AF - C_{rep}$ | $AF_{6\%,15} = 9.712$ |
+| Degradation | $P_n = P_0[1-d_1-d(n-1)]$ | Median ~0.5 %/yr; year-on-year method (RdTools) |
+
+- **Inverter replacement:** ~yr 12–15.
+- **BESS augmentation:** yrs 3–10.
+- **Repowering:** constrained by PPA, POI limit, trackers.
+
+## 6. Value of energy and reporting
+
+- **Value of energy decides:** IPP = tariff; MEWRE = avoided fuel + peak reliability. State which one you use.
+- **Report structure:** Delivering? Why not? What's being done? What do you need from me?`,
 };
 
 export default mod;

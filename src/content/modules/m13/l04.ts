@@ -473,7 +473,7 @@ Accountability is easier when the relationship is respectful. In the Gulf, a sen
   ],
   flashcards: [
     { id: "m13-l04-f1", front: "Principal–agent problem — two causes", back: "Information asymmetry and misaligned incentives." },
-    { id: "m13-l04-f2", front: "Five controls on an agent", back: "Scope & authority · incentives · reporting · independent verification · records." },
+    { id: "m13-l04-f2", front: "Five controls on an agent", back: "- Scope & authority\n- Incentives\n- Reporting\n- Independent verification\n- Records" },
     { id: "m13-l04-f3", front: "Weighted KPI score", back: md`$S = \sum w_i s_i$ with $\sum w_i = 1$.` },
     { id: "m13-l04-f4", front: "Leading vs lagging KPI", back: "Leading predicts (review turnaround, staffing); lagging records (milestones met, NCR closure)." },
     { id: "m13-l04-f5", front: "Response to a disputed contractor statement in minutes", back: "Record 'The Employer does not accept this statement', cite evidence, refer to the contractual procedure." },

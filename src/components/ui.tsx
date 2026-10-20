@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { LEVEL_LABEL, masteryLevel } from "@/lib/mastery";
+import { t, type Lang } from "@/lib/i18n";
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <div className={`rounded-xl border border-border bg-surface p-4 sm:p-5 ${className}`}>{children}</div>;
@@ -45,11 +46,11 @@ const LEVEL_STYLE = {
   mastered: "bg-ok-soft text-ok",
 } as const;
 
-export function MasteryBadge({ mastery, evidence }: { mastery: number; evidence: number }) {
+export function MasteryBadge({ mastery, evidence, lang = "en" }: { mastery: number; evidence: number; lang?: Lang }) {
   const level = masteryLevel(mastery, evidence > 0);
   return (
     <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${LEVEL_STYLE[level]}`}>
-      {LEVEL_LABEL[level]}
+      {t(lang, LEVEL_LABEL[level])}
       {evidence > 0 && <span className="tabular-nums opacity-75">{Math.round(mastery * 100)}%</span>}
     </span>
   );

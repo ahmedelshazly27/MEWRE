@@ -11,44 +11,114 @@ import exam from "./exam";
 
 const cheatSheet = md`# M11 Public Procurement in Kuwait: cheat sheet
 
-**Confidence:** M = law-firm / secondary source; verify article numbers in the Arabic text (Arabic prevails). 1 KWD ≈ 3.25 USD.
+**Confidence:** medium — law-firm and secondary sources. Verify article numbers in the Arabic text (the Arabic version prevails). Rate assumed: 1 KWD ≈ 3.25 USD.
 
-## Legal stack (l01)
-| Instrument | Key content |
-|---|---|
-| Tenders Law **49/2016** | CAPT oversees tenders > **KD 75,000** (Art. 19); final guarantee ≥ 10% (Art. 65, reported) |
-| Law **74/2019** | National product definition (GCC 1982 agreement); preference rate 10/15/20% — **unverified** |
-| Law **1/2024** | Art. 31: registered foreign firms may bid without a local agent |
-| Law **94/2026** | Gazette issue 1810, **27 Sep 2026**, effective +3 months (~27 Dec 2026): direct contracting ≤ **KD 1 m per FY** (same items); KPC under CAPT only > KD 20 m; **agents banned**; ≥30% Industrial Guide products; ≥30% local subcontracting; SME 10% margin (not with Art. 62) |
-| PPP Law **116/2014** + Decree **78/2015** | KAPP (attached to MoF); Higher Committee chaired by Minister of Finance |
-| Law **30/1964** | Audit Bureau prior review (Arts. 13–14), reported ≥ KD 100,000 |
-| Law 39/2010 | IWPP joint-stock companies (legacy) |
+## 1. Legal stack (l01)
 
-Anti-splitting: $\sum_{FY,\ same\ item} V_j \le L$.
+| Instrument | Key content | Note |
+|---|---|---|
+| Tenders Law **49/2016** | CAPT oversees tenders > **KD 75,000** (Art. 19); final guarantee ≥ 10% (Art. 65) | Art. 65 reported |
+| Law **74/2019** | Defines national product (1982 GCC agreement); price preference 10/15/20% | Rate unverified |
+| Law **1/2024** | Art. 31: registered foreign firms may bid without a local agent | |
+| Law **94/2026** | Gazette issue 1810, **27 Sep 2026**; effective +3 months (~27 Dec 2026) | See section 2 |
+| PPP Law **116/2014** + Decree **78/2015** | KAPP (attached to MoF); Higher Committee chaired by the Minister of Finance | |
+| Law **30/1964** | Audit Bureau prior review (Arts. 13–14) | Threshold reported ≥ KD 100,000 |
+| Law 39/2010 | IWPP joint-stock companies | Legacy |
 
-## Methods (l02)
-Public tender · limited tender · practice (ممارسة) · direct order. CAPT default = lowest technically compliant price. KAPP = two-envelope (technical, then financial).
-$S_F = 100 P_{min}/P_i$ · $S = w_T S_T + w_F S_F$ · $T_{lev} = \sum T_t E_t (1+r)^{-t} / \sum E_t (1+r)^{-t}$ · $G = \beta P$.
-Example (7%, 30 yr): 3.90 fils +1.5%/yr → 4.54 > flat 4.20. QCBS 70/30 vs 80/20 can flip winners — fix weights before opening.
-Clarifications: written, to all, no change to price/substance.
+## 2. Law 94/2026 at a glance
 
-## KAPP PPP (l03)
-Request → feasibility → HC → RFQ → RFP (tech → fin.) → preferred bidder → HC → Audit Bureau → PPA → financial close (Fatwa reviews legal terms; stage unconfirmed).
-Shares (> KD 60 m, legal guide): **50% IPO / 6–24% public / ≥26% private**; IWPP practice 40% developer / 60% KAPP. AZN 1: ENGIE 17.5, Sumitomo 17.5, Al-Sagar 5; 40-yr ECWPA; IPO 2019 oversubscribed. AZN 2&3: ACWA + GIC 40%, ECWPA 3 Feb 2026. Solar: 30-yr PPA with MEWRE.
-$R = T(E_{del} + E_{deemed})$. Unknown: PPA currency, guarantees, termination regime.
+- **Direct contracting:** up to **KD 1 m per FY** for the same items, without CAPT approval.
+- **KPC:** under CAPT only above KD 20 m.
+- **Agents:** banned in public procurement.
+- **Local products:** ≥ 30% from the Industrial Guide.
+- **Local subcontracting:** ≥ 30% of works.
+- **SMEs:** 10% price margin, not combinable with Art. 62 product priority.
+- **Anti-splitting:** aggregate all orders for the same item in the FY:
+
+$$\sum_{FY,\ same\ item} V_j \le L$$
+
+## 3. Methods and evaluation (l02)
+
+- **Public tender** — default, open to all registered bidders.
+- **Limited tender** — invited, prequalified bidders.
+- **Practice** (ممارسة) — negotiation with a few suppliers.
+- **Direct order** — below the direct-contracting limit or justified exceptions.
+- **CAPT default award:** lowest technically compliant price.
+- **KAPP:** two-envelope — technical first, then financial.
+- **Clarifications:** in writing, to all bidders, no change to price or substance.
+
+| Quantity | Formula | Where |
+|---|---|---|
+| Financial score | $S_F = 100 P_{min}/P_i$ | QCBS |
+| Combined score | $S = w_T S_T + w_F S_F$ | QCBS (consultancy) |
+| Levelized tariff | $T_{lev} = \sum T_t E_t (1+r)^{-t} / \sum E_t (1+r)^{-t}$ | IPP bids |
+| Guarantee | $G = \beta P$ | Bid bond / final guarantee |
+
+- **Levelized example (7%, 30 yr):** 3.90 fils escalating 1.5%/yr → 4.54 fils, above a flat 4.20.
+- **QCBS weights:** 70/30 vs 80/20 can flip the winner — fix weights before opening.
+
+## 4. KAPP PPP (l03)
+
+**Stages:** request → feasibility → Higher Committee → RFQ → RFP (technical → financial) → preferred bidder → Higher Committee → Audit Bureau → PPA → financial close. Fatwa reviews legal terms (stage unconfirmed).
+
+| Item | Value | Note |
+|---|---|---|
+| Shares, projects > KD 60 m | **50% IPO / 6–24% public / ≥ 26% private** | Legal guide |
+| IWPP practice | 40% developer / 60% KAPP | |
+| AZN 1 private shares | ENGIE 17.5%, Sumitomo 17.5%, Al-Sagar 5% | 40-yr ECWPA; IPO 2019 oversubscribed |
+| AZN 2&3 | ACWA + GIC 40% | ECWPA 3 Feb 2026 |
+| Solar IPPs | 30-yr PPA with MEWRE | |
+
+- **PPA payment:** $R = T(E_{del} + E_{deemed})$
+- **Unknown:** PPA currency, government guarantees, termination regime (verify).
 
 | Project | Milestones |
 |---|---|
-| Zone 1 (1,100 MW) | RFQ Jan 2024 → RFP ~Jun 2025 → bids 15 Jan 2026 → fin. ~Jul 2026 → Masdar + Fouad AlGhanim reported ~Aug 2026 |
-| Zone 2 (500 MW) | RFQ May 2025 → RFP 16 Nov 2025 → bids 26 Jul 2026 (2 or 3) |
+| Zone 1 (1,100 MW) | RFQ Jan 2024 → RFP ~Jun 2025 → bids 15 Jan 2026 → financial opening ~Jul 2026 → Masdar + Fouad AlGhanim reported ~Aug 2026 |
+| Zone 2 (500 MW) | RFQ May 2025 → RFP 16 Nov 2025 → bids 26 Jul 2026 (2 or 3 bids reported) |
 
-## Oversight & local content (l04)
-Audit Bureau: approve / reject / **conditional** (GCCIA 2025: KWD 161.381 m). Contracting without approval = violation (28 cases, KD 63 m). Preference test $P_{nat} \le (1+\pi)P_{min}$ — rate unverified. Local content $LC = V_{local}/V_{base} \ge 30\%$ — define denominator. Offset (35%/30%, ≥ KD 10 m, 6% guarantee) suspended 2014 — status unverified. KDIPA: up to 100% foreign ownership; tax holiday ≤ 10 yrs. Zone 2: customs exemption ≤ 10% for 10 yrs (reported).
+## 5. Oversight and local content (l04)
 
-## Delays (l05)
-Evidence: Zone 1 deadline Sep 2025 → Jan 2026; Al-Khairan 3 extensions; Zone 1 award June → Q3 2026; Dibdibah and Abdaliya cancelled; 400 kV ~11 months bid → award (not lowest).
-$t_e = (a+4m+b)/6$, $\sigma = (b-a)/6$, $P80 \approx \sum t_e + 0.84\sqrt{\sum\sigma^2}$ — attack the biggest variance.
-Moves: approval calendar · pre-cleared files · parallel preparation · standard documents · bankability before RFP · bid-validity management · escalate with KWD/day · referral register · good Arabic · never start before approval.
+- **Audit Bureau outcomes:** approve, reject or **conditional** (GCCIA 2025: KWD 161.381 m).
+- **Contracting without approval:** a violation — 28 cases worth KD 63 m.
+- **Preference test:** $P_{nat} \le (1+\pi)P_{min}$ — rate unverified.
+- **Local content:** $LC = V_{local}/V_{base} \ge 30\%$ — define the denominator in the contract.
+- **Offset:** 35%/30% on contracts ≥ KD 10 m, 6% guarantee; suspended 2014 — current status unverified.
+- **KDIPA:** up to 100% foreign ownership; tax holiday ≤ 10 years.
+- **Zone 2 customs:** exemption ≤ 10% for 10 years (reported).
+
+## 6. Delays (l05)
+
+### Evidence
+
+- **Zone 1 bid deadline:** Sep 2025 → Jan 2026.
+- **Al-Khairan:** 3 deadline extensions.
+- **Zone 1 award:** June → Q3 2026.
+- **Cancelled:** Dibdibah and Abdaliya.
+- **400 kV line:** ~11 months from bids to award (not to the lowest bidder).
+
+### PERT for approval chains
+
+| Quantity | Formula | Where |
+|---|---|---|
+| Expected duration | $t_e = (a+4m+b)/6$ | Each step |
+| Standard deviation | $\sigma = (b-a)/6$ | Each step |
+| P80 of chain | $P80 \approx \sum t_e + 0.84\sqrt{\sum\sigma^2}$ | Whole chain |
+
+Attack the step with the biggest variance first.
+
+### Lawful moves
+
+- Approval calendar mapped at the start of the year.
+- Pre-cleared files.
+- Parallel preparation of the next gate.
+- Standard documents.
+- Bankability settled before the RFP.
+- Bid-validity management.
+- Escalation with KWD/day delay cost.
+- Referral register.
+- Good Arabic in official letters.
+- Never start before approval.
 `;
 
 const mod: Module = {

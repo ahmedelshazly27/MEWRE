@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Markdown } from "@/components/Markdown";
+import { useT } from "@/lib/useLang";
 
 export interface FormulaDto {
   id: string;
@@ -19,6 +20,7 @@ export interface FormulaDto {
 }
 
 export function FormulaSearch({ formulas }: { formulas: FormulaDto[] }) {
+  const { t, href } = useT();
   const [q, setQ] = useState("");
   const shown = useMemo(() => {
     const s = q.toLowerCase().trim();
@@ -34,7 +36,8 @@ export function FormulaSearch({ formulas }: { formulas: FormulaDto[] }) {
       <input
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        placeholder="Search formulas: LCOE, DSCR, power factor, CPI…"
+        placeholder={t("Search formulas: LCOE, DSCR, power factor, CPI…")}
+        dir="auto"
         className="no-print mb-5 w-full rounded-lg border border-border bg-surface px-3 py-2 outline-none focus:border-accent"
       />
       {[...groups.entries()].map(([g, fs]) => (
@@ -45,11 +48,11 @@ export function FormulaSearch({ formulas }: { formulas: FormulaDto[] }) {
               <div key={f.id} id={f.id} className="min-w-0 break-inside-avoid rounded-xl border border-border bg-surface">
                 <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-2 text-sm">
                   <span className="font-semibold">{f.name}</span>
-                  <Link href={`/learn/${f.moduleId}/${f.lessonId}`} className="truncate text-right text-xs text-accent">
+                  <Link href={href(`/learn/${f.moduleId}/${f.lessonId}`)} className="truncate text-end text-xs text-accent">
                     {f.lessonTitle}
                   </Link>
                 </div>
-                <div className="overflow-x-auto px-4 py-3" dangerouslySetInnerHTML={{ __html: f.html }} />
+                <div className="overflow-x-auto px-4 py-3" dir="ltr" dangerouslySetInnerHTML={{ __html: f.html }} />
                 {f.vars.length > 0 && (
                   <div className="grid gap-1 border-t border-border px-4 py-2 text-sm">
                     {f.vars.map((v, i) => (
@@ -63,7 +66,7 @@ export function FormulaSearch({ formulas }: { formulas: FormulaDto[] }) {
                   </div>
                 )}
                 <details className="border-t border-border px-4 py-2 text-sm">
-                  <summary className="cursor-pointer text-muted">Explanation</summary>
+                  <summary className="cursor-pointer text-muted">{t("Explanation")}</summary>
                   <Markdown className="prose-compact">{f.explanation}</Markdown>
                 </details>
               </div>

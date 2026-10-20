@@ -50,7 +50,16 @@ The 7th edition replaced the familiar 49-process structure with **principles** (
 | 11 | Embrace **adaptability and resiliency** | Summer working restrictions, sandstorms, supply shocks |
 | 12 | Enable **change** to achieve the envisioned future state | Ministry capability for 15 %+ renewables |
 
-**8 performance domains**: Stakeholders · Team · Development approach and life cycle · Planning · Project work · Delivery · Measurement · Uncertainty.
+**8 performance domains**:
+
+- Stakeholders
+- Team
+- Development approach and life cycle
+- Planning
+- Project work
+- Delivery
+- Measurement
+- Uncertainty
 
 ### The process groups people still use
 
@@ -78,11 +87,35 @@ The 10 knowledge areas (integration, scope, schedule, cost, quality, resource, c
 
 PRINCE2 is a **method**, not a body of knowledge: it tells you who decides what, when, on what documents. It is built from five integrated elements: **principles, people, practices, processes, project context**.
 
-**7 principles** — continued business justification · learn from experience · define roles, responsibilities and relationships · manage by stages · manage by exception · focus on products · tailor to suit the project.
+**7 principles**:
 
-**7 practices** (called "themes" until the 6th edition) — business case · organizing · plans · quality · risk · issues · progress.
+- continued business justification
+- learn from experience
+- define roles, responsibilities and relationships
+- manage by stages
+- manage by exception
+- focus on products
+- tailor to suit the project
 
-**7 processes** — Starting up a project (SU) · Directing a project (DP) · Initiating a project (IP) · Controlling a stage (CS) · Managing product delivery (MP) · Managing a stage boundary (SB) · Closing a project (CP).
+**7 practices** (called "themes" until the 6th edition):
+
+- business case
+- organizing
+- plans
+- quality
+- risk
+- issues
+- progress
+
+**7 processes**:
+
+- Starting up a project (SU)
+- Directing a project (DP)
+- Initiating a project (IP)
+- Controlling a stage (CS)
+- Managing product delivery (MP)
+- Managing a stage boundary (SB)
+- Closing a project (CP)
 
 **Project Board** (accountable for success, not day-to-day management):
 

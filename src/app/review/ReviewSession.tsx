@@ -12,6 +12,7 @@ import { newCard, previewIntervals } from "@/lib/srs";
 import { PageHeader } from "@/components/ui";
 import { btn, EmptyState, Pill, ProgressBar } from "@/components/ui";
 import { LessonTimer } from "@/components/lesson/LessonClient";
+import { useT } from "@/lib/useLang";
 
 interface CardDto {
   id: string;
@@ -35,6 +36,7 @@ const RATINGS = [
 ];
 
 export function ReviewSession() {
+  const { lang, t, href } = useT();
   const [queue, setQueue] = useState<CardDto[] | null>(null);
   const [meta, setMeta] = useState({ due: 0, fresh: 0, unlocked: 0 });
   const [pos, setPos] = useState(0);
@@ -45,7 +47,7 @@ export function ReviewSession() {
   const load = useCallback(async () => {
     const store = getStore();
     await store.load();
-    const content = await loadContent();
+    const content = await loadContent(lang);
     const raw = reviewQueue(store.derived(), content.cardOrder, store.settings().newCardsPerDay);
     const dto = (id: string): CardDto => {
       const c = content.cards[id];
@@ -66,7 +68,7 @@ export function ReviewSession() {
     setPos(0);
     setFlipped(false);
     setMeta({ due: r.due.length, fresh: r.fresh.length, unlocked: r.unlockedTotal });
-  }, []);
+  }, [lang]);
 
   useEffect(() => {
     load();
@@ -107,25 +109,25 @@ export function ReviewSession() {
     return () => window.removeEventListener("keydown", onKey);
   }, [flipped, rate]);
 
-  if (!queue) return <div className="text-muted">Loading review queue…</div>;
+  if (!queue) return <div className="text-muted">{t("Loading review queue…")}</div>;
 
   if (pos >= queue.length) {
     return (
       <div className="space-y-4">
-        <EmptyState title={doneCount ? `Session done — ${doneCount} reviews` : "Nothing due right now"}>
+        <EmptyState title={doneCount ? t("Session done — {n} reviews", { n: doneCount }) : t("Nothing due right now")}>
           {meta.unlocked === 0
-            ? "Complete a lesson (finish its quiz) to unlock its flashcards, glossary terms and formulas into the review queue."
-            : "Come back tomorrow — FSRS schedules each card just before you would forget it."}
+            ? t("Complete a lesson (finish its quiz) to unlock its flashcards, glossary terms and formulas into the review queue.")
+            : t("Come back tomorrow — FSRS schedules each card just before you would forget it.")}
         </EmptyState>
         <div className="flex justify-center gap-2">
           <button
             className={btn.ghost}
             onClick={() => load()}
           >
-            Check again
+            {t("Check again")}
           </button>
-          <Link href="/practice" className={btn.primary}>
-            Mixed practice instead
+          <Link href={href("/practice")} className={btn.primary}>
+            {t("Mixed practice instead")}
           </Link>
         </div>
       </div>
@@ -144,9 +146,9 @@ export function ReviewSession() {
       </div>
       <div className="rounded-2xl border border-border bg-surface p-5 sm:p-8">
         <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
-          <Pill tone={card.kind === "glossary" ? "sun" : card.kind === "formula" ? "info" : "accent"}>{card.kind === "lesson" ? "Concept" : card.kind === "glossary" ? "Glossary" : "Formula"}</Pill>
-          {card.state === 0 && <Pill tone="ok">New</Pill>}
-          <Link href={`/learn/${card.moduleId}/${card.lessonId}`} className="text-muted hover:text-text">
+          <Pill tone={card.kind === "glossary" ? "sun" : card.kind === "formula" ? "info" : "accent"}>{t(card.kind === "lesson" ? "Concept" : card.kind === "glossary" ? "Glossary" : "Formula")}</Pill>
+          {card.state === 0 && <Pill tone="ok">{t("New")}</Pill>}
+          <Link href={href(`/learn/${card.moduleId}/${card.lessonId}`)} className="text-muted hover:text-text">
             {card.lessonTitle}
           </Link>
         </div>
@@ -162,7 +164,7 @@ export function ReviewSession() {
           </div>
         ) : (
           <button className={`${btn.primary} mt-6 w-full`} onClick={() => setFlipped(true)}>
-            Show answer <span className="opacity-60">(space)</span>
+            {t("Show answer")} <span className="opacity-60">{t("(space)")}</span>
           </button>
         )}
       </div>
@@ -170,14 +172,14 @@ export function ReviewSession() {
         <div className="mt-4 grid grid-cols-4 gap-2">
           {RATINGS.map((x) => (
             <button key={x.r} disabled={busy} onClick={() => rate(x.r)} className={`rounded-xl border bg-surface px-2 py-3 text-center transition-colors ${x.cls}`}>
-              <div className="text-sm font-semibold">{x.label}</div>
+              <div className="text-sm font-semibold">{t(x.label)}</div>
               <div className="text-xs text-muted">{card.intervals[String(x.r)]}</div>
             </button>
           ))}
         </div>
       )}
       <p className="mt-4 text-center text-xs text-muted">
-        Recall before flipping. Rate honestly: <strong>Again</strong> if you couldn&apos;t recall it, <strong>Good</strong> if you did with effort. Keys 1–4.
+        {t("Recall before flipping. Rate honestly: Again if you couldn't recall it, Good if you did with effort. Keys 1–4.")}
       </p>
     </div>
   );
@@ -185,6 +187,7 @@ export function ReviewSession() {
 
 /** Page header with live counts and the 7-day forecast. */
 export function ReviewHeader() {
+  const { t } = useT();
   const store = useLearner();
   const content = useContent();
   const q = store && content ? reviewQueue(store.derived(), content.cardOrder, store.settings().newCardsPerDay) : null;
@@ -192,14 +195,14 @@ export function ReviewHeader() {
   const max = Math.max(1, ...forecast);
   return (
     <PageHeader
-      title="Daily review"
-      subtitle={q ? `Spaced repetition (FSRS). ${q.due.length} due · ${q.fresh.length} new today · ${q.known} cards learning · ${q.unlockedTotal} unlocked.` : "Spaced repetition (FSRS)."}
+      title={t("Daily review")}
+      subtitle={q ? t("Spaced repetition (FSRS). {d} due · {f} new today · {k} cards learning · {u} unlocked.", { d: q.due.length, f: q.fresh.length, k: q.known, u: q.unlockedTotal }) : t("Spaced repetition (FSRS).")}
     >
-      <div className="flex items-end gap-1" title="Reviews due over the next 7 days">
+      <div className="flex items-end gap-1" title={t("Reviews due over the next 7 days")}>
         {forecast.map((n, i) => (
           <div key={i} className="flex flex-col items-center gap-1">
             <div className="w-5 rounded-sm bg-accent/70" style={{ height: `${4 + (n / max) * 36}px` }} />
-            <span className="text-[10px] text-muted">{i === 0 ? "T" : `+${i}`}</span>
+            <span className="text-[10px] text-muted">{i === 0 ? t("T") : `+${i}`}</span>
           </div>
         ))}
       </div>

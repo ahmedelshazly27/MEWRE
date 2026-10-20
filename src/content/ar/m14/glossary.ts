@@ -1,0 +1,36 @@
+import type { GlossaryTerm } from "../../schema";
+
+const glossary: GlossaryTerm[] = [
+  { id: "m14-llm", en: "Large language model (LLM)", ar: "نموذج لغوي كبير", definition: "شبكة عصبية دُرّبت على مجموعات نصية ضخمة للتنبؤ بالوحدة النصية التالية؛ وهي المحرك الذي تقوم عليه مساعدات الذكاء الاصطناعي مثل Claude.", lesson: "m14-l01", category: "technical" },
+  { id: "m14-token", en: "Token", ar: "وحدة نصية (رمز)", definition: "الوحدة الجزئية من الكلمة التي يقرؤها النموذج اللغوي الكبير ويكتبها؛ نحو 1.3 وحدة لكل كلمة إنجليزية، وعادةً أكثر في العربية.", lesson: "m14-l01", category: "technical" },
+  { id: "m14-context-window", en: "Context window", ar: "نافذة السياق", definition: "الحد الأقصى لعدد الوحدات النصية (التعليمات والمستندات والمحادثة والمخرجات) التي يستطيع النموذج معالجتها في آن واحد.", lesson: "m14-l01", category: "technical" },
+  { id: "m14-hallucination", en: "Hallucination", ar: "الهلوسة (توليد معلومات غير صحيحة)", definition: "مخرجات سلسة لكنها خاطئة أو غير مسندة، مثل أرقام بنود أو أرقام مالية أو مراجع مختلَقة.", lesson: "m14-l01", category: "technical" },
+  { id: "m14-temperature", en: "Temperature (sampling)", ar: "درجة العشوائية في التوليد", definition: "معامل يُحدّ توزيع احتمالات الوحدة النصية التالية (عند القيم المنخفضة) أو يُسطّحه (عند القيم المرتفعة)؛ يؤثر في التباين لا في الصحة.", lesson: "m14-l01", category: "technical" },
+  { id: "m14-knowledge-cutoff", en: "Knowledge cutoff", ar: "تاريخ انتهاء بيانات التدريب", definition: "التاريخ الذي لا تتوفر للنموذج بعده بيانات تدريب؛ ويجب تزويده بنصوص القوانين والأحداث الحديثة كمصدر.", lesson: "m14-l01", category: "technical" },
+  { id: "m14-prompt", en: "Prompt", ar: "التعليمات الموجهة للنموذج", definition: "التعليمات والمواد المقدَّمة لنموذج الذكاء الاصطناعي؛ والتعليمات الموثوقة تحدد الدور والسياق والمهمة والقيود وصيغة المخرجات.", lesson: "m14-l02", category: "technical" },
+  { id: "m14-few-shot", en: "Few-shot prompting", ar: "التوجيه بالأمثلة", definition: "تضمين مثال محلول أو أكثر في التعليمات لإظهار الصيغة ومستوى التفصيل المتوقعين.", lesson: "m14-l02", category: "technical" },
+  { id: "m14-deviation-list", en: "Deviation list", ar: "قائمة الانحرافات", definition: "سجل يبيّن، متطلباً تلو الآخر، مواضع خروج العطاء أو التصميم عن متطلبات صاحب العمل.", lesson: "m14-l02", category: "contractual" },
+  { id: "m14-employers-requirements", en: "Employer's Requirements (ERs)", ar: "متطلبات صاحب العمل", definition: "مستند العقد الذي يحدد الغرض من الأعمال ونطاقها وتصميمها ومعاييرها الفنية في عقود التصميم والتنفيذ وعقود EPC.", lesson: "m14-l02", category: "contractual" },
+  { id: "m14-particular-conditions", en: "Particular Conditions", ar: "الشروط الخاصة", definition: "التعديلات الخاصة بالمشروع على الشروط العامة لفيديك (FIDIC)؛ وفيها تظهر معظم التغييرات التي تنقل المخاطر.", lesson: "m14-l02", category: "contractual" },
+  { id: "m14-prompt-injection", en: "Prompt injection", ar: "حقن التعليمات", definition: "تعليمات مخفية داخل مستند أو مُدخل تحاول التلاعب بسلوك نموذج الذكاء الاصطناعي.", lesson: "m14-l02", category: "technical" },
+  { id: "m14-facts-sheet", en: "Facts sheet", ar: "ورقة الوقائع", definition: "قائمة وقائع متحقَّق منها (مراجع، تواريخ، أرقام، مواقف) يجوز لمسودة الذكاء الاصطناعي استخدامها ولا يجوز لها تجاوزها.", lesson: "m14-l03", category: "pm" },
+  { id: "m14-defined-terms", en: "Defined terms", ar: "المصطلحات المعرّفة", definition: "مصطلحات تعاقدية ذات معانٍ محددة (مثل مدة الإنجاز) يجب استخدامها بشكل متسق في اللغتين.", lesson: "m14-l03", category: "contractual" },
+  { id: "m14-earned-value", en: "Earned value (EV)", ar: "القيمة المكتسبة", definition: "القيمة المخططة في الموازنة للأعمال المنجزة فعلياً حتى تاريخه.", lesson: "m14-l04", category: "pm" },
+  { id: "m14-cpi", en: "Cost performance index (CPI)", ar: "مؤشر أداء التكلفة", definition: "EV ÷ AC؛ القيمة الأقل من 1 تعني تجاوز التكلفة.", lesson: "m14-l04", category: "pm" },
+  { id: "m14-spi", en: "Schedule performance index (SPI)", ar: "مؤشر أداء الجدول الزمني", definition: "EV ÷ PV؛ القيمة الأقل من 1 تعني التأخر عن الخطة بمقياس القيمة.", lesson: "m14-l04", category: "pm" },
+  { id: "m14-eac", en: "Estimate at completion (EAC)", ar: "التكلفة التقديرية عند الإنجاز", definition: "التكلفة النهائية المتوقعة؛ بطريقة CPI تساوي BAC ÷ CPI، أو بالطريقة المركّبة AC + (BAC − EV) ÷ (CPI × SPI).", lesson: "m14-l04", category: "pm" },
+  { id: "m14-xer", en: "XER file", ar: "ملف XER (تصدير بريمافيرا)", definition: "صيغة التصدير الأصلية لبرنامج Primavera P6، نص مفصول بعلامات الجدولة يتضمن الأنشطة والعلاقات وهيكل تجزئة العمل والتقاويم والموارد.", lesson: "m14-l04", category: "technical" },
+  { id: "m14-performance-ratio", en: "Performance ratio (PR)", ar: "نسبة الأداء", definition: "طاقة المحطة الكهروضوئية بعد تطبيعها بالإشعاع الشمسي والقدرة المركّبة DC؛ تُستخدم لمقارنة الكتل والفترات.", lesson: "m14-l04", category: "technical" },
+  { id: "m14-scada", en: "SCADA", ar: "نظام التحكم الإشرافي وتجميع البيانات", definition: "نظام للتحكم الإشرافي وتجميع البيانات يراقب معدات المحطة ويتحكم بها ويسجل بيانات التشغيل.", lesson: "m14-l04", category: "technical" },
+  { id: "m14-agentic-coding", en: "Agentic coding assistant", ar: "مساعد برمجة ذاتي التنفيذ", definition: "أداة ذكاء اصطناعي (مثل Claude Code) تقرأ الملفات وتعدّل الشيفرة وتنفذ الأوامر بإذن المستخدم لبلوغ هدف موصوف.", lesson: "m14-l05", category: "technical" },
+  { id: "m14-test-vector", en: "Test vector", ar: "حالة اختبار ذات نتيجة معروفة", definition: "بيانات مدخلة لها نتيجة متوقعة محسوبة بشكل مستقل، تُستخدم لقبول الأداة أو رفضها.", lesson: "m14-l05", category: "technical" },
+  { id: "m14-version-control", en: "Version control", ar: "إدارة الإصدارات", definition: "نظام (مثل git) يسجل كل تغيير في الملفات بحيث يكون العمل قابلاً للتتبع والتراجع.", lesson: "m14-l05", category: "technical" },
+  { id: "m14-data-classification", en: "Data classification", ar: "تصنيف البيانات", definition: "تخصيص المعلومات لمستويات حساسية تحدد كيفية تخزينها ومعالجتها ومشاركتها.", lesson: "m14-l06", category: "institutional" },
+  { id: "m14-anonymisation", en: "Anonymisation", ar: "إخفاء الهوية", definition: "إزالة التفاصيل المعرِّفة أو تحويلها بحيث يتعذر ربط البيانات بالمشروع أو الشخص الحقيقي.", lesson: "m14-l06", category: "technical" },
+  { id: "m14-pseudonymisation", en: "Pseudonymisation", ar: "الترميز بأسماء مستعارة", definition: "استبدال المعرّفات برموز أو أدوار مع الاحتفاظ بمفتاح منفصل؛ يقلل المخاطر ولا يزيلها.", lesson: "m14-l06", category: "technical" },
+  { id: "m14-ai-governance", en: "AI governance", ar: "حوكمة الذكاء الاصطناعي", definition: "السياسات والأدوار والضوابط اللازمة للاستخدام المسؤول للذكاء الاصطناعي: الأدوات المعتمدة، وقواعد البيانات، والمساءلة، والسجلات، والمراجعة.", lesson: "m14-l06", category: "institutional" },
+  { id: "m14-two-source-rule", en: "Two-source rule", ar: "قاعدة المصدرين", definition: "تأكيد أي واقعة من خارج مستنداتك من مصدرين مستقلين أو من مصدر أصلي واحد قبل استخدامها.", lesson: "m14-l06", category: "pm" },
+  { id: "m14-prompt-library", en: "Prompt library", ar: "مكتبة التعليمات", definition: "مجموعة مشتركة ذات إصدارات من قوالب التعليمات المختبَرة، لكل منها غرضها ومدخلاتها وصيغة مخرجاتها وخطوة التحقق.", lesson: "m14-l06", category: "pm" },
+];
+
+export default glossary;

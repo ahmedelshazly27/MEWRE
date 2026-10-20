@@ -15,69 +15,169 @@ import references from "./references";
 const cheatSheet = md`# M08 Project Management & Controls — Cheat Sheet
 
 ## Frameworks
-| PMBOK 7 | 12 principles · 8 domains: Stakeholders, Team, Development approach & life cycle, Planning, Project work, Delivery, Measurement, Uncertainty |
-|---|---|
-| Process groups | Initiating · Planning · Executing · Monitoring & Controlling · Closing |
-| PRINCE2 7 | 7 principles · 7 practices (business case, organizing, plans, quality, risk, issues, progress) · 7 processes |
-| Board | Executive (business case) · Senior User (Control Centre/operations) · Senior Supplier (OE/IPP/EPC) |
-| Tolerances | Time, cost, scope, quality, benefits, risk, sustainability — **forecast** breach → exception report |
 
-## CPM
-| Rule | Formula |
-|---|---|
-| Forward | $ES_j=\max(EF_i+L)$, $EF=ES+D$ |
-| Backward | $LF_i=\min(LS_j-L)$, $LS=LF-D$ |
-| Float | $TF=LS-ES$; $FF=\min ES_{succ}-EF$; $0\le FF\le TF$ |
-| SS / FF | $ES_j\ge ES_i+L$; $EF_j\ge EF_i+L$ |
-| CPLI | $(CPL+TF_{end})/CPL\ \ge 0.95$ |
-| BEI | completed / baseline-due $\ \ge 0.95$ |
+### PMBOK 7
+- **Principles:** 12
+- **Performance domains (8):** Stakeholders; Team; Development approach & life cycle; Planning; Project work; Delivery; Measurement; Uncertainty
+- **Process groups (5):** Initiating; Planning; Executing; Monitoring & Controlling; Closing
 
-**DCMA 14**: missing logic ≤5 % · leads 0 · lags ≤5 % · FS ≥90 % · hard constraints ≤5 % · TF>44 d ≤5 % · negative float 0 · duration>44 d ≤5 % · invalid dates 0 · resources · missed tasks ≤5 % · CP test · CPLI ≥0.95 · BEI ≥0.95.
+### PRINCE2 7
+- **Structure:** 7 principles, 7 practices, 7 processes
+- **Practices:** business case, organizing, plans, quality, risk, issues, progress
+- **Board — Executive:** owns the business case
+- **Board — Senior User:** Control Centre / operations
+- **Board — Senior Supplier:** OE / IPP / EPC
+- **Tolerances:** time, cost, scope, quality, benefits, risk, sustainability
+- **Exception rule:** a **forecast** breach of tolerance triggers an exception report
 
-**Delay rule**: completion delay = slip − total float (if positive). Prolongation only for completion delay.
+## CPM scheduling
 
-## EVM
+| Rule | Formula | Note |
+|---|---|---|
+| Forward pass | $ES_j=\max(EF_i+L)$, $EF=ES+D$ | earliest dates |
+| Backward pass | $LF_i=\min(LS_j-L)$, $LS=LF-D$ | latest dates |
+| Total float | $TF=LS-ES$ | |
+| Free float | $FF=\min ES_{succ}-EF$ | $0\le FF\le TF$ |
+| SS link | $ES_j\ge ES_i+L$ | |
+| FF link | $EF_j\ge EF_i+L$ | |
+| CPLI | $(CPL+TF_{end})/CPL$ | target $\ge 0.95$ |
+| BEI | completed / baseline-due | target $\ge 0.95$ |
+
+- **Delay rule:** completion delay = slip − total float (if positive)
+- **Prolongation:** only for completion delay
+
+### DCMA 14-point check
+
+| # | Check | Threshold |
+|---|---|---|
+| 1 | Missing logic | ≤ 5 % |
+| 2 | Leads | 0 |
+| 3 | Lags | ≤ 5 % |
+| 4 | FS relationships | ≥ 90 % |
+| 5 | Hard constraints | ≤ 5 % |
+| 6 | High float (TF > 44 d) | ≤ 5 % |
+| 7 | Negative float | 0 |
+| 8 | High duration (> 44 d) | ≤ 5 % |
+| 9 | Invalid dates | 0 |
+| 10 | Resources | — |
+| 11 | Missed tasks | ≤ 5 % |
+| 12 | Critical path test | — |
+| 13 | CPLI | ≥ 0.95 |
+| 14 | BEI | ≥ 0.95 |
+
+## Earned value
+
 | Metric | Formula | Read |
 |---|---|---|
-| CV / SV | $EV-AC$ / $EV-PV$ | negative = bad |
-| CPI / SPI | $EV/AC$ / $EV/PV$ | <1 = bad |
-| EAC | $BAC/CPI$ · $AC+(BAC-EV)$ · $AC+\frac{BAC-EV}{CPI\cdot SPI}$ · $AC+\frac{BAC-EV}{0.8CPI+0.2SPI}$ | report a range |
-| ETC / VAC | $EAC-AC$ / $BAC-EAC$ | |
+| CV | $EV-AC$ | negative = bad |
+| SV | $EV-PV$ | negative = bad |
+| CPI | $EV/AC$ | < 1 = bad |
+| SPI | $EV/PV$ | < 1 = bad |
+| EAC (CPI) | $BAC/CPI$ | report a range |
+| EAC (budget rate) | $AC+(BAC-EV)$ | report a range |
+| EAC (CPI·SPI) | $AC+\frac{BAC-EV}{CPI\cdot SPI}$ | report a range |
+| EAC (weighted) | $AC+\frac{BAC-EV}{0.8CPI+0.2SPI}$ | report a range |
+| ETC | $EAC-AC$ | |
+| VAC | $BAC-EAC$ | |
 | TCPI | $\frac{BAC-EV}{BAC-AC}$ | > CPI + 0.05–0.10 → not credible |
-| ES | $C+\frac{EV-PV_C}{PV_{C+1}-PV_C}$ | $SPI(t)=ES/AT$, $IEAC(t)=PD/SPI(t)$ |
+| Earned schedule | $ES=C+\frac{EV-PV_C}{PV_{C+1}-PV_C}$ | |
+| SPI(t) | $SPI(t)=ES/AT$ | |
+| IEAC(t) | $IEAC(t)=PD/SPI(t)$ | |
 
-Rules of credit: units completed (piles, rows, modules, cable m) · weighted milestones (procurement: approval 5 / PO 5 / FAT 15 / shipped 15 / on site 60) · 0/100 (<1 period) · 50/50 · LoE (PM only). Inflation: credit at PO, installed-not-tested, subjective %, front-loading, rework as progress.
+### Rules of credit
+- **Units completed:** piles, rows, modules, cable m
+- **Weighted milestones:** procurement = approval 5 / PO 5 / FAT 15 / shipped 15 / on site 60
+- **0/100:** tasks shorter than 1 period
+- **50/50**
+- **LoE:** PM only
+
+### Progress inflation to spot
+- Credit taken at PO
+- Installed-not-tested counted as progress
+- Subjective % complete
+- Front-loading
+- Rework reported as progress
 
 ## Risk
-| | |
-|---|---|
-| Score | $P\times I$ (ordinal, never sum) |
-| EMV | $\sum p_r C_r$ |
-| PERT | $t_e=(a+4m+b)/6$, $\sigma=(b-a)/6$; path: add means, add variances |
-| Triangular mean | $(a+m+b)/3$ |
-| Percentile | $X_p=\mu+z\sigma$; $z_{80}=0.842$, $z_{90}=1.282$ |
-| Contingency | P80 − base (in baseline); management reserve outside |
-| Merge bias | two P50 paths → 25 % joint |
 
-Kuwait risks: heat (53.9 °C record, WMO) · summer midday work restriction (**verify**) · approvals KAPP → Higher Committee → Audit Bureau (≥ KD 100k prior review, **verify**) · Law 94/2026 tenders amendment · customs (Zone 2: up to 10 % exemption reported) · FX on USD equipment · MEWRE grid interfaces · shamal dust.
+| Quantity | Formula | Note |
+|---|---|---|
+| Risk score | $P\times I$ | ordinal, never sum |
+| EMV | $\sum p_r C_r$ | |
+| PERT mean | $t_e=(a+4m+b)/6$ | |
+| PERT spread | $\sigma=(b-a)/6$ | path: add means, add variances |
+| Triangular mean | $(a+m+b)/3$ | |
+| Percentile | $X_p=\mu+z\sigma$ | $z_{80}=0.842$, $z_{90}=1.282$ |
+
+- **Contingency:** P80 − base, held in the baseline
+- **Management reserve:** outside the baseline
+- **Merge bias:** two P50 paths → 25 % joint probability
+
+### Kuwait risks
+- **Heat:** 53.9 °C record (WMO)
+- **Summer midday work restriction** (verify)
+- **Approvals chain:** KAPP → Higher Committee → Audit Bureau (prior review at ≥ KD 100k, verify)
+- **Law 94/2026:** tenders law amendment
+- **Customs:** Zone 2 — up to 10 % exemption reported
+- **FX:** USD-priced equipment
+- **MEWRE grid interfaces**
+- **Shamal dust**
 
 ## Change, interfaces, documents
-- FIDIC 2017: Cl. 13 variations (13.3.1 instruction / 13.3.2 proposal); Cl. 20 claims: notice 28 d, detailed claim 84 d; 8.3 programme within 28 d of the 8.1 Commencement notice (Engineer review 21 d); 4.20 monthly report within 7 d; 8.4 advance warning; Cl. 21 DAAB.
-- NEC4 cl. 15 early warning: register + meetings; failure to warn reduces CE assessment.
-- Variation value $=C_{dir}(1+k_{OHP})+c_t\,\Delta T_{completion}$.
-- Review codes: **A** proceed · **B** proceed with comments, resubmit · **C** rejected, resubmit · (D info).
-- Interface register: ID, parties, type, give/need dates, ICD, owner, status; MEWRE gives = P6 milestones.
-- RFI clarifies, never changes scope.
+
+### FIDIC 2017 & NEC4
+- **Cl. 13 variations:** 13.3.1 by instruction; 13.3.2 by request for proposal
+- **Cl. 20 claims:** notice within 28 d; fully detailed claim within 84 d
+- **Cl. 8.3 programme:** within 28 d of the 8.1 Commencement notice; Engineer review 21 d
+- **Cl. 4.20 monthly report:** within 7 d
+- **Cl. 8.4:** advance warning
+- **Cl. 21:** DAAB
+- **NEC4 cl. 15 early warning:** register + meetings; failure to warn reduces the CE assessment
+
+### Valuing a variation
+$$V=C_{dir}(1+k_{OHP})+c_t\,\Delta T_{completion}$$
+
+### Document review codes
+- **A:** proceed
+- **B:** proceed with comments, resubmit
+- **C:** rejected, resubmit
+- **D:** information only
+
+### Interfaces and RFIs
+- **Interface register fields:** ID, parties, type, give/need dates, ICD, owner, status
+- **MEWRE "gives":** tracked as P6 milestones
+- **RFI:** clarifies, never changes scope
 
 ## QA/QC & HSE
-- ITP codes: **H** hold · **W** witness · **R** review · **S** surveillance. Holds on irreversible + energisation-critical steps.
-- NCR dispositions: rework · repair · use-as-is (concession) · reject.
-- $LTIFR=N_{LTI}\times10^6/H$ · $TRIR=N_{rec}\times200{,}000/H$ — state the base.
-- $WBGT=0.7T_{nwb}+0.2T_g+0.1T_a$ (outdoor). ~28 °C WBGT moderate continuous work, acclimatised (ISO 7243 order of magnitude — check procedure).
-- PV DC strings are live in daylight. BESS: stranded energy, thermal runaway, civil-defence approval.
+
+### Quality
+- **ITP codes:** **H** hold, **W** witness, **R** review, **S** surveillance
+- **Hold points:** on irreversible and energisation-critical steps
+- **NCR dispositions:** rework, repair, use-as-is (concession), reject
+
+### Safety metrics (state the base)
+
+| Quantity | Formula | Base |
+|---|---|---|
+| LTIFR | $LTIFR=N_{LTI}\times10^6/H$ | per 1,000,000 h |
+| TRIR | $TRIR=N_{rec}\times200{,}000/H$ | per 200,000 h |
+| WBGT (outdoor) | $WBGT=0.7T_{nwb}+0.2T_g+0.1T_a$ | |
+
+- **Heat-stress guide:** ~28 °C WBGT for moderate continuous work, acclimatised (ISO 7243 order of magnitude — check the procedure)
+- **PV DC strings:** live whenever there is daylight
+- **BESS hazards:** stranded energy, thermal runaway; civil-defence approval required
 
 ## Reporting
-RAG (example): Schedule G on time / A 1–4 wk or SPI(t) 0.90–0.95 / R >4 wk, SPI(t) <0.90 or key date at risk. Cost G CPI ≥0.97 / A 0.92–0.97 / R <0.92 or EAC > budget+contingency. Always: colour + trend + path to green. Report decisions first.
+
+| Status | Schedule | Cost |
+|---|---|---|
+| Green | on time | CPI ≥ 0.97 |
+| Amber | 1–4 wk late or SPI(t) 0.90–0.95 | CPI 0.92–0.97 |
+| Red | > 4 wk, SPI(t) < 0.90 or key date at risk | CPI < 0.92 or EAC > budget + contingency |
+
+- **Thresholds above:** an example, set per project
+- **Every status:** colour + trend + path to green
+- **Order:** report decisions first
 `;
 
 const mod: Module = {

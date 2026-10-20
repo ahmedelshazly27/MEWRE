@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/useLang";
 import { useEffect, useRef, useState } from "react";
 import { addTime, completeLesson, saveNote, startLesson } from "@/lib/store/actions";
 import { useLearner } from "@/lib/store/react";
@@ -44,9 +45,10 @@ export function LessonTimer({ lessonId }: { lessonId: string | null }) {
 
 export function CompleteButton({ lessonId }: { lessonId: string }) {
   const store = useLearner();
+  const { t } = useT();
   const [busy, setBusy] = useState(false);
   if (!store) return null;
-  if (store.derived().lessons.get(lessonId)?.status === "completed") return <span className="text-sm font-medium text-ok">✓ Completed</span>;
+  if (store.derived().lessons.get(lessonId)?.status === "completed") return <span className="text-sm font-medium text-ok">{t("✓ Completed")}</span>;
   return (
     <button
       className={btn.ghost}
@@ -57,13 +59,14 @@ export function CompleteButton({ lessonId }: { lessonId: string }) {
         setBusy(false);
       }}
     >
-      Mark complete without quiz
+      {t("Mark complete without quiz")}
     </button>
   );
 }
 
 export function NotesPanel({ lessonId }: { lessonId: string }) {
   const store = useLearner();
+  const { t } = useT();
   const [body, setBody] = useState<string | null>(null);
   const [state, setState] = useState<"idle" | "saving" | "saved">("idle");
   useEffect(() => {
@@ -87,10 +90,10 @@ export function NotesPanel({ lessonId }: { lessonId: string }) {
         onChange={(e) => setBody(e.target.value)}
         rows={8}
         dir="auto"
-        placeholder="Your notes for this lesson (markdown supported). Saved on this device and synced."
+        placeholder={t("Your notes for this lesson (markdown supported). Saved on this device and synced.")}
         className="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm outline-none focus:border-accent"
       />
-      <div className="mt-1 text-xs text-muted">{state === "saving" ? "Saving…" : state === "saved" ? "Saved" : ""}</div>
+      <div className="mt-1 text-xs text-muted">{state === "saving" ? t("Saving…") : state === "saved" ? t("Saved") : ""}</div>
     </div>
   );
 }

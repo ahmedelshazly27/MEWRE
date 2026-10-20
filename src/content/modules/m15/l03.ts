@@ -375,11 +375,20 @@ You are joining a ministry, not a contractor. Authority flows through hierarchy 
     },
   ],
   flashcards: [
-    { id: "m15-l03-f1", front: "Six fields of a useful lessons-learned entry", back: "Event · Root cause · Impact · Lesson · Action (document change) · Owner/date/verified.", concepts: ["m15.lessons-learned"] },
+    { id: "m15-l03-f1", front: "Six fields of a useful lessons-learned entry", back: md`- Event
+- Root cause
+- Impact
+- Lesson
+- Action (document change)
+- Owner/date/verified`, concepts: ["m15.lessons-learned"] },
     { id: "m15-l03-f2", front: "Lesson learned vs lesson observed", back: "Learned = the next project's documents or process actually change. Observed = written down, nothing changes.", concepts: ["m15.lessons-learned"] },
     { id: "m15-l03-f3", front: "COD condition for punch-list items", back: "All Category A (safety/performance-critical) closed and verified; Category B dated and secured (≈ 125–150 % of completion cost); handover package complete.", concepts: ["m15.taking-over"] },
     { id: "m15-l03-f4", front: "30-60-90 in one line each", back: "30: learn the system and people. 60: own the interfaces and the file. 90: close stuck issues and leave one lasting improvement.", concepts: ["m15.first-90-days"] },
-    { id: "m15-l03-f5", front: "The five take-away rules from the capstone", back: "Spend a little early · Act through the contract · Verify data before judging · Be proportionate · No surprises upward.", concepts: ["m15.lessons-learned"] },
+    { id: "m15-l03-f5", front: "The five take-away rules from the capstone", back: md`- Spend a little early
+- Act through the contract
+- Verify data before judging
+- Be proportionate
+- No surprises upward`, concepts: ["m15.lessons-learned"] },
     { id: "m15-l03-f6", front: "Why decisions are judged separately from outcomes", back: "Good decisions can have bad luck and vice versa; auditors and leaders review reasoning and evidence at the time — so record what you knew, the options, and why.", concepts: ["m15.audit-readiness"] },
     { id: "m15-l03-f7", front: "Rule for using AI tools on MEWRE work", back: "Use for summaries, drafts and challenge — never paste confidential tender or contract material into public tools; verify every claim against the source.", concepts: ["m15.continuous-learning"] },
   ],

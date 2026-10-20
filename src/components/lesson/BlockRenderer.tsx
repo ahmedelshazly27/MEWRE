@@ -1,6 +1,7 @@
 import type { Block, CalloutTone, Lesson } from "@/content/schema";
 import { Markdown } from "@/components/Markdown";
 import { index } from "@/lib/content";
+import { t, type Lang } from "@/lib/i18n";
 import { Widget } from "@/components/widgets";
 import { Diagram } from "@/components/diagrams";
 import { WorkedExample } from "./WorkedExample";
@@ -20,7 +21,7 @@ const CALLOUT: Record<CalloutTone, { label: string; cls: string; icon: string }>
   ai: { label: "Use AI here", cls: "border-[var(--chart-5)]/40 bg-[var(--chart-5)]/10", icon: "🤖" },
 };
 
-export function BlockRenderer({ block, lesson, blockKey }: { block: Block; lesson: Lesson; blockKey: string }) {
+export function BlockRenderer({ block, lesson, blockKey, lang = "en" }: { block: Block; lesson: Lesson; blockKey: string; lang?: Lang }) {
   switch (block.kind) {
     case "md":
       return <Markdown>{block.md}</Markdown>;
@@ -29,17 +30,17 @@ export function BlockRenderer({ block, lesson, blockKey }: { block: Block; lesso
       return (
         <div className={`my-5 rounded-xl border px-4 py-3 ${c.cls}`}>
           <div className="text-sm font-semibold">
-            <span className="mr-1.5">{c.icon}</span>
-            {block.title ?? c.label}
+            <span className="me-1.5">{c.icon}</span>
+            {block.title ?? t(lang, c.label)}
           </div>
           <Markdown className="prose-lesson prose-compact">{block.md}</Markdown>
         </div>
       );
     }
     case "equation": {
-      const f = index().formulas.get(block.formula);
-      if (!f) return <div className="text-danger">Missing formula {block.formula}</div>;
-      return <FormulaCard formula={f} />;
+      const f = index(lang).formulas.get(block.formula);
+      if (!f) return <div className="text-danger">{t(lang, "Missing formula {id}", { id: block.formula })}</div>;
+      return <FormulaCard formula={f} lang={lang} />;
     }
     case "worked":
       return <WorkedExample title={block.title} mode={block.mode} given={block.given} steps={block.steps} result={block.result} />;
@@ -48,21 +49,25 @@ export function BlockRenderer({ block, lesson, blockKey }: { block: Block; lesso
     case "widget":
       return (
         <figure className="my-6">
-          <Widget id={block.widget} props={block.props} />
+          <div dir="ltr" lang="en">
+            <Widget id={block.widget} props={block.props} />
+          </div>
           {block.caption && <figcaption className="mt-2 text-sm text-muted">{block.caption}</figcaption>}
         </figure>
       );
     case "diagram":
       return (
         <figure className="my-6 rounded-xl border border-border bg-surface p-3">
-          <Diagram id={block.diagram} mode="labeled" />
+          <div dir="ltr" lang="en">
+            <Diagram id={block.diagram} mode="labeled" />
+          </div>
           {block.caption && <figcaption className="mt-2 text-sm text-muted">{block.caption}</figcaption>}
         </figure>
       );
     case "checklist":
       return <Checklist id={`${lesson.id}-${blockKey}`} title={block.title} items={block.items} tone="pm" />;
     case "ask":
-      return <Checklist id={`${lesson.id}-${blockKey}`} title={block.title ?? "Questions to ask the contractor"} items={block.items} tone="ask" />;
+      return <Checklist id={`${lesson.id}-${blockKey}`} title={block.title ?? t(lang, "Questions to ask the contractor")} items={block.items} tone="ask" />;
     case "scenario": {
       const s = lesson.scenarios?.find((x) => x.id === block.scenario);
       return s ? <ScenarioPlayer scenario={s} compact /> : null;
@@ -77,24 +82,24 @@ export function BlockRenderer({ block, lesson, blockKey }: { block: Block; lesso
             <span className="block font-medium">{block.title}</span>
             <span className="block text-sm text-muted">{block.description}</span>
           </span>
-          <span className="ml-auto text-sm text-accent">Download</span>
+          <span className="ms-auto text-sm text-accent">{t(lang, "Download")}</span>
         </a>
       );
     case "sources": {
-      const refs = block.refs.map((id) => index().references.get(id)).filter(Boolean);
+      const refs = block.refs.map((id) => index(lang).references.get(id)).filter(Boolean);
       return (
         <div className="my-4 rounded-lg border border-border px-3 py-2 text-sm">
-          <div className="text-xs font-semibold uppercase tracking-wide text-muted">Sources</div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-muted">{t(lang, "Sources")}</div>
           <ul className="mt-1 space-y-1">
             {refs.map((r) => (
               <li key={r!.id}>
-                <a href={r!.url} target="_blank" rel="noreferrer" className="text-accent underline-offset-2 hover:underline">
+                <a href={r!.url} target="_blank" rel="noreferrer" dir="auto" className="text-accent underline-offset-2 hover:underline">
                   {r!.title}
                 </a>{" "}
                 <span className="text-muted">
                   — {r!.publisher}, {r!.date}
                 </span>
-                {r!.unverified && <span className="ml-1 rounded bg-warn-soft px-1 text-xs text-warn">unverified</span>}
+                {r!.unverified && <span className="ms-1 rounded bg-warn-soft px-1 text-xs text-warn">{t(lang, "unverified")}</span>}
               </li>
             ))}
           </ul>
@@ -106,7 +111,7 @@ export function BlockRenderer({ block, lesson, blockKey }: { block: Block; lesso
         <div className="my-5 overflow-hidden rounded-xl border border-border">
           {block.title && <div className="border-b border-border bg-surface-2 px-4 py-2 text-sm font-semibold">{block.title}</div>}
           <div className="grid md:grid-cols-2">
-            <div className="border-border p-4 md:border-r">
+            <div className="border-border p-4 md:border-e" dir="ltr" lang="en">
               <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">English</div>
               <Markdown className="prose-lesson prose-compact">{block.en}</Markdown>
             </div>

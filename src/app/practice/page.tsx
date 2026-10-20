@@ -9,7 +9,8 @@ import { completedLessons, masteryMap, openErrors } from "@/lib/store/derive";
 import { pickMixed, shuffle, type PoolItem } from "@/lib/practice";
 import { QuizRunner } from "@/components/quiz/QuizRunner";
 import { Card, EmptyState, PageHeader, Pill } from "@/components/ui";
-
+import { useT } from "@/lib/useLang";
+import { back } from "@/lib/i18n";
 
 const MODES = {
   mixed: { title: "Mixed practice", desc: "Interleaved questions across modules, weighted toward weak concepts and past mistakes. Instant feedback.", n: 15 },
@@ -29,9 +30,10 @@ function Practice() {
   const params = useSearchParams();
   const sp = { mode: params.get("mode") ?? undefined, module: params.get("module") ?? undefined, scope: params.get("scope") ?? undefined };
   const mode = sp.mode as keyof typeof MODES | undefined;
+  const { t, href } = useT();
   const store = useLearner();
   const content = useContent();
-  if (!store || !content) return <div className="text-muted">Loading…</div>;
+  if (!store || !content) return <div className="text-muted">{t("Loading…")}</div>;
   const d = store.derived();
   const mods = content.modules.filter((m) => !m.draft && m.lessonIds.length);
 
@@ -39,44 +41,44 @@ function Practice() {
     const runs = d.runs.filter((r) => ["mixed", "timed", "errors", "exam", "diagnostic"].includes(r.kind)).slice(0, 12);
     return (
       <div>
-        <PageHeader title="Practice & exams" subtitle="Retrieval practice beats re-reading. Choose a session." />
+        <PageHeader title={t("Practice & exams")} subtitle={t("Retrieval practice beats re-reading. Choose a session.")} />
         <div className="grid gap-3 md:grid-cols-3">
           {(Object.keys(MODES) as (keyof typeof MODES)[]).map((k) => (
-            <Link key={k} href={`/practice?mode=${k}`} className="rounded-xl border border-border bg-surface p-4 hover:border-accent/60">
-              <div className="font-semibold">{MODES[k].title}</div>
-              <p className="mt-1 text-sm text-muted">{MODES[k].desc}</p>
+            <Link key={k} href={href(`/practice?mode=${k}`)} className="rounded-xl border border-border bg-surface p-4 hover:border-accent/60">
+              <div className="font-semibold">{t(MODES[k].title)}</div>
+              <p className="mt-1 text-sm text-muted">{t(MODES[k].desc)}</p>
             </Link>
           ))}
         </div>
         <Card className="mt-6">
-          <div className="mb-1 font-semibold">Scope</div>
-          <p className="mb-3 text-sm text-muted">By default mixed practice draws from lessons you have completed (or all lessons if none yet). Pick a module to focus:</p>
+          <div className="mb-1 font-semibold">{t("Scope")}</div>
+          <p className="mb-3 text-sm text-muted">{t("By default mixed practice draws from lessons you have completed (or all lessons if none yet). Pick a module to focus:")}</p>
           <div className="flex flex-wrap gap-2">
             {mods.map((m) => (
-              <Link key={m.id} href={`/practice?mode=mixed&module=${m.id}`} className="rounded-lg border border-border px-2.5 py-1 text-sm hover:bg-surface-2">
+              <Link key={m.id} href={href(`/practice?mode=mixed&module=${m.id}`)} className="rounded-lg border border-border px-2.5 py-1 text-sm hover:bg-surface-2">
                 M{m.number} {m.title}
               </Link>
             ))}
-            <Link href="/practice?mode=mixed&scope=all" className="rounded-lg border border-border px-2.5 py-1 text-sm hover:bg-surface-2">
-              Everything
+            <Link href={href("/practice?mode=mixed&scope=all")} className="rounded-lg border border-border px-2.5 py-1 text-sm hover:bg-surface-2">
+              {t("Everything")}
             </Link>
           </div>
           <p className="mt-4 text-sm text-muted">
-            Module exams live on each module page. A start-of-course baseline is on the{" "}
-            <Link href="/diagnostic" className="text-accent">
-              diagnostic
+            {t("Module exams live on each module page. A start-of-course baseline is on the")}{" "}
+            <Link href={href("/diagnostic")} className="text-accent">
+              {t("diagnostic")}
             </Link>{" "}
-            page.
+            {t("page.")}
           </p>
         </Card>
         {runs.length > 0 && (
           <Card className="mt-6">
-            <div className="mb-2 font-semibold">Recent sessions</div>
+            <div className="mb-2 font-semibold">{t("Recent sessions")}</div>
             <ul className="divide-y divide-border text-sm">
               {runs.map((r) => (
                 <li key={r.id} className="flex items-center justify-between py-1.5">
                   <span>
-                    <Pill>{r.kind}</Pill> <span className="ml-1 text-muted">{r.ref ?? ""}</span>
+                    <Pill>{t(r.kind)}</Pill> <span className="ms-1 text-muted">{r.ref ?? ""}</span>
                   </span>
                   <span className="flex items-center gap-3">
                     <span className="tabular-nums">{Math.round(r.score * 100)}%</span>
@@ -96,6 +98,7 @@ function Practice() {
 
 /** One practice session; the question set is picked once on mount so answering doesn't reshuffle it. */
 function Session({ mode, sp }: { mode: keyof typeof MODES; sp: { module?: string; scope?: string } }) {
+  const { lang, t, href } = useT();
   const store = useLearner()!;
   const content = useContent()!;
   const d = store.derived();
@@ -118,19 +121,19 @@ function Session({ mode, sp }: { mode: keyof typeof MODES; sp: { module?: string
     return mode === "errors" ? shuffle(asItems, seed).slice(0, cfg.n) : pickMixed({ pool: asItems, mastery, errorIds, n: cfg.n, seed });
   });
   const questions = items.map((i) => i.question);
-  const scopeLabel = sp.module ? mods.find((m) => m.id === sp.module)?.title : sp.scope === "all" || done.size === 0 ? "all lessons" : "completed lessons";
+  const scopeLabel = sp.module ? mods.find((m) => m.id === sp.module)?.title : sp.scope === "all" || done.size === 0 ? t("all lessons") : t("completed lessons");
 
   return (
     <div className="mx-auto max-w-3xl">
       <nav className="mb-4 text-sm text-muted">
-        <Link href="/practice" className="hover:text-text">
-          ← Practice
+        <Link href={href("/practice")} className="hover:text-text">
+          {back(lang)} {t("Practice")}
         </Link>
       </nav>
-      <PageHeader title={cfg.title} subtitle={`${cfg.desc} Scope: ${scopeLabel}.`} />
+      <PageHeader title={t(cfg.title)} subtitle={t("{desc} Scope: {scope}.", { desc: t(cfg.desc), scope: scopeLabel ?? "" })} />
       {questions.length === 0 ? (
-        <EmptyState title={mode === "errors" ? "Your error log is empty" : "No questions available yet"}>
-          {mode === "errors" ? "Nice. Mistakes from quizzes and exams will appear here." : "Content for this scope is still being written."}
+        <EmptyState title={mode === "errors" ? t("Your error log is empty") : t("No questions available yet")}>
+          {mode === "errors" ? t("Nice. Mistakes from quizzes and exams will appear here.") : t("Content for this scope is still being written.")}
         </EmptyState>
       ) : (
         <QuizRunner
@@ -139,7 +142,7 @@ function Session({ mode, sp }: { mode: keyof typeof MODES; sp: { module?: string
           source={mode === "errors" ? "errors" : mode}
           kind={mode}
           refId={sp.module ?? sp.scope ?? "completed"}
-          title={cfg.title}
+          title={t(cfg.title)}
           examMode={mode === "timed"}
           timeLimitSec={mode === "timed" ? questions.length * 120 : undefined}
         />

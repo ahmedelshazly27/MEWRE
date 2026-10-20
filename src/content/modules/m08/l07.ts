@@ -37,7 +37,14 @@ ISO 9001:2015 structures a QMS around the **process approach**, **PDCA** and **r
 
 ### The ITP
 
-Each line of an ITP states: activity · reference spec/standard · acceptance criteria · frequency · verifying record · involvement codes for contractor, OE/Engineer and Employer (and third parties).
+Each line of an ITP states:
+
+- activity
+- reference spec/standard
+- acceptance criteria
+- frequency
+- verifying record
+- involvement codes for contractor, OE/Engineer and Employer (and third parties)
 
 | Code | Meaning | Effect |
 |---|---|---|

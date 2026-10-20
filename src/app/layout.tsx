@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { MobileNav, Sidebar } from "@/components/Nav";
+import { LangSync, MobileNav, Sidebar } from "@/components/Nav";
 import { StoreProvider } from "@/lib/store/react";
 import { ServiceWorker } from "@/components/ServiceWorker";
 
@@ -19,7 +19,7 @@ export const viewport: Viewport = {
   ],
 };
 
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`;
+const themeScript = `(function(){try{var p=location.pathname;if(p==='/ar'||p.indexOf('/ar/')===0){document.documentElement.lang='ar';document.documentElement.dir='rtl';}var t=localStorage.getItem('theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -37,6 +37,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             </div>
           </div>
           <ServiceWorker />
+          <LangSync />
         </StoreProvider>
       </body>
     </html>

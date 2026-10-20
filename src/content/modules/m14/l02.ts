@@ -112,9 +112,26 @@ Each intermediate table is checkable; the summary can be traced back to evidence
           kind: "md",
           md: md`### Standard review patterns
 
-**1. Clause extraction table.** Columns: Clause no. · Heading · Obligation (who must do what) · Party · Trigger · Time limit · Consequence · Verbatim quote. Use for notices and time bars, payment, securities, LDs and caps, guarantees, insurance, termination, change in law, force majeure, dispute resolution.
+**1. Clause extraction table.** Use for notices and time bars, payment, securities, LDs and caps, guarantees, insurance, termination, change in law, force majeure, dispute resolution. Columns:
 
-**2. Deviation list against the ERs.** Columns: ER ref · Requirement (quote) · Bid ref · Bid statement (quote) · Status (Compliant / Deviation / Not addressed / Clarification needed) · Severity (High/Medium/Low) · Suggested clarification question. The status vocabulary must be fixed in the prompt, or every run will invent new labels.
+- Clause no.
+- Heading
+- Obligation (who must do what)
+- Party
+- Trigger
+- Time limit
+- Consequence
+- Verbatim quote
+
+**2. Deviation list against the ERs.** The status vocabulary must be fixed in the prompt, or every run will invent new labels. Columns:
+
+- ER ref
+- Requirement (quote)
+- Bid ref
+- Bid statement (quote)
+- Status (Compliant / Deviation / Not addressed / Clarification needed)
+- Severity (High/Medium/Low)
+- Suggested clarification question
 
 **3. Bid comparison matrix.** Same criteria, same template, run separately per bid, merged into one matrix. Never ask the model to "pick the best bid" — evaluation is a committee function with defined criteria and weights; the AI produces evidence, not the decision.
 

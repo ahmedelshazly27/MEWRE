@@ -400,11 +400,11 @@ Most of your negotiations are internal: persuading Transmission to give an outag
   flashcards: [
     { id: "m13-l05-f1", front: "BATNA", back: "Best Alternative To a Negotiated Agreement — what you do if talks fail; it sets your reservation price." },
     { id: "m13-l05-f2", front: "ZOPA for a claim (same EV estimate)", back: md`$[EV - C_C,\ EV + C_E]$ — width equals combined dispute costs.` },
-    { id: "m13-l05-f3", front: "Four principles of principled negotiation", back: "People vs problem · interests not positions · options for mutual gain · objective criteria." },
+    { id: "m13-l05-f3", front: "Four principles of principled negotiation", back: "- Separate people from the problem\n- Interests, not positions\n- Options for mutual gain\n- Objective criteria" },
     { id: "m13-l05-f4", front: "Why not split the difference on a claim at MEWRE?", back: "Public money: settlement must be justified by contractual entitlement and substantiated quantum, defensible to auditors." },
     { id: "m13-l05-f5", front: "Trust equation", back: md`$T = (C + R + I)/S$ — credibility, reliability, intimacy over self-orientation.` },
     { id: "m13-l05-f6", front: "Face (ماء الوجه) in negotiation", back: "Avoid cornering counterparts publicly; give a dignified path to concede (objective criteria, senior gesture)." },
-    { id: "m13-l05-f7", front: "Five Thomas–Kilmann modes", back: "Competing · collaborating · compromising · avoiding · accommodating." },
+    { id: "m13-l05-f7", front: "Five Thomas–Kilmann modes", back: "- Competing\n- Collaborating\n- Compromising\n- Avoiding\n- Accommodating" },
     { id: "m13-l05-f8", front: "Trading currencies in claims", back: "Time (EOT), money, payment timing, milestones, guarantees, waivers — trade low-cost-to-you for high-value-to-them." },
   ],
   scenarios: [

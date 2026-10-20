@@ -29,7 +29,7 @@ const mod: Module = {
   references,
   cheatSheet: md`# M7 Project Development Lifecycle — cheat sheet
 
-## Gates
+## 1. Stage gates
 | Gate | Question | Estimate class (AACE, approx.) |
 |---|---|---|
 | G0 Need | Mandated need? | — |
@@ -41,51 +41,127 @@ const mod: Module = {
 | G6 COD / TOC | Meets contract? | — |
 | G7 Close-out | Finished and learned? | — |
 
-Decisions: **go · go with conditions · recycle · stop**. Write criteria before the gate. Development spend ≈ 1–3 % of capex.
+- **Gate decisions:** go, go with conditions, recycle, or stop.
+- **Criteria:** write them before the gate, not at it.
+- **Development spend:** ≈ 1–3 % of capex.
 
-## Options
-$\text{CRF} = r(1+r)^n/((1+r)^n-1)$ — 6 %/30 yr = 0.0727; 5 %/30 = 0.0651; 7 %/20 = 0.0944.
-$\text{LCOE} = (\text{CAPEX}\cdot\text{CRF} + \text{OPEX})/E$. MCA $S_j = \sum w_i s_{ij}$ — weights fixed first; fatal flaws excluded.
-Kuwait economic benefit = avoided fuel/imports + reliability, **not** retail tariff (2 fils/kWh citizens).
+## 2. Options analysis
+| Quantity | Formula | Where |
+|---|---|---|
+| Capital recovery factor | $\text{CRF} = r(1+r)^n/((1+r)^n-1)$ | Annualise capex |
+| Simple LCOE | $\text{LCOE} = (\text{CAPEX}\cdot\text{CRF} + \text{OPEX})/E$ | Screening at a gate |
+| MCA score | $S_j = \sum w_i s_{ij}$ | Non-monetary ranking |
 
-## Site
-- Piles: $Q_{ult} = pL\bar f_s$; $L_{min} = \text{FS}\,Q_d/(p\bar f_s)$; dense sand $\bar f_s$ 20–50 kPa; ~220 piles/MWp (1P).
-- Corrosion: $t_{sac} = r_{Fe}(T - \delta_{Zn}/r_{Zn})$; worst at ground line; sabkha × several.
-- Gatch → refusal → pre-drill (rate ½). Gypsum → collapse + sulfate attack.
-- Flood: $Q = CiA/3.6$ (m³/s; mm/h; km²); C 0.4–0.8; BESS/substations 1-in-50 to 1-in-100 yr.
-- Land: allocation + no-objection letters (oil and gas, defence, aviation, utilities), EIA with EPA (confirm), UXO.
+| CRF case | Value |
+|---|---|
+| 6 %, 30 yr | 0.0727 |
+| 5 %, 30 yr | 0.0651 |
+| 7 %, 20 yr | 0.0944 |
 
-## Design
-Concept → FEED (design basis frozen) → detailed. Codes: **A** approved · **B** with comments, proceed · **C** rejected. FIDIC 2017 Yellow default review 21 days (deemed no-objection risk).
-- DC drop $\Delta V = 2LIR'$, R at 70–90 °C: $R_T = R_{20}[1+\alpha(T-20)]$, Cu α = 0.00393. Limit ~1–1.5 %.
-- Derating $I_z = I_0 k_T k_\rho k_g$; XLPE $k_T = \sqrt{(90-T_g)/70}$; Kuwait product often 0.55–0.65.
-- Check inverter Q and transformer rating **at 50 °C+** (record 53.9 °C, Mitribah 2016).
+- **MCA weights:** fix them before scoring.
+- **Fatal flaws:** exclude those options before scoring.
+- **Kuwait economic benefit:** avoided fuel/imports plus reliability, **not** the retail tariff (2 fils/kWh for citizens).
 
-## Procurement & construction
+## 3. Site assessment
+| Quantity | Formula | Where |
+|---|---|---|
+| Pile uplift capacity | $Q_{ult} = pL\bar f_s$ | Tracker piles |
+| Minimum embedment | $L_{min} = \text{FS}\,Q_d/(p\bar f_s)$ | Pile design |
+| Sacrificial steel | $t_{sac} = r_{Fe}(T - \delta_{Zn}/r_{Zn})$ | Corrosion allowance |
+| Peak runoff | $Q = CiA/3.6$ | Flood design (m³/s; mm/h; km²) |
+
+- **Skin friction, dense sand:** $\bar f_s$ 20–50 kPa.
+- **Pile count:** ~220 piles/MWp (1P trackers).
+- **Corrosion hot spot:** worst at the ground line; sabkha multiplies rates several times.
+- **Gatch:** causes refusal, so pre-drill (piling rate roughly halves).
+- **Gypsum:** collapse risk plus sulfate attack.
+- **Runoff coefficient:** C 0.4–0.8 on desert crust.
+- **Flood return period:** 1-in-50 to 1-in-100 yr for BESS and substations.
+- **Land:** allocation plus no-objection letters (oil and gas, defence, aviation, utilities).
+- **EIA:** with the EPA (verify current procedure).
+- **UXO:** unexploded-ordnance check of the site.
+
+## 4. Design
+- **Stages:** concept, then FEED (design basis frozen), then detailed design.
+- **Review codes:** **A** approved; **B** approved with comments, proceed; **C** rejected.
+- **FIDIC 2017 Yellow review period:** 21 days by default (risk of deemed no-objection).
+
+| Quantity | Formula | Note |
+|---|---|---|
+| DC voltage drop | $\Delta V = 2LIR'$ | Limit ~1–1.5 % |
+| Resistance vs temperature | $R_T = R_{20}[1+\alpha(T-20)]$ | Use R at 70–90 °C; Cu $\alpha = 0.00393$ |
+| Derated current | $I_z = I_0 k_T k_\rho k_g$ | Kuwait product often 0.55–0.65 |
+| XLPE temperature factor | $k_T = \sqrt{(90-T_g)/70}$ | $T_g$ = ground temperature |
+
+- **Hot-weather ratings:** check inverter Q and transformer rating **at 50 °C+** (record 53.9 °C, Mitribah 2016).
+
+## 5. Procurement and construction
 | Item | Lead time |
 |---|---|
 | HV transformer | 18–24+ months |
-| GIS | 12–18 |
-| BESS | 6–12 |
-| Inverters/skids | 6–9 |
-| Trackers | 4–6 |
-| Modules | 3–6 + 6–8 wk sea |
+| GIS | 12–18 months |
+| BESS | 6–12 months |
+| Inverters/skids | 6–9 months |
+| Trackers | 4–6 months |
+| Modules | 3–6 months + 6–8 weeks sea freight |
 
-$N = \lceil Q/(rT)\rceil$. Planning rates: 120 piles/rig-day (mixed), 8 trackers/crew-day, 500 modules/crew-day, 8–12 MWp/day site peak, 3,000–5,000 workers/GW. ~620 modules per 40 ft container.
+**Crew sizing:**
+$$N = \lceil Q/(rT)\rceil$$
 
-## Testing → COD
-FAT → SAT → mech. completion → cold pre-comm (IR, Voc/Isc, VLF) → energisation (switching programme, PTW) → hot comm → grid tests (P/Q/V/f, ramp) → PR + capacity + BESS tests → reliability run → COD.
-- $PR = (E/P_0)/(H/G_{STC})$; corrected: divide by $\sum P_0 (G/1000)[1+\gamma(T_c - T_{ref})]\Delta t$.
-- Tref 25 °C → higher PR (~0.85–0.88); Tref = annual avg cell T (~45 °C) → ~0.80–0.83. **Read guarantee with its Tref.**
-- Test 7–15 days; exclude curtailment, extend; clean sensors daily; bifacial treatment; meter point.
-- Capacity: $P = E(a_1 + a_2E + a_3T_a + a_4v)$ at RC; pass ≥ ~97 %.
-- Punch: **A** before COD (safety/performance/compliance); **B** during DNP.
+| Planning rate | Value |
+|---|---|
+| Piling (mixed ground) | 120 piles/rig-day |
+| Trackers | 8 trackers/crew-day |
+| Modules | 500 modules/crew-day |
+| Site peak installation | 8–12 MWp/day |
+| Workforce | 3,000–5,000 workers/GW |
+| Container load | ~620 modules per 40 ft container |
 
-## Handover & close-out (FIDIC 2017)
-10.1 TOC · 10.2 sections · 11.1–11.4 defects · 11.3 extension ≤ 2 yr · 11.9 Performance Certificate (28 days) · 14.9 retention · 14.11–14.12 final statement & discharge.
-Retention: half at TOC (less outstanding work), half at PC (less valid deductions).
-Handover pack: as-builts, O&M manuals → CMMS, test baselines, training (assessed), spares, registered warranties, SCADA credentials, asset register.
-DNP: baseline inspection in first 3 months; re-inspect and **notify before expiry**.`,
+## 6. Testing to COD
+**Sequence:**
+- FAT, then SAT
+- Mechanical completion
+- Cold pre-commissioning (IR, Voc/Isc, VLF)
+- Energisation (switching programme, PTW)
+- Hot commissioning
+- Grid tests (P/Q/V/f, ramp)
+- PR, capacity and BESS tests
+- Reliability run, then COD
+
+**Performance ratio:**
+$$PR = \frac{E/P_0}{H/G_{STC}}$$
+
+**Temperature-corrected PR** (divide measured energy by):
+$$\sum P_0 (G/1000)[1+\gamma(T_c - T_{ref})]\Delta t$$
+
+**Capacity test regression** (evaluated at reporting conditions, RC):
+$$P = E(a_1 + a_2E + a_3T_a + a_4v)$$
+
+- **Tref = 25 °C:** gives a higher PR (~0.85–0.88).
+- **Tref = annual average cell temperature (~45 °C):** gives ~0.80–0.83. **Read the guarantee together with its Tref.**
+- **Test duration:** 7–15 days.
+- **Curtailment:** exclude those periods and extend the test.
+- **Sensors:** clean daily.
+- **Also define:** bifacial treatment and the meter point.
+- **Capacity pass mark:** ≥ ~97 %.
+- **Punch list A:** closes before COD (safety, performance, compliance).
+- **Punch list B:** closes during the DNP.
+
+## 7. Handover and close-out (FIDIC 2017)
+| Clause | Subject |
+|---|---|
+| 10.1 | Taking-Over Certificate (TOC) |
+| 10.2 | Taking over of sections |
+| 11.1–11.4 | Defects |
+| 11.3 | DNP extension, up to 2 yr |
+| 11.9 | Performance Certificate (within 28 days) |
+| 14.9 | Release of retention |
+| 14.11–14.12 | Final statement and discharge |
+
+- **Retention, first half:** released at TOC (less outstanding work).
+- **Retention, second half:** released at the Performance Certificate (less valid deductions).
+- **Handover pack:** as-builts, O&M manuals loaded into the CMMS, test baselines, assessed training, spares, registered warranties, SCADA credentials, asset register.
+- **DNP inspections:** baseline inspection in the first 3 months; re-inspect and **notify defects before expiry**.`,
 };
 
 export default mod;

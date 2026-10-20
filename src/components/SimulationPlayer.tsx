@@ -7,8 +7,11 @@ import { applyEffects, kpiScore, simScore } from "@/lib/sim";
 import { uid } from "@/lib/api";
 import { recordEvidence, saveRun } from "@/lib/store/actions";
 import { btn, Pill, ProgressBar } from "@/components/ui";
+import { useT } from "@/lib/useLang";
+import { fwd } from "@/lib/i18n";
 
 export function SimulationPlayer({ sim }: { sim: Simulation }) {
+  const { lang, t } = useT();
   const decisions = useMemo(() => sim.stages.flatMap((st) => st.decisions.map((d) => ({ stage: st, d }))), [sim]);
   const [started, setStarted] = useState(false);
   const [i, setI] = useState(0);
@@ -70,7 +73,7 @@ export function SimulationPlayer({ sim }: { sim: Simulation }) {
             </div>
             <ProgressBar value={s} tone={s >= 0.9 ? "ok" : s >= 0.7 ? "sun" : "danger"} className="mt-1" />
             <div className="mt-0.5 text-[10px] text-muted">
-              target {k.better === "lower" ? "≤" : "≥"} {k.target}
+              {t("target")} {k.better === "lower" ? "≤" : "≥"} {k.target}
             </div>
           </div>
         );
@@ -83,10 +86,10 @@ export function SimulationPlayer({ sim }: { sim: Simulation }) {
       <div className="rounded-xl border border-border bg-surface p-5">
         <Markdown>{sim.intro}</Markdown>
         <div className="mt-3 text-sm text-muted">
-          {sim.stages.length} stages · {decisions.length} decisions · scored 50% on final KPIs and 50% on decision quality.
+          {t("{s} stages · {d} decisions · scored 50% on final KPIs and 50% on decision quality.", { s: sim.stages.length, d: decisions.length })}
         </div>
         <button className={`${btn.primary} mt-4`} onClick={() => setStarted(true)}>
-          Start the simulation
+          {t("Start the simulation")}
         </button>
       </div>
     );
@@ -98,9 +101,7 @@ export function SimulationPlayer({ sim }: { sim: Simulation }) {
           <div className="rounded-xl border border-border bg-surface p-5">
             <div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-muted">
               <Pill tone="accent">{decisions[i].stage.title}</Pill>
-              <span>
-                Decision {i + 1}/{decisions.length}
-              </span>
+              <span>{t("Decision {n}/{total}", { n: i + 1, total: decisions.length })}</span>
             </div>
             {(i === 0 || decisions[i - 1].stage.id !== decisions[i].stage.id) && (
               <div className="mb-3 rounded-lg bg-surface-2 p-3">
@@ -113,7 +114,7 @@ export function SimulationPlayer({ sim }: { sim: Simulation }) {
                 const isPicked = choice === k;
                 const tone = revealed ? (isPicked ? (o.score >= 8 ? "border-ok bg-ok-soft" : o.score >= 5 ? "border-warn bg-warn-soft" : "border-danger bg-danger-soft") : "border-border opacity-70") : isPicked ? "border-accent bg-accent-soft" : "border-border hover:bg-surface-2";
                 return (
-                  <button key={k} disabled={revealed} onClick={() => setChoice(k)} className={`block w-full rounded-lg border px-3 py-2.5 text-left text-sm ${tone}`}>
+                  <button key={k} disabled={revealed} onClick={() => setChoice(k)} className={`block w-full rounded-lg border px-3 py-2.5 text-start text-sm ${tone}`}>
                     {o.text}
                   </button>
                 );
@@ -121,7 +122,7 @@ export function SimulationPlayer({ sim }: { sim: Simulation }) {
             </div>
             {revealed && choice !== null && (
               <div className="mt-3 rounded-lg bg-surface-2 p-3 text-sm">
-                <div className="font-semibold">Decision quality {decisions[i].d.options[choice].score}/10</div>
+                <div className="font-semibold">{t("Decision quality {n}/10", { n: decisions[i].d.options[choice].score })}</div>
                 <Markdown className="prose-compact">{decisions[i].d.options[choice].feedback}</Markdown>
                 <div className="mt-1 flex flex-wrap gap-2 text-xs">
                   {Object.entries(decisions[i].d.options[choice].effects).map(([k, v]) => (
@@ -136,26 +137,26 @@ export function SimulationPlayer({ sim }: { sim: Simulation }) {
             <div className="mt-4">
               {!revealed ? (
                 <button className={btn.primary} disabled={choice === null} onClick={confirm}>
-                  Commit decision
+                  {t("Commit decision")}
                 </button>
               ) : (
                 <button className={btn.primary} onClick={next}>
-                  {i + 1 < decisions.length ? "Next →" : "See results"}
+                  {i + 1 < decisions.length ? `${t("Next")} ${fwd(lang)}` : t("See results")}
                 </button>
               )}
             </div>
           </div>
         ) : (
           <div className="rounded-xl border border-border bg-surface p-5">
-            <div className="text-sm text-muted">Capstone result</div>
+            <div className="text-sm text-muted">{t("Capstone result")}</div>
             <div className={`text-5xl font-semibold tabular-nums ${result.total >= 0.8 ? "text-ok" : result.total >= 0.6 ? "text-warn" : "text-danger"}`}>{Math.round(result.total * 100)}%</div>
             <div className="mt-1 text-sm text-muted">
-              KPIs {Math.round(result.kpi * 100)}% · decision quality {Math.round(result.decisions * 100)}%
+              {t("KPIs {k}% · decision quality {d}%", { k: Math.round(result.kpi * 100), d: Math.round(result.decisions * 100) })}
             </div>
             <div className="mt-4">
               <Markdown>{sim.debrief}</Markdown>
             </div>
-            <h3 className="mt-5 font-semibold">Your decisions</h3>
+            <h3 className="mt-5 font-semibold">{t("Your decisions")}</h3>
             <ul className="mt-2 space-y-2 text-sm">
               {log.map((l) => {
                 const d = decisions.find((x) => x.d.id === l.id)!.d;
@@ -165,19 +166,19 @@ export function SimulationPlayer({ sim }: { sim: Simulation }) {
                     <div className="font-medium">
                       {l.score}/10 — {d.options[l.option].text}
                     </div>
-                    {d.options[l.option] !== best && <div className="text-muted">Best: {best.text}</div>}
+                    {d.options[l.option] !== best && <div className="text-muted">{t("Best: {x}", { x: best.text })}</div>}
                   </li>
                 );
               })}
             </ul>
             <button className={`${btn.ghost} mt-4`} onClick={restart}>
-              Run it again
+              {t("Run it again")}
             </button>
           </div>
         )}
       </div>
       <aside className="lg:sticky lg:top-6 lg:self-start">
-        <div className="mb-2 text-sm font-semibold">Project KPIs</div>
+        <div className="mb-2 text-sm font-semibold">{t("Project KPIs")}</div>
         {Kpis}
       </aside>
     </div>

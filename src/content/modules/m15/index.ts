@@ -29,18 +29,28 @@ const mod: Module = {
   cheatSheet: md`# MEWRE PM day-one cheat sheet — NAJM-1000 capstone
 
 ## The project (training scenario)
-| Item | Value |
-|---|---|
-| PV | 1,000 MWac / 1,300 MWp bifacial single-axis tracker |
-| BESS | 250 MW / 1,000 MWh usable at POI, LFP |
-| P50 energy / CF | ≈ 2,900 GWh/yr / ≈ 33 % (AC) |
-| Capex | ≈ USD 720 m (KWD 222 m @ 3.25) — PV 468, BESS 200, 400 kV substation 35, owner's 17 |
-| Tariff (illustrative) | ≈ 5.0 fils/kWh energy + ≈ KWD 2,300/MW-month BESS → ≈ KWD 21 m/yr |
-| Deemed energy rule of thumb | ≈ KWD 1.2 m per month of grid delay (even spread); more in summer |
-| Schedule | RFP → COD ≈ 1,200 days (6 bid + 5 eval/approvals + 4 to close + 24 build) |
-| PPA | 30 years from COD, MEWRE sole offtaker |
+
+| Item | Value | Note |
+|---|---|---|
+| PV | 1,000 MWac / 1,300 MWp | Bifacial single-axis tracker |
+| BESS | 250 MW / 1,000 MWh | Usable at POI, LFP |
+| P50 energy | ≈ 2,900 GWh/yr | At POI |
+| Capacity factor | ≈ 33 % | AC basis |
+| Capex | ≈ USD 720 m | KWD 222 m @ 3.25 USD/KWD |
+| Tariff (illustrative) | ≈ 5.0 fils/kWh energy + ≈ KWD 2,300/MW-month BESS | ≈ KWD 21 m/yr in total |
+| Deemed energy rule of thumb | ≈ KWD 1.2 m per month of grid delay | Even spread; more in summer |
+| Schedule | RFP → COD ≈ 1,200 days | 6 bid + 5 eval/approvals + 4 to close + 24 build (months) |
+| PPA | 30 years from COD | MEWRE sole offtaker |
+
+### Capex split (USD m)
+
+- **PV EPC:** 468
+- **BESS:** 200
+- **400 kV substation:** 35
+- **Owner's costs:** 17
 
 ## Who does what
+
 | Party | Role |
 |---|---|
 | MEWRE (you) | Offtaker: PPA, grid line and bay, land support, protection, metering, dispatch, payment, audit file |
@@ -52,19 +62,36 @@ const mod: Module = {
 | LTA | Lenders' advisor — free second opinion on quality and schedule |
 
 ## Key formulas
-- $\text{CF} = E / (P_{\text{AC}} \cdot 8760)$
-- $C_{\text{deemed}} = \tau_E \sum (\hat P_t - P_{\text{del},t})\Delta t$ over MEWRE-caused events beyond the allowance
-- $\text{CPI} = EV/AC$, $\text{SPI} = EV/PV$, $D_{\text{forecast}} \approx D_{\text{plan}}/\text{SPI}(t)$
-- $\text{PR}_{\text{corr}} = E_{\text{AC}} / \sum P_{\text{STC}} (G/G_{\text{STC}})[1+\gamma(T_c - T_{\text{ref}})]\Delta t$
-- Capstone: $k = \min(1, x/T)$ or $\min(1, T/x)$; $S = 0.5\bar k + 0.5\bar q/10$
+
+| Quantity | Formula | Where |
+|---|---|---|
+| Capacity factor | $\text{CF} = E / (P_{\text{AC}} \cdot 8760)$ | Yield sanity check |
+| Deemed energy | $C_{\text{deemed}} = \tau_E \sum (\hat P_t - P_{\text{del},t})\Delta t$ | MEWRE-caused events beyond the allowance |
+| Cost index | $\text{CPI} = EV/AC$ | EPC health signal |
+| Schedule index | $\text{SPI} = EV/PV$ | COD forecast |
+| Duration forecast | $D_{\text{forecast}} \approx D_{\text{plan}}/\text{SPI}(t)$ | Recovery decisions |
+| Corrected PR | $\text{PR}_{\text{corr}} = E_{\text{AC}} / \sum P_{\text{STC}} (G/G_{\text{STC}})[1+\gamma(T_c - T_{\text{ref}})]\Delta t$ | COD test |
+| Capstone KPI score | $k = \min(1, x/T)$ or $\min(1, T/x)$ | Higher / lower is better |
+| Capstone total | $S = 0.5\bar k + 0.5\bar q/10$ | Half outcome, half judgement |
 
 ## Five questions before every decision
-**Contract** · **Risk owner** · **Lifecycle** · **File** (Audit Bureau in 3 years) · **People** (safety; who hears it first)
+
+- **Contract:** what does the PPA, RFP or law say?
+- **Risk owner:** whose risk is it?
+- **Lifecycle:** what does each KPI gain or lose over the project life?
+- **File:** what would the Audit Bureau see in 3 years?
+- **People:** what does safety demand; who hears it first?
 
 ## Five traps
-Shortcut bias · Over-correction · Acting outside the contract · Concealment/passivity · Accepting assertions
+
+- **Shortcut bias:** approving now to save time, paying later
+- **Over-correction:** blanket rejections, bans, site-wide shutdowns
+- **Acting outside the contract:** verbal instructions, private negotiations, signing before approval
+- **Concealment/passivity:** waiting for bad news to become formal
+- **Accepting assertions:** "certified", "will recover", "close enough" without data
 
 ## Stage watch-list
+
 | Stage | Must get right |
 |---|---|
 | Pre-tender | Ground-validated reference data; achievable local content; grid split + committed MEWRE date; start MEWRE line procurement |
@@ -77,17 +104,22 @@ Shortcut bias · Over-correction · Acting outside the contract · Concealment/p
 | COD | Category A closed; Category B dated + secured (≈ 125–150 %); handover package; accurate public wording |
 
 ## Day-one checklist
-- [ ] Read PPA: COD conditions, tests, LDs, deemed energy, notices, change procedure
-- [ ] Build MEWRE-side interface schedule (land, line, bay, protection, metering, permits, payments)
-- [ ] Confirm yield basis (dataset, losses, P50/P90 method, reviewer)
-- [ ] Get approval path and durations from KAPP; add float per control body
-- [ ] Agree OE scope; get last 3 LTA reports
-- [ ] Start decision log + correspondence register; minutes within 48 h
-- [ ] Meet transmission, system control, KAPP, OE, project company one-to-one
-- [ ] One-page project-on-a-page with honest RAG for your director
+
+- **PPA:** read COD conditions, tests, LDs, deemed energy, notices, change procedure
+- **Interfaces:** build the MEWRE-side interface schedule (land, line, bay, protection, metering, permits, payments)
+- **Yield basis:** confirm dataset, losses, P50/P90 method, reviewer
+- **Approvals:** get the path and durations from KAPP; add float per control body
+- **OE and LTA:** agree OE scope; get the last 3 LTA reports
+- **File:** start decision log + correspondence register; minutes within 48 h
+- **People:** meet transmission, system control, KAPP, OE and project company one-to-one
+- **Director:** one-page project-on-a-page with honest RAG
 
 ## One-page brief order
-Bottom line + decision required → status with numbers → risks + mitigation → recommendation/wording`,
+
+1. Bottom line + decision required
+2. Status with numbers
+3. Risks + mitigation
+4. Recommendation / wording`,
 };
 
 export default mod;

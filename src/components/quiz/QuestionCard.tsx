@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/useLang";
 import { useMemo, useState } from "react";
 import type { Question } from "@/content/schema";
 import { InlineMarkdown, Markdown } from "@/components/Markdown";
@@ -64,6 +65,7 @@ export function QuestionCard({
   index?: number;
   total?: number;
 }) {
+  const { t, lang } = useT();
   const [mcq, setMcq] = useState<number | null>(null);
   const [multi, setMulti] = useState<number[]>([]);
   const [num, setNum] = useState("");
@@ -131,7 +133,7 @@ export function QuestionCard({
       case "short": {
         setBusy(true);
         try {
-          const r = await authFetch("/api/grade", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionId: q.id, answer: text }) }).then((x) => x.json() as Promise<{ available: boolean; score?: number; feedback?: string }>);
+          const r = await authFetch("/api/grade", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionId: q.id, answer: text, lang }) }).then((x) => x.json() as Promise<{ available: boolean; score?: number; feedback?: string }>);
           if (r.available && typeof r.score === "number") return send({ type: "short", text, score: r.score }, r.feedback);
         } catch {
           // fall through to self-grading
@@ -155,7 +157,7 @@ export function QuestionCard({
             {index + 1}/{total}
           </span>
         )}
-        <Pill>{TYPE_LABEL[q.type]}</Pill>
+        <Pill>{t(TYPE_LABEL[q.type])}</Pill>
         <span>{"●".repeat(q.difficulty)}{"○".repeat(3 - q.difficulty)}</span>
       </div>
       <Markdown className="prose-lesson">{q.prompt}</Markdown>
@@ -168,7 +170,7 @@ export function QuestionCard({
               const show = submitted && !hideFeedback;
               const tone = show && isAnswer ? "border-ok bg-ok-soft" : show && mcq === i ? "border-danger bg-danger-soft" : mcq === i ? "border-accent bg-accent-soft" : "border-border hover:bg-surface-2";
               return (
-                <button key={i} disabled={locked} onClick={() => setMcq(i)} className={`flex w-full items-start gap-3 rounded-lg border px-3 py-2.5 text-left transition-colors ${tone}`}>
+                <button key={i} disabled={locked} onClick={() => setMcq(i)} className={`flex w-full items-start gap-3 rounded-lg border px-3 py-2.5 text-start transition-colors ${tone}`}>
                   <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full border border-current text-[11px] font-semibold">{String.fromCharCode(65 + i)}</span>
                   <span className="min-w-0 flex-1">
                     <InlineMarkdown>{opt}</InlineMarkdown>
@@ -187,7 +189,7 @@ export function QuestionCard({
               const isAnswer = q.answer.includes(i);
               const tone = show && isAnswer ? "border-ok bg-ok-soft" : show && on ? "border-danger bg-danger-soft" : on ? "border-accent bg-accent-soft" : "border-border hover:bg-surface-2";
               return (
-                <button key={i} disabled={locked} onClick={() => setMulti((m) => (on ? m.filter((x) => x !== i) : [...m, i]))} className={`flex w-full items-start gap-3 rounded-lg border px-3 py-2.5 text-left ${tone}`}>
+                <button key={i} disabled={locked} onClick={() => setMulti((m) => (on ? m.filter((x) => x !== i) : [...m, i]))} className={`flex w-full items-start gap-3 rounded-lg border px-3 py-2.5 text-start ${tone}`}>
                   <span className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded border border-current text-xs`}>{on ? "✓" : ""}</span>
                   <span className="min-w-0 flex-1">
                     <InlineMarkdown>{opt}</InlineMarkdown>
@@ -206,12 +208,12 @@ export function QuestionCard({
               disabled={locked}
               onChange={(e) => setNum(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && submit()}
-              placeholder="Your answer"
+              placeholder={t("Your answer")}
               className="w-44 rounded-lg border border-border bg-bg px-3 py-2 tabular-nums outline-none focus:border-accent"
             />
             {q.unit && <span className="text-muted">{q.unit}</span>}
             <span className="text-xs text-muted">
-              tolerance ±{q.tolerance?.abs !== undefined && q.tolerance.rel === undefined ? `${q.tolerance.abs}` : `${((q.tolerance?.rel ?? 0.02) * 100).toFixed(1).replace(/\.0$/, "")}%`}
+              {t("tolerance ±{x}", { x: q.tolerance?.abs !== undefined && q.tolerance.rel === undefined ? `${q.tolerance.abs}` : `${((q.tolerance?.rel ?? 0.02) * 100).toFixed(1).replace(/\.0$/, "")}%` })}
             </span>
           </div>
         )}
@@ -226,10 +228,10 @@ export function QuestionCard({
                 </span>
                 {!locked && (
                   <span className="flex gap-1">
-                    <button className={btn.small} disabled={i === 0} onClick={() => setOrder((o) => swap(o, i, i - 1))} aria-label="Move up">
+                    <button className={btn.small} disabled={i === 0} onClick={() => setOrder((o) => swap(o, i, i - 1))} aria-label={t("Move up")}>
                       ↑
                     </button>
-                    <button className={btn.small} disabled={i === order.length - 1} onClick={() => setOrder((o) => swap(o, i, i + 1))} aria-label="Move down">
+                    <button className={btn.small} disabled={i === order.length - 1} onClick={() => setOrder((o) => swap(o, i, i + 1))} aria-label={t("Move down")}>
                       ↓
                     </button>
                   </span>
@@ -242,7 +244,9 @@ export function QuestionCard({
         {q.type === "label" && (
           <div className="grid gap-4 md:grid-cols-[1.4fr_1fr]">
             <div className="rounded-lg border border-border bg-bg p-2">
-              <Diagram id={q.diagram} mode="numbered" />
+              <div dir="ltr" lang="en">
+                <Diagram id={q.diagram} mode="numbered" />
+              </div>
             </div>
             <div className="space-y-2">
               {q.markers.map((m) => {
@@ -257,7 +261,7 @@ export function QuestionCard({
                       onChange={(e) => setLabels((l) => ({ ...l, [m.id]: e.target.value }))}
                       className={`min-w-0 flex-1 rounded-lg border bg-bg px-2 py-1.5 text-sm ${show ? (ok ? "border-ok" : "border-danger") : "border-border"}`}
                     >
-                      <option value="">Choose…</option>
+                      <option value="">{t("Choose…")}</option>
                       {labelOptions.map((o) => (
                         <option key={o} value={o}>
                           {o}
@@ -280,14 +284,14 @@ export function QuestionCard({
               onChange={(e) => setText(e.target.value)}
               rows={5}
               dir="auto"
-              placeholder="Write your answer (English or Arabic)…"
+              placeholder={t("Write your answer (English or Arabic)…")}
               className="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm outline-none focus:border-accent"
             />
             {selfCheck && !submitted && (
               <div className="mt-3 rounded-lg border border-border bg-surface-2 p-3">
-                <div className="text-sm font-medium">AI grader unavailable — grade yourself against the rubric and model answer.</div>
+                <div className="text-sm font-medium">{t("AI grader unavailable — grade yourself against the rubric and model answer.")}</div>
                 <div className="mt-2 text-sm">
-                  <div className="font-medium">Model answer</div>
+                  <div className="font-medium">{t("Model answer")}</div>
                   <Markdown className="prose-compact">{q.modelAnswer}</Markdown>
                 </div>
                 <div className="mt-2 space-y-1">
@@ -299,7 +303,7 @@ export function QuestionCard({
                   ))}
                 </div>
                 <button className={`${btn.primary} mt-3`} disabled={busy} onClick={() => send({ type: "short", text, score: selfCheck.filter(Boolean).length / q.rubric.length })}>
-                  Record self-grade
+                  {t("Record self-grade")}
                 </button>
               </div>
             )}
@@ -310,18 +314,18 @@ export function QuestionCard({
       {!submitted && !selfCheck && (
         <div className="mt-4 flex items-center gap-3">
           <button className={btn.primary} disabled={!canSubmit || busy} onClick={submit}>
-            {busy ? "Checking…" : q.type === "short" ? "Submit for grading" : "Check answer"}
+            {busy ? t("Checking…") : q.type === "short" ? t("Submit for grading") : t("Check answer")}
           </button>
           {err && <span className="text-sm text-danger">{err}</span>}
         </div>
       )}
 
-      {fb && hideFeedback && <div className="mt-3 text-sm text-muted">Answer recorded.</div>}
+      {fb && hideFeedback && <div className="mt-3 text-sm text-muted">{t("Answer recorded.")}</div>}
 
       {fb && !hideFeedback && (
         <div className={`mt-4 rounded-lg border p-3 sm:p-4 ${fb.correct ? "border-ok/40 bg-ok-soft/50" : "border-danger/40 bg-danger-soft/50"}`}>
           <div className={`text-sm font-semibold ${fb.correct ? "text-ok" : "text-danger"}`}>
-            {fb.correct ? "Correct" : fb.score > 0 ? `Partly right (${Math.round(fb.score * 100)}%)` : "Not quite"}
+            {fb.correct ? t("Correct") : fb.score > 0 ? t("Partly right ({n}%)", { n: Math.round(fb.score * 100) }) : t("Not quite")}
             {q.type === "short" && ` — ${Math.round(fb.score * 100)}%`}
           </div>
           {decisionFeedback && (
@@ -331,21 +335,21 @@ export function QuestionCard({
           )}
           {!fb.correct && q.type !== "short" && q.type !== "label" && (
             <div className="mt-1 text-sm">
-              <span className="font-medium">Answer: </span>
+              <span className="font-medium">{t("Answer: ")}</span>
               <InlineMarkdown>{fb.correctAnswer}</InlineMarkdown>
             </div>
           )}
           {fb.aiFeedback && (
             <div className="mt-2 text-sm">
-              <div className="font-medium">Tutor feedback</div>
+              <div className="font-medium">{t("Tutor feedback")}</div>
               <Markdown className="prose-compact">{fb.aiFeedback}</Markdown>
             </div>
           )}
           {q.type === "short" && (
             <details className="mt-2 text-sm">
-              <summary className="cursor-pointer font-medium">Model answer & rubric</summary>
+              <summary className="cursor-pointer font-medium">{t("Model answer & rubric")}</summary>
               <Markdown className="prose-compact">{q.modelAnswer}</Markdown>
-              <ul className="ml-5 list-disc">
+              <ul className="ms-5 list-disc">
                 {q.rubric.map((r, i) => (
                   <li key={i}>{r}</li>
                 ))}

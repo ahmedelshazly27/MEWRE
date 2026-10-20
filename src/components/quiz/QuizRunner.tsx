@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/useLang";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Question } from "@/content/schema";
 import { QuestionCard, type AttemptFeedback } from "./QuestionCard";
@@ -7,6 +8,7 @@ import { InlineMarkdown, Markdown } from "@/components/Markdown";
 import { uid } from "@/lib/api";
 import { completeLesson, saveRun } from "@/lib/store/actions";
 import { btn, ProgressBar } from "@/components/ui";
+import { fwd } from "@/lib/i18n";
 
 export interface QuizResult {
   questionId: string;
@@ -39,6 +41,7 @@ export function QuizRunner({
   examMode?: boolean;
   onFinish?: (results: QuizResult[]) => void;
 }) {
+  const { t, lang } = useT();
   const runId = useMemo(() => uid(kind), [kind]);
   const startedAt = useRef(0);
   const [i, setI] = useState(0);
@@ -88,7 +91,7 @@ export function QuizRunner({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLimitSec, done, results]);
 
-  if (!questions.length) return <div className="text-sm text-muted">No questions available yet.</div>;
+  if (!questions.length) return <div className="text-sm text-muted">{t("No questions available yet.")}</div>;
 
   if (done) {
     const score = results.reduce((a, r) => a + r.score, 0) / questions.length;
@@ -96,24 +99,24 @@ export function QuizRunner({
     return (
       <div className="space-y-4">
         <div className="rounded-xl border border-border bg-surface p-5">
-          <div className="text-sm text-muted">{title ?? "Result"}</div>
+          <div className="text-sm text-muted">{title ?? t("Result")}</div>
           <div className="mt-1 flex items-baseline gap-3">
             <span className={`text-4xl font-semibold tabular-nums ${pct >= 80 ? "text-ok" : pct >= 60 ? "text-warn" : "text-danger"}`}>{pct}%</span>
             <span className="text-muted">
-              {results.filter((r) => r.correct).length} of {questions.length} correct
-              {results.length < questions.length && ` · ${questions.length - results.length} unanswered`}
+              {t("{c} of {n} correct", { c: results.filter((r) => r.correct).length, n: questions.length })}
+              {results.length < questions.length && t(" · {n} unanswered", { n: questions.length - results.length })}
             </span>
           </div>
           <p className="mt-2 text-sm text-muted">
             {pct >= 80
-              ? "Strong. These concepts will now resurface on a spaced schedule."
-              : "Every miss has been added to your error log and will resurface in mixed practice until you get it right twice."}
+              ? t("Strong. These concepts will now resurface on a spaced schedule.")
+              : t("Every miss has been added to your error log and will resurface in mixed practice until you get it right twice.")}
           </p>
-          {completeLessonId && <p className="mt-1 text-sm text-muted">Lesson marked complete — its flashcards are now in your daily review.</p>}
+          {completeLessonId && <p className="mt-1 text-sm text-muted">{t("Lesson marked complete — its flashcards are now in your daily review.")}</p>}
         </div>
         {examMode && (
           <div className="space-y-3">
-            <h3 className="font-semibold">Review your answers</h3>
+            <h3 className="font-semibold">{t("Review your answers")}</h3>
             {results.map((r) => {
               const q = questions.find((x) => x.id === r.questionId)!;
               return (
@@ -127,7 +130,7 @@ export function QuizRunner({
                   <div className="mt-2 text-sm">
                     {!r.correct && (
                       <div>
-                        <span className="font-medium">Answer: </span>
+                        <span className="font-medium">{t("Answer: ")}</span>
                         <InlineMarkdown>{r.feedback.correctAnswer}</InlineMarkdown>
                       </div>
                     )}
@@ -179,11 +182,11 @@ export function QuizRunner({
                 setAnswered(false);
               }}
             >
-              Next question →
+              {t("Next question")} {fwd(lang)}
             </button>
           ) : (
             <button className={btn.primary} onClick={() => finish(results)}>
-              Finish
+              {t("Finish")}
             </button>
           )}
         </div>
@@ -191,7 +194,7 @@ export function QuizRunner({
       {examMode && (
         <div className="flex justify-end">
           <button className={btn.ghost} onClick={() => finish(results)}>
-            End now
+            {t("End now")}
           </button>
         </div>
       )}

@@ -8,8 +8,10 @@ import { useContent } from "@/lib/useContent";
 import { pickDiagnostic } from "@/lib/practice";
 import { QuizRunner } from "@/components/quiz/QuizRunner";
 import { Card, PageHeader } from "@/components/ui";
+import { useT } from "@/lib/useLang";
 
 export default function DiagnosticPage() {
+  const { t, href } = useT();
   const store = useLearner();
   const content = useContent();
   const [started, setStarted] = useState(false);
@@ -31,7 +33,7 @@ export default function DiagnosticPage() {
     );
     return pickDiagnostic(mods, 4);
   }, [content]);
-  if (!store || !content) return <div className="text-muted">Loading…</div>;
+  if (!store || !content) return <div className="text-muted">{t("Loading…")}</div>;
   const past = store.derived().runs.filter((r) => r.kind === "diagnostic").slice(0, 5);
   const modCount = new Set(items.map((i) => i.moduleId)).size;
 
@@ -39,19 +41,19 @@ export default function DiagnosticPage() {
     return (
       <div className="mx-auto max-w-3xl">
         <PageHeader
-          title="Diagnostic test"
-          subtitle="A baseline across every module. Results seed your per-concept mastery (at reduced weight) so the dashboard can recommend where to focus. Don't guess wildly — skipping knowledge you lack gives a truer baseline."
+          title={t("Diagnostic test")}
+          subtitle={t("A baseline across every module. Results seed your per-concept mastery (at reduced weight) so the dashboard can recommend where to focus. Don't guess wildly — skipping knowledge you lack gives a truer baseline.")}
         />
         <Card>
           <div className="text-sm text-muted">
-            {items.length} questions across {modCount} modules · about {Math.round(items.length * 1.5)} minutes · feedback at the end.
+            {t("{n} questions across {m} modules · about {min} minutes · feedback at the end.", { n: items.length, m: modCount, min: Math.round(items.length * 1.5) })}
           </div>
           <button onClick={() => setStarted(true)} className="mt-4 inline-flex rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white dark:text-black">
-            Start diagnostic
+            {t("Start diagnostic")}
           </button>
           {past.length > 0 && (
             <div className="mt-5 text-sm">
-              <div className="font-medium">Previous attempts</div>
+              <div className="font-medium">{t("Previous attempts")}</div>
               <ul className="mt-1 text-muted">
                 {past.map((r) => (
                   <li key={r.id}>
@@ -67,14 +69,14 @@ export default function DiagnosticPage() {
   }
   return (
     <div className="mx-auto max-w-3xl">
-      <PageHeader title="Diagnostic test" subtitle="Answer what you can. Feedback at the end." />
-      <QuizRunner questions={items.map((i) => i.question)} source="diagnostic" kind="diagnostic" refId="all" title="Diagnostic baseline" examMode />
+      <PageHeader title={t("Diagnostic test")} subtitle={t("Answer what you can. Feedback at the end.")} />
+      <QuizRunner questions={items.map((i) => i.question)} source="diagnostic" kind="diagnostic" refId="all" title={t("Diagnostic baseline")} examMode />
       <p className="mt-6 text-sm text-muted">
-        When done, see your{" "}
-        <Link href="/" className="text-accent">
-          dashboard
+        {t("When done, see your")}{" "}
+        <Link href={href("/")} className="text-accent">
+          {t("dashboard")}
         </Link>{" "}
-        for per-competency baseline and recommendations.
+        {t("for per-competency baseline and recommendations.")}
       </p>
     </div>
   );

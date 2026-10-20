@@ -432,7 +432,11 @@ Most best answers are the **proportionate, documented, contractual** option, oft
   flashcards: [
     { id: "m15-l02-f1", front: "Capstone KPI score for a lower-is-better KPI above target", back: md`$k = T/x$ (1 if at or below target).`, concepts: ["m15.tradeoff-framework"] },
     { id: "m15-l02-f2", front: "Capstone total score", back: "50 % mean KPI score + 50 % mean decision quality (0–10 scaled to 0–1).", concepts: ["m15.tradeoff-framework"] },
-    { id: "m15-l02-f3", front: "The five decision questions", back: "Contract · Risk owner · Lifecycle · File (Audit Bureau view) · People (safety and who must hear it first).", concepts: ["m15.tradeoff-framework"] },
+    { id: "m15-l02-f3", front: "The five decision questions", back: md`- Contract
+- Risk owner
+- Lifecycle
+- File (Audit Bureau view)
+- People (safety and who must hear it first)`, concepts: ["m15.tradeoff-framework"] },
     { id: "m15-l02-f4", front: "Clarification vs bid modification", back: "A clarification explains the bid; a modification changes price, scope or key terms — not permitted after opening.", concepts: ["m15.bid-evaluation"] },
     { id: "m15-l02-f5", front: "SPI 0.82 on a 24-month build — forecast duration?", back: md`$\approx 24/0.82 = 29.3$ months (≈ 5 months late).`, concepts: ["m15.schedule-recovery"] },
     { id: "m15-l02-f6", front: "First step after a failed PR test", back: "Verify inputs against the agreed procedure: irradiance sensor calibration and cleaning, exclusions, soiling data — then root-cause, remedy, retest.", concepts: ["m15.commissioning-tests"] },

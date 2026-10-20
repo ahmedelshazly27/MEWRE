@@ -89,7 +89,15 @@ EV is only as good as the method used to measure "percent complete". Agree the m
 | **Level of effort** | Earned with time (EV = PV) | PM, supervision, site services | Hides inefficiency; keep small |
 | **Apportioned effort** | % of a related discrete package | QA/QC inspection tied to installation | Inherits base package's quality |
 
-Example rules of credit for **PV module supply**: datasheet/vendor approval 5 % · PO placed 5 % · FAT/pre-shipment inspection passed 15 % · shipped (B/L) 15 % · delivered to site, customs-cleared and receipt-inspected 60 %. Installation is measured separately by units (modules mechanically installed, strings connected, strings tested).`,
+Example rules of credit for **PV module supply**:
+
+- datasheet/vendor approval 5 %
+- PO placed 5 %
+- FAT/pre-shipment inspection passed 15 %
+- shipped (B/L) 15 %
+- delivered to site, customs-cleared and receipt-inspected 60 %
+
+Installation is measured separately by units (modules mechanically installed, strings connected, strings tested).`,
         },
         { kind: "sources", refs: ["m08-pmi-evm", "m08-eia-748", "m08-gao-cost", "m08-earned-schedule"] },
       ],

@@ -5,11 +5,13 @@ import { useLearner } from "@/lib/store/react";
 import { useContent } from "@/lib/useContent";
 import { Markdown } from "@/components/Markdown";
 import { EmptyState, PageHeader } from "@/components/ui";
+import { useT } from "@/lib/useLang";
 
 export default function NotesPage() {
+  const { t, href } = useT();
   const store = useLearner();
   const content = useContent();
-  if (!store || !content) return <div className="text-muted">Loading…</div>;
+  if (!store || !content) return <div className="text-muted">{t("Loading…")}</div>;
   const notes = store
     .docsWithPrefix("note:")
     .map((d) => ({ lessonId: d.key.slice(5), body: (d.value as { body?: string })?.body ?? "", updatedAt: d.updatedAt }))
@@ -17,9 +19,9 @@ export default function NotesPage() {
     .sort((a, b) => b.updatedAt - a.updatedAt);
   return (
     <div>
-      <PageHeader title="My notes" subtitle="Everything you wrote in lesson notes, most recent first. Synced across your devices when signed in." />
+      <PageHeader title={t("My notes")} subtitle={t("Everything you wrote in lesson notes, most recent first. Synced across your devices when signed in.")} />
       {notes.length === 0 ? (
-        <EmptyState title="No notes yet">Each lesson has a notes panel at the bottom; notes save automatically.</EmptyState>
+        <EmptyState title={t("No notes yet")}>{t("Each lesson has a notes panel at the bottom; notes save automatically.")}</EmptyState>
       ) : (
         <div className="space-y-3">
           {notes.map((n) => {
@@ -27,12 +29,14 @@ export default function NotesPage() {
             return (
               <div key={n.lessonId} className="rounded-xl border border-border bg-surface p-4">
                 <div className="mb-1 flex items-center justify-between gap-2 text-sm">
-                  <Link href={`/learn/${l.moduleId}/${l.id}`} className="font-medium text-accent">
+                  <Link href={href(`/learn/${l.moduleId}/${l.id}`)} className="font-medium text-accent">
                     M{l.moduleNumber} · {l.title}
                   </Link>
                   <span className="text-xs text-muted">{new Date(n.updatedAt).toLocaleString()}</span>
                 </div>
-                <Markdown className="prose-compact">{n.body}</Markdown>
+                <Markdown autoDir className="prose-compact">
+                  {n.body}
+                </Markdown>
               </div>
             );
           })}

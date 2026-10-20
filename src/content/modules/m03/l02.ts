@@ -149,7 +149,14 @@ The "hours of storage" figure is the number of hours the turbine can run at full
         { kind: "equation", formula: "csp-capacity-factor" },
         {
           kind: "md",
-          md: md`Rules of thumb at a good-DNI site (~2,400–2,700 kWh/m²/yr): trough no storage SM 1.3 → CF ~25–28 %; trough 7.5 h SM 2.0 → ~40 %; trough 10 h SM 2.5–3 → ~45–55 %; tower 15 h SM 2.5–3 → ~60–70 %. Kuwait's DNI is uncertain and seasonally depressed by dust, so treat the upper ends with suspicion.`,
+          md: md`Rules of thumb at a good-DNI site (~2,400–2,700 kWh/m²/yr):
+
+- **Trough, no storage, SM 1.3:** CF ~25–28 %
+- **Trough, 7.5 h, SM 2.0:** CF ~40 %
+- **Trough, 10 h, SM 2.5–3:** CF ~45–55 %
+- **Tower, 15 h, SM 2.5–3:** CF ~60–70 %
+
+Kuwait's DNI is uncertain and seasonally depressed by dust, so treat the upper ends with suspicion.`,
         },
         { kind: "widget", widget: "thermal-storage", props: { massTonnes: 30000 }, caption: "Try 30,000 t of salt at a trough ΔT, then at a tower ΔT, and see how MWh_th and turbine hours change." },
         { kind: "diagram", diagram: "parabolic-trough", caption: "Follow the flows: oil loop through the receivers; oil-to-salt heat exchanger charging the hot tank by day; reverse flow at night to the steam generator, turbine and air-cooled condenser." },
