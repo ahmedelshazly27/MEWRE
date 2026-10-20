@@ -90,3 +90,7 @@ account only sees its own rows.
 
 Set `ANTHROPIC_API_KEY` (and ideally `AI_ALLOWED_EMAILS=<your login email>`) in Vercel → Project →
 Settings → Environment Variables, then redeploy. The AI endpoints only answer signed-in users.
+
+Models: tutor chat uses **Claude Sonnet 5.5** (derivations and PM judgement need a strong model);
+rubric grading of written answers and Feynman checks uses **Claude Haiku 5.5** (narrow, structured,
+nearly free). Override with `ANTHROPIC_TUTOR_MODEL` / `ANTHROPIC_GRADER_MODEL`.

@@ -6,8 +6,17 @@ import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
 import type { Block, Lesson, Module, ShortQuestion } from "@/content/schema";
 
-export const MODEL = process.env.ANTHROPIC_MODEL || "claude-opus-5-5";
+/** Tutor chat: explanations, derivations and PM judgement — needs a strong model. */
+export const TUTOR_MODEL = process.env.ANTHROPIC_TUTOR_MODEL || process.env.ANTHROPIC_MODEL || "claude-sonnet-5-5";
+/** Rubric grading of written answers and Feynman checks — narrow, structured, high volume. */
+export const GRADER_MODEL = process.env.ANTHROPIC_GRADER_MODEL || "claude-haiku-5-5";
+
 const FALLBACK_BETA = "server-side-fallback-2026-07-01";
+// Server-side refusal fallback is only offered on some models (not Haiku), so add it only there.
+const FALLBACK_MODELS = ["claude-fable-5-1", "claude-opus-5-5", "claude-opus-5", "claude-sonnet-5-5"];
+function fallbackParams(model: string) {
+  return FALLBACK_MODELS.includes(model) ? { betas: [FALLBACK_BETA], fallbacks: "default" as const } : {};
+}
 
 export function aiAvailable(): boolean {
   return Boolean(process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN);
@@ -76,10 +85,9 @@ export async function* tutorStream(messages: ChatMessage[], context?: string): A
   const system: Anthropic.Beta.BetaTextBlockParam[] = [{ type: "text", text: TUTOR_SYSTEM, cache_control: { type: "ephemeral" } }];
   if (context) system.push({ type: "text", text: `Current lesson context:\n\n${context}`, cache_control: { type: "ephemeral" } });
   const stream = getClient().beta.messages.stream({
-    model: MODEL,
+    model: TUTOR_MODEL,
     max_tokens: 16000,
-    betas: [FALLBACK_BETA],
-    fallbacks: "default",
+    ...fallbackParams(TUTOR_MODEL),
     output_config: { effort: "medium" },
     system,
     messages: messages.slice(-20),
@@ -101,10 +109,9 @@ const GradeSchema = z.object({
 
 async function grade(task: string): Promise<{ score: number; feedback: string }> {
   const res = await getClient().beta.messages.parse({
-    model: MODEL,
-    max_tokens: 4000,
-    betas: [FALLBACK_BETA],
-    fallbacks: "default",
+    model: GRADER_MODEL,
+    max_tokens: 8000, // thinking counts toward max_tokens
+    ...fallbackParams(GRADER_MODEL),
     output_config: { effort: "low", format: betaZodOutputFormat(GradeSchema) },
     system: `You are a strict but fair grader for a professional learning platform. ${LEARNER} Grade only against the rubric/key points; reward correct substance over style; penalise technical errors. Respond in the language of the answer.`,
     messages: [{ role: "user", content: task }],
