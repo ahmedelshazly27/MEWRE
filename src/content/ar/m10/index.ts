@@ -1,6 +1,35 @@
 import type { Module } from "../../schema";
+import l01 from "./l01";
+import l02 from "./l02";
+import l03 from "./l03";
+import l04 from "./l04";
+import l05 from "./l05";
+import l06 from "./l06";
+import l07 from "./l07";
+import formulas from "./formulas";
+import references from "./references";
+import glossary from "./glossary";
+import exam from "./exam";
+import cheatSheet from "./cheatsheet";
 
-/** Arabic translation of m10 — not written yet. */
-const mod: Module | null = null;
+const mod: Module = {
+  id: "m10",
+  number: 10,
+  title: "الإدارة المالية",
+  titleAr: "الإدارة المالية",
+  summary:
+    "المالية التي يستخدمها مدير مشروعات الطاقة المتجددة في الوزارة كل أسبوع: الخصم، وصافي القيمة الحالية (NPV) ومعدل العائد الداخلي (IRR) وMIRR، والمتوسط المرجَّح لتكلفة رأس المال (WACC)؛ والتكلفة المستوية للكهرباء (LCOE) ولماذا انخفضت تعرفات الطاقة الشمسية الخليجية إلى هذا الحد؛ ومرجعيات النفقات الرأسمالية والتشغيلية لمحطات PV والمتتبعات وBESS؛ وتمويل مشروعات المنتجين المستقلين (CFADS، وتشكيل الدين وفق DSCR، وLLCR/PLCR، وIRR حقوق الملكية مقابل IRR المشروع)؛ وتقييم عطاءات التعرفة المستوية ومخاطر العطاءات المتفائلة بإفراط؛ وضبط ميزانية السنة المالية، وآليات الدفعة المقدمة والمحتجزات، ومنحنيات S، والتقدير عند الإنجاز (EAC) — مع خمسة نماذج Excel قابلة للتنزيل بصيغ حية مبنية حول مشروع IPP كهروضوئي بقدرة 1,100 MW وعقد ربط بالشبكة بقيمة 45 مليون KWD.",
+  whyItMatters:
+    "وزارة الكهرباء والماء والطاقة المتجددة (MEWRE) هي المشتري في اتفاقيات شراء الطاقة الشمسية (PPA) لمدة 30 سنة، وصاحبة الميزانية لأعمال الشبكة التي تربطها. كل قرار كبير يدعمه مدير المشروع — أي العطاءات يقدم أفضل قيمة، وهل التعرفة القياسية الانخفاض قابلة للتنفيذ، وكم نقداً يُطلب لكل سنة مالية، ولماذا تحرك احتياطي الطوارئ، وكم ستكلف طلبات المقرضين الدولة — هو حجة مالية. مدير المشروع القادر على إعادة بناء LCOE، وقراءة نموذج المقرضين، والدفاع عن توقع نقدي أمام ديوان المحاسبة يحمي الجدول الزمني للبرنامج والمال العام معاً.",
+  competencies: ["finance", "controls", "procurement", "contracts"],
+  prerequisites: ["m00", "m08", "m09"],
+  estimatedHours: 12,
+  lessons: [l01, l02, l03, l04, l05, l06, l07],
+  exam,
+  glossary,
+  formulas,
+  references,
+  cheatSheet,
+};
 
 export default mod;
