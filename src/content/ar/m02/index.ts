@@ -5,7 +5,7 @@ import l03 from "./l03";
 import l04 from "./l04";
 import l05 from "./l05";
 import l06 from "./l06";
-import l07 from "../../modules/m02/l07";
+import l07 from "./l07";
 import formulas from "./formulas";
 import references from "./references";
 import glossary from "./glossary";
