@@ -130,18 +130,43 @@ body {
   font-weight: 650;
   margin: 1.2em 0 0.3em;
 }
-.prose-lesson ul {
-  list-style: disc;
-  padding-inline-start: 1.4em;
+/* Markers are drawn inside each item: list items scroll long inline math (overflow-x above),
+   which would clip native outside markers. */
+:is(.prose-lesson, .prose-compact) ul,
+:is(.prose-lesson, .prose-compact) ol {
+  list-style: none;
+  padding-inline-start: 0;
   margin: 0.6em 0;
 }
-.prose-lesson ol {
-  list-style: decimal;
-  padding-inline-start: 1.4em;
-  margin: 0.6em 0;
+:is(.prose-lesson, .prose-compact) ol {
+  counter-reset: li;
 }
-.prose-lesson li {
+:is(.prose-lesson, .prose-compact) li {
   margin: 0;
+  position: relative;
+  padding-inline-start: 1.4em;
+}
+:is(.prose-lesson, .prose-compact) ul > li::before {
+  content: "•";
+  position: absolute;
+  inset-inline-start: 0.35em;
+  color: var(--accent);
+  font-weight: 700;
+}
+:is(.prose-lesson, .prose-compact) ol > li {
+  counter-increment: li;
+}
+:is(.prose-lesson, .prose-compact) ol > li::before {
+  content: counter(li) ".";
+  position: absolute;
+  inset-inline-start: 0;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.92em;
+}
+:is(.prose-lesson, .prose-compact) li > ul,
+:is(.prose-lesson, .prose-compact) li > ol {
+  margin: 0.15em 0;
 }
 .prose-lesson a {
   color: var(--accent);
@@ -236,6 +261,10 @@ body {
 .cheat-sheet h2:first-child {
   margin-top: 0.4em;
 }
+/* the page already shows the module title */
+.cheat-sheet > h1:first-child {
+  display: none;
+}
 .cheat-sheet h3 {
   margin: 1em 0 0.3em;
   font-size: 1.02rem;
@@ -247,9 +276,6 @@ body {
 }
 .cheat-sheet li {
   padding-block: 0.12em;
-}
-.cheat-sheet li::marker {
-  color: var(--accent);
 }
 .cheat-sheet table {
   margin: 0.5em 0 0.9em;

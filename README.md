@@ -18,6 +18,8 @@ Renewable Energy Park, Al Dibdibah / Shagaya Phase III and the utility-scale PV 
   printable **cheat sheets**, downloadable **Excel models**
 - **Offline-first PWA**: install it on your phone, study with no connection, progress syncs across
   devices through Supabase when you are back online
+- **Arabic mode**: the whole platform in Arabic (RTL) with the English term in parentheses on first
+  use — toggle **عربي / EN** in the header or Settings; progress is shared between languages
 - Dark mode, mobile-friendly
 
 **Live app:** https://mewre-pm-academy.vercel.app (auto-deploys on every push to this branch)
@@ -61,6 +63,7 @@ connection, so studying offline never loses anything. The AI tutor needs a conne
 src/content/            curriculum (typed TS + markdown/KaTeX)
   schema.ts             content contract   widgets.ts  widget/diagram catalogue
   validate.ts           validator          modules/mXX/ one folder per module
+  ar/mXX/               Arabic translation (same structure, checked by validate-translation.ts)
 src/lib/                pure logic: scoring, mastery, srs (FSRS), readiness, practice, sim, calc/*
 src/lib/store/          offline-first learner store: event log (derive.ts), IndexedDB, Supabase sync
 src/server/             Claude API (ai.ts) and auth check for the AI endpoints

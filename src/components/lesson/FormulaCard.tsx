@@ -9,7 +9,7 @@ export function tex(src: string, display = false): string {
 
 export function FormulaCard({ formula: f, compact = false, lang = "en" }: { formula: Formula; compact?: boolean; lang?: Lang }) {
   return (
-    <div id={`f-${f.id}`} className="my-5 rounded-xl border border-border bg-surface">
+    <div id={`f-${f.id}`} className="my-5 min-w-0 rounded-xl border border-border bg-surface">
       <div className="flex items-center justify-between border-b border-border px-4 py-2">
         <span className="text-sm font-semibold">{f.name}</span>
         <span className="text-xs text-muted">{t(lang, "Formula")}</span>

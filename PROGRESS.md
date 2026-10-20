@@ -82,7 +82,21 @@ physics error in the capstone, several overstated figures and Arabic glossary te
 - [x] Deployed to Vercel: https://mewre-pm-academy.vercel.app (auto-deploy on push)
 - [x] Verified in a real browser: download → go offline → lessons, widgets, quizzes, reviews, error log, dashboard all work; answers persist across reloads
 
+## Phase 8 — Arabic mode + readable cheat sheets (2026-10-20)
+
+- [x] All 16 cheat sheets rewritten: `##` sections, one fact per bullet, number tables, formula tables (`Quantity | Formula | Where`), "(verify)" caveats; " · " run-ons removed from lessons
+- [x] Full Arabic translation of all 16 modules in `src/content/ar/` (MSA, English term in parentheses on first use, acronyms/units/math unchanged)
+- [x] `validateTranslation` guarantees Arabic is structurally identical to English (ids, answer keys, scores, scenario graphs, TeX, URLs) — run by `validate:content` and the tests
+- [x] `/ar` mirror of every page, RTL layout, EN/عربي toggle (header + Settings), remembered preference, Arabic UI strings
+- [x] Progress is shared across languages (same ids); Arabic pages and `/data/content-ar.json` are in the offline download
+- [x] Tutor and grader answer in Arabic in Arabic mode
+- [x] Verified in Chromium (desktop + phone): RTL, no horizontal overflow, no KaTeX errors, no page errors
+- [x] Fixed: list bullets were clipped site-wide; formula cards overflowed the cheat-sheet grid on phones
+
 ## Known limitations / next ideas
+
+- Interactive widgets and diagrams are English-only (they render LTR inside Arabic pages). Library reference titles stay in their original language.
+- Arabic terms the translators flagged as uncertain (e.g. deemed energy, step-in rights, grid-forming) are worth a native-speaker pass.
 
 - Kuwait-specific facts that could not be verified are flagged in `unverified` callouts throughout; re-check them against KAPP, MEWRE, CAPT and the official gazette before quoting at work. The main open items are listed at the end of `docs/RESEARCH.md`.
 - AI tutor needs `ANTHROPIC_API_KEY` set in Vercel; it only works online.
