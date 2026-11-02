@@ -93,6 +93,14 @@ physics error in the capstone, several overstated figures and Arabic glossary te
 - [x] Verified in Chromium (desktop + phone): RTL, no horizontal overflow, no KaTeX errors, no page errors
 - [x] Fixed: list bullets were clipped site-wide; formula cards overflowed the cheat-sheet grid on phones
 
+## Phase 9 — Two-week crash course for the trial week (2026-11-02)
+
+- [x] `/crash` (and `/ar/crash`): 14-day plan over 29 high-yield lessons (~36 h), a scenario and a written output each day, cheat sheets to skim
+- [x] Progress tracker: lessons done, trial-week countdown, plan day, output ticks (synced doc `crash`)
+- [x] Trial-week playbook: numbers to know (with confidence labels from M0), who's who, questions to ask, day-by-day conduct, credibility traps, 60-second intro, key Arabic terms
+- [x] `/crash/exam`: 25 random questions across all crash lessons, timed, feedback at the end
+- [x] Dashboard banner and nav entry; routes in the offline download; `tests/crash.test.ts` guards every reference
+
 ## Known limitations / next ideas
 
 - Interactive widgets and diagrams are English-only (they render LTR inside Arabic pages). Library reference titles stay in their original language.

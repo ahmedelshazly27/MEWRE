@@ -85,6 +85,17 @@ export function Dashboard() {
         )}
       </div>
 
+      <Link href={href("/crash")} className="flex items-center gap-3 rounded-xl border border-accent/50 bg-accent-soft/40 px-4 py-3 hover:bg-accent-soft/70">
+        <span className="text-2xl" aria-hidden>
+          ⚡
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-semibold">{tr("Trial week coming up? Two-week crash course")}</span>
+          <span className="block text-sm text-muted">{tr("14 days of the highest-yield lessons, a daily written output, and a playbook for the week itself.")}</span>
+        </span>
+        <span className="text-accent">{fwd(lang)}</span>
+      </Link>
+
       <div className="grid gap-4 lg:grid-cols-[1.1fr_1fr]">
         <Card>
           <div className="flex items-center gap-5">

@@ -5,7 +5,7 @@ import { lp } from "@/lib/i18n";
 
 export const dynamic = "force-static";
 
-const STATIC_ROUTES = ["/", "/learn", "/review", "/practice", "/diagnostic", "/errors", "/scenarios", "/capstone", "/tutor", "/glossary", "/formulas", "/concepts", "/library", "/notes", "/settings"];
+const STATIC_ROUTES = ["/", "/crash", "/crash/exam", "/learn", "/review", "/practice", "/diagnostic", "/errors", "/scenarios", "/capstone", "/tutor", "/glossary", "/formulas", "/concepts", "/library", "/notes", "/settings"];
 
 /** Every compiled client asset, read from the build output when this route is prerendered. */
 function buildAssets(): string[] {

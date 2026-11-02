@@ -43,6 +43,7 @@ const ICONS: Record<string, string> = {
   sun: "M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM12 1v2m0 18v2M4.2 4.2l1.4 1.4m12.8 12.8 1.4 1.4M1 12h2m18 0h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4",
   moon: "M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z",
   menu: "M4 6h16M4 12h16M4 18h16",
+  bolt: "M13 2 4 14h7l-1 8 9-12h-7z",
 };
 
 export function Icon({ name, className = "h-5 w-5" }: { name: string; className?: string }) {
@@ -59,6 +60,7 @@ function groups(due: number, errors: number, lang: Lang): { title: string; items
       title: "Study",
       items: [
         { href: "/", label: "Dashboard", icon: "home" },
+        { href: "/crash", label: "Crash course", icon: "bolt" },
         { href: "/learn", label: "Curriculum", icon: "book" },
         { href: "/review", label: "Daily review", icon: "cards", badge: due },
         { href: "/practice", label: "Practice & exams", icon: "target" },
