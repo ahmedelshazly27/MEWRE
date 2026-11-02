@@ -118,3 +118,16 @@ export function pickDiagnostic(modules: Module[], perModule = 4): PoolItem[] {
   }
   return out;
 }
+
+/** Stratified pick: one question from each group first (in random group order), then fill up to n at random. */
+export function pickStratified(groups: Question[][], n: number, seed: number): Question[] {
+  const shuffled = groups.filter((g) => g.length).map((g, i) => shuffle(g, seed + i));
+  const out: Question[] = [];
+  for (const g of shuffle(shuffled, seed)) if (out.length < n) out.push(g[0]);
+  const rest = shuffle(shuffled.flatMap((g) => g.slice(1)), seed + 999);
+  for (const q of rest) {
+    if (out.length >= n) break;
+    out.push(q);
+  }
+  return shuffle(out, seed + 1);
+}

@@ -2,10 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { index, modules } from "@/lib/content";
 import { lp } from "@/lib/i18n";
+import { SPRINT_BLOCKS } from "@/content/crash";
 
 export const dynamic = "force-static";
 
-const STATIC_ROUTES = ["/", "/crash", "/crash/exam", "/learn", "/review", "/practice", "/diagnostic", "/errors", "/scenarios", "/capstone", "/tutor", "/glossary", "/formulas", "/concepts", "/library", "/notes", "/settings"];
+const STATIC_ROUTES = ["/", "/crash", "/crash/exam", ...SPRINT_BLOCKS.map((b) => `/crash/check/${b.module}`), "/learn", "/review", "/practice", "/diagnostic", "/errors", "/scenarios", "/capstone", "/tutor", "/glossary", "/formulas", "/concepts", "/library", "/notes", "/settings"];
 
 /** Every compiled client asset, read from the build output when this route is prerendered. */
 function buildAssets(): string[] {

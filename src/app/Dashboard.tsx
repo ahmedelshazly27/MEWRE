@@ -90,8 +90,8 @@ export function Dashboard() {
           ⚡
         </span>
         <span className="min-w-0 flex-1">
-          <span className="block font-semibold">{tr("Trial week coming up? Two-week crash course")}</span>
-          <span className="block text-sm text-muted">{tr("14 days of the highest-yield lessons, a daily written output, and a playbook for the week itself.")}</span>
+          <span className="block font-semibold">{tr("Trial week coming up? 3–5 day sprint")}</span>
+          <span className="block text-sm text-muted">{tr("All 16 modules in 3, 4 or 5 days: cheat sheets, retrieval checks, the core lessons and a playbook for the week itself.")}</span>
         </span>
         <span className="text-accent">{fwd(lang)}</span>
       </Link>

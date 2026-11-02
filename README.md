@@ -4,7 +4,7 @@ A personal applied-learning platform to prepare for a **Project Manager role on 
 projects at Kuwait's Ministry of Electricity, Water and Renewable Energy (MEWRE)**: Shagaya
 Renewable Energy Park, Al Dibdibah / Shagaya Phase III and the utility-scale PV + BESS pipeline.
 
-- **Two-week crash course** (`/crash`) for a trial week: daily plan, outputs, playbook, crash exam
+- **Trial-week sprint** (`/crash`): all 16 modules in 3, 4 or 5 days — cheat sheets, retrieval checks, core lessons, written outputs, playbook and a final exam
 - **16 modules**, each lesson in three layers (theory, applied with Kuwait numbers, field practice)
 - **Retrieval practice** after every lesson, module exams, timed mixed exams, diagnostic baseline
 - **FSRS spaced repetition** over lesson flashcards, the bilingual glossary and the formula sheet

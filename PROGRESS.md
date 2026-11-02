@@ -93,13 +93,14 @@ physics error in the capstone, several overstated figures and Arabic glossary te
 - [x] Verified in Chromium (desktop + phone): RTL, no horizontal overflow, no KaTeX errors, no page errors
 - [x] Fixed: list bullets were clipped site-wide; formula cards overflowed the cheat-sheet grid on phones
 
-## Phase 9 — Two-week crash course for the trial week (2026-11-02)
+## Phase 9 — Trial-week sprint, 3/4/5 days (2026-11-02)
 
-- [x] `/crash` (and `/ar/crash`): 14-day plan over 29 high-yield lessons (~36 h), a scenario and a written output each day, cheat sheets to skim
-- [x] Progress tracker: lessons done, trial-week countdown, plan day, output ticks (synced doc `crash`)
-- [x] Trial-week playbook: numbers to know (with confidence labels from M0), who's who, questions to ask, day-by-day conduct, credibility traps, 60-second intro, key Arabic terms
-- [x] `/crash/exam`: 25 random questions across all crash lessons, timed, feedback at the end
-- [x] Dashboard banner and nav entry; routes in the offline download; `tests/crash.test.ts` guards every reference
+- [x] `/crash` (and `/ar/crash`): pick 3, 4 or 5 days; every plan covers all 16 modules (cheat sheet + 8-question retrieval check), core lessons in full; longer plans add lessons, scenarios and written outputs (~25 h / 32 h / 40 h, ~8 h a day)
+- [x] Planner (`src/lib/sprint.ts`) splits the work into balanced days at item level, keeping module order
+- [x] `/crash/check/[module]`: learning-mode check per module; `/crash/exam`: 25 timed questions with at least one per module
+- [x] Progress ticks (lessons, scenarios and checks auto-detected; cheat sheets and outputs ticked) and trial-week countdown, synced across devices
+- [x] Trial-week playbook (EN/AR): numbers to know with confidence labels, who's who, questions to ask, day-by-day conduct, credibility traps, 60-second intro, key Arabic terms
+- [x] Dashboard banner, nav entry, offline routes; `tests/crash.test.ts` covers references, coverage and day balance
 
 ## Known limitations / next ideas
 

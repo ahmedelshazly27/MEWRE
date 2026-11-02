@@ -1,30 +1,37 @@
 import { describe, expect, it } from "vitest";
-import { CRASH_DAYS, CRASH_TERMS, PLAYBOOK } from "@/content/crash";
-import { getLesson, getModule, getScenario, index } from "@/lib/content";
+import { CRASH_TERMS, PLAYBOOK, SPRINT_BLOCKS, SPRINT_DAYS, tierFor } from "@/content/crash";
+import { getLesson, getModule, getScenario, index, modules } from "@/lib/content";
+import { planSprint, type BlockInput } from "@/lib/sprint";
+import { pickStratified } from "@/lib/practice";
 
-describe("crash course", () => {
-  it("has 14 consecutive days", () => {
-    expect(CRASH_DAYS.map((d) => d.day)).toEqual(Array.from({ length: 14 }, (_, i) => i + 1));
+const inputs: BlockInput[] = SPRINT_BLOCKS.map((b) => ({
+  module: b.module,
+  sheetMin: b.sheetMin,
+  lessons: b.lessons.map(([id, tier]) => ({ id, tier, minutes: getLesson(id)!.lesson.minutes })),
+  scenario: b.scenario && { id: b.scenario[0], tier: b.scenario[1] },
+  output: b.output && { tier: b.output.tier },
+}));
+
+describe("trial-week sprint content", () => {
+  it("covers every module exactly once", () => {
+    expect(SPRINT_BLOCKS.map((b) => b.module).sort()).toEqual(modules.map((m) => m.id).sort());
   });
 
-  it("references lessons, scenarios and modules that exist, each lesson once", () => {
+  it("references lessons and scenarios of the right module, each lesson once", () => {
     const seen = new Set<string>();
-    for (const d of CRASH_DAYS) {
-      for (const id of d.lessons) {
-        expect(getLesson(id), id).toBeTruthy();
+    for (const b of SPRINT_BLOCKS) {
+      expect(getModule(b.module)).toBeTruthy();
+      for (const [id] of b.lessons) {
+        expect(getLesson(id)?.module.id, id).toBe(b.module);
         expect(seen.has(id), `duplicate ${id}`).toBe(false);
         seen.add(id);
       }
-      if (d.scenario) expect(getScenario(d.scenario), d.scenario).toBeTruthy();
-      for (const m of d.skim ?? []) expect(getModule(m), m).toBeTruthy();
+      if (b.scenario) expect(getScenario(b.scenario[0])?.module.id, b.scenario[0]).toBe(b.module);
     }
   });
 
   it("is fully bilingual", () => {
-    for (const d of CRASH_DAYS) for (const t of [d.title, d.why, d.output]) {
-      expect(t.en.length).toBeGreaterThan(10);
-      expect(t.ar).toMatch(/[؀-ۿ]/);
-    }
+    for (const b of SPRINT_BLOCKS) if (b.output) expect(b.output.text.ar).toMatch(/[؀-ۿ]/);
     for (const s of PLAYBOOK) {
       expect(s.md.en.length).toBeGreaterThan(50);
       expect(s.md.ar).toMatch(/[؀-ۿ]/);
@@ -36,8 +43,47 @@ describe("crash course", () => {
     for (const id of CRASH_TERMS) expect(ids.has(id), id).toBe(true);
   });
 
-  it("has enough quiz questions for a 25-question exam", () => {
-    const pool = CRASH_DAYS.flatMap((d) => d.lessons.flatMap((id) => getLesson(id)!.lesson.quiz));
-    expect(pool.length).toBeGreaterThanOrEqual(25);
+  it("has enough questions for every module check and the final exam", () => {
+    for (const b of SPRINT_BLOCKS) {
+      const m = getModule(b.module)!;
+      expect(m.lessons.flatMap((l) => l.quiz).length + m.exam.length, b.module).toBeGreaterThanOrEqual(8);
+    }
+  });
+});
+
+describe("sprint planner", () => {
+  for (const days of SPRINT_DAYS) {
+    it(`packs a ${days}-day plan in module order with balanced days`, () => {
+      const plan = planSprint(inputs, days);
+      expect(plan).toHaveLength(days);
+      const order = [...new Set(plan.flatMap((d) => d.segments.filter((s) => s.block).map((s) => s.block!.module)))];
+      expect(order).toEqual(SPRINT_BLOCKS.map((b) => b.module));
+      expect(plan.every((d) => d.segments.length > 0)).toBe(true);
+      expect(plan[days - 1].segments.at(-1)!.items.map((i) => i.kind)).toEqual(["playbook", "exam"]);
+      const mins = plan.map((d) => d.minutes);
+      const avg = mins.reduce((a, b) => a + b, 0) / days;
+      for (const m of mins) expect(Math.abs(m - avg) / avg).toBeLessThan(0.15);
+      // a sprint day stays humane
+      expect(avg).toBeLessThan(8.75 * 60);
+    });
+  }
+
+  it("adds material as the plan gets longer and always includes core lessons", () => {
+    const totals = SPRINT_DAYS.map((d) => planSprint(inputs, d).reduce((s, x) => s + x.minutes, 0));
+    expect(totals[0]).toBeLessThan(totals[1]);
+    expect(totals[1]).toBeLessThan(totals[2]);
+    const three = planSprint(inputs, 3).flatMap((d) => d.segments.flatMap((s) => s.items.flatMap((i) => (i.kind === "lesson" ? [i.id] : []))));
+    for (const b of SPRINT_BLOCKS) for (const [id, tier] of b.lessons) if (tier === 1) expect(three).toContain(id);
+    expect(tierFor(5)).toBe(3);
+  });
+});
+
+describe("stratified exam pick", () => {
+  it("takes one question per group before repeating a group", () => {
+    const groups = SPRINT_BLOCKS.map((b) => getModule(b.module)!.exam);
+    const qs = pickStratified(groups, 25, 42);
+    expect(qs).toHaveLength(25);
+    expect(new Set(qs.map((q) => q.id)).size).toBe(25);
+    for (const g of groups) if (g.length) expect(qs.some((q) => g.includes(q))).toBe(true);
   });
 });

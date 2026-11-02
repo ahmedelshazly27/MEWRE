@@ -1,227 +1,155 @@
 /**
- * Two-week crash course for the MEWRE trial week: a day-by-day path through the highest-yield lessons,
- * plus a trial-week playbook. All facts are taken from the module content (mainly the M0 cheat sheet);
+ * 3–5 day sprint for the MEWRE trial week: every module through its cheat sheet and a retrieval check,
+ * the most job-critical lessons in full (more of them in longer plans), plus a trial-week playbook. All facts are taken from the module content (mainly the M0 cheat sheet);
  * ids are checked by tests/crash.test.ts.
  */
 import { md } from "./schema";
 
 type Text = { en: string; ar: string };
 
-export interface CrashDay {
-  day: number;
-  title: Text;
-  why: Text;
-  lessons: string[];
-  /** Day-in-the-life / lesson scenario to play at the end of the day. */
-  scenario?: string;
-  /** Module cheat sheets to skim (5–10 min each). */
-  skim?: string[];
-  /** Something written you produce — it becomes material for the trial week. */
-  output: Text;
+/** 1 = in every plan (3 days), 2 = 4- and 5-day plans, 3 = 5-day plan only. */
+export type Tier = 1 | 2 | 3;
+
+export interface SprintBlock {
+  module: string;
+  /** Minutes to read the module cheat sheet properly. */
+  sheetMin: number;
+  lessons: [id: string, tier: Tier][];
+  scenario?: [id: string, tier: Tier];
+  /** A written output — material you bring to the trial week. */
+  output?: { tier: Tier; text: Text };
 }
 
-export const CRASH_DAYS: CrashDay[] = [
+export const SPRINT_DAYS = [3, 4, 5] as const;
+export type SprintDays = (typeof SPRINT_DAYS)[number];
+export const tierFor = (days: SprintDays): Tier => (days === 3 ? 1 : days === 4 ? 2 : 3);
+
+/** Minutes for the 8-question retrieval check after each module, the playbook and the final exam. */
+export const CHECK_MIN = 12;
+export const CHECK_QUESTIONS = 8;
+export const PLAYBOOK_MIN = 45;
+export const EXAM_MIN = 42;
+export const EXAM_QUESTIONS = 25;
+
+/**
+ * Every module, in job-relevance order. Each is covered at least by its cheat sheet and a retrieval check;
+ * the lessons that matter most for the trial week are studied in full.
+ */
+export const SPRINT_BLOCKS: SprintBlock[] = [
   {
-    day: 1,
-    title: { en: "Kuwait's power system and who decides", ar: "منظومة الكهرباء في الكويت ومن يتخذ القرار" },
-    why: {
-      en: "Every conversation at the ministry starts from peak demand, reserve margin and which body signs what.",
-      ar: "كل نقاش في الوزارة يبدأ من ذروة الطلب والهامش الاحتياطي ومن الجهة التي توقّع على ماذا.",
-    },
-    lessons: ["m00-l01", "m00-l02"],
-    scenario: "m00-s2",
+    module: "m00",
+    sheetMin: 25,
+    lessons: [["m00-l01", 1], ["m00-l02", 1], ["m00-l04", 1], ["m00-l05", 2]],
+    scenario: ["m00-s2", 2],
     output: {
-      en: "From memory, draw the institution map (MEWRE, KAPP, Higher Committee, CAPT, Audit Bureau, Fatwa & Legislation, KISR) and write the 10-step IPP approval chain. Check it against the cheat sheet.",
-      ar: "ارسم من الذاكرة خريطة الجهات (الوزارة، KAPP، اللجنة العليا، الجهاز المركزي للمناقصات العامة، ديوان المحاسبة، إدارة الفتوى والتشريع، KISR) واكتب سلسلة اعتماد مشاريع IPP بخطواتها العشر، ثم قارنها بالملخص المركّز.",
+      tier: 1,
+      text: {
+        en: "From memory, draw the institution map (MEWRE, KAPP, Higher Committee, CAPT, Audit Bureau, Fatwa & Legislation, KISR), write the 10-step IPP approval chain, and list the pipeline projects with their status and confidence (H/M/L).",
+        ar: "ارسم من الذاكرة خريطة الجهات (الوزارة، KAPP، اللجنة العليا، الجهاز المركزي للمناقصات العامة، ديوان المحاسبة، إدارة الفتوى والتشريع، KISR)، واكتب سلسلة اعتماد مشاريع IPP بخطواتها العشر، ثم اكتب قائمة المشاريع مع حالتها ودرجة الثقة (H/M/L).",
+      },
     },
   },
   {
-    day: 2,
-    title: { en: "Targets, pipeline and how projects get funded", ar: "الأهداف وقائمة المشاريع وكيف تُموَّل" },
-    why: {
-      en: "You will be asked where projects stand. Knowing the pipeline with honest confidence levels is the fastest way to sound prepared.",
-      ar: "سيُطلب منك معرفة موقف المشاريع. معرفة قائمة المشاريع مع درجة الثقة الصادقة لكل معلومة هي أسرع طريق لتبدو مستعداً.",
-    },
-    lessons: ["m00-l04", "m00-l05"],
-    scenario: "m00-s4",
-    skim: ["m00"],
+    module: "m13",
+    sheetMin: 20,
+    lessons: [["m13-l01", 1], ["m13-l02", 2], ["m13-l03", 3]],
+    scenario: ["m13-s4", 3],
+  },
+  {
+    module: "m01",
+    sheetMin: 20,
+    lessons: [["m01-l05", 1]],
     output: {
-      en: "Build a one-page pipeline tracker: project, capacity, delivery route (EPC / PPP / G2G), status, source, confidence (H/M/L).",
-      ar: "أعدّ متتبّعاً لقائمة المشاريع في صفحة واحدة: المشروع، السعة، مسار التنفيذ (EPC / PPP / G2G)، الحالة، المصدر، درجة الثقة (H/M/L).",
+      tier: 3,
+      text: {
+        en: "Explain to a non-engineer, in five sentences, why a 1,000 MWp solar plant does not give 1,000 MW at the evening peak.",
+        ar: "اشرح لشخص غير مهندس، في خمس جمل، لماذا لا تعطي محطة شمسية بقدرة 1,000 MWp قدرة 1,000 MW وقت ذروة المساء.",
+      },
     },
   },
   {
-    day: 3,
-    title: { en: "How the ministry works + the power basics you'll hear daily", ar: "كيف تعمل الوزارة + أساسيات الكهرباء التي ستسمعها يومياً" },
-    why: {
-      en: "Hierarchy, paper flow and a few engineering terms (capacity factor, MWp vs MWac, power factor) come up in every meeting.",
-      ar: "التسلسل الإداري ومسار المراسلات وبعض المصطلحات الهندسية (معامل السعة، MWp مقابل MWac، عامل القدرة) تتكرر في كل اجتماع.",
-    },
-    lessons: ["m13-l01", "m01-l05", "m01-l02"],
-    scenario: "m13-s1",
+    module: "m02",
+    sheetMin: 25,
+    lessons: [["m02-l04", 1], ["m02-l06", 2]],
+    scenario: ["m02-s6", 3],
     output: {
-      en: "Explain to a non-engineer, in five sentences, why a 1,000 MWp solar plant does not give 1,000 MW at the evening peak.",
-      ar: "اشرح لشخص غير مهندس، في خمس جمل، لماذا لا تعطي محطة شمسية بقدرة 1,000 MWp قدرة 1,000 MW وقت ذروة المساء.",
+      tier: 2,
+      text: {
+        en: "Back-of-envelope: annual energy of an 1,100 MW plant with E = P × CF × 8760. State your CF assumption and where it comes from.",
+        ar: "حساب تقريبي: الطاقة السنوية لمحطة 1,100 MW باستخدام E = P × CF × 8760. اذكر افتراضك لمعامل السعة ومصدره.",
+      },
     },
   },
   {
-    day: 4,
-    title: { en: "Solar PV plants that matter to a PM", ar: "محطات الطاقة الشمسية من منظور مدير المشروع" },
-    why: {
-      en: "Trackers, DC/AC ratio, P50/P90 and performance ratio are the vocabulary of every PV design review and bid.",
-      ar: "أنظمة التتبع ونسبة DC/AC وP50/P90 ونسبة الأداء هي مفردات كل مراجعة تصميم وكل عطاء لمحطة شمسية.",
-    },
-    lessons: ["m02-l04", "m02-l06"],
-    scenario: "m02-s6",
-    skim: ["m02"],
+    module: "m05",
+    sheetMin: 20,
+    lessons: [["m05-l02", 1], ["m05-l03", 3]],
     output: {
-      en: "Back-of-envelope: annual energy of an 1,100 MW plant with E = P × CF × 8760. State your CF assumption and where it comes from.",
-      ar: "حساب تقريبي: الطاقة السنوية لمحطة 1,100 MW باستخدام E = P × CF × 8760. اذكر افتراضك لمعامل السعة ومصدره.",
+      tier: 3,
+      text: {
+        en: "Size a BESS to cover an evening peak: power (MW), energy (MWh), duration (h), and the usable vs nameplate difference.",
+        ar: "حدّد حجم نظام بطاريات لتغطية ذروة المساء: القدرة (MW) والطاقة (MWh) والمدة (ساعات)، والفرق بين السعة القابلة للاستخدام والسعة الاسمية.",
+      },
+    },
+  },
+  { module: "m06", sheetMin: 20, lessons: [] },
+  { module: "m03", sheetMin: 12, lessons: [] },
+  { module: "m04", sheetMin: 12, lessons: [] },
+  {
+    module: "m07",
+    sheetMin: 20,
+    lessons: [["m07-l05", 1]],
+    scenario: ["m07-s4", 3],
+  },
+  {
+    module: "m08",
+    sheetMin: 25,
+    lessons: [["m08-l01", 1], ["m08-l08", 3], ["m08-l05", 3]],
+    scenario: ["m08-s8", 2],
+    output: {
+      tier: 3,
+      text: {
+        en: "Draft a 10-line risk register for a 500 MW PV + BESS project: risk, cause, impact, probability, owner, response.",
+        ar: "أعدّ مسودة سجل مخاطر من 10 أسطر لمشروع 500 MW من PV + BESS: الخطر، السبب، الأثر، الاحتمال، المسؤول، الاستجابة.",
+      },
     },
   },
   {
-    day: 5,
-    title: { en: "Battery storage: the next tender", ar: "تخزين الطاقة بالبطاريات: المناقصة القادمة" },
-    why: {
-      en: "BESS is planned at GW scale. MW vs MWh, C-rate, round-trip efficiency and state of health are what you must not confuse.",
-      ar: "البطاريات مخطط لها على مستوى الجيجاواط. يجب ألا تخلط بين MW وMWh ومعدل C وكفاءة الدورة الكاملة وحالة صحة البطارية.",
-    },
-    lessons: ["m05-l02", "m05-l03"],
-    scenario: "m05-s3",
-    skim: ["m05"],
+    module: "m09",
+    sheetMin: 25,
+    lessons: [["m09-l05", 1], ["m09-l01", 3]],
     output: {
-      en: "Size a BESS to cover an evening peak: power (MW), energy (MWh), duration (h), and the usable vs nameplate difference.",
-      ar: "حدّد حجم نظام بطاريات لتغطية ذروة المساء: القدرة (MW) والطاقة (MWh) والمدة (ساعات)، والفرق بين السعة القابلة للاستخدام والسعة الاسمية.",
+      tier: 2,
+      text: {
+        en: "Compare a state-funded EPC project with an IPP under a PPA: who funds, who takes construction risk, who takes energy risk, who the ministry pays and for what.",
+        ar: "قارن بين مشروع EPC بتمويل حكومي ومشروع IPP باتفاقية شراء طاقة: من يموّل، ومن يتحمل خطر الإنشاء، ومن يتحمل خطر الإنتاج، ولمن تدفع الوزارة ومقابل ماذا.",
+      },
     },
   },
   {
-    day: 6,
-    title: { en: "Connecting to the grid", ar: "الربط بالشبكة" },
-    why: {
-      en: "Grid code compliance and interconnection studies are where renewable projects slip. A PM who asks the right grid questions stands out.",
-      ar: "الالتزام بكود الشبكة ودراسات الربط هي المواضع التي تتأخر فيها مشاريع الطاقة المتجددة. مدير المشروع الذي يطرح أسئلة الشبكة الصحيحة يتميّز.",
-    },
-    lessons: ["m06-l02", "m06-l04"],
-    scenario: "m06-s4",
-    skim: ["m06"],
-    output: {
-      en: "List five grid-code requirements a PV + BESS plant must prove before energisation, and who tests each one.",
-      ar: "اكتب خمسة من اشتراطات كود الشبكة يجب أن تثبتها محطة PV + BESS قبل التشغيل، ومن يختبر كلاً منها.",
-    },
+    module: "m10",
+    sheetMin: 25,
+    lessons: [["m10-l02", 1], ["m10-l05", 2]],
+    scenario: ["m10-s4", 3],
   },
   {
-    day: 7,
-    title: { en: "Consolidate: the capstone brief", ar: "التثبيت: موجز المشروع الختامي" },
-    why: {
-      en: "A lighter day. Pull the first week together around one realistic 1 GW PV + BESS project and clear your review queue.",
-      ar: "يوم أخف. اجمع ما تعلمته في الأسبوع الأول حول مشروع واقعي بقدرة 1 GW من PV + BESS وأنهِ قائمة المراجعة.",
-    },
-    lessons: ["m15-l01"],
-    scenario: "m15-s1",
-    output: {
-      en: "Write your 60-second introduction (template in the playbook below) and say it out loud three times.",
-      ar: "اكتب تعريفك بنفسك في 60 ثانية (النموذج في دليل أسبوع التجربة أدناه) وقُله بصوت مرتفع ثلاث مرات.",
-    },
+    module: "m11",
+    sheetMin: 20,
+    lessons: [["m11-l03", 1]],
+    scenario: ["m11-s5", 2],
   },
+  { module: "m12", sheetMin: 12, lessons: [] },
+  { module: "m14", sheetMin: 15, lessons: [] },
   {
-    day: 8,
-    title: { en: "From feasibility to COD", ar: "من دراسة الجدوى إلى التشغيل التجاري" },
-    why: {
-      en: "Stage gates and the testing-to-COD sequence are the backbone of what the project team tracks every week.",
-      ar: "بوابات المراحل وتسلسل الاختبارات حتى التشغيل التجاري هي العمود الفقري لما يتابعه فريق المشروع أسبوعياً.",
-    },
-    lessons: ["m07-l01", "m07-l05"],
-    scenario: "m07-s4",
-    output: {
-      en: "One page: the gates from feasibility to COD, the key document at each gate, and who approves it.",
-      ar: "صفحة واحدة: البوابات من دراسة الجدوى حتى التشغيل التجاري، والوثيقة الرئيسية في كل بوابة، ومن يعتمدها.",
-    },
-  },
-  {
-    day: 9,
-    title: { en: "Contracts: FIDIC, EPC and PPAs", ar: "العقود: FIDIC وEPC واتفاقيات شراء الطاقة" },
-    why: {
-      en: "Who carries which risk — contractor, developer or ministry — decides most arguments you will witness.",
-      ar: "من يتحمّل أي خطر — المقاول أم المطوّر أم الوزارة — يحسم معظم الخلافات التي ستشهدها.",
-    },
-    lessons: ["m09-l01", "m09-l05"],
-    scenario: "m09-s4",
-    output: {
-      en: "Compare a state-funded EPC project with an IPP under a PPA: who funds, who takes construction risk, who takes energy risk, who the ministry pays and for what.",
-      ar: "قارن بين مشروع EPC بتمويل حكومي ومشروع IPP باتفاقية شراء طاقة: من يموّل، ومن يتحمل خطر الإنشاء، ومن يتحمل خطر الإنتاج، ولمن تدفع الوزارة ومقابل ماذا.",
-    },
-  },
-  {
-    day: 10,
-    title: { en: "The money: LCOE and comparing tariff bids", ar: "المال: تكلفة الطاقة المستوية ومقارنة عطاءات التعرفة" },
-    why: {
-      en: "Gulf solar tariffs are among the lowest in the world. Being able to say why — and to compare two bids properly — is senior-level thinking.",
-      ar: "تعرفات الطاقة الشمسية في الخليج من الأدنى عالمياً. أن تستطيع شرح السبب ومقارنة عطاءين بشكل صحيح هو تفكير بمستوى قيادي.",
-    },
-    lessons: ["m10-l02", "m10-l05"],
-    scenario: "m10-s4",
-    skim: ["m10"],
-    output: {
-      en: "Using the LCOE widget, show which input (capex, WACC, yield, opex) moves the tariff most, and rank two hypothetical bids on levelized tariff.",
-      ar: "باستخدام أداة LCOE، بيّن أي مدخل (التكلفة الرأسمالية، WACC، الإنتاجية، تكاليف التشغيل) يحرّك التعرفة أكثر، ورتّب عطاءين افتراضيين حسب التعرفة المستوية.",
-    },
-  },
-  {
-    day: 11,
-    title: { en: "Procurement, approvals and delays", ar: "المشتريات والاعتمادات والتأخير" },
-    why: {
-      en: "KAPP, CAPT and the Audit Bureau shape every timeline. Knowing where files stall — and how to unblock them — is what a ministry PM is valued for.",
-      ar: "KAPP والجهاز المركزي للمناقصات العامة وديوان المحاسبة تحدد كل جدول زمني. معرفة أين تتعثر الملفات وكيف تُحل هي ما يُقدَّر عليه مدير المشروع في الوزارة.",
-    },
-    lessons: ["m11-l03", "m11-l04", "m11-l05"],
-    scenario: "m11-s5",
-    skim: ["m11"],
-    output: {
-      en: "Map the five places a PPP renewable project most often waits, and one concrete action a PM can take at each.",
-      ar: "حدّد المواضع الخمسة التي ينتظر فيها مشروع طاقة متجددة بنظام الشراكة غالباً، وإجراءً عملياً واحداً يستطيع مدير المشروع اتخاذه عند كل منها.",
-    },
-  },
-  {
-    day: 12,
-    title: { en: "Governance, risk and reporting upward", ar: "الحوكمة والمخاطر ورفع التقارير للقيادة" },
-    why: {
-      en: "Steering committees, a living risk register and short honest status reports are what leadership notices first.",
-      ar: "اللجان التوجيهية وسجل المخاطر الحي وتقارير الحالة القصيرة والصادقة هي أول ما تلاحظه القيادة.",
-    },
-    lessons: ["m08-l01", "m08-l05", "m08-l08"],
-    scenario: "m08-s8",
-    output: {
-      en: "Draft a 10-line risk register for a 500 MW PV + BESS project: risk, cause, impact, probability, owner, response.",
-      ar: "أعدّ مسودة سجل مخاطر من 10 أسطر لمشروع 500 MW من PV + BESS: الخطر، السبب، الأثر، الاحتمال، المسؤول، الاستجابة.",
-    },
-  },
-  {
-    day: 13,
-    title: { en: "Write and present like a ministry PM", ar: "اكتب واعرض كمدير مشروع في الوزارة" },
-    why: {
-      en: "A crisp bilingual one-page brief is the single most impressive thing you can hand over in a trial week. Use AI to draft — safely.",
-      ar: "الموجز الثنائي اللغة في صفحة واحدة هو أكثر ما يمكن أن تقدمه إبهاراً في أسبوع التجربة. استخدم الذكاء الاصطناعي في الصياغة بأمان.",
-    },
-    lessons: ["m13-l02", "m13-l03", "m14-l06"],
-    scenario: "m13-s4",
-    output: {
-      en: "Write a one-page brief in English and Arabic on 'Kuwait's renewable pipeline: status and next decisions', plus a three-slide outline.",
-      ar: "اكتب موجزاً في صفحة واحدة بالعربية والإنجليزية بعنوان «قائمة مشاريع الطاقة المتجددة في الكويت: الوضع الحالي والقرارات القادمة»، مع مخطط عرض من ثلاث شرائح.",
-    },
-  },
-  {
-    day: 14,
-    title: { en: "Dress rehearsal", ar: "البروفة النهائية" },
-    why: {
-      en: "No new material. Take the crash exam, play two day-in-the-life scenarios, rehearse your introduction and questions, and rest.",
-      ar: "لا مادة جديدة. أدِّ اختبار الدورة المكثفة، والعب سيناريوهين من «يوم في حياة مدير المشروع»، وتدرّب على تعريفك وأسئلتك، ثم استرح.",
-    },
+    module: "m15",
+    sheetMin: 10,
     lessons: [],
-    scenario: "m13-s5",
-    skim: ["m00", "m15"],
     output: {
-      en: "Take the crash exam (below). Review every miss in the error log. Re-read the playbook and pick your five questions for day one.",
-      ar: "أدِّ اختبار الدورة المكثفة (أدناه). راجع كل خطأ في سجل الأخطاء. أعد قراءة الدليل واختر أسئلتك الخمسة لليوم الأول.",
+      tier: 1,
+      text: {
+        en: "Write a one-page brief, in English and Arabic, on 'Kuwait's renewable pipeline: status and next decisions'. Then write your 60-second introduction (template in the playbook) and say it out loud three times.",
+        ar: "اكتب موجزاً في صفحة واحدة بالعربية والإنجليزية بعنوان «قائمة مشاريع الطاقة المتجددة في الكويت: الوضع الحالي والقرارات القادمة». ثم اكتب تعريفك بنفسك في 60 ثانية (النموذج في الدليل) وقُله بصوت مرتفع ثلاث مرات.",
+      },
     },
   },
 ];
