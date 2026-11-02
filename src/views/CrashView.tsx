@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { KEY_CONCEPTS } from "@/content/key";
 import { CHECK_QUESTIONS, CRASH_TERMS, EXAM_MIN, EXAM_QUESTIONS, PLAYBOOK, SPRINT_BLOCKS } from "@/content/crash";
 import { getLesson, getModule, getScenario, index } from "@/lib/content";
 import { back, fwd, lp, t, type Lang } from "@/lib/i18n";
 import { Markdown } from "@/components/Markdown";
 import { CheckClient, CrashExamClient, SprintPlan, type BlockDto } from "@/components/crash/CrashClient";
 import { Card, PageHeader } from "@/components/ui";
+import { KeyBoard, type KeyDto } from "@/components/crash/KeyBoard";
 
 function blocks(lang: Lang): BlockDto[] {
   return SPRINT_BLOCKS.map((b) => {
@@ -16,6 +18,7 @@ function blocks(lang: Lang): BlockDto[] {
       number: m.number,
       title: m.title,
       sheetMin: b.sheetMin,
+      concepts: (KEY_CONCEPTS[b.module]?.[lang] ?? []).map((k) => ({ id: k.id, tier: k.tier })),
       lessons: b.lessons.map(([id, tier]) => {
         const l = getLesson(id, lang)!.lesson;
         return { id, tier, minutes: l.minutes, title: l.title };
@@ -46,6 +49,17 @@ export function CrashView({ lang }: { lang: Lang }) {
           <li>{t(lang, "Keep every written output: together they are what you bring to the trial week.")}</li>
         </ul>
       </Card>
+
+      <Link href={lp(lang, "/crash/concepts")} className="mb-6 flex items-center gap-3 rounded-xl border border-danger/40 bg-danger-soft/30 px-4 py-3 hover:bg-danger-soft/50">
+        <span className="text-2xl" aria-hidden>
+          🧠
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-semibold">{t(lang, "Must-know concepts")}</span>
+          <span className="block text-sm text-muted">{t(lang, "What to memorize and be able to explain on the spot — with a self-test that feeds your daily review.")}</span>
+        </span>
+        <span className="text-accent">{fwd(lang)}</span>
+      </Link>
 
       <SprintPlan blocks={blocks(lang)} />
 
@@ -133,6 +147,34 @@ export function CheckView({ moduleId, lang }: { moduleId: string; lang: Lang }) 
         </Link>
       </PageHeader>
       <CheckClient pool={pool} moduleId={m.id} title={title} />
+    </div>
+  );
+}
+
+/** Must-know concepts for the given language, in sprint (job-relevance) order. */
+export function keyDtos(lang: Lang): KeyDto[] {
+  return SPRINT_BLOCKS.flatMap((b) => {
+    const m = getModule(b.module, lang)!;
+    return (KEY_CONCEPTS[b.module]?.[lang] ?? []).map((k) => ({
+      ...k,
+      module: m.id,
+      moduleNumber: m.number,
+      moduleTitle: m.title,
+      lessonTitle: getLesson(k.lesson, lang)?.lesson.title ?? "",
+    }));
+  });
+}
+
+export function KeyConceptsView({ lang }: { lang: Lang }) {
+  const concepts = keyDtos(lang);
+  return (
+    <div className="mx-auto max-w-3xl">
+      <Back lang={lang} />
+      <PageHeader
+        title={t(lang, "Must-know concepts")}
+        subtitle={t(lang, "{n} concepts you should be able to explain on the spot if a colleague asks — each with the one sentence to memorize, how to say it, a picture to remember it by, why it matters and the classic mix-up.", { n: concepts.length })}
+      />
+      <KeyBoard concepts={concepts} />
     </div>
   );
 }

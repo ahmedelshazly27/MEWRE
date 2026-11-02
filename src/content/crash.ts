@@ -38,8 +38,8 @@ export const EXAM_QUESTIONS = 25;
 export const SPRINT_BLOCKS: SprintBlock[] = [
   {
     module: "m00",
-    sheetMin: 25,
-    lessons: [["m00-l01", 1], ["m00-l02", 1], ["m00-l04", 1], ["m00-l05", 2]],
+    sheetMin: 15,
+    lessons: [["m00-l01", 1], ["m00-l02", 1], ["m00-l04", 1], ["m00-l05", 3]],
     scenario: ["m00-s2", 2],
     output: {
       tier: 1,
@@ -51,13 +51,13 @@ export const SPRINT_BLOCKS: SprintBlock[] = [
   },
   {
     module: "m13",
-    sheetMin: 20,
-    lessons: [["m13-l01", 1], ["m13-l02", 2], ["m13-l03", 3]],
+    sheetMin: 12,
+    lessons: [["m13-l01", 1], ["m13-l02", 2]],
     scenario: ["m13-s4", 3],
   },
   {
     module: "m01",
-    sheetMin: 20,
+    sheetMin: 12,
     lessons: [["m01-l05", 1]],
     output: {
       tier: 3,
@@ -69,8 +69,8 @@ export const SPRINT_BLOCKS: SprintBlock[] = [
   },
   {
     module: "m02",
-    sheetMin: 25,
-    lessons: [["m02-l04", 1], ["m02-l06", 2]],
+    sheetMin: 15,
+    lessons: [["m02-l04", 1], ["m02-l06", 3]],
     scenario: ["m02-s6", 3],
     output: {
       tier: 2,
@@ -82,8 +82,8 @@ export const SPRINT_BLOCKS: SprintBlock[] = [
   },
   {
     module: "m05",
-    sheetMin: 20,
-    lessons: [["m05-l02", 1], ["m05-l03", 3]],
+    sheetMin: 12,
+    lessons: [["m05-l02", 1]],
     output: {
       tier: 3,
       text: {
@@ -92,19 +92,19 @@ export const SPRINT_BLOCKS: SprintBlock[] = [
       },
     },
   },
-  { module: "m06", sheetMin: 20, lessons: [] },
-  { module: "m03", sheetMin: 12, lessons: [] },
-  { module: "m04", sheetMin: 12, lessons: [] },
+  { module: "m06", sheetMin: 12, lessons: [] },
+  { module: "m03", sheetMin: 8, lessons: [] },
+  { module: "m04", sheetMin: 8, lessons: [] },
   {
     module: "m07",
-    sheetMin: 20,
-    lessons: [["m07-l05", 1]],
+    sheetMin: 12,
+    lessons: [["m07-l05", 2]],
     scenario: ["m07-s4", 3],
   },
   {
     module: "m08",
-    sheetMin: 25,
-    lessons: [["m08-l01", 1], ["m08-l08", 3], ["m08-l05", 3]],
+    sheetMin: 15,
+    lessons: [["m08-l01", 1], ["m08-l08", 3]],
     scenario: ["m08-s8", 2],
     output: {
       tier: 3,
@@ -116,7 +116,7 @@ export const SPRINT_BLOCKS: SprintBlock[] = [
   },
   {
     module: "m09",
-    sheetMin: 25,
+    sheetMin: 15,
     lessons: [["m09-l05", 1], ["m09-l01", 3]],
     output: {
       tier: 2,
@@ -128,21 +128,21 @@ export const SPRINT_BLOCKS: SprintBlock[] = [
   },
   {
     module: "m10",
-    sheetMin: 25,
-    lessons: [["m10-l02", 1], ["m10-l05", 2]],
+    sheetMin: 15,
+    lessons: [["m10-l02", 1], ["m10-l05", 3]],
     scenario: ["m10-s4", 3],
   },
   {
     module: "m11",
-    sheetMin: 20,
+    sheetMin: 12,
     lessons: [["m11-l03", 1]],
     scenario: ["m11-s5", 2],
   },
-  { module: "m12", sheetMin: 12, lessons: [] },
-  { module: "m14", sheetMin: 15, lessons: [] },
+  { module: "m12", sheetMin: 8, lessons: [] },
+  { module: "m14", sheetMin: 9, lessons: [] },
   {
     module: "m15",
-    sheetMin: 10,
+    sheetMin: 8,
     lessons: [],
     output: {
       tier: 1,

@@ -29,7 +29,7 @@ function checkTex(tex: string, where: string, issues: ValidationIssue[]) {
   }
 }
 
-function checkMd(text: string | undefined, where: string, issues: ValidationIssue[]) {
+export function checkMd(text: string | undefined, where: string, issues: ValidationIssue[]) {
   if (text === undefined) return;
   if (typeof text !== "string") {
     issues.push({ where, message: "expected markdown string" });

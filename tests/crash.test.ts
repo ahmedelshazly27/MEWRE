@@ -3,10 +3,12 @@ import { CRASH_TERMS, PLAYBOOK, SPRINT_BLOCKS, SPRINT_DAYS, tierFor } from "@/co
 import { getLesson, getModule, getScenario, index, modules } from "@/lib/content";
 import { planSprint, type BlockInput } from "@/lib/sprint";
 import { pickStratified } from "@/lib/practice";
+import { KEY_CONCEPTS } from "@/content/key";
 
 const inputs: BlockInput[] = SPRINT_BLOCKS.map((b) => ({
   module: b.module,
   sheetMin: b.sheetMin,
+  concepts: KEY_CONCEPTS[b.module].en.map((k) => ({ id: k.id, tier: k.tier })),
   lessons: b.lessons.map(([id, tier]) => ({ id, tier, minutes: getLesson(id)!.lesson.minutes })),
   scenario: b.scenario && { id: b.scenario[0], tier: b.scenario[1] },
   output: b.output && { tier: b.output.tier },

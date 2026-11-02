@@ -102,6 +102,13 @@ physics error in the capstone, several overstated figures and Arabic glossary te
 - [x] Trial-week playbook (EN/AR): numbers to know with confidence labels, who's who, questions to ask, day-by-day conduct, credibility traps, 60-second intro, key Arabic terms
 - [x] Dashboard banner, nav entry, offline routes; `tests/crash.test.ts` covers references, coverage and day balance
 
+## Phase 10 — Must-know concepts (2026-11-02)
+
+- [x] 156 concepts across all 16 modules (110 must-know, 46 good-to-know) in `src/content/key/`, English + Arabic: one sentence to memorize, "say it like this", an analogy, why it matters, an example from the lessons, the classic mix-up
+- [x] `/crash/concepts`: study mode, self-test mode (reveal → "I could explain it" / "Not yet"), filters, progress; self-test answers schedule each concept as a "Must-know" card in the FSRS daily review
+- [x] Marked on lesson pages ("Must know" card after the objectives) and module pages; a step in every sprint module (plans rebalanced to ~8 h a day)
+- [x] `validateKeyConcepts` (ids, lessons, KaTeX, definition length, Arabic mirrors English) in `validate:content` and `tests/key.test.ts`; one owner module per concept
+
 ## Known limitations / next ideas
 
 - Interactive widgets and diagrams are English-only (they render LTR inside Arabic pages). Library reference titles stay in their original language.

@@ -15,7 +15,7 @@ import { Card, Pill, ProgressBar, Stat, fmtDuration } from "@/components/ui";
 import { RunHistory } from "@/components/progress";
 
 /** Synced doc holding the learner's sprint choices and ticks. */
-type CrashDoc = { days?: SprintDays; trialDate?: string; read?: string[]; outputs?: string[]; playbook?: boolean };
+type CrashDoc = { days?: SprintDays; trialDate?: string; read?: string[]; outputs?: string[]; playbook?: boolean; known?: string[] };
 const DOC = "crash";
 
 export interface BlockDto {
@@ -23,6 +23,7 @@ export interface BlockDto {
   number: number;
   title: string;
   sheetMin: number;
+  concepts: { id: string; tier: 1 | 2 }[];
   lessons: { id: string; tier: Tier; minutes: number; title: string }[];
   scenario?: { id: string; tier: Tier; title: string };
   output?: { tier: Tier; text: string };
@@ -89,6 +90,8 @@ export function SprintPlan({ blocks }: { blocks: BlockDto[] }) {
     switch (it.kind) {
       case "sheet":
         return !!doc.read?.includes(b!.module);
+      case "concepts":
+        return it.ids.every((id) => doc.known?.includes(id));
       case "lesson":
         return lessonDone(it.id);
       case "scenario":
@@ -182,6 +185,14 @@ export function SprintPlan({ blocks }: { blocks: BlockDto[] }) {
                                 📄 {t("Read the cheat sheet")}
                               </Row>
                             );
+                          case "concepts": {
+                            const n = it.ids.filter((id) => doc.known?.includes(id)).length;
+                            return (
+                              <Row key={ii} done={ok} tickLabel={t("Completed when you can explain every concept")} href={href(`/crash/concepts?m=${b!.module}`)} minutes={it.minutes} badge={`${n}/${it.ids.length}`}>
+                                🧠 {t("Must-know concepts: learn to explain them")}
+                              </Row>
+                            );
+                          }
                           case "lesson": {
                             const l = b!.lessons.find((x) => x.id === it.id)!;
                             return (

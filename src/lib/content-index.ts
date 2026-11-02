@@ -8,6 +8,6 @@ export interface ContentIndex {
   lessons: { id: string; moduleId: string; moduleNumber: number; moduleTitle: string; title: string; summary: string; index: number; conceptIds: string[] }[];
   concepts: Record<string, { name: string; description: string; competency: CompetencyId; lessonId: string; moduleId: string }>;
   questions: Record<string, { question: Question; moduleId: string; lessonId?: string; origin: "quiz" | "inline" | "exam" }>;
-  cards: Record<string, { front: string; back: string; ar?: string; kind: "lesson" | "glossary" | "formula"; lessonId: string; moduleId: string; concepts?: string[] }>;
+  cards: Record<string, { front: string; back: string; ar?: string; kind: "lesson" | "glossary" | "formula" | "key"; lessonId: string; moduleId: string; concepts?: string[] }>;
   cardOrder: { id: string; lessonId: string }[];
 }

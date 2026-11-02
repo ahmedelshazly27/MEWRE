@@ -344,3 +344,36 @@ export interface Module {
   /** True while a module is still a placeholder. */
   draft?: boolean;
 }
+
+/**
+ * A concept the learner must be able to explain on the spot ("what is reactive power and why does it matter?").
+ * Authored per module in src/content/key/mXX.ts, in English and Arabic with the same ids.
+ */
+export interface KeyConcept {
+  /** "k-<module>-<slug>", e.g. "k-m01-reactive-power". */
+  id: string;
+  /** Lesson that teaches it (same module). */
+  lesson: string;
+  /** 1 = must know cold; 2 = good to know. */
+  tier: 1 | 2;
+  /** Term in English (kept in English in the Arabic file too). */
+  term: string;
+  termAr: string;
+  /** The one sentence to memorize, max ~30 words. Markdown + KaTeX allowed. */
+  definition: string;
+  /** "Say it like this": 2–4 plain sentences you could say to a colleague or official. */
+  explain: string;
+  /** "Picture it": an analogy or mental image that makes it stick. */
+  picture: string;
+  /** Why a MEWRE renewable PM cares. */
+  why: string;
+  /** A number or short worked example. */
+  example?: string;
+  /** The classic mix-up and how to tell them apart. */
+  confusion?: string;
+}
+
+export interface KeyConceptSet {
+  en: KeyConcept[];
+  ar: KeyConcept[];
+}

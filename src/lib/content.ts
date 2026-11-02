@@ -3,8 +3,9 @@
  */
 import { MODULES } from "@/content";
 import { MODULES_AR } from "@/content/ar";
+import { KEY_CONCEPTS } from "@/content/key";
 import type { Lang } from "@/lib/i18n";
-import type { Concept, Flashcard, Formula, GlossaryTerm, Lesson, Module, Question, Reference, Scenario } from "@/content/schema";
+import type { Concept, Flashcard, Formula, GlossaryTerm, KeyConcept, Lesson, Module, Question, Reference, Scenario } from "@/content/schema";
 
 /** Recommended study order (job relevance), see CURRICULUM.md. */
 export const STUDY_ORDER = ["m00", "m01", "m08", "m09", "m10", "m07", "m02", "m05", "m06", "m11", "m13", "m14", "m12", "m03", "m04", "m15"];
@@ -33,7 +34,7 @@ export interface QuestionRef {
 
 /** Content-side card (lesson flashcard, glossary term or formula). */
 export interface CardContent extends Flashcard {
-  kind: "lesson" | "glossary" | "formula";
+  kind: "lesson" | "glossary" | "formula" | "key";
   lessonId: string;
   moduleId: string;
   /** For glossary cards: render Arabic RTL. */
@@ -50,6 +51,8 @@ interface Index {
   formulas: Map<string, Formula>;
   references: Map<string, Reference & { moduleId: string }>;
   glossary: (GlossaryTerm & { moduleId: string })[];
+  /** Must-know concepts in module study order. */
+  keyConcepts: Map<string, { concept: KeyConcept; module: Module }>;
 }
 
 function inlineQuestions(lesson: Lesson): Question[] {
@@ -70,6 +73,7 @@ function build(lang: Lang): Index {
     formulas: new Map(),
     references: new Map(),
     glossary: [],
+    keyConcepts: new Map(),
   };
   const ordered = [...modulesFor(lang)].sort((a, b) => STUDY_ORDER.indexOf(a.id) - STUDY_ORDER.indexOf(b.id));
   for (const mod of ordered) {
@@ -98,6 +102,24 @@ function build(lang: Lang): Index {
         lessonId: f.lesson,
         moduleId: mod.id,
         concepts: conceptIds,
+      });
+      idx.cardOrder.push(id);
+    }
+    for (const k of KEY_CONCEPTS[mod.id]?.[lang] ?? []) {
+      idx.keyConcepts.set(k.id, { concept: k, module: mod });
+      const id = `kc-${k.id}`;
+      idx.cards.set(id, {
+        id,
+        kind: "key",
+        front: ar ? `**اشرحه:** ${k.termAr} (${k.term}) — ما هو، ولماذا يهم؟` : `**Explain it:** ${k.term} — what is it, and why does it matter?`,
+        back: `${k.definition}
+
+${k.explain}
+
+**${ar ? "لماذا يهم" : "Why it matters"}:** ${k.why}`,
+        lessonId: k.lesson,
+        moduleId: mod.id,
+        concepts: idx.lessons.get(k.lesson)?.lesson.concepts.map((c) => c.id).slice(0, 1),
       });
       idx.cardOrder.push(id);
     }

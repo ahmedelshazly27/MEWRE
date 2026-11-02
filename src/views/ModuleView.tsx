@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getModule, isTranslated } from "@/lib/content";
+import { getModule, index, isTranslated } from "@/lib/content";
 import { lp, t, type Lang } from "@/lib/i18n";
 import { Markdown } from "@/components/Markdown";
 import { Widget } from "@/components/widgets";
@@ -16,6 +16,7 @@ export function ModuleView({ moduleId, lang }: { moduleId: string; lang: Lang })
   if (!m || m.draft) notFound();
   const lessonIds = m.lessons.map((l) => l.id);
   const L = (p: string) => lp(lang, p);
+  const keyCount = [...index(lang).keyConcepts.values()].filter((k) => k.module.id === m.id).length;
 
   return (
     <div>
@@ -26,13 +27,18 @@ export function ModuleView({ moduleId, lang }: { moduleId: string; lang: Lang })
       </nav>
       {lang === "ar" && !isTranslated(m.id) && <UntranslatedNote />}
       <PageHeader title={`M${m.number} · ${m.title}`} subtitle={m.summary}>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <ContinueLink moduleId={m.id} lessonIds={lessonIds} className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:opacity-90 dark:text-black">
             {t(lang, "Continue")}
           </ContinueLink>
           <Button href={L(`/print/${m.id}`)} variant="ghost">
             {t(lang, "Cheat sheet")}
           </Button>
+          {keyCount > 0 && (
+            <Button href={L(`/crash/concepts?m=${m.id}`)} variant="ghost">
+              🧠 {t(lang, "Must-know ({n})", { n: keyCount })}
+            </Button>
+          )}
         </div>
       </PageHeader>
       {m.whyItMatters && (

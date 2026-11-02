@@ -16,7 +16,7 @@ import { useT } from "@/lib/useLang";
 
 interface CardDto {
   id: string;
-  kind: "lesson" | "glossary" | "formula";
+  kind: "lesson" | "glossary" | "formula" | "key";
   front: string;
   back: string;
   ar?: string;
@@ -146,7 +146,7 @@ export function ReviewSession() {
       </div>
       <div className="rounded-2xl border border-border bg-surface p-5 sm:p-8">
         <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
-          <Pill tone={card.kind === "glossary" ? "sun" : card.kind === "formula" ? "info" : "accent"}>{t(card.kind === "lesson" ? "Concept" : card.kind === "glossary" ? "Glossary" : "Formula")}</Pill>
+          <Pill tone={card.kind === "glossary" ? "sun" : card.kind === "formula" ? "info" : card.kind === "key" ? "danger" : "accent"}>{t(card.kind === "lesson" ? "Concept" : card.kind === "glossary" ? "Glossary" : card.kind === "key" ? "Must-know" : "Formula")}</Pill>
           {card.state === 0 && <Pill tone="ok">{t("New")}</Pill>}
           <Link href={href(`/learn/${card.moduleId}/${card.lessonId}`)} className="text-muted hover:text-text">
             {card.lessonTitle}
