@@ -13,12 +13,14 @@ export interface BlockInput {
 
 export const SCENARIO_MIN = 12;
 export const OUTPUT_MIN = 25;
-/** Minutes to learn one must-know concept well enough to explain it. */
-export const CONCEPT_MIN = 2;
+/** Minutes per must-know concept: read it before the lessons, then self-test it after them. */
+export const CONCEPT_STUDY_MIN = 1;
+export const CONCEPT_TEST_MIN = 1;
 
 export type SprintItem =
   | { kind: "sheet"; minutes: number }
   | { kind: "concepts"; ids: string[]; minutes: number }
+  | { kind: "selftest"; ids: string[]; minutes: number }
   | { kind: "lesson"; id: string; minutes: number }
   | { kind: "scenario"; id: string; minutes: number }
   | { kind: "check"; minutes: number }
@@ -40,13 +42,17 @@ export interface PlannedDay<B extends BlockInput> {
   minutes: number;
 }
 
-/** Items of one module, in study order, for a given tier. */
+/**
+ * Items of one module, in study order, for a given tier:
+ * map (cheat sheet) → anchors (concepts) → depth (lessons, scenario) → retrieval (self-test, check) → output.
+ */
 export function blockItems(b: BlockInput, tier: Tier): SprintItem[] {
   const items: SprintItem[] = [{ kind: "sheet", minutes: b.sheetMin }];
   const concepts = b.concepts.filter((c) => c.tier === 1 || tier >= 2).map((c) => c.id);
-  if (concepts.length) items.push({ kind: "concepts", ids: concepts, minutes: concepts.length * CONCEPT_MIN });
+  if (concepts.length) items.push({ kind: "concepts", ids: concepts, minutes: concepts.length * CONCEPT_STUDY_MIN });
   for (const l of b.lessons) if (l.tier <= tier) items.push({ kind: "lesson", id: l.id, minutes: l.minutes });
   if (b.scenario && b.scenario.tier <= tier) items.push({ kind: "scenario", id: b.scenario.id, minutes: SCENARIO_MIN });
+  if (concepts.length) items.push({ kind: "selftest", ids: concepts, minutes: concepts.length * CONCEPT_TEST_MIN });
   items.push({ kind: "check", minutes: CHECK_MIN });
   if (b.output && b.output.tier <= tier) items.push({ kind: "output", minutes: OUTPUT_MIN });
   return items;

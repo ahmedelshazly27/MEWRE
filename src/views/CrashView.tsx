@@ -42,11 +42,26 @@ export function CrashView({ lang }: { lang: Lang }) {
 
       <Card className="mb-6 border-accent/40 bg-accent-soft/30 text-sm">
         <div className="mb-1 font-semibold">{t(lang, "How to use it")}</div>
+        <p className="mb-1 font-medium">{t(lang, "Every morning")}</p>
+        <ul className="mb-3 list-disc space-y-1 ps-5">
+          <li>{t(lang, "Daily review first (15 min): it brings back yesterday's concepts and lessons just before you forget them.")}</li>
+          <li>{t(lang, "Then self-test yesterday's concepts with “Hide the ones I can explain” on.")}</li>
+        </ul>
+        <p className="mb-1 font-medium">{t(lang, "Every module — the steps are listed in this order below")}</p>
+        <ol className="mb-3 list-decimal space-y-1 ps-5">
+          <li>{t(lang, "📄 Cheat sheet: skim it for the big picture. Don't memorize yet.")}</li>
+          <li>{t(lang, "🧠 Must-know concepts: read each card and say “Say it like this” out loud once.")}</li>
+          <li>{t(lang, "📘 Lessons: read properly, do the worked examples and finish the lesson quiz. Core lessons first.")}</li>
+          <li>{t(lang, "🎯 Scenario: make the decisions, read the feedback.")}</li>
+          <li>{t(lang, "🗣️ Self-test the concepts: say each one out loud before you reveal. Be honest.")}</li>
+          <li>{t(lang, "✅ Retrieval check: 8 questions, no notes. Misses go to your error log.")}</li>
+          <li>{t(lang, "✍️ Writing task: keep it — it is material for the trial week.")}</li>
+        </ol>
+        <p className="mb-1 font-medium">{t(lang, "Running behind?")}</p>
         <ul className="list-disc space-y-1 ps-5">
-          <li>{t(lang, "Work through each module in order: cheat sheet, lessons, scenario, then the retrieval check. Misses go to your error log.")}</li>
-          <li>{t(lang, "Start each morning with 15 minutes of daily review — it brings back yesterday's material.")}</li>
-          <li>{t(lang, "Lessons marked Core come first. If a day runs long, finish the Core lessons and the checks and move on.")}</li>
-          <li>{t(lang, "Keep every written output: together they are what you bring to the trial week.")}</li>
+          <li>{t(lang, "Never skip the cheat sheet, the concepts and the check — they are what covers all 16 modules. Then Core lessons. Drop extra lessons, scenarios and writing first.")}</li>
+          <li>{t(lang, "Under 6/8 on a check? Re-read the cheat-sheet sections behind your misses before moving on.")}</li>
+          <li>{t(lang, "Last day: do the self-test once more in Arabic (عربي toggle) so you can explain every concept in both languages.")}</li>
         </ul>
       </Card>
 

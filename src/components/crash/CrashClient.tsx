@@ -15,7 +15,7 @@ import { Card, Pill, ProgressBar, Stat, fmtDuration } from "@/components/ui";
 import { RunHistory } from "@/components/progress";
 
 /** Synced doc holding the learner's sprint choices and ticks. */
-type CrashDoc = { days?: SprintDays; trialDate?: string; read?: string[]; outputs?: string[]; playbook?: boolean; known?: string[] };
+type CrashDoc = { days?: SprintDays; trialDate?: string; read?: string[]; studied?: string[]; outputs?: string[]; playbook?: boolean; known?: string[] };
 const DOC = "crash";
 
 export interface BlockDto {
@@ -73,7 +73,7 @@ export function SprintPlan({ blocks }: { blocks: BlockDto[] }) {
   const doc: CrashDoc = store?.doc<CrashDoc>(DOC) ?? {};
   const days: SprintDays = doc.days ?? 4;
   const save = (patch: CrashDoc) => getStore().setDoc(DOC, { ...doc, ...patch });
-  const toggle = (key: "read" | "outputs", id: string) => {
+  const toggle = (key: "read" | "studied" | "outputs", id: string) => {
     const list = doc[key] ?? [];
     void save({ [key]: list.includes(id) ? list.filter((x) => x !== id) : [...list, id] });
   };
@@ -91,6 +91,8 @@ export function SprintPlan({ blocks }: { blocks: BlockDto[] }) {
       case "sheet":
         return !!doc.read?.includes(b!.module);
       case "concepts":
+        return !!doc.studied?.includes(b!.module) || it.ids.every((id) => doc.known?.includes(id));
+      case "selftest":
         return it.ids.every((id) => doc.known?.includes(id));
       case "lesson":
         return lessonDone(it.id);
@@ -185,11 +187,17 @@ export function SprintPlan({ blocks }: { blocks: BlockDto[] }) {
                                 📄 {t("Read the cheat sheet")}
                               </Row>
                             );
-                          case "concepts": {
+                          case "concepts":
+                            return (
+                              <Row key={ii} done={ok} onTick={() => toggle("studied", b!.module)} tickLabel={t("Mark as read")} href={href(`/crash/concepts?m=${b!.module}`)} minutes={it.minutes} badge={t("{n} concepts", { n: it.ids.length })}>
+                                🧠 {t("Read the must-know concepts (say each one out loud once)")}
+                              </Row>
+                            );
+                          case "selftest": {
                             const n = it.ids.filter((id) => doc.known?.includes(id)).length;
                             return (
-                              <Row key={ii} done={ok} tickLabel={t("Completed when you can explain every concept")} href={href(`/crash/concepts?m=${b!.module}`)} minutes={it.minutes} badge={`${n}/${it.ids.length}`}>
-                                🧠 {t("Must-know concepts: learn to explain them")}
+                              <Row key={ii} done={ok} tickLabel={t("Completed when you can explain every concept")} href={href(`/crash/concepts?m=${b!.module}&mode=test`)} minutes={it.minutes} badge={`${n}/${it.ids.length}`}>
+                                🗣️ {t("Self-test the concepts out loud")}
                               </Row>
                             );
                           }

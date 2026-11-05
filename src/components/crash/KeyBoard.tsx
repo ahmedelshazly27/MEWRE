@@ -155,8 +155,10 @@ export function KeyBoard({ concepts }: { concepts: KeyDto[] }) {
   const [mode, setMode] = useState<"study" | "test">("study");
 
   useEffect(() => {
-    const m = new URLSearchParams(window.location.search).get("m");
+    const q = new URLSearchParams(window.location.search);
+    const m = q.get("m");
     if (m && concepts.some((k) => k.module === m)) setMod(m);
+    if (q.get("mode") === "test") setMode("test");
   }, [concepts]);
 
   const modules = useMemo(() => {

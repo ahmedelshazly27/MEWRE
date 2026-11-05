@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CRASH_TERMS, PLAYBOOK, SPRINT_BLOCKS, SPRINT_DAYS, tierFor } from "@/content/crash";
 import { getLesson, getModule, getScenario, index, modules } from "@/lib/content";
-import { planSprint, type BlockInput } from "@/lib/sprint";
+import { blockItems, planSprint, type BlockInput } from "@/lib/sprint";
 import { pickStratified } from "@/lib/practice";
 import { KEY_CONCEPTS } from "@/content/key";
 
@@ -77,6 +77,17 @@ describe("sprint planner", () => {
     const three = planSprint(inputs, 3).flatMap((d) => d.segments.flatMap((s) => s.items.flatMap((i) => (i.kind === "lesson" ? [i.id] : []))));
     for (const b of SPRINT_BLOCKS) for (const [id, tier] of b.lessons) if (tier === 1) expect(three).toContain(id);
     expect(tierFor(5)).toBe(3);
+  });
+});
+
+describe("module step order", () => {
+  it("map → concepts → lessons → scenario → self-test → check → writing", () => {
+    const rank = { sheet: 0, concepts: 1, lesson: 2, scenario: 3, selftest: 4, check: 5, output: 6 } as Record<string, number>;
+    for (const b of inputs) {
+      const kinds = blockItems(b, 3).map((i) => i.kind);
+      expect(kinds.map((k) => rank[k])).toEqual([...kinds.map((k) => rank[k])].sort((x, y) => x - y));
+      if (b.concepts.length) expect(kinds).toContain("selftest");
+    }
   });
 });
 
