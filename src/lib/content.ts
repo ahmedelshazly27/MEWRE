@@ -125,7 +125,9 @@ function build(lang: Lang): Index {
       });
       idx.cardOrder.push(id);
     }
-    for (const k of KEY_CONCEPTS[mod.id]?.[lang] ?? []) {
+    // tracks without an Arabic edition use their English concepts in Arabic mode too
+    const keys = lang === "ar" && trackOfModule(mod.id) !== "mewre" ? KEY_CONCEPTS[mod.id]?.en : KEY_CONCEPTS[mod.id]?.[lang];
+    for (const k of keys ?? []) {
       idx.keyConcepts.set(k.id, { concept: k, module: mod });
       const id = `kc-${k.id}`;
       idx.cards.set(id, {
