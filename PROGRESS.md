@@ -127,7 +127,32 @@ physics error in the capstone, several overstated figures and Arabic glossary te
 - [x] Cross-links to Track 0 (finance, contracts, procurement, communication, AI-native PM) instead of duplication
 - [x] Verified: content validator (incl. no em dashes, stealth cofounder never named), 310 tests, production build, browser sweep of all 69 lessons on desktop and a phone sample (no errors, no overflow, no KaTeX errors)
 
+## Phase 13 · Afterwave (2026-11-06)
+
+- [x] 15 modules, 83 lessons, 673 questions, 545 flashcards, 433 glossary terms (EN/AR), 299 formulas, 143 must-know concepts
+- [x] Technical depth: test engineering and reliability, DAQ and clock sync, HIL/SIL and CI, requirements traceability, change impact and test selection, test data platforms, robotics and physical AI, ML and agents on bench data, test platform engineering, functional safety and safety cases, Machinery Regulation; business: market and competitors, GTM, fundraising story
+- [x] Widgets with tested calculators (`src/lib/calc/afterwave.ts`): change-impact visualiser, bench sync demo, actuator test platform economics, GSN builder
+- [x] Capstone aw15: outbound to signed pilot, Ripple demo narrative, go/no-go memo on the first test platform
+
+## Phase 14 · Mizan (2026-11-06)
+
+- [x] 13 modules, 64 lessons, 524 questions, 413 flashcards, 341 glossary terms (EN/AR), 179 formulas, 121 must-know concepts
+- [x] Soiling physics, IEC 61724 measurement and weather-corrected PR, inferring soiling from plant and satellite data, cleaning economics, tracker and stow control, PPC/EMS/SCADA, Kuwait grid and BESS for a seller, plant data pipelines, validation study design, selling in Kuwait and the Gulf, distribution and business model
+- [x] Widgets with tested calculators (`src/lib/calc/mizan.ts`): PR temperature correction, stow decision simulator; Track 0 soiling optimiser reused
+- [x] Capstone mz13: design and defend the Shagaya validation study, cleaning optimisation business case. The pilot is always described as targeted or in preparation
+
+## Phase 15 · Suhail (2026-11-06)
+
+- [x] 10 modules, 60 lessons, 477 questions, 372 flashcards, 291 glossary terms (EN/AR), 164 formulas, 97 must-know concepts
+- [x] Community design, hackathons, event economics and sponsorship, partnerships across the region, media operations, the Arab tech and AI landscape, structures, volunteer-led teams, and a deep technical module on open-weight LLM research (training, tokenisation, scaling laws, compute arithmetic, evaluation, datasets)
+- [x] Widgets with tested calculators (`src/lib/calc/suhail.ts`): event P&L, community funnel
+- [x] Capstone sh10: plan and budget the first hackathon and sponsorship round
+- [x] Style validator now also rejects any hint at an undisclosed team member; finished modules must carry must-know concepts
+- [x] Verified: content validator, 310 tests, lint, production build, browser sweep of every venture-track page on desktop and phone
+
 ## Known limitations / next ideas
+
+- Venture tracks: uncertain external facts (standards editions, Gulf tax and permit rules, PPA terms, vendor features) sit in `unverified` callouts and `unverified: true` references; many references point at a publisher's root URL and deserve a link-check pass.
 
 - Interactive widgets and diagrams are English-only (they render LTR inside Arabic pages). Library reference titles stay in their original language.
 - Arabic terms the translators flagged as uncertain (e.g. deemed energy, step-in rights, grid-forming) are worth a native-speaker pass.
