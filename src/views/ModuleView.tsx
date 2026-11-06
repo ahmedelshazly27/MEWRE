@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getModule, index, isTranslated } from "@/lib/content";
+import { getModule, index, isTranslated, trackHome, trackOfModule } from "@/lib/content";
 import { lp, t, type Lang } from "@/lib/i18n";
 import { Markdown } from "@/components/Markdown";
 import { Widget } from "@/components/widgets";
@@ -21,8 +21,8 @@ export function ModuleView({ moduleId, lang }: { moduleId: string; lang: Lang })
   return (
     <div>
       <nav className="mb-4 text-sm text-muted">
-        <Link href={L("/learn")} className="hover:text-text">
-          {t(lang, "Curriculum")}
+        <Link href={trackHome(m.id, lang).href} className="hover:text-text">
+          {trackHome(m.id, lang).label}
         </Link>
       </nav>
       {lang === "ar" && !isTranslated(m.id) && <UntranslatedNote />}
@@ -43,7 +43,7 @@ export function ModuleView({ moduleId, lang }: { moduleId: string; lang: Lang })
       </PageHeader>
       {m.whyItMatters && (
         <Card className="mb-6 border-accent/40 bg-accent-soft/30">
-          <div className="text-xs font-semibold uppercase tracking-wide text-accent">{t(lang, "Why this matters for a MEWRE PM")}</div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-accent">{trackOfModule(m.id) === "mewre" ? t(lang, "Why this matters for a MEWRE PM") : "Why this matters for you"}</div>
           <Markdown className="prose-lesson prose-compact">{m.whyItMatters}</Markdown>
         </Card>
       )}

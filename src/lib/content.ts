@@ -4,17 +4,36 @@
 import { MODULES } from "@/content";
 import { MODULES_AR } from "@/content/ar";
 import { KEY_CONCEPTS } from "@/content/key";
+import { ALL_MODULES, TRACKS, getTrack, trackOfModule, type Track, type TrackId } from "@/content/tracks";
 import type { Lang } from "@/lib/i18n";
 import type { Concept, Flashcard, Formula, GlossaryTerm, KeyConcept, Lesson, Module, Question, Reference, Scenario } from "@/content/schema";
 
 /** Recommended study order (job relevance), see CURRICULUM.md. */
 export const STUDY_ORDER = ["m00", "m01", "m08", "m09", "m10", "m07", "m02", "m05", "m06", "m11", "m13", "m14", "m12", "m03", "m04", "m15"];
 
+/** Track 0 (MEWRE PM) modules. */
 export const modules: Module[] = MODULES;
 const AR_MODULES: Module[] = MODULES.map((m) => MODULES_AR[m.id] ?? m);
-/** Modules in a language; untranslated modules fall back to English. */
+/** Track 0 modules in a language; untranslated modules fall back to English. */
 export const modulesFor = (lang: Lang = "en"): Module[] => (lang === "ar" ? AR_MODULES : MODULES);
-export const liveModules = (lang: Lang = "en"): Module[] => modulesFor(lang).filter((m) => !m.draft && m.lessons.length > 0);
+/** Every module across tracks. Only Track 0 has Arabic; other tracks stay English in Arabic mode. */
+export const allModulesFor = (lang: Lang = "en"): Module[] => (lang === "ar" ? [...AR_MODULES, ...ALL_MODULES.filter((m) => trackOfModule(m.id) !== "mewre")] : ALL_MODULES);
+const isLive = (m: Module) => !m.draft && m.lessons.length > 0;
+/**
+ * Live modules. English pages cover every track; Arabic pages exist only for Track 0.
+ * Pass a track id to restrict.
+ */
+export function liveModules(lang: Lang = "en", track?: TrackId): Module[] {
+  const scope = track ?? (lang === "ar" ? "mewre" : undefined);
+  return allModulesFor(lang).filter((m) => isLive(m) && (!scope || trackOfModule(m.id) === scope));
+}
+export { TRACKS, getTrack, trackOfModule };
+export type { Track, TrackId };
+/** A track's modules in a language, in study order. */
+export function trackModules(track: Track, lang: Lang = "en"): Module[] {
+  const pool = track.id === "mewre" ? modulesFor(lang) : track.modules;
+  return [...pool].sort((a, b) => track.studyOrder.indexOf(a.id) - track.studyOrder.indexOf(b.id));
+}
 export const isTranslated = (moduleId: string): boolean => !!MODULES_AR[moduleId];
 
 export interface LessonRef {
@@ -75,7 +94,8 @@ function build(lang: Lang): Index {
     glossary: [],
     keyConcepts: new Map(),
   };
-  const ordered = [...modulesFor(lang)].sort((a, b) => STUDY_ORDER.indexOf(a.id) - STUDY_ORDER.indexOf(b.id));
+  // tracks in order, modules in each track's recommended order
+  const ordered = TRACKS.flatMap((t) => trackModules(t, lang));
   for (const mod of ordered) {
     mod.lessons.forEach((lesson, index) => {
       idx.lessons.set(lesson.id, { module: mod, lesson, index });
@@ -149,7 +169,7 @@ export function index(lang: Lang = "en"): Index {
   return cached[lang]!;
 }
 
-export const getModule = (id: string, lang: Lang = "en") => modulesFor(lang).find((m) => m.id === id);
+export const getModule = (id: string, lang: Lang = "en") => allModulesFor(lang).find((m) => m.id === id);
 export const getLesson = (id: string, lang: Lang = "en") => index(lang).lessons.get(id);
 export const getQuestion = (id: string, lang: Lang = "en") => index(lang).questions.get(id);
 export const getCard = (id: string, lang: Lang = "en") => index(lang).cards.get(id);
@@ -187,4 +207,11 @@ export function lessonNeighbours(lessonId: string, lang: Lang = "en"): { prev?: 
   const prev = ls[ref.index - 1] ? getLesson(ls[ref.index - 1].id, lang) : undefined;
   const next = ls[ref.index + 1] ? getLesson(ls[ref.index + 1].id, lang) : undefined;
   return { prev, next };
+}
+
+/** Where a module's breadcrumb leads: the track page (English) or the Arabic curriculum. */
+export function trackHome(moduleId: string, lang: Lang = "en"): { href: string; label: string } {
+  if (lang === "ar") return { href: "/ar/learn", label: "المنهج" };
+  const t = getTrack(trackOfModule(moduleId))!;
+  return { href: `/tracks/${t.id}`, label: t.short };
 }

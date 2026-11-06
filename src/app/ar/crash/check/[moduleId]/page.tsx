@@ -12,3 +12,6 @@ export function generateStaticParams() {
 export default async function CheckPage({ params }: Params) {
   return <CheckView moduleId={(await params).moduleId} lang="ar" />;
 }
+
+/** Arabic exists only for Track 0. */
+export const dynamicParams = false;

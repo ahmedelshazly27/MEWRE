@@ -5,7 +5,7 @@ import { ModuleView, moduleTitle } from "@/views/ModuleView";
 type Params = { params: Promise<{ moduleId: string }> };
 
 export function generateStaticParams() {
-  return liveModules().map((m) => ({ moduleId: m.id }));
+  return liveModules("en", "mewre").map((m) => ({ moduleId: m.id }));
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
@@ -15,3 +15,6 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 export default async function ModulePage({ params }: Params) {
   return <ModuleView moduleId={(await params).moduleId} lang="ar" />;
 }
+
+/** Arabic exists only for Track 0. */
+export const dynamicParams = false;

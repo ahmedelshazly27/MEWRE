@@ -9,6 +9,7 @@ import { useContent } from "@/lib/useContent";
 import { SyncDot } from "@/components/SyncDot";
 import { langFromPath, lp, switchPath, t as tr, type Lang } from "@/lib/i18n";
 import { storeLang, storedLang, useT } from "@/lib/useLang";
+import { TRACK_META, isEnglishOnlyPath } from "@/content/track-meta";
 
 function useBadges() {
   const store = useLearner();
@@ -44,6 +45,11 @@ const ICONS: Record<string, string> = {
   moon: "M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z",
   menu: "M4 6h16M4 12h16M4 18h16",
   bolt: "M13 2 4 14h7l-1 8 9-12h-7z",
+  rocket: "M5 15c-1.5 1.5-2 4-2 6 2 0 4.5-.5 6-2M9 15l-3-3c1-4 4-8 9-9h3v3c-1 5-5 8-9 9zm6-6a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z",
+  wave: "M2 12c2.5 0 2.5-5 5-5s2.5 10 5 10 2.5-10 5-10 2.5 5 5 5",
+  dust: "M3 8h11a3 3 0 1 0-3-3M3 12h16a3 3 0 1 1-3 3M3 16h7",
+  star: "M12 3l2.7 5.5 6 .9-4.4 4.2 1 6L12 16.8 6.7 19.6l1-6L3.3 9.4l6-.9z",
+  layers: "M12 3 2 8l10 5 10-5-10-5zM2 13l10 5 10-5M2 18l10 5 10-5",
 };
 
 export function Icon({ name, className = "h-5 w-5" }: { name: string; className?: string }) {
@@ -55,23 +61,34 @@ export function Icon({ name, className = "h-5 w-5" }: { name: string; className?
 }
 
 function groups(due: number, errors: number, lang: Lang): { title: string; items: Item[] }[] {
+  const study: Item[] = [
+    { href: "/", label: "Dashboard", icon: "home" },
+    { href: "/review", label: "Daily review", icon: "cards", badge: due },
+    { href: "/practice", label: "Practice & exams", icon: "target" },
+    { href: "/errors", label: "Error log", icon: "alert", badge: errors },
+    { href: "/diagnostic", label: "Diagnostic", icon: "stethoscope" },
+  ];
+  // Arabic exists only for Track 0
+  const tracks: Item[] =
+    lang === "ar"
+      ? [
+          { href: "/learn", label: "Curriculum", icon: "book" },
+          { href: "/crash", label: "Crash course", icon: "bolt" },
+        ]
+      : [
+          { href: "/learn", label: "All tracks", icon: "layers" },
+          ...TRACK_META.flatMap((t): Item[] => [
+            { href: `/tracks/${t.id}`, label: t.short, icon: t.icon },
+            ...(t.id === "mewre" ? [{ href: "/crash", label: "Crash course", icon: "bolt" }] : []),
+          ]),
+        ];
   const raw: { title: string; items: Item[] }[] = [
-    {
-      title: "Study",
-      items: [
-        { href: "/", label: "Dashboard", icon: "home" },
-        { href: "/crash", label: "Crash course", icon: "bolt" },
-        { href: "/learn", label: "Curriculum", icon: "book" },
-        { href: "/review", label: "Daily review", icon: "cards", badge: due },
-        { href: "/practice", label: "Practice & exams", icon: "target" },
-        { href: "/errors", label: "Error log", icon: "alert", badge: errors },
-        { href: "/diagnostic", label: "Diagnostic", icon: "stethoscope" },
-      ],
-    },
+    { title: "Study", items: study },
+    { title: "Tracks", items: tracks },
     {
       title: "Apply",
       items: [
-        { href: "/scenarios", label: "Day in the life", icon: "route" },
+        { href: "/scenarios", label: "Scenarios", icon: "route" },
         { href: "/capstone", label: "Capstone", icon: "flag" },
         { href: "/tutor", label: "AI tutor", icon: "chat" },
       ],
@@ -101,6 +118,7 @@ export function LangToggle({ className = "" }: { className?: string }) {
   const pathname = usePathname();
   const router = useRouter();
   const lang = langFromPath(pathname);
+  if (isEnglishOnlyPath(pathname)) return null;
   const to: Lang = lang === "ar" ? "en" : "ar";
   return (
     <button
@@ -214,8 +232,8 @@ function Brand() {
         <Icon name="sun" className="h-5 w-5" />
       </span>
       <span className="leading-tight">
-        <span className="block text-sm font-semibold">MEWRE PM Academy</span>
-        <span className="block text-[11px] text-muted">{t("Renewables · Kuwait")}</span>
+        <span className="block text-sm font-semibold">{t("Shazly Academy")}</span>
+        <span className="block text-[11px] text-muted">{t("Founder & energy tracks")}</span>
       </span>
     </Link>
   );

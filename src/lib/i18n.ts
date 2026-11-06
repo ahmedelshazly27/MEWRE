@@ -259,6 +259,10 @@ const AR: Record<string, string> = {
   "Operations & asset performance": "التشغيل وأداء الأصول",
   "Leadership & communication": "القيادة والتواصل",
   "AI-native project management": "إدارة المشاريع المعتمدة على الذكاء الاصطناعي",
+  // tracks
+  Tracks: "المسارات",
+  "Shazly Academy": "أكاديمية الشاذلي",
+  "Founder & energy tracks": "مسارات ريادة الأعمال والطاقة",
   // crash course
   "{n} concepts": "{n} مفاهيم",
   "Read the must-know concepts (say each one out loud once)": "اقرأ المفاهيم الأساسية (قل كل مفهوم بصوت مرتفع مرة واحدة)",

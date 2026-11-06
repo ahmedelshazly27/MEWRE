@@ -1,17 +1,38 @@
 /** Supabase-backed Remote for the learner store, plus auth helpers. Browser only. */
-import { createClient, type SupabaseClient, type Session } from "@supabase/supabase-js";
+import type { SupabaseClient, Session } from "@supabase/supabase-js";
+import { createBrowserClient } from "@supabase/ssr";
+import { AUTH_COOKIE, SUPABASE_KEY, SUPABASE_URL } from "@/lib/supabase-config";
 import type { Doc, LearnEvent } from "./derive";
 import type { Remote } from "./store";
 
-// Publishable (anon) values are safe to ship to the browser; access is enforced by RLS.
-const URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://hkokhpihodaeltfnhfio.supabase.co";
-const KEY = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_BwCcLd1Tb18YbFRIGD0ZxQ_MoLdkU9r";
 const PAGE = 1000;
 
 let client: SupabaseClient | null = null;
+/**
+ * Browser client. The session lives in a cookie (not localStorage) so the server-side gate in
+ * src/proxy.ts can check it before serving any page or data file.
+ */
 export function supabase(): SupabaseClient {
-  if (!client) client = createClient(URL, KEY, { auth: { persistSession: true, autoRefreshToken: true, storageKey: "mewre-auth" } });
+  if (!client) {
+    client = createBrowserClient(SUPABASE_URL, SUPABASE_KEY, {
+      cookieOptions: { name: AUTH_COOKIE, sameSite: "lax", secure: location.protocol === "https:", path: "/", maxAge: 400 * 24 * 3600 },
+      auth: { persistSession: true, autoRefreshToken: true },
+    });
+    void migrateLegacySession(client);
+  }
   return client;
+}
+
+/** Moves a session stored by the previous localStorage-based client into the cookie session, once. */
+async function migrateLegacySession(c: SupabaseClient) {
+  try {
+    const raw = localStorage.getItem("mewre-auth");
+    if (!raw) return;
+    localStorage.removeItem("mewre-auth");
+    const s = JSON.parse(raw) as { access_token?: string; refresh_token?: string };
+    const { data } = await c.auth.getSession();
+    if (!data.session && s.access_token && s.refresh_token) await c.auth.setSession({ access_token: s.access_token, refresh_token: s.refresh_token });
+  } catch {}
 }
 
 interface EventRow {

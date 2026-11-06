@@ -8,6 +8,7 @@ import { bestScores, localDay, masteryMap, openErrors, reviewForecast, reviewQue
 import { competencyScores, readinessBand, readinessScore } from "@/lib/readiness";
 import { useT } from "@/lib/useLang";
 import { fwd } from "@/lib/i18n";
+import { TrackCards } from "@/components/tracks";
 import { Button, Card, EmptyState, MasteryBadge, Pill, ProgressBar, Stat, fmtDuration } from "@/components/ui";
 
 export function Dashboard() {
@@ -75,8 +76,12 @@ export function Dashboard() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{settings.name ? tr("Welcome back, {name}", { name: settings.name }) : tr("Your path to MEWRE PM")}</h1>
-          <p className="mt-1 text-muted">{tr("Shagaya, Al Dibdibah and the utility-scale pipeline — learn it like you will run it.")}</p>
+          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{settings.name ? tr("Welcome back, {name}", { name: settings.name }) : lang === "ar" ? tr("Your path to MEWRE PM") : "Your academy"}</h1>
+          <p className="mt-1 text-muted">
+            {lang === "ar"
+              ? tr("Shagaya, Al Dibdibah and the utility-scale pipeline — learn it like you will run it.")
+              : "Founder Core, your ventures and the MEWRE PM track: one review queue and one concept graph across all of them."}
+          </p>
         </div>
         {nextUp && (
           <Button href={href(`/learn/${nextUp.moduleId}/${nextUp.id}`)}>
@@ -96,7 +101,15 @@ export function Dashboard() {
         <span className="text-accent">{fwd(lang)}</span>
       </Link>
 
-      <div className="grid gap-4 lg:grid-cols-[1.1fr_1fr]">
+      {lang === "en" && (
+        <section>
+          <h2 className="mb-3 text-lg font-semibold">Tracks</h2>
+          <TrackCards compact />
+        </section>
+      )}
+
+      <div className={lang === "ar" ? "grid gap-4 lg:grid-cols-[1.1fr_1fr]" : ""}>
+        {lang === "ar" && (
         <Card>
           <div className="flex items-center gap-5">
             <Ring value={readiness / 100} />
@@ -124,8 +137,9 @@ export function Dashboard() {
             {comps.every((c) => c.total === 0) && <div className="text-sm text-muted">{tr("Competencies appear as modules are published.")}</div>}
           </div>
         </Card>
+        )}
 
-        <div className="grid grid-cols-2 gap-3 self-start">
+        <div className={lang === "ar" ? "grid grid-cols-2 gap-3 self-start" : "grid grid-cols-2 gap-3 sm:grid-cols-4"}>
           <Stat label={tr("Streak")} value={tr("{n} d", { n: st.current })} hint={tr("Longest {n} d", { n: st.longest })} />
           <Stat label={tr("This week")} value={fmtDuration(weekSecs)} hint={tr("Target {n} h", { n: settings.weeklyHours })} />
           <Link href={href("/review")} className="contents">

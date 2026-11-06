@@ -1,7 +1,7 @@
-import { CurriculumView } from "@/views/CurriculumView";
+import { TracksHubView } from "@/views/TracksHubView";
 
-export const metadata = { title: "Curriculum" };
+export const metadata = { title: "Tracks" };
 
 export default function LearnPage() {
-  return <CurriculumView lang="en" />;
+  return <TracksHubView />;
 }

@@ -1,22 +1,11 @@
-import { COMPETENCIES, type CompetencyId } from "@/content/schema";
+import { TRACKS } from "@/content/tracks";
+import type { CompetencyId } from "@/content/schema";
 
-/** How much each competency matters for day-one performance as a MEWRE renewable PM. */
-export const JOB_WEIGHTS: Record<CompetencyId, number> = {
-  controls: 1.5,
-  contracts: 1.4,
-  delivery: 1.3,
-  context: 1.2,
-  finance: 1.2,
-  procurement: 1.1,
-  solar: 1.1,
-  leadership: 1.1,
-  risk: 1.0,
-  grid: 1.0,
-  engineering: 0.9,
-  "wind-storage": 0.9,
-  operations: 0.8,
-  ai: 0.8,
-};
+export type CompetencyWeights = Record<string, { label: string; weight: number }>;
+
+/** Track 0 competencies (MEWRE PM day-one weights). Default for callers that do not pass a track. */
+export const MEWRE_COMPETENCIES: CompetencyWeights = TRACKS[0].competencies;
+export const JOB_WEIGHTS: Record<string, number> = Object.fromEntries(Object.entries(MEWRE_COMPETENCIES).map(([k, v]) => [k, v.weight]));
 
 export interface ConceptInfo {
   id: string;
@@ -32,17 +21,18 @@ export interface CompetencyScore {
   weight: number;
 }
 
-export function competencyScores(concepts: ConceptInfo[], mastery: Map<string, { mastery: number }>): CompetencyScore[] {
-  return (Object.keys(COMPETENCIES) as CompetencyId[]).map((id) => {
+/** Mean mastery per competency of one track; concepts of other tracks are ignored. */
+export function competencyScores(concepts: ConceptInfo[], mastery: Map<string, { mastery: number }>, competencies: CompetencyWeights = MEWRE_COMPETENCIES): CompetencyScore[] {
+  return Object.keys(competencies).map((id) => {
     const cs = concepts.filter((c) => c.competency === id);
     const vals = cs.map((c) => mastery.get(c.id)?.mastery ?? 0);
     return {
       id,
-      label: COMPETENCIES[id],
+      label: competencies[id].label,
       mastery: vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : 0,
       assessed: cs.filter((c) => mastery.has(c.id)).length,
       total: cs.length,
-      weight: JOB_WEIGHTS[id],
+      weight: competencies[id].weight,
     };
   });
 }

@@ -28,11 +28,16 @@ function getClient(): Anthropic {
   return client;
 }
 
-const LEARNER = `The learner is a System Energy Engineer at Vanderlande (logistics automation) with strong systems-thinking and controls background, familiar with BESS/hybrid controls at a high level, preparing to become a renewable-energy Project Manager at Kuwait's Ministry of Electricity, Water and Renewable Energy (MEWRE) — Shagaya Renewable Energy Park and new utility-scale PV + BESS IPPs. Fluent in English and Arabic (Egyptian/Kuwaiti background). Wants dense, applied, crash-course explanations that never skip the "why".`;
+/** Default learner profile (Track 0); tracks pass their own via `learner`. */
+export const LEARNER = `The learner is a System Energy Engineer at Vanderlande (logistics automation) with strong systems-thinking and controls background, familiar with BESS/hybrid controls at a high level, preparing to become a renewable-energy Project Manager at Kuwait's Ministry of Electricity, Water and Renewable Energy (MEWRE) — Shagaya Renewable Energy Park and new utility-scale PV + BESS IPPs. Fluent in English and Arabic (Egyptian/Kuwaiti background). Wants dense, applied, crash-course explanations that never skip the "why".`;
 
-export const TUTOR_SYSTEM = `You are an expert mentor in utility-scale renewables, power systems, project management, contracts (FIDIC, PPAs) and project finance, embedded as the AI tutor of a personal learning platform.
+export const GENERAL_LEARNER =
+  "The learner is a founder and operator running several early ventures (physical AI test infrastructure, PV soiling analytics in Kuwait, an Arab builder community) and preparing for a renewable-energy PM role at Kuwait's MEWRE. MSc Sustainable Energy Technology, former systems engineer in logistics automation, fluent English and Arabic. Learns fastest through real mechanisms, numbers and systems, not business cliches.";
 
-${LEARNER}
+export function tutorSystem(learner: string = GENERAL_LEARNER) {
+  return `You are an expert mentor embedded as the AI tutor of a personal learning platform with several tracks: renewable-energy project management, founder fundamentals (product, go-to-market, sales, finance, fundraising, equity), physical AI test infrastructure, PV soiling analytics, and an Arab builder community. Mentor like an experienced operator coaching a capable engineer: direct, concrete, mechanisms and numbers, no filler, no startup-speak without the mechanism behind it.
+
+${learner}
 
 How to tutor:
 - Be direct and precise, like a senior PM mentoring a capable engineer. Show derivations and units for anything quantitative and double-check arithmetic.
@@ -41,7 +46,11 @@ How to tutor:
 - When asked to quiz, ask one question at a time, wait for the answer, then give feedback.
 - When asked to explain differently, use a new analogy or angle (e.g., a logistics/material-handling analogy) rather than repeating the lesson.
 - Reply in the learner's language (English or Arabic). Use Markdown; use $...$ / $$...$$ for math (KaTeX).
-- Keep answers focused; prefer short structured answers over long essays unless asked.`;
+- Keep answers focused; prefer short structured answers over long essays unless asked.
+- Never invent facts about the learner's ventures (traction, customers, numbers); ask or mark assumptions.`;
+}
+
+export const TUTOR_SYSTEM = tutorSystem(LEARNER);
 
 function blockText(b: Block): string {
   switch (b.kind) {
@@ -84,8 +93,8 @@ export type ChatMessage = { role: "user" | "assistant"; content: string };
 export const ARABIC_MODE = "The learner is studying in the Arabic interface to build their Arabic engineering vocabulary: reply in Modern Standard Arabic, giving the English technical term in parentheses on first use (e.g. عامل القدرة (Power Factor)); keep acronyms, units and math in Latin script. If they write in English, still answer in Arabic unless asked otherwise.";
 
 /** Streams tutor text deltas. */
-export async function* tutorStream(messages: ChatMessage[], context?: string, arabic = false): AsyncGenerator<string> {
-  const system: Anthropic.Beta.BetaTextBlockParam[] = [{ type: "text", text: TUTOR_SYSTEM, cache_control: { type: "ephemeral" } }];
+export async function* tutorStream(messages: ChatMessage[], context?: string, arabic = false, learner?: string): AsyncGenerator<string> {
+  const system: Anthropic.Beta.BetaTextBlockParam[] = [{ type: "text", text: tutorSystem(learner), cache_control: { type: "ephemeral" } }];
   if (arabic) system.push({ type: "text", text: ARABIC_MODE });
   if (context) system.push({ type: "text", text: `Current lesson context:\n\n${context}`, cache_control: { type: "ephemeral" } });
   const stream = getClient().beta.messages.stream({
@@ -111,13 +120,13 @@ const GradeSchema = z.object({
   feedback: z.string().describe("2-5 sentences of direct, constructive mentor feedback in Markdown"),
 });
 
-async function grade(task: string, arabic = false): Promise<{ score: number; feedback: string }> {
+async function grade(task: string, arabic = false, learner: string = LEARNER): Promise<{ score: number; feedback: string }> {
   const res = await getClient().beta.messages.parse({
     model: GRADER_MODEL,
     max_tokens: 8000, // thinking counts toward max_tokens
     ...fallbackParams(GRADER_MODEL),
     output_config: { effort: "low", format: betaZodOutputFormat(GradeSchema) },
-    system: `You are a strict but fair grader for a professional learning platform. ${LEARNER} Grade only against the rubric/key points; reward correct substance over style; penalise technical errors. ${arabic ? "Write the feedback and the covered/missing points in Modern Standard Arabic, with English technical terms in parentheses on first use." : "Respond in the language of the answer."}`,
+    system: `You are a strict but fair grader for a professional learning platform. ${learner} Grade only against the rubric/key points; reward correct substance over style; penalise technical errors. ${arabic ? "Write the feedback and the covered/missing points in Modern Standard Arabic, with English technical terms in parentheses on first use." : "Respond in the language of the answer."}`,
     messages: [{ role: "user", content: task }],
   });
   if (res.stop_reason === "refusal" || !res.parsed_output) throw new Error("Grader unavailable");
@@ -126,16 +135,18 @@ async function grade(task: string, arabic = false): Promise<{ score: number; fee
   return { score: Math.max(0, Math.min(1, g.score)), feedback: g.feedback + missing };
 }
 
-export function gradeShortAnswer(q: ShortQuestion, answer: string, arabic = false) {
+export function gradeShortAnswer(q: ShortQuestion, answer: string, arabic = false, learner?: string) {
   return grade(
     `Question:\n${q.prompt}\n\nRubric (each point matters):\n${q.rubric.map((r) => `- ${r}`).join("\n")}\n\nModel answer:\n${q.modelAnswer}\n\nLearner's answer:\n<answer>\n${answer.slice(0, 8000)}\n</answer>`,
     arabic,
+    learner,
   );
 }
 
-export function gradeFeynman(prompt: string, keyPoints: string[], answer: string, context?: string, arabic = false) {
+export function gradeFeynman(prompt: string, keyPoints: string[], answer: string, context?: string, arabic = false, learner?: string) {
   return grade(
     `Feynman check — the learner explains a concept simply in their own words.\nPrompt: ${prompt}\nKey points a good explanation covers:\n${keyPoints.map((k) => `- ${k}`).join("\n")}\n${context ? `\nLesson summary for reference:\n${context.slice(0, 6000)}\n` : ""}\nAlso flag any misconception or jargon left unexplained.\n\nLearner's explanation:\n<answer>\n${answer.slice(0, 6000)}\n</answer>`,
     arabic,
+    learner,
   );
 }

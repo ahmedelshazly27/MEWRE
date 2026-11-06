@@ -1,4 +1,4 @@
-import { getLesson, modulesFor } from "@/lib/content";
+import { getLesson, allModulesFor } from "@/lib/content";
 import { t, type Lang } from "@/lib/i18n";
 import { tex } from "@/components/lesson/FormulaCard";
 import { PageHeader } from "@/components/ui";
@@ -6,7 +6,7 @@ import { FormulaSearch, type FormulaDto } from "@/app/formulas/FormulaSearch";
 
 export function FormulasView({ lang }: { lang: Lang }) {
   const list: FormulaDto[] = [];
-  for (const m of [...modulesFor(lang)].sort((a, b) => a.number - b.number)) {
+  for (const m of allModulesFor(lang)) {
     for (const f of m.formulas) {
       const l = getLesson(f.lesson, lang);
       list.push({

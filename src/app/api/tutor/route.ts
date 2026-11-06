@@ -1,5 +1,5 @@
 import { aiAvailable, lessonContext, tutorStream, type ChatMessage } from "@/server/ai";
-import { getLesson } from "@/lib/content";
+import { getLesson, getTrack, trackOfModule } from "@/lib/content";
 import { requireUser } from "@/server/auth";
 
 export async function GET() {
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        for await (const chunk of tutorStream(clean, ctx, arabic)) controller.enqueue(encoder.encode(chunk));
+        for await (const chunk of tutorStream(clean, ctx, arabic, ref ? getTrack(trackOfModule(ref.module.id))?.tutorContext : undefined)) controller.enqueue(encoder.encode(chunk));
       } catch (e) {
         controller.enqueue(encoder.encode(`\n\n_Tutor error: ${(e as Error).message}_`));
       } finally {

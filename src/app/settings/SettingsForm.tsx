@@ -20,7 +20,6 @@ function Account() {
   const store = useLearner();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [msg, setMsg] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const st = store?.status;
@@ -30,11 +29,10 @@ function Account() {
     setBusy(true);
     setMsg(null);
     const sb = supabase().auth;
-    const { error, data } =
-      mode === "signin" ? await sb.signInWithPassword({ email, password }) : await sb.signUp({ email, password, options: { emailRedirectTo: window.location.origin + "/settings" } });
+    // private platform: sign-in only, no account creation
+    const { error } = await sb.signInWithPassword({ email, password });
     setBusy(false);
     if (error) return setMsg(error.message);
-    if (mode === "signup" && !data.session) setMsg(t("Check your email to confirm the account, then sign in here."));
     setPassword("");
   }
 
@@ -61,6 +59,7 @@ function Account() {
             onClick={async () => {
               await getStore().syncNow();
               await supabase().auth.signOut();
+              location.replace("/login");
             }}
           >
             {t("Sign out (keep data on this device)")}
@@ -74,18 +73,11 @@ function Account() {
       <p className="text-muted">
         {t("Sign in to sync progress between your phone and laptop. Without an account everything still works and stays on this device. Your progress so far is uploaded when you first sign in.")}
       </p>
-      <div className="flex gap-1 rounded-lg bg-surface-2 p-1">
-        {(["signin", "signup"] as const).map((m) => (
-          <button key={m} type="button" onClick={() => setMode(m)} className={`flex-1 rounded-md px-3 py-1.5 ${mode === m ? "bg-surface font-medium shadow-sm" : "text-muted"}`}>
-            {m === "signin" ? t("Sign in") : t("Create account")}
-          </button>
-        ))}
-      </div>
       <input className={field} type="email" autoComplete="email" placeholder={t("Email")} value={email} onChange={(e) => setEmail(e.target.value)} required />
       <input
         className={field}
         type="password"
-        autoComplete={mode === "signin" ? "current-password" : "new-password"}
+        autoComplete="current-password"
         placeholder={t("Password (min 8 characters)")}
         minLength={8}
         value={password}
@@ -93,7 +85,7 @@ function Account() {
         required
       />
       <button className={btn.primary} disabled={busy}>
-        {busy ? "…" : mode === "signin" ? t("Sign in") : t("Create account")}
+        {busy ? "…" : t("Sign in")}
       </button>
       {msg && <div className="text-sm text-warn">{msg}</div>}
     </form>

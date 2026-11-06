@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getLesson, index, isTranslated, lessonNeighbours } from "@/lib/content";
+import { getLesson, index, isTranslated, lessonNeighbours, trackHome } from "@/lib/content";
 import { back, fwd, lp, t, type Lang } from "@/lib/i18n";
 import { ConceptBadge, LessonMeta } from "@/components/progress";
 import { BlockRenderer } from "@/components/lesson/BlockRenderer";
@@ -27,8 +27,8 @@ export function LessonView({ moduleId, lessonId, lang }: { moduleId: string; les
     <article className="mx-auto max-w-3xl">
       <LessonTimer lessonId={lesson.id} />
       <nav className="no-print mb-4 text-sm text-muted">
-        <Link href={L("/learn")} className="hover:text-text">
-          {t(lang, "Curriculum")}
+        <Link href={trackHome(module.id, lang).href} className="hover:text-text">
+          {trackHome(module.id, lang).label}
         </Link>{" "}
         /{" "}
         <Link href={L(`/learn/${module.id}`)} className="hover:text-text">

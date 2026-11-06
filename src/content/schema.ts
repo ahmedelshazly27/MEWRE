@@ -11,8 +11,8 @@ import type { WidgetId, DiagramId } from "./widgets";
 
 export const md = String.raw;
 
-/** Competencies feed the job-readiness score. */
-export const COMPETENCIES = {
+/** Track 0 (MEWRE PM) competencies; other tracks define theirs in src/content/tracks.ts. */
+export const COMPETENCIES: Record<string, string> = {
   context: "Kuwait sector & institutions",
   engineering: "Power engineering fundamentals",
   solar: "Solar PV & CSP technology",
@@ -27,8 +27,9 @@ export const COMPETENCIES = {
   operations: "Operations & asset performance",
   leadership: "Leadership & communication",
   ai: "AI-native project management",
-} as const;
-export type CompetencyId = keyof typeof COMPETENCIES;
+};
+/** Competency ids are scoped by track (see Track.competencies). */
+export type CompetencyId = string;
 
 export type Layer = "theory" | "applied" | "field";
 export type Difficulty = 1 | 2 | 3;

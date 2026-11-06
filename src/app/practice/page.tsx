@@ -28,23 +28,37 @@ export default function PracticePage() {
 
 function Practice() {
   const params = useSearchParams();
-  const sp = { mode: params.get("mode") ?? undefined, module: params.get("module") ?? undefined, scope: params.get("scope") ?? undefined };
+  const sp = { mode: params.get("mode") ?? undefined, module: params.get("module") ?? undefined, scope: params.get("scope") ?? undefined, track: params.get("track") ?? undefined };
   const mode = sp.mode as keyof typeof MODES | undefined;
   const { t, href } = useT();
   const store = useLearner();
   const content = useContent();
   if (!store || !content) return <div className="text-muted">{t("Loading…")}</div>;
   const d = store.derived();
-  const mods = content.modules.filter((m) => !m.draft && m.lessonIds.length);
+  const mods = content.modules.filter((m) => !m.draft && m.lessonIds.length && (!sp.track || m.track === sp.track));
+  const liveTracks = content.tracks.filter((tr) => content.modules.some((m) => m.track === tr.id && m.lessonIds.length));
+  const q = (extra: string) => href(`/practice?${extra}${sp.track ? `&track=${sp.track}` : ""}`);
 
   if (!mode || !MODES[mode]) {
     const runs = d.runs.filter((r) => ["mixed", "timed", "errors", "exam", "diagnostic"].includes(r.kind)).slice(0, 12);
     return (
       <div>
         <PageHeader title={t("Practice & exams")} subtitle={t("Retrieval practice beats re-reading. Choose a session.")} />
+        {liveTracks.length > 1 && (
+          <div className="mb-4 flex flex-wrap gap-2 text-sm">
+            <Link href={href("/practice")} className={`rounded-lg border px-3 py-1.5 ${!sp.track ? "border-accent bg-accent-soft text-accent" : "border-border hover:bg-surface-2"}`}>
+              {t("All tracks")}
+            </Link>
+            {liveTracks.map((tr) => (
+              <Link key={tr.id} href={href(`/practice?track=${tr.id}`)} className={`rounded-lg border px-3 py-1.5 ${sp.track === tr.id ? "border-accent bg-accent-soft text-accent" : "border-border hover:bg-surface-2"}`}>
+                {tr.short}
+              </Link>
+            ))}
+          </div>
+        )}
         <div className="grid gap-3 md:grid-cols-3">
           {(Object.keys(MODES) as (keyof typeof MODES)[]).map((k) => (
-            <Link key={k} href={href(`/practice?mode=${k}`)} className="rounded-xl border border-border bg-surface p-4 hover:border-accent/60">
+            <Link key={k} href={q(`mode=${k}`)} className="rounded-xl border border-border bg-surface p-4 hover:border-accent/60">
               <div className="font-semibold">{t(MODES[k].title)}</div>
               <p className="mt-1 text-sm text-muted">{t(MODES[k].desc)}</p>
             </Link>
@@ -55,7 +69,7 @@ function Practice() {
           <p className="mb-3 text-sm text-muted">{t("By default mixed practice draws from lessons you have completed (or all lessons if none yet). Pick a module to focus:")}</p>
           <div className="flex flex-wrap gap-2">
             {mods.map((m) => (
-              <Link key={m.id} href={href(`/practice?mode=mixed&module=${m.id}`)} className="rounded-lg border border-border px-2.5 py-1 text-sm hover:bg-surface-2">
+              <Link key={m.id} href={q(`mode=mixed&module=${m.id}`)} className="rounded-lg border border-border px-2.5 py-1 text-sm hover:bg-surface-2">
                 M{m.number} {m.title}
               </Link>
             ))}
@@ -97,7 +111,7 @@ function Practice() {
 }
 
 /** One practice session; the question set is picked once on mount so answering doesn't reshuffle it. */
-function Session({ mode, sp }: { mode: keyof typeof MODES; sp: { module?: string; scope?: string } }) {
+function Session({ mode, sp }: { mode: keyof typeof MODES; sp: { module?: string; scope?: string; track?: string } }) {
   const { lang, t, href } = useT();
   const store = useLearner()!;
   const content = useContent()!;
@@ -110,7 +124,9 @@ function Session({ mode, sp }: { mode: keyof typeof MODES; sp: { module?: string
     const mastery = masteryMap(d);
     const errorIds = new Set(openErrors(d).map((e) => e.questionId));
     const all = Object.entries(content.questions).map(([id, r]) => ({ id, ...r }));
+    const inTrack = (moduleId: string) => !sp.track || content.modules.find((m) => m.id === moduleId)?.track === sp.track;
     let pool = all.filter((r) => {
+      if (!inTrack(r.moduleId)) return false;
       if (sp.module) return r.moduleId === sp.module;
       if (sp.scope === "all" || done.size === 0) return true;
       return r.origin === "exam" ? content.modules.find((m) => m.id === r.moduleId)!.lessonIds.some((l) => done.has(l)) : !!r.lessonId && done.has(r.lessonId);

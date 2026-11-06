@@ -5,7 +5,7 @@ import { LessonView, lessonTitle } from "@/views/LessonView";
 type Params = { params: Promise<{ moduleId: string; lessonId: string }> };
 
 export function generateStaticParams() {
-  return liveModules().flatMap((m) => m.lessons.map((l) => ({ moduleId: m.id, lessonId: l.id })));
+  return liveModules("en", "mewre").flatMap((m) => m.lessons.map((l) => ({ moduleId: m.id, lessonId: l.id })));
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
@@ -16,3 +16,6 @@ export default async function LessonPage({ params }: Params) {
   const { moduleId, lessonId } = await params;
   return <LessonView moduleId={moduleId} lessonId={lessonId} lang="ar" />;
 }
+
+/** Arabic exists only for Track 0. */
+export const dynamicParams = false;

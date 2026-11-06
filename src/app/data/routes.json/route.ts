@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { index, modules } from "@/lib/content";
+import { TRACKS, index, liveModules, trackOfModule } from "@/lib/content";
 import { lp } from "@/lib/i18n";
 import { SPRINT_BLOCKS } from "@/content/crash";
 
@@ -31,14 +31,22 @@ function buildAssets(): string[] {
 
 /** Offline manifest consumed by the service worker's "download everything" step. */
 export function GET() {
-  const live = modules.filter((m) => !m.draft && m.lessons.length);
+  const moduleRoutes = (mods: ReturnType<typeof liveModules>) =>
+    mods.flatMap((m) => [`/learn/${m.id}`, `/learn/${m.id}/exam`, `/print/${m.id}`, ...m.lessons.map((l) => `/learn/${m.id}/${l.id}`)]);
+  const scenarios = [...index().scenarios.values()].filter((s) => !s.module.draft);
   const en = [
     ...STATIC_ROUTES,
-    ...live.flatMap((m) => [`/learn/${m.id}`, `/learn/${m.id}/exam`, `/print/${m.id}`, ...m.lessons.map((l) => `/learn/${m.id}/${l.id}`)]),
-    ...[...index().scenarios.values()].filter((s) => !s.module.draft).map((s) => `/scenarios/${s.scenario.id}`),
+    ...TRACKS.map((t) => `/tracks/${t.id}`),
+    ...moduleRoutes(liveModules("en")),
+    ...scenarios.map((s) => `/scenarios/${s.scenario.id}`),
   ];
-  // Arabic mirrors every page under /ar
-  const routes = [...en, ...en.map((r) => lp("ar", r))];
+  // Arabic mirrors the global pages and Track 0 only
+  const ar = [
+    ...STATIC_ROUTES,
+    ...moduleRoutes(liveModules("en", "mewre")),
+    ...scenarios.filter((s) => trackOfModule(s.module.id) === "mewre").map((s) => `/scenarios/${s.scenario.id}`),
+  ].map((r) => lp("ar", r));
+  const routes = [...en, ...ar];
   const downloads = fs.existsSync(path.join(process.cwd(), "public", "downloads"))
     ? fs.readdirSync(path.join(process.cwd(), "public", "downloads")).map((f) => `/downloads/${f}`)
     : [];
