@@ -1,0 +1,34 @@
+import { md, type GlossaryTerm } from "../../schema";
+
+const glossary: GlossaryTerm[] = [
+  { id: "sh01-ecosystem", en: "Ecosystem", ar: "المنظومة (المنظومة الريادية)", definition: md`A set of actors (builders, employers, investors, universities, governments) who create more value together than apart, plus the structures that let them find and trust each other.`, lesson: "sh01-l01", category: "pm" },
+  { id: "sh01-hub", en: "Community hub", ar: "المحور المجتمعي (الجهة الجامعة)", definition: md`The organisation that convenes the actors and lowers the cost of their finding and trusting each other; owns the calendar, brand and member graph, not the value itself.`, lesson: "sh01-l01", category: "pm" },
+  { id: "sh01-network-effect", en: "Network effect", ar: "أثر الشبكة", definition: md`A product or community becomes more valuable to each participant as more participants join.`, lesson: "sh01-l01", category: "financial" },
+  { id: "sh01-cross-side", en: "Cross-side network effect", ar: "أثر الشبكة عبر الأطراف", definition: md`Value to one side (employers, investors) grows with participation on the other side (builders), and vice versa.`, lesson: "sh01-l01", category: "financial" },
+  { id: "sh01-metcalfe", en: "Metcalfe's law", ar: "قانون ميتكالف", definition: md`Network value proportional to possible pairs, $n(n-1)/2$; an upper bound.`, lesson: "sh01-l01", category: "technical" },
+  { id: "sh01-cold-start", en: "Cold start problem", ar: "مشكلة البداية الباردة", definition: md`In a two-sided community neither side joins before the other is present; solved by subsidising one side and recruiting the first members by hand.`, lesson: "sh01-l01", category: "pm" },
+  { id: "sh01-batch", en: "Batch (cohort)", ar: "الدفعة", definition: md`A group admitted to start and finish a programme together, creating shared deadlines, peer comparison and lasting ties.`, lesson: "sh01-l02", category: "pm" },
+  { id: "sh01-demo-day", en: "Demo day", ar: "يوم العرض", definition: md`A scheduled event where a whole cohort presents to many investors at once.`, lesson: "sh01-l02", category: "pm" },
+  { id: "sh01-alumni-network", en: "Alumni network", ar: "شبكة الخريجين", definition: md`The accumulated graph of past participants who help, hire, buy from and invest in each other.`, lesson: "sh01-l02", category: "pm" },
+  { id: "sh01-mfn-safe", en: "Uncapped MFN SAFE", ar: "اتفاقية الأسهم المستقبلية دون سقف مع شرط الدولة الأولى بالرعاية", definition: md`A SAFE with no valuation cap that converts at the next priced round and matches better terms given to later SAFE holders.`, lesson: "sh01-l02", category: "financial" },
+  { id: "sh01-membership-tier", en: "Membership tier", ar: "مستوى العضوية", definition: md`A level of access and responsibility entered by a written criterion, ideally contribution rather than payment.`, lesson: "sh01-l03", category: "pm" },
+  { id: "sh01-ritual", en: "Community ritual", ar: "طقس مجتمعي (فعالية دورية)", definition: md`A recurring event or artefact with a fixed cadence that people plan around.`, lesson: "sh01-l03", category: "pm" },
+  { id: "sh01-contribution-ladder", en: "Contribution ladder", ar: "سلّم المساهمة", definition: md`The path from lurker to participant, contributor, collaborator and organiser, with a trigger, a first ask and recognition at each rung.`, lesson: "sh01-l03", category: "pm" },
+  { id: "sh01-lurker", en: "Lurker", ar: "المتابع الصامت", definition: md`A member who reads or listens but does not post or attend; the largest group in every community.`, lesson: "sh01-l03", category: "pm" },
+  { id: "sh01-steady-state", en: "Steady state (community)", ar: "الحالة المستقرة", definition: md`The active-member level at which monthly gains equal losses: $Rc/(1-r-k)$.`, lesson: "sh01-l03", category: "technical" },
+  { id: "sh01-retention", en: "Retention rate", ar: "معدل الاحتفاظ", definition: md`Share of last period's active members who are active again this period.`, lesson: "sh01-l03", category: "technical" },
+  { id: "sh01-code-of-conduct", en: "Code of conduct", ar: "مدونة السلوك", definition: md`Written norms with scope, unacceptable behaviour, reporting, responders and an enforcement ladder.`, lesson: "sh01-l04", category: "contractual" },
+  { id: "sh01-moderation", en: "Moderation", ar: "الإشراف على المحتوى", definition: md`Reviewing and acting on posts and behaviour that break community norms.`, lesson: "sh01-l04", category: "pm" },
+  { id: "sh01-proof-of-work", en: "Proof of work (application)", ar: "إثبات العمل", definition: md`A link to something an applicant built (code, model, dataset, product, paper), used as the main admission signal.`, lesson: "sh01-l04", category: "pm" },
+  { id: "sh01-dilution", en: "Dilution (community)", ar: "تمييع المجتمع (تراجع الجودة)", definition: md`Loss of quality and norms when newcomers arrive faster than established members can socialise them.`, lesson: "sh01-l04", category: "pm" },
+  { id: "sh01-active-member", en: "Active member", ar: "العضو النشط", definition: md`A member who took a defined action within a fixed window (check-in, post, click, submission).`, lesson: "sh01-l05", category: "technical" },
+  { id: "sh01-cohort", en: "Cohort analysis", ar: "تحليل الأفواج", definition: md`Following groups who joined in the same period and measuring the share still active over time.`, lesson: "sh01-l05", category: "technical" },
+  { id: "sh01-nps", en: "Net Promoter Score (NPS)", ar: "صافي نقاط الترويج", definition: md`Share of 9 to 10 answers minus share of 0 to 6 answers to a likelihood-to-recommend question, times 100.`, lesson: "sh01-l05", category: "technical" },
+  { id: "sh01-repeat-rate", en: "Event repeat rate", ar: "معدل تكرار الحضور", definition: md`Share of checked-in attendees who attended a previous event.`, lesson: "sh01-l05", category: "technical" },
+  { id: "sh01-diwaniya", en: "Diwaniya", ar: "الديوانية", definition: md`Kuwaiti tradition of regular, open-door evening gatherings hosted by a family or individual; a model for recurring, host-led community sessions.`, lesson: "sh01-l06", category: "institutional" },
+  { id: "sh01-majlis", en: "Majlis", ar: "المجلس", definition: md`A gathering place and format for open discussion with a host, across the Gulf; the namesake of Suhail's podcast.`, lesson: "sh01-l06", category: "institutional" },
+  { id: "sh01-diaspora", en: "Diaspora", ar: "المغتربون (الشتات)", definition: md`People from a country or region living and working abroad; for Suhail, a bridge to skills, capital and networks.`, lesson: "sh01-l06", category: "institutional" },
+  { id: "sh01-msa", en: "Modern Standard Arabic (MSA)", ar: "العربية الفصحى المعاصرة", definition: md`The shared formal register of written and official Arabic, distinct from spoken dialects.`, lesson: "sh01-l06", category: "institutional" },
+];
+
+export default glossary;

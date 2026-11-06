@@ -122,7 +122,7 @@ const exam: Question[] = [
       "Orders suitable sources (paid pilot, strategic or family-office angels, regional programmes or funds, grants where eligible) with reasons and realistic timing",
       "Names concrete pilot evidence (validated soiling-loss estimates against KISR methodology, cleaning savings, operator adoption) needed before a priced round",
       "Specifies update metrics and asks appropriate to Mizan's stage",
-      "No invented traction; does not name the stealth cofounder",
+      "No invented traction, partners or team members",
     ],
     modelAnswer: md`**What Mizan is to an investor:** a Gulf energy software and services company (soiling analytics, cleaning optimisation, plant control) selling to utilities, EPCs, O&M contractors and government bodies through tenders, with a distribution line for software and turnkey hardware. Sales cycles are long and public; early outcomes are more likely in the tens of millions than billions unless plant control and regional expansion scale.
 

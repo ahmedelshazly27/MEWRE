@@ -5,6 +5,7 @@ import type { ValidationIssue } from "./validate";
 const RULES: { re: RegExp; message: string }[] = [
   { re: /—/, message: "contains an em dash (use a comma, colon or parentheses)" },
   { re: /abdelrahman/i, message: "names the stealth cofounder (never in content)" },
+  { re: /stealth (co-?)?founder|cofounder who (cannot|can.t) yet be public|not yet public cofounder/i, message: "hints at an undisclosed cofounder (never in content)" },
 ];
 
 export function validateStyle(mod: Module, keys?: KeyConceptSet): ValidationIssue[] {

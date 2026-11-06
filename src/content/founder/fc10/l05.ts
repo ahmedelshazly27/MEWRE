@@ -239,8 +239,8 @@ The biggest gain from a prompt library is not speed; it is that **the verificati
     Status words (use exactly): [e.g. "prototype", "pilot in discussion",
     "no signed customers yet"]
     Approved facts (with source and date): [team bios, dates, figures]
-    Never state: [customers under NDA, unannounced partners, any person in
-    stealth, revenue or traction we do not have]
+    Never state: [customers under NDA, unannounced partners, anyone who has not
+    agreed to be named, revenue or traction we do not have]
     Confidentiality: [which data may go into which tools]
     Voice: [direct, technical, no superlatives], languages: [EN, AR]
     Other ventures: do not use facts from them in this context.
