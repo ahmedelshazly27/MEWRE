@@ -64,10 +64,49 @@ Widgets for this track: `change-impact`, `bench-sync`, `platform-economics`, `gs
 
 Each module's placeholder `index.ts` already has its title, number and competency; you may refine the title.
 
-## Track 3 · Mizan
+## Track 3 · Mizan (`src/content/mizan/mzXX`, ids `mz01..mz13`)
 
-(Section added before the Mizan phase.)
+Context: energy engineering firm in Kuwait and the Gulf. The name stays Mizan; the concept moved from a BESS and
+hybrid plant controls and integration services firm to a product-focused company around PV soiling analytics,
+cleaning optimisation and plant control functions such as stow and tracker control under dust, wind and extreme heat.
+- Cofounders: Omar Abu Harb may be named. A second cofounder is in stealth: never name, describe or hint at him.
+- Live thread: a soiling analytics pilot in Kuwait, target site Shagaya Phase I (operated by KISR), with KISR
+  researchers (Mohammad Al-Khayat and co-authors of the 2020 Shagaya PV performance paper) as methodology partner. The
+  exact citation is Al-Rasheedi, Gueymard, Al-Khayat, Ismail, Lee, Al-Duaj, Renewable and Sustainable Energy Reviews
+  133 (2020) 110139. KISR confirmed there is no standard method for turning operational data into cleaning decisions.
+  Temperature-corrected performance ratio to IEC 61724 is the baseline. The 2018 to 2019 cleaning arm failure at
+  Shagaya is a natural experiment for validation. Describe the pilot as targeted or in preparation, never as signed
+  or running.
+- Distribution thread: bringing software and turnkey hardware (controls, PPC/EMS, BESS, cleaning robots, possibly
+  Chinese integrators) to Kuwait; SwishOS (Swish Solar) was discussed as a soiling analytics partner.
+- Planned open-source research tools: Kuwait dust/soiling atlas, Kuwait electricity dataset, Kuwait energy systems
+  toolkit.
+- Research: `docs/research/2026-11-mizan-soiling-kuwait.md` (soiling science and rates, IEC 61724, NREL corrected
+  PR, commercial players, tracker vendors, Kuwait pipeline and procurement status, Gulf O&M practices).
+- Track 0 already covers PV technology (m02), BESS (m05), grid integration (m06), Kuwait sector and institutions (m00)
+  and Kuwait procurement (m11): xref those lessons instead of re-teaching, and add the seller's angle.
 
-## Track 4 · Suhail
+Competency ids: `mz-soiling`, `mz-cleaning`, `mz-control`, `mz-data`, `mz-grid`, `mz-validation`, `mz-business`.
 
-(Section added before the Suhail phase.)
+Widgets: `pr-correction`, `stow-decision`, Track 0 `soiling` (cleaning-interval optimiser), `loss-waterfall`,
+`p50-p90`, `kuwait-climate`, `sun-path`, `dc-ac-ratio`, `bess-sizing`, `droop`; Founder Core `unit-economics`,
+`pricing-experiment`, `pipeline-forecast`.
+
+## Track 4 · Suhail (`src/content/suhail/shXX`, ids `sh01..sh10`)
+
+Context: Suhail (سهيل) is a builder ecosystem for the Arab world: hackathons, events, a newsletter, the Suhail Season
+conference, The Majlis podcast, connecting builders with investors and employers, and a planned research arm doing
+open-weight models, datasets and benchmarks for the Arab world. Domain suhail.build; site on Vercel with its own
+Supabase and Resend. Team of leads (Partnerships, Events and Programming, Editorial, Head of Engineering, Finance
+Lead), unpaid until revenue; plan starts January 2027. Modelled partly on {Tech: Europe}. Nothing has launched yet:
+no members, sponsors, events or numbers exist; use labelled illustrative numbers only.
+- Research: `docs/research/2026-11-suhail-arab-ai-founder.md` (Gulf sovereign AI, open Arabic models and benchmarks,
+  Arabic NLP challenges and datasets, MENA VC 2025 to 2026, community-company models, hackathon sponsorship examples,
+  Saudi event permits).
+- Founder Core holds general GTM, sales, marketing, finance, legal and operations: xref it.
+- The research arm module must go to real technical depth (training pipelines, tokenisation, scaling laws, evaluation,
+  contamination, compute cost arithmetic) so he can lead it credibly without being the researcher.
+
+Competency ids: `sh-community`, `sh-events`, `sh-partnerships`, `sh-media`, `sh-landscape`, `sh-org`, `sh-research`.
+
+Widgets: `event-pnl`, `community-funnel`; Founder Core `pipeline-forecast`, `pricing-experiment`, `unit-economics`.
