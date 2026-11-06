@@ -8,6 +8,7 @@ export function validateKeyConcepts(mod: Module, set: KeyConceptSet): Validation
   const issues: ValidationIssue[] = [];
   const at = (where: string, message: string) => issues.push({ where: `${mod.id} key ${where}`, message });
   const lessons = new Set(mod.lessons.map((l) => l.id));
+  if (!mod.draft && mod.lessons.length && set.en.length === 0) at("set", "finished module has no must-know concepts");
   const check = (list: KeyConcept[], lang: "en" | "ar") => {
     const ids = new Set<string>();
     for (const k of list) {

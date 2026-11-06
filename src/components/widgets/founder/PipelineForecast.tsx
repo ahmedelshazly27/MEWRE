@@ -30,7 +30,7 @@ export default function PipelineForecast({ props }: WidgetProps) {
     <Card title="Pipeline forecaster" subtitle="Deals per stage × stage probability = weighted pipeline; stage timing spreads expected bookings over the next four quarters">
       <Split>
         <Controls>
-          <Slider label="Average ACV" value={acv} min={5_000} max={500_000} step={5_000} unit="USD" onChange={setAcv} />
+          <Slider label="Average ACV" value={acv} min={1_000} max={500_000} step={1_000} unit="USD" onChange={setAcv} />
           <Slider label="Annual bookings target" value={target} min={50_000} max={5_000_000} step={50_000} unit="USD" onChange={setTarget} />
           {STAGES.map((s, i) => (
             <Slider key={s.name} label={`${s.name} (p=${Math.round(s.probability * 100)}%)`} value={deals[i]} min={0} max={40} onChange={(v) => setDeals(deals.map((d, j) => (j === i ? v : d)))} />
