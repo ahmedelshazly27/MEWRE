@@ -139,7 +139,24 @@ export interface Activity {
   reviews: number;
 }
 
+/** Latest written answer per question: the learner's portfolio of real drafts. */
+export interface WorkRow {
+  questionId: string;
+  at: number;
+  text: string;
+  score: number;
+  aiDraft?: string;
+  judgement?: number;
+  feedback?: string;
+  /** How many times the learner submitted this exercise. */
+  versions: number;
+  /** Best rubric score across versions. */
+  best: number;
+}
+
 export interface Derived {
+  /** Written answers (short questions), latest version per question. */
+  work: Map<string, WorkRow>;
   lessons: Map<string, LessonProgress>;
   evidence: Map<string, Evidence[]>;
   errors: Map<string, ErrorRow>;
@@ -167,6 +184,7 @@ export function derive(events: LearnEvent[], opts: { retention?: number; day?: (
     }
 
   const d: Derived = {
+    work: new Map(),
     lessons: new Map(),
     evidence: new Map(),
     errors: new Map(),
@@ -205,6 +223,11 @@ export function derive(events: LearnEvent[], opts: { retention?: number; day?: (
         d.scoreSum += p.score;
         act(e.at).answers++;
         evidence(p.concepts, p.score, p.source, e.at);
+        if (p.response?.type === "short" && p.response.text) {
+          const prev = d.work.get(p.q);
+          const r = p.response;
+          d.work.set(p.q, { questionId: p.q, at: e.at, text: r.text, score: p.score, aiDraft: r.aiDraft, judgement: r.judgement, feedback: r.feedback, versions: (prev?.versions ?? 0) + 1, best: Math.max(prev?.best ?? 0, p.score) });
+        }
         const row = d.errors.get(p.q);
         if (!p.correct) {
           d.errors.set(p.q, {

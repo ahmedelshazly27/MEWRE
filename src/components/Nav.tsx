@@ -49,6 +49,7 @@ const ICONS: Record<string, string> = {
   wave: "M2 12c2.5 0 2.5-5 5-5s2.5 10 5 10 2.5-10 5-10 2.5 5 5 5",
   dust: "M3 8h11a3 3 0 1 0-3-3M3 12h16a3 3 0 1 1-3 3M3 16h7",
   star: "M12 3l2.7 5.5 6 .9-4.4 4.2 1 6L12 16.8 6.7 19.6l1-6L3.3 9.4l6-.9z",
+  folder: "M3 6a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z",
   layers: "M12 3 2 8l10 5 10-5-10-5zM2 13l10 5 10-5M2 18l10 5 10-5",
 };
 
@@ -91,6 +92,7 @@ function groups(due: number, errors: number, lang: Lang): { title: string; items
         { href: "/scenarios", label: "Scenarios", icon: "route" },
         { href: "/capstone", label: "Capstone", icon: "flag" },
         { href: "/tutor", label: "AI tutor", icon: "chat" },
+        { href: "/work", label: "My work", icon: "folder" },
       ],
     },
     {

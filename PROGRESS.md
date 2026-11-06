@@ -150,6 +150,14 @@ physics error in the capstone, several overstated figures and Arabic glossary te
 - [x] Style validator now also rejects any hint at an undisclosed team member; finished modules must carry must-know concepts
 - [x] Verified: content validator, 310 tests, lint, production build, browser sweep of every venture-track page on desktop and phone
 
+## Phase 16 · AI-native exercises and My work (2026-11-06)
+
+- [x] "Do it with AI" on every written exercise (all 421): the right tool for the artifact (Claude Code building a real spreadsheet, Claude research with sources, Claude Code writing a testable file, or a Claude Project for documents), steps, a copyable starter prompt carrying the venture's facts and the grading rubric, and a hand-check list (numbers, sources, invented facts, venture rules such as the pilot's status)
+- [x] Venture facts for prompts in `src/content/venture-context.ts`, taken only from the briefs; workflow logic in `src/lib/aiWorkflow.ts`, tested in `tests/aiWorkflow.test.ts`
+- [x] Judgement grading: paste the AI's first draft with your final answer and the grader scores the final against the rubric and, separately, what you caught, fixed and made your own
+- [x] Exercise workshop in the tutor (`/tutor?exercise=<id>`): the tutor sees the exercise, rubric and venture facts, asks for your facts first, co-drafts, then critiques against the rubric
+- [x] `/work` (My work): latest version of every written answer grouped by venture (Afterwave, Mizan, Suhail, general, MEWRE), score, judgement, feedback, versions, exercises still to do, Markdown export and print
+
 ## Known limitations / next ideas
 
 - Venture tracks: uncertain external facts (standards editions, Gulf tax and permit rules, PPA terms, vendor features) sit in `unverified` callouts and `unverified: true` references; many references point at a publisher's root URL and deserve a link-check pass.

@@ -18,7 +18,8 @@ export async function POST(req: Request) {
     }
     const ref = getQuestion(body.questionId, lang);
     if (!ref || ref.question.type !== "short") return NextResponse.json({ error: "not a short-answer question" }, { status: 400 });
-    const r = await gradeShortAnswer(ref.question, String(body.answer ?? ""), lang === "ar", getTrack(trackOfModule(ref.module.id))?.tutorContext);
+    const aiDraft = typeof body.aiDraft === "string" ? body.aiDraft : undefined;
+    const r = await gradeShortAnswer(ref.question, String(body.answer ?? ""), lang === "ar", getTrack(trackOfModule(ref.module.id))?.tutorContext, aiDraft);
     return NextResponse.json({ available: true, ...r });
   } catch (e) {
     console.error("grade error", e);

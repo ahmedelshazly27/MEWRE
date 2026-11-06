@@ -120,6 +120,30 @@ const GradeSchema = z.object({
   feedback: z.string().describe("2-5 sentences of direct, constructive mentor feedback in Markdown"),
 });
 
+const JudgedSchema = GradeSchema.extend({
+  judgement: z.number().describe("0 to 1: how well the learner checked, corrected and owned the AI draft"),
+  judgementFeedback: z.string().describe("2-4 sentences on what the learner caught, fixed or missed in the AI draft, in Markdown"),
+});
+
+/**
+ * Grade a final answer that started as an AI draft: the rubric score is for the final answer only; judgement scores
+ * what the learner did with the draft (errors caught, invented facts removed, numbers checked, made it their own).
+ */
+async function gradeWithDraft(task: string, arabic: boolean, learner: string): Promise<{ score: number; feedback: string; judgement: number; judgementFeedback: string }> {
+  const res = await getClient().beta.messages.parse({
+    model: GRADER_MODEL,
+    max_tokens: 10000,
+    ...fallbackParams(GRADER_MODEL),
+    output_config: { effort: "low", format: betaZodOutputFormat(JudgedSchema) },
+    system: `You are a strict but fair grader for a professional learning platform. ${learner} The learner drafted this with an AI tool and then edited it. Score the FINAL answer against the rubric (score). Separately score their JUDGEMENT (judgement): did they remove or flag invented facts (customers, pilots, partners, revenue, team), correct wrong numbers or reasoning, mark unverified external facts, cut filler and make it specific to their venture? A final answer copied unchanged from a flawed draft scores low on judgement even if it reads well; an unchanged draft that was already sound scores around 0.6. ${arabic ? "Write feedback in Modern Standard Arabic, with English technical terms in parentheses on first use." : "Respond in the language of the answer."}`,
+    messages: [{ role: "user", content: task }],
+  });
+  if (res.stop_reason === "refusal" || !res.parsed_output) throw new Error("Grader unavailable");
+  const g = res.parsed_output;
+  const missing = g.missing.length ? `\n\n**Missing:** ${g.missing.join("; ")}` : "";
+  return { score: Math.max(0, Math.min(1, g.score)), feedback: g.feedback + missing, judgement: Math.max(0, Math.min(1, g.judgement)), judgementFeedback: g.judgementFeedback };
+}
+
 async function grade(task: string, arabic = false, learner: string = LEARNER): Promise<{ score: number; feedback: string }> {
   const res = await getClient().beta.messages.parse({
     model: GRADER_MODEL,
@@ -135,12 +159,11 @@ async function grade(task: string, arabic = false, learner: string = LEARNER): P
   return { score: Math.max(0, Math.min(1, g.score)), feedback: g.feedback + missing };
 }
 
-export function gradeShortAnswer(q: ShortQuestion, answer: string, arabic = false, learner?: string) {
-  return grade(
-    `Question:\n${q.prompt}\n\nRubric (each point matters):\n${q.rubric.map((r) => `- ${r}`).join("\n")}\n\nModel answer:\n${q.modelAnswer}\n\nLearner's answer:\n<answer>\n${answer.slice(0, 8000)}\n</answer>`,
-    arabic,
-    learner,
-  );
+export function gradeShortAnswer(q: ShortQuestion, answer: string, arabic = false, learner?: string, aiDraft?: string) {
+  const task = `Question:\n${q.prompt}\n\nRubric (each point matters):\n${q.rubric.map((r) => `- ${r}`).join("\n")}\n\nModel answer:\n${q.modelAnswer}\n\n`;
+  if (aiDraft?.trim())
+    return gradeWithDraft(`${task}AI first draft (before the learner's edits):\n<draft>\n${aiDraft.slice(0, 8000)}\n</draft>\n\nLearner's final answer:\n<answer>\n${answer.slice(0, 8000)}\n</answer>`, arabic, learner ?? LEARNER);
+  return grade(`${task}Learner's answer:\n<answer>\n${answer.slice(0, 8000)}\n</answer>`, arabic, learner);
 }
 
 export function gradeFeynman(prompt: string, keyPoints: string[], answer: string, context?: string, arabic = false, learner?: string) {

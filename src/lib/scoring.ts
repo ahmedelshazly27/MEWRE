@@ -9,7 +9,17 @@ export type Response =
   | { type: "decision"; choice: number }
   | { type: "label"; labels: Record<string, string> }
   /** Short answers are graded externally (AI or rubric self-grade) and passed in as a 0..1 score. */
-  | { type: "short"; text: string; score: number };
+  | {
+      type: "short";
+      text: string;
+      score: number;
+      /** The AI's first draft, when the learner worked with an AI tool (graded for judgement). */
+      aiDraft?: string;
+      /** 0..1: how well the learner checked, corrected and owned the AI draft. */
+      judgement?: number;
+      /** Grader feedback, kept so the work portfolio can show it later. */
+      feedback?: string;
+    };
 
 export interface Grade {
   /** 0..1 partial credit. */

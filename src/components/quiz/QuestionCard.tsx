@@ -9,6 +9,7 @@ import { authFetch } from "@/lib/authFetch";
 import { recordAttempt } from "@/lib/store/actions";
 import type { Response } from "@/lib/scoring";
 import { btn, Pill } from "@/components/ui";
+import { AiWorkflowPanel } from "@/components/quiz/AiWorkflowPanel";
 
 export interface AttemptFeedback {
   score: number;
@@ -16,6 +17,9 @@ export interface AttemptFeedback {
   correctAnswer: string;
   explanation: string;
   aiFeedback?: string;
+  /** Judgement score and feedback when the learner submitted an AI draft alongside the final answer. */
+  judgement?: number;
+  judgementFeedback?: string;
 }
 
 const TYPE_LABEL: Record<Question["type"], string> = {
@@ -73,6 +77,8 @@ export function QuestionCard({
   const [order, setOrder] = useState<string[]>(shuffled);
   const [labels, setLabels] = useState<Record<string, string>>({});
   const [text, setText] = useState("");
+  const [withAi, setWithAi] = useState(false);
+  const [aiDraft, setAiDraft] = useState("");
   const [selfCheck, setSelfCheck] = useState<boolean[] | null>(null);
   const [busy, setBusy] = useState(false);
   const [fb, setFb] = useState<AttemptFeedback | null>(null);
@@ -99,12 +105,12 @@ export function QuestionCard({
     }
   })();
 
-  async function send(response: Response, aiFeedback?: string) {
+  async function send(response: Response, aiFeedback?: string, judgementFeedback?: string) {
     setBusy(true);
     setErr(null);
     try {
       const res = await recordAttempt(q, response, source, runId);
-      const full = { ...res, aiFeedback };
+      const full = { ...res, aiFeedback, judgement: response.type === "short" ? response.judgement : undefined, judgementFeedback };
       setFb(full);
       setSubmitted(true);
       onAnswered?.(full, response);
@@ -133,8 +139,12 @@ export function QuestionCard({
       case "short": {
         setBusy(true);
         try {
-          const r = await authFetch("/api/grade", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionId: q.id, answer: text, lang }) }).then((x) => x.json() as Promise<{ available: boolean; score?: number; feedback?: string }>);
-          if (r.available && typeof r.score === "number") return send({ type: "short", text, score: r.score }, r.feedback);
+          const draft = withAi && aiDraft.trim() ? aiDraft : undefined;
+          const r = await authFetch("/api/grade", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionId: q.id, answer: text, aiDraft: draft, lang }) }).then(
+            (x) => x.json() as Promise<{ available: boolean; score?: number; feedback?: string; judgement?: number; judgementFeedback?: string }>,
+          );
+          if (r.available && typeof r.score === "number")
+            return send({ type: "short", text, score: r.score, aiDraft: draft, judgement: r.judgement, feedback: [r.feedback, r.judgementFeedback].filter(Boolean).join("\n\n") || undefined }, r.feedback, r.judgementFeedback);
         } catch {
           // fall through to self-grading
         } finally {
@@ -278,6 +288,7 @@ export function QuestionCard({
 
         {q.type === "short" && (
           <div>
+            {!locked && <AiWorkflowPanel question={q} />}
             <textarea
               value={text}
               disabled={locked || !!selfCheck}
@@ -287,6 +298,23 @@ export function QuestionCard({
               placeholder={t("Write your answer (English or Arabic)…")}
               className="w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm outline-none focus:border-accent"
             />
+            {!locked && !selfCheck && (
+              <label className="mt-2 flex items-center gap-2 text-sm text-muted">
+                <input type="checkbox" checked={withAi} onChange={(e) => setWithAi(e.target.checked)} />
+                {t("I drafted this with AI: also grade my judgement")}
+              </label>
+            )}
+            {withAi && !selfCheck && (
+              <textarea
+                value={aiDraft}
+                disabled={locked}
+                onChange={(e) => setAiDraft(e.target.value)}
+                rows={4}
+                dir="auto"
+                placeholder={t("Paste the AI's first draft, before your edits…")}
+                className="mt-2 w-full rounded-lg border border-dashed border-border bg-bg px-3 py-2 text-sm outline-none focus:border-accent"
+              />
+            )}
             {selfCheck && !submitted && (
               <div className="mt-3 rounded-lg border border-border bg-surface-2 p-3">
                 <div className="text-sm font-medium">{t("AI grader unavailable — grade yourself against the rubric and model answer.")}</div>
@@ -302,7 +330,7 @@ export function QuestionCard({
                     </label>
                   ))}
                 </div>
-                <button className={`${btn.primary} mt-3`} disabled={busy} onClick={() => send({ type: "short", text, score: selfCheck.filter(Boolean).length / q.rubric.length })}>
+                <button className={`${btn.primary} mt-3`} disabled={busy} onClick={() => send({ type: "short", text, score: selfCheck.filter(Boolean).length / q.rubric.length, aiDraft: withAi && aiDraft.trim() ? aiDraft : undefined })}>
                   {t("Record self-grade")}
                 </button>
               </div>
@@ -343,6 +371,15 @@ export function QuestionCard({
             <div className="mt-2 text-sm">
               <div className="font-medium">{t("Tutor feedback")}</div>
               <Markdown className="prose-compact">{fb.aiFeedback}</Markdown>
+            </div>
+          )}
+          {fb.judgementFeedback && (
+            <div className="mt-2 text-sm">
+              <div className="font-medium">
+                {t("Your judgement on the AI draft")}
+                {typeof fb.judgement === "number" && ` — ${Math.round(fb.judgement * 100)}%`}
+              </div>
+              <Markdown className="prose-compact">{fb.judgementFeedback}</Markdown>
             </div>
           )}
           {q.type === "short" && (

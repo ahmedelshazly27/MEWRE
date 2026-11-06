@@ -24,10 +24,17 @@ const PRESETS = [
   "اشرح لي الفكرة الأساسية بالعربية باختصار",
 ];
 
-export function TutorChat({ lessonId, lessonTitle, compact = false }: { lessonId?: string; lessonTitle?: string; compact?: boolean }) {
+const WORKSHOP_PRESETS = [
+  "Start: ask me for the facts and numbers you need.",
+  "Critique my draft against the rubric.",
+  "What could a sceptical reader attack here?",
+  "Which claims must I verify before this goes out?",
+];
+
+export function TutorChat({ lessonId, lessonTitle, exerciseId, exerciseTitle, compact = false }: { lessonId?: string; lessonTitle?: string; exerciseId?: string; exerciseTitle?: string; compact?: boolean }) {
   const { lang, t } = useT();
-  const presets = lang === "ar" ? PRESETS_AR : PRESETS;
-  const storageKey = `tutor:${lessonId ?? "general"}`;
+  const presets = exerciseId ? WORKSHOP_PRESETS : lang === "ar" ? PRESETS_AR : PRESETS;
+  const storageKey = `tutor:${exerciseId ? `ex:${exerciseId}` : (lessonId ?? "general")}`;
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -60,7 +67,7 @@ export function TutorChat({ lessonId, lessonTitle, compact = false }: { lessonId
     setInput("");
     setBusy(true);
     try {
-      const res = await authFetch("/api/tutor", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: next, lessonId, lang }) });
+      const res = await authFetch("/api/tutor", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: next, lessonId, exerciseId, lang }) });
       if (!res.ok || !res.body) {
         const body = await res.text();
         setMessages([...next, { role: "assistant", content: `_${body || t("Tutor unavailable.")}_` }]);
@@ -95,7 +102,11 @@ export function TutorChat({ lessonId, lessonTitle, compact = false }: { lessonId
       <div className={`flex-1 space-y-3 overflow-y-auto ${compact ? "max-h-[55vh]" : "min-h-[40vh]"}`}>
         {messages.length === 0 && (
           <div className="text-sm text-muted">
-            {lessonTitle ? (
+            {exerciseId ? (
+              <>
+                {t("Workshop:")} <strong>{exerciseTitle ?? exerciseId}</strong>. {t("The tutor sees the exercise, its rubric and the venture's facts, and helps you produce the real document. Start with the first suggestion below.")}
+              </>
+            ) : lessonTitle ? (
               <>
                 {t("Ask anything about")} <strong>{lessonTitle}</strong>. {t("The tutor sees this lesson's content.")}
               </>
