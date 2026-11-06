@@ -1,0 +1,32 @@
+import { md, type GlossaryTerm } from "../../schema";
+
+const glossary: GlossaryTerm[] = [
+  { id: "mz05-hsat", en: "Horizontal single-axis tracker (HSAT)", ar: "متتبّع شمسي أفقي أحادي المحور", definition: md`Tracker with a horizontal north-south torque tube that rotates modules east to west, typically to plus or minus 52 to 60°.`, lesson: "mz05-l01", category: "technical" },
+  { id: "mz05-true-tracking", en: "True tracking", ar: "التتبّع الحقيقي", definition: md`Rotation that puts the module normal on the sun's projection onto the rotation plane: $\tan R = \tan\theta_z\sin(\gamma_s-\gamma_a)$.`, lesson: "mz05-l01", category: "technical" },
+  { id: "mz05-backtracking", en: "Backtracking", ar: "التتبّع العكسي", definition: md`Rotating rows back toward flat at low sun so shadows just miss the next row; needed when $\cos R < \text{GCR}$.`, lesson: "mz05-l01", category: "technical" },
+  { id: "mz05-gcr", en: "Ground coverage ratio (GCR)", ar: "نسبة تغطية الأرض", definition: md`Row chord divided by row pitch; sets the onset and loss of backtracking.`, lesson: "mz05-l01", category: "technical" },
+  { id: "mz05-diffuse-mode", en: "Diffuse mode", ar: "وضع الإشعاع المنتشر", definition: md`Controller mode that flattens rows under overcast or dusty skies to see more of the diffuse sky.`, lesson: "mz05-l01", category: "technical" },
+  { id: "mz05-tcu", en: "Tracker control unit (row controller)", ar: "وحدة تحكم المتتبّع", definition: md`Controller on each row or drive: motor driver, inclinometer, clock, power; runs tracking and local fail-safe.`, lesson: "mz05-l04", category: "technical" },
+  { id: "mz05-ncu", en: "Network controller", ar: "وحدة التحكم الشبكية", definition: md`Zone controller that aggregates many row controllers, reads weather sensors, broadcasts stow and interfaces with SCADA.`, lesson: "mz05-l04", category: "technical" },
+  { id: "mz05-stow", en: "Stow", ar: "وضع الحماية (التخزين الآمن)", definition: md`Moving rows to a protective position to survive wind, hail or dust, or to reduce soiling.`, lesson: "mz05-l02", category: "technical" },
+  { id: "mz05-dynamic-pressure", en: "Dynamic pressure", ar: "الضغط الديناميكي", definition: md`$q = \tfrac12\rho V^2$, the basis of every wind load.`, lesson: "mz05-l02", category: "technical" },
+  { id: "mz05-torsional-galloping", en: "Torsional galloping", ar: "الاهتزاز الالتوائي الذاتي (الجلوبنغ)", definition: md`Self-excited twisting instability of a tracker row above a critical wind speed, driven by negative aerodynamic damping.`, lesson: "mz05-l02", category: "technical" },
+  { id: "mz05-gust-factor", en: "Gust factor", ar: "معامل الهبّة", definition: md`Ratio of the 3-second gust to the 10-minute mean wind, about 1.4 to 1.5 at 10 m over open terrain.`, lesson: "mz05-l02", category: "technical" },
+  { id: "mz05-hysteresis", en: "Stow hysteresis", ar: "التخلّف (الهسترة) في منطق الحماية", definition: md`A release threshold below the stow threshold plus a hold time, so rows do not cycle in and out of stow.`, lesson: "mz05-l02", category: "technical" },
+  { id: "mz05-fail-safe", en: "Fail-safe stow", ar: "الحماية الآمنة عند العطل", definition: md`Each row reaches its safe position by itself on communication loss, sensor fault, low battery or grid loss.`, lesson: "mz05-l02", category: "technical" },
+  { id: "mz05-wind-tunnel-study", en: "Wind-tunnel study", ar: "دراسة نفق الرياح", definition: md`Static and dynamic tests that give force and moment coefficients, critical speeds and the stow strategy for a tracker design.`, lesson: "mz05-l02", category: "technical" },
+  { id: "mz05-hail-stow", en: "Hail stow", ar: "وضع الحماية من البَرَد", definition: md`Forecast-triggered steep stow (60 to 77° in vendor material) to reduce hail impact energy.`, lesson: "mz05-l03", category: "technical" },
+  { id: "mz05-night-stow", en: "Night stow", ar: "وضع الحماية الليلي", definition: md`Parking rows at a steep angle at night to reduce dust accumulation and dew-driven cementation.`, lesson: "mz05-l03", category: "technical" },
+  { id: "mz05-dust-stow", en: "Dust-storm stow", ar: "وضع الحماية من العواصف الترابية", definition: md`Moving rows to a protective angle ahead of or during a dust event, within the vendor's wind envelope.`, lesson: "mz05-l03", category: "technical" },
+  { id: "mz05-sky-view", en: "Sky view factor", ar: "معامل رؤية السماء", definition: md`Fraction of the hemisphere seen by a surface that is sky: $(1+\cos\beta)/2$.`, lesson: "mz05-l03", category: "technical" },
+  { id: "mz05-cementation", en: "Cementation", ar: "التصلّب (الالتصاق الإسمنتي للغبار)", definition: md`Dew dissolves soluble material in the dust layer, which recrystallises and fixes particles to the glass.`, lesson: "mz05-l03", category: "technical" },
+  { id: "mz05-supervisory-request", en: "Supervisory request", ar: "طلب إشرافي", definition: md`A command from an external layer that the vendor logic validates and may reject; only more conservative positions allowed.`, lesson: "mz05-l04", category: "technical" },
+  { id: "mz05-icd", en: "Interface control document (ICD)", ar: "وثيقة التحكم بالواجهات", definition: md`Lists every signal between two systems: direction, type, rate, owner and failure behaviour.`, lesson: "mz05-l04", category: "pm" },
+  { id: "mz05-time-to-live", en: "Time-to-live (request expiry)", ar: "مدة صلاحية الأمر", definition: md`Expiry carried by every external request so rows return to vendor default if it is not renewed.`, lesson: "mz05-l04", category: "technical" },
+  { id: "mz05-latency-budget", en: "Latency budget", ar: "ميزانية زمن الاستجابة", definition: md`Sum of detection, decision, communication, rotation and verification times, compared with time to event arrival.`, lesson: "mz05-l04", category: "technical" },
+  { id: "mz05-non-objection", en: "Vendor non-objection letter", ar: "خطاب عدم ممانعة من المورّد", definition: md`Written confirmation from the tracker vendor that a named function, angles and cycle budget do not affect the warranty.`, lesson: "mz05-l05", category: "contractual" },
+  { id: "mz05-shadow-mode", en: "Shadow mode", ar: "وضع التشغيل الظلّي", definition: md`The optimiser computes and logs decisions without acting, to be compared with what happened.`, lesson: "mz05-l05", category: "pm" },
+  { id: "mz05-paired-trial", en: "Paired-block trial", ar: "تجربة الكتل المتزاوجة", definition: md`Matched test and control blocks compared over the same periods so weather cancels in the difference.`, lesson: "mz05-l05", category: "technical" },
+];
+
+export default glossary;

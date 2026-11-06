@@ -1,0 +1,45 @@
+import type { Reference } from "../../schema";
+
+const references: Reference[] = [
+  // Market and regulation (from docs/research/2026-11-afterwave-market.md)
+  { id: "aw07-r1", title: "BMW Group deploys Figure 03 humanoid after tests of previous version", publisher: "The Robot Report", date: "2026-07", url: "https://www.therobotreport.com/bmw-group-deploys-figure-03-humanoid-after-tests-previous-version/", type: "news", note: "Figure 03 at BMW Spartanburg; unit counts not disclosed." },
+  { id: "aw07-r2", title: "Boston Dynamics production Atlas unveiled at CES", publisher: "The Register", date: "2026-01-06", url: "https://www.theregister.com/2026/01/06/boston_dynamics_atlas_production/", type: "news" },
+  { id: "aw07-r3", title: "Galbot raises USD 362 million in fresh funding, eyes Hong Kong IPO", publisher: "Caixin Global", date: "2026-03-03", url: "https://www.caixinglobal.com/2026-03-03/galbot-raises-362-million-in-fresh-funding-eyes-hong-kong-ipo-102418742.html", type: "news" },
+  { id: "aw07-r4", title: "Top humanoid robot startups 2026: funding", publisher: "Tech Funding News", date: "2026", url: "https://techfundingnews.com/top-humanoid-robot-startups-2026-funding/", type: "news", note: "Apptronik round and a funding aggregation; secondary.", unverified: true },
+  { id: "aw07-r5", title: "Tesla Optimus early production (Q3 2026 update coverage)", publisher: "Drive Tesla Canada", date: "2026", url: "https://driveteslacanada.ca/?p=126159", type: "news", note: "Volume figures unverified.", unverified: true },
+  { id: "aw07-r6", title: "Top 10 humanoid robot startups 2026", publisher: "The Robotic Life", date: "2026", url: "https://theroboticlife.com/top-10-humanoid-robot-startups-2026/", type: "news", note: "Funding tracker; totals disagree with other trackers.", unverified: true },
+  { id: "aw07-r7", title: "ISO 25785-1 explained and what it means for humanoid robot safety", publisher: "i-SCOOP", date: "2026", url: "https://www.i-scoop.eu/iso-25785-1-explained-and-what-it-means-for-humanoid-robot-safety/", type: "guide", note: "Draft status; publication timeline unverified.", unverified: true },
+  { id: "aw07-r8", title: "Humanoid deployment evidence report 2026", publisher: "Physical AI Journal", date: "2026", url: "https://www.physicalaijournal.org/post/humanoid-deployment-evidence-report-2026", type: "report" },
+  { id: "aw07-r9", title: "IEEE Humanoid Study Group: report of future standards development (pathway study)", publisher: "IEEE (hosted by The Robot Report)", date: "2025-09", url: "https://www.therobotreport.com/wp-content/uploads/2025/09/IEEE-Humanoid-Report-of-Future-Standards-Development.pdf", type: "report" },
+  { id: "aw07-r10", title: "The Robot Report 2026 outlook", publisher: "The Robot Report", date: "2026-01", url: "https://www.therobotreport.com/wp-content/uploads/2026/01/TheRobotReport2026_outlook.pdf", type: "report" },
+  { id: "aw07-r11", title: "Korea races to build safety certification for humanoids", publisher: "Seoul Economic Daily", date: "2026-07-01", url: "https://en.sedaily.com/finance/2026/07/01/korea-races-to-build-safety-certification-for-humanoid", type: "news" },
+  { id: "aw07-r12", title: "ISO 10218-2:2025 Robotics: safety requirements, Part 2: industrial robot applications and robot cells", publisher: "ISO", date: "2025-02", url: "https://www.iso.org/standard/73934.html", type: "standard" },
+  { id: "aw07-r13", title: "Regulation (EU) 2023/1230 on machinery", publisher: "EU-OSHA", date: "2023", url: "https://osha.europa.eu/en/legislation/directive/regulation-20231230eu-machinery", type: "government" },
+  { id: "aw07-r14", title: "AI Omnibus enters into force", publisher: "European Commission", date: "2026-07", url: "https://digital-strategy.ec.europa.eu/en/news/ai-omnibus-enters-force", type: "government", note: "Not fetched directly by the research brief; dates from secondary summaries.", unverified: true },
+  { id: "aw07-r15", title: "Machinery Regulation 2023/1230: what the Digital Omnibus on AI changes", publisher: "Eurogip", date: "2026", url: "https://eurogip.fr/en/machinery-regulation-2023-1230-what-the-digital-omnibus-on-ai-changes/", type: "guide" },
+  { id: "aw07-r16", title: "Humanoid robotics top startups (Agility SPAC report)", publisher: "New Market Pitch", date: "2026", url: "https://newmarketpitch.com/blogs/news/humanoid-robotics-top-startups", type: "news", unverified: true },
+  // Technical foundations
+  { id: "aw07-r17", title: "Modern Robotics: Mechanics, Planning, and Control (Lynch and Park)", publisher: "Cambridge University Press", date: "2017", url: "http://hades.mech.northwestern.edu/index.php/Modern_Robotics", type: "academic" },
+  { id: "aw07-r18", title: "Feedback Systems: An Introduction for Scientists and Engineers (Astrom and Murray), 2nd ed.", publisher: "Princeton University Press", date: "2021", url: "https://press.princeton.edu/", type: "academic", unverified: true },
+  { id: "aw07-r19", title: "Probabilistic Robotics (Thrun, Burgard, Fox)", publisher: "MIT Press", date: "2005", url: "https://mitpress.mit.edu/", type: "academic", unverified: true },
+  { id: "aw07-r20", title: "A New Approach to Linear Filtering and Prediction Problems (Kalman), Journal of Basic Engineering 82(1)", publisher: "ASME", date: "1960", url: "https://asmedigitalcollection.asme.org/", type: "academic", unverified: true },
+  { id: "aw07-r21", title: "A Reduction of Imitation Learning and Structured Prediction to No-Regret Online Learning (DAgger)", publisher: "AISTATS / arXiv", date: "2011", url: "https://arxiv.org/abs/1011.0686", type: "academic" },
+  { id: "aw07-r22", title: "Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World", publisher: "IROS / arXiv", date: "2017", url: "https://arxiv.org/abs/1703.06907", type: "academic" },
+  { id: "aw07-r23", title: "Sim-to-Real Transfer of Robotic Control with Dynamics Randomization", publisher: "ICRA / arXiv", date: "2018", url: "https://arxiv.org/abs/1710.06537", type: "academic" },
+  { id: "aw07-r24", title: "Learning agile and dynamic motor skills for legged robots (ANYmal actuator network)", publisher: "Science Robotics / arXiv", date: "2019", url: "https://arxiv.org/abs/1901.08652", type: "academic" },
+  { id: "aw07-r25", title: "RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control", publisher: "Google DeepMind / arXiv", date: "2023", url: "https://arxiv.org/abs/2307.15818", type: "academic" },
+  { id: "aw07-r26", title: "Open X-Embodiment: Robotic Learning Datasets and RT-X Models", publisher: "arXiv", date: "2023", url: "https://arxiv.org/abs/2310.08864", type: "academic" },
+  { id: "aw07-r27", title: "OpenVLA: An Open-Source Vision-Language-Action Model", publisher: "arXiv", date: "2024", url: "https://arxiv.org/abs/2406.09246", type: "academic" },
+  { id: "aw07-r28", title: "pi0: A Vision-Language-Action Flow Model for General Robot Control", publisher: "Physical Intelligence / arXiv", date: "2024", url: "https://arxiv.org/abs/2410.24164", type: "academic" },
+  { id: "aw07-r29", title: "GR00T N1: An Open Foundation Model for Generalist Humanoid Robots", publisher: "NVIDIA / arXiv", date: "2025-03", url: "https://arxiv.org/abs/2503.14734", type: "academic", unverified: true },
+  { id: "aw07-r30", title: "Gemini Robotics: Bringing AI into the Physical World", publisher: "Google DeepMind / arXiv", date: "2025-03", url: "https://arxiv.org/abs/2503.20020", type: "academic", unverified: true },
+  { id: "aw07-r31", title: "Helix: a vision-language-action model for generalist humanoid control", publisher: "Figure AI", date: "2025-02", url: "https://www.figure.ai/news/helix", type: "news", unverified: true },
+  { id: "aw07-r32", title: "MuJoCo physics simulator", publisher: "Google DeepMind", date: "2022", url: "https://mujoco.org", type: "tool" },
+  { id: "aw07-r33", title: "Isaac Lab", publisher: "NVIDIA", date: "2025", url: "https://developer.nvidia.com/", type: "tool", unverified: true },
+  { id: "aw07-r34", title: "Kalibr: camera and camera-IMU calibration toolbox", publisher: "ETH Zurich Autonomous Systems Lab", date: "2014", url: "https://github.com/ethz-asl/kalibr", type: "tool" },
+  { id: "aw07-r35", title: "LeRobot", publisher: "Hugging Face", date: "2024", url: "https://github.com/huggingface/lerobot", type: "tool" },
+  { id: "aw07-r36", title: "ISO 9283 Manipulating industrial robots: performance criteria and related test methods", publisher: "ISO", date: "1998", url: "https://www.iso.org/", type: "standard", unverified: true },
+  { id: "aw07-r37", title: "If nothing goes wrong, is everything all right? Interpreting zero numerators (Hanley and Lippman-Hand), JAMA 249(13)", publisher: "JAMA", date: "1983", url: "https://jamanetwork.com/", type: "academic", unverified: true },
+];
+
+export default references;
