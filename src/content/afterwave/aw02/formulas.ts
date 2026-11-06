@@ -1,0 +1,286 @@
+import { md, type Formula } from "../../schema";
+
+const formulas: Formula[] = [
+  // l01
+  {
+    id: "aw02-bridge-quarter",
+    name: "Quarter bridge output (small strain)",
+    tex: String.raw`V_o \approx \frac{V_{ex}\,\mathrm{GF}\,\varepsilon}{4}`,
+    vars: [
+      { sym: "V_o", meaning: "Bridge output (differential)", unit: "V" },
+      { sym: "V_{ex}", meaning: "Excitation voltage", unit: "V" },
+      { sym: String.raw`\mathrm{GF}`, meaning: "Gauge factor, about 2 for metal foil", unit: "1" },
+      { sym: String.raw`\varepsilon`, meaning: "Strain", unit: "m/m (often in microstrain)" },
+    ],
+    explanation: md`One active gauge in a four-arm bridge. Half bridge doubles the output, full bridge (four active arms) gives $V_{ex}\,\mathrm{GF}\,\varepsilon$. Typical outputs are a few mV, so bridges need low-noise differential amplifiers.`,
+    lesson: "aw02-l01",
+  },
+  {
+    id: "aw02-loadcell-output",
+    name: "Load cell output from mV/V rating",
+    tex: String.raw`V_o = S\,V_{ex}\,\frac{F}{F_{rated}}`,
+    vars: [
+      { sym: "V_o", meaning: "Output voltage", unit: "mV" },
+      { sym: "S", meaning: "Rated output (sensitivity) from the calibration certificate", unit: "mV/V" },
+      { sym: "V_{ex}", meaning: "Excitation voltage", unit: "V" },
+      { sym: "F", meaning: "Applied load", unit: "N" },
+      { sym: "F_{rated}", meaning: "Rated capacity", unit: "N" },
+    ],
+    explanation: md`Ratiometric: output scales with excitation, so measure excitation at the cell. Use the certificate value of $S$ (for example 2.0013 mV/V), not the nominal 2 mV/V.`,
+    lesson: "aw02-l01",
+  },
+  {
+    id: "aw02-thermocouple",
+    name: "Thermocouple voltage (linear approximation)",
+    tex: String.raw`V_{TC} \approx S_{AB}\,(T_{hot} - T_{ref})`,
+    vars: [
+      { sym: "V_{TC}", meaning: "Thermocouple voltage", unit: "V" },
+      { sym: "S_{AB}", meaning: "Seebeck coefficient of the pair (type K about 41 µV/°C)", unit: "V/°C" },
+      { sym: "T_{hot}", meaning: "Measuring junction temperature", unit: "°C" },
+      { sym: "T_{ref}", meaning: "Reference (cold) junction temperature", unit: "°C" },
+    ],
+    explanation: md`Real instruments use the non-linear reference polynomials of IEC 60584-1 plus cold-junction compensation; the linear form is for estimating signal size.`,
+    lesson: "aw02-l01",
+  },
+  {
+    id: "aw02-rtd",
+    name: "RTD resistance (linear approximation)",
+    tex: String.raw`R(T) = R_0\,(1 + \alpha T)`,
+    vars: [
+      { sym: "R(T)", meaning: "Resistance at temperature T", unit: String.raw`\Omega` },
+      { sym: "R_0", meaning: "Resistance at 0 °C (100 Ω for Pt100)", unit: String.raw`\Omega` },
+      { sym: String.raw`\alpha`, meaning: "Temperature coefficient, 0.00385 per °C for IEC 60751 platinum", unit: "1/°C" },
+      { sym: "T", meaning: "Temperature", unit: "°C" },
+    ],
+    explanation: md`Exact at 0 and 100 °C and within about 0.4 °C between them; the full Callendar-Van Dusen equation adds second-order terms. 1 °C on a Pt100 is 0.385 $\Omega$, so lead resistance matters.`,
+    lesson: "aw02-l01",
+  },
+  {
+    id: "aw02-shunt",
+    name: "Shunt voltage and dissipation",
+    tex: String.raw`V_{sh} = I\,R_{sh}, \qquad P = I^2 R_{sh}`,
+    vars: [
+      { sym: "V_{sh}", meaning: "Voltage across the shunt", unit: "V" },
+      { sym: "I", meaning: "Current", unit: "A" },
+      { sym: "R_{sh}", meaning: "Shunt resistance", unit: String.raw`\Omega` },
+      { sym: "P", meaning: "Power dissipated", unit: "W" },
+    ],
+    explanation: md`100 A in 100 $\mu\Omega$: 10 mV and 1 W. Self-heating shifts resistance through its temperature coefficient.`,
+    lesson: "aw02-l01",
+  },
+  {
+    id: "aw02-noise-rms",
+    name: "White noise over a bandwidth",
+    tex: String.raw`v_n = e_n\sqrt{B}`,
+    vars: [
+      { sym: "v_n", meaning: "RMS noise voltage", unit: "V" },
+      { sym: "e_n", meaning: "Noise spectral density", unit: String.raw`\text{V}/\sqrt{\text{Hz}}` },
+      { sym: "B", meaning: "Noise bandwidth", unit: "Hz" },
+    ],
+    explanation: md`Valid for white (flat) noise. Do not give a channel more bandwidth than the physics needs.`,
+    lesson: "aw02-l01",
+  },
+  {
+    id: "aw02-snr-db",
+    name: "Signal-to-noise ratio in decibels",
+    tex: String.raw`\mathrm{SNR}_{dB} = 20\log_{10}\frac{V_{s,rms}}{V_{n,rms}}`,
+    vars: [
+      { sym: String.raw`\mathrm{SNR}_{dB}`, meaning: "Signal-to-noise ratio", unit: "dB" },
+      { sym: "V_{s,rms}", meaning: "Signal rms voltage", unit: "V" },
+      { sym: "V_{n,rms}", meaning: "Noise rms voltage", unit: "V" },
+    ],
+    explanation: md`20 log for amplitude ratios, 10 log for power ratios. Every 20 dB is a factor 10 in amplitude; 6.02 dB is a factor 2 (one bit).`,
+    lesson: "aw02-l01",
+  },
+  // l02
+  {
+    id: "aw02-nyquist",
+    name: "Nyquist sampling criterion",
+    tex: String.raw`f_s > 2 f_{max}`,
+    vars: [
+      { sym: "f_s", meaning: "Sample rate", unit: "S/s (Hz)" },
+      { sym: "f_{max}", meaning: "Highest frequency present in the signal at the ADC input", unit: "Hz" },
+    ],
+    explanation: md`$f_{max}$ means what actually reaches the ADC (including noise and interference), not what you care about. Practical rates are 2.5x (with a steep anti-alias filter) to 10x or more (for time-domain waveform fidelity).`,
+    lesson: "aw02-l02",
+  },
+  {
+    id: "aw02-alias",
+    name: "Alias frequency",
+    tex: String.raw`f_a = \left| f - k f_s \right|, \quad k = \mathrm{round}\!\left(\frac{f}{f_s}\right)`,
+    vars: [
+      { sym: "f_a", meaning: "Apparent (aliased) frequency, between 0 and fs/2", unit: "Hz" },
+      { sym: "f", meaning: "True input frequency", unit: "Hz" },
+      { sym: "f_s", meaning: "Sample rate", unit: "S/s" },
+      { sym: "k", meaning: "Nearest integer multiple", unit: "1" },
+    ],
+    explanation: md`Sampling folds the spectrum around multiples of $f_s/2$. Once aliased, the component is indistinguishable from a real low-frequency signal; no post-processing can remove it.`,
+    lesson: "aw02-l02",
+  },
+  {
+    id: "aw02-lsb",
+    name: "ADC code width (LSB)",
+    tex: String.raw`\mathrm{LSB} = \frac{\mathrm{FSR}}{2^N}`,
+    vars: [
+      { sym: String.raw`\mathrm{LSB}`, meaning: "Voltage step of one code", unit: "V" },
+      { sym: String.raw`\mathrm{FSR}`, meaning: "Full-scale input range (for ±10 V, 20 V)", unit: "V" },
+      { sym: "N", meaning: "Number of ADC bits", unit: "bit" },
+    ],
+    explanation: md`16 bits over 20 V: 305 $\mu$V; 24 bits: 1.19 $\mu$V. Nominal bits overstate real resolution: see ENOB.`,
+    lesson: "aw02-l02",
+  },
+  {
+    id: "aw02-ideal-snr",
+    name: "Ideal quantisation SNR for a full-scale sine",
+    tex: String.raw`\mathrm{SNR}_{ideal} = 6.02\,N + 1.76\ \text{dB}`,
+    vars: [
+      { sym: String.raw`\mathrm{SNR}_{ideal}`, meaning: "Best possible SNR from quantisation alone", unit: "dB" },
+      { sym: "N", meaning: "Number of bits", unit: "bit" },
+    ],
+    explanation: md`16 bits: 98.1 dB; 24 bits: 146.2 dB. Real 24-bit converters reach roughly 100 to 120 dB because analog noise dominates.`,
+    lesson: "aw02-l02",
+  },
+  {
+    id: "aw02-enob",
+    name: "Effective number of bits",
+    tex: String.raw`\mathrm{ENOB} = \frac{\mathrm{SINAD} - 1.76}{6.02}`,
+    vars: [
+      { sym: String.raw`\mathrm{ENOB}`, meaning: "Effective number of bits", unit: "bit" },
+      { sym: String.raw`\mathrm{SINAD}`, meaning: "Signal to noise and distortion ratio, measured", unit: "dB" },
+    ],
+    explanation: md`The resolution the channel really delivers. A "24-bit" channel with 110 dB SINAD has about 18 effective bits.`,
+    lesson: "aw02-l02",
+  },
+  {
+    id: "aw02-oversampling",
+    name: "Oversampling and averaging gain",
+    tex: String.raw`\Delta\mathrm{SNR} = 10\log_{10}(\mathrm{OSR})`,
+    vars: [
+      { sym: String.raw`\Delta\mathrm{SNR}`, meaning: "SNR improvement from averaging white noise", unit: "dB" },
+      { sym: String.raw`\mathrm{OSR}`, meaning: "Oversampling ratio (samples averaged per output sample)", unit: "1" },
+    ],
+    explanation: md`About 3 dB (half a bit) per doubling, for uncorrelated white noise only. Delta-sigma converters add noise shaping to do much better.`,
+    lesson: "aw02-l02",
+  },
+  {
+    id: "aw02-data-rate",
+    name: "Raw data rate",
+    tex: String.raw`R = \sum_{g} n_g\, f_{s,g}\, b_g`,
+    vars: [
+      { sym: "R", meaning: "Data rate", unit: "B/s" },
+      { sym: "n_g", meaning: "Number of channels in group g", unit: "channels" },
+      { sym: "f_{s,g}", meaning: "Sample rate of group g", unit: "S/s" },
+      { sym: "b_g", meaning: "Stored bytes per sample", unit: "B" },
+    ],
+    explanation: md`Multiply by duration for volume. Ignores timestamps (implicit for fixed-rate waveforms) and container overhead; add metadata, indexes and video separately.`,
+    lesson: "aw02-l02",
+  },
+  // l03
+  {
+    id: "aw02-clock-error",
+    name: "Clock error from offset and drift",
+    tex: String.raw`e(t) = t_{dev} - t_{ref} = \theta_0 + \delta\, t_{ref}`,
+    vars: [
+      { sym: "e(t)", meaning: "Clock error at reference time t", unit: "s" },
+      { sym: "t_{dev}", meaning: "Time read on the device clock", unit: "s" },
+      { sym: "t_{ref}", meaning: "Reference time", unit: "s" },
+      { sym: String.raw`\theta_0`, meaning: "Initial offset", unit: "s" },
+      { sym: String.raw`\delta`, meaning: "Fractional frequency error (ppm × 10⁻⁶)", unit: "1" },
+    ],
+    explanation: md`1 ppm = 1 $\mu$s per second = 3.6 ms per hour = 86.4 ms per day. A 40 ppm crystal drifts 144 ms per hour. Real oscillators also wander with temperature, so $\delta$ is only constant over limited periods.`,
+    lesson: "aw02-l03",
+  },
+  {
+    id: "aw02-clock-correction",
+    name: "Mapping device time to reference time",
+    tex: String.raw`t_{ref} = \frac{t_{dev} - \theta_0}{1 + \delta}`,
+    vars: [
+      { sym: "t_{ref}", meaning: "Reference time", unit: "s" },
+      { sym: "t_{dev}", meaning: "Device timestamp", unit: "s" },
+      { sym: String.raw`\theta_0`, meaning: "Fitted offset", unit: "s" },
+      { sym: String.raw`\delta`, meaning: "Fitted fractional drift", unit: "1" },
+    ],
+    explanation: md`$\theta_0$ and $\delta$ come from a linear least-squares fit of device time against reference time at sync events (pulses recorded on both streams). Piecewise fits handle drift that changes with temperature.`,
+    lesson: "aw02-l03",
+  },
+  {
+    id: "aw02-ptp-offset",
+    name: "PTP offset from the four timestamps",
+    tex: String.raw`\theta = \frac{(t_2 - t_1) - (t_4 - t_3)}{2}`,
+    vars: [
+      { sym: String.raw`\theta`, meaning: "Offset of the follower clock relative to the leader", unit: "s" },
+      { sym: "t_1", meaning: "Leader sends Sync (leader clock)", unit: "s" },
+      { sym: "t_2", meaning: "Follower receives Sync (follower clock)", unit: "s" },
+      { sym: "t_3", meaning: "Follower sends Delay_Req (follower clock)", unit: "s" },
+      { sym: "t_4", meaning: "Leader receives Delay_Req (leader clock)", unit: "s" },
+    ],
+    explanation: md`IEEE 1588. Assumes the network path is symmetric; any asymmetry $\Delta$ between the two directions appears as an offset error of $\Delta/2$.`,
+    lesson: "aw02-l03",
+  },
+  {
+    id: "aw02-ptp-delay",
+    name: "PTP mean path delay",
+    tex: String.raw`d = \frac{(t_2 - t_1) + (t_4 - t_3)}{2}`,
+    vars: [
+      { sym: "d", meaning: "One-way mean path delay", unit: "s" },
+      { sym: "t_1 \\ldots t_4", meaning: "The four PTP timestamps", unit: "s" },
+    ],
+    explanation: md`The offset cancels in the sum. Hardware timestamping at the network interface keeps $t_1$ to $t_4$ accurate to nanoseconds; software timestamps add operating system jitter.`,
+    lesson: "aw02-l03",
+  },
+  // l04
+  {
+    id: "aw02-compression-ratio",
+    name: "Compression ratio",
+    tex: String.raw`\mathrm{CR} = \frac{S_{raw}}{S_{comp}}`,
+    vars: [
+      { sym: String.raw`\mathrm{CR}`, meaning: "Compression ratio", unit: "1" },
+      { sym: "S_{raw}", meaning: "Uncompressed size", unit: "B" },
+      { sym: "S_{comp}", meaning: "Compressed size", unit: "B" },
+    ],
+    explanation: md`Lossless compression removes redundancy, not noise: noisy high-resolution signals compress little; slow, quantised or repetitive channels compress a lot. Always measure on real files.`,
+    lesson: "aw02-l04",
+  },
+  // l05
+  {
+    id: "aw02-video-size",
+    name: "Compressed video volume",
+    tex: String.raw`S = \frac{r_b\, T}{8}`,
+    vars: [
+      { sym: "S", meaning: "File size", unit: "B" },
+      { sym: "r_b", meaning: "Average bitrate", unit: "bit/s" },
+      { sym: "T", meaning: "Duration", unit: "s" },
+    ],
+    explanation: md`Screen content compresses very well because most pixels do not change. 1.5 Mbit/s for 8 hours is 5.4 GB.`,
+    lesson: "aw02-l05",
+  },
+  // l06
+  {
+    id: "aw02-combined-uncertainty",
+    name: "Combined and expanded uncertainty (GUM)",
+    tex: String.raw`u_c = \sqrt{\sum_i u_i^2}, \qquad U = k\,u_c`,
+    vars: [
+      { sym: "u_c", meaning: "Combined standard uncertainty", unit: "unit of the measurand" },
+      { sym: "u_i", meaning: "Standard uncertainty of independent component i (already in output units)", unit: "unit of the measurand" },
+      { sym: "U", meaning: "Expanded uncertainty", unit: "unit of the measurand" },
+      { sym: "k", meaning: "Coverage factor, 2 for about 95 % coverage", unit: "1" },
+    ],
+    explanation: md`Root sum of squares holds for uncorrelated components (JCGM 100, the GUM). Correlated components add linearly. Report as value ± U (k = 2).`,
+    lesson: "aw02-l06",
+  },
+  {
+    id: "aw02-completeness",
+    name: "Data completeness",
+    tex: String.raw`C = \frac{N_{received}}{f_s\, T}`,
+    vars: [
+      { sym: "C", meaning: "Completeness", unit: "fraction" },
+      { sym: "N_{received}", meaning: "Samples actually stored", unit: "samples" },
+      { sym: "f_s", meaning: "Configured sample rate", unit: "S/s" },
+      { sym: "T", meaning: "Recording duration", unit: "s" },
+    ],
+    explanation: md`A cheap, powerful check: dropped buffers show up as $C < 1$ even when every stored value looks fine.`,
+    lesson: "aw02-l06",
+  },
+];
+
+export default formulas;
