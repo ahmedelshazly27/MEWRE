@@ -18,6 +18,7 @@ export function buildContentIndex(lang: Lang): ContentIndex {
       competencies: t.competencies,
       moduleIds: trackModules(t, lang).map((m) => m.id),
       phase: t.phase,
+      capstone: t.capstone,
     })),
     modules: allModulesFor(lang).map((m) => ({ id: m.id, track: trackOfModule(m.id), number: m.number, title: m.title, draft: !!m.draft, lessonIds: m.lessons.map((l) => l.id), estimatedHours: m.estimatedHours })),
     lessons: ordered.map((r) => ({

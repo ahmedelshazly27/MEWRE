@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getModule, index, isTranslated, trackHome, trackOfModule } from "@/lib/content";
+import { conceptsHref, getModule, index, isTranslated, trackHome, trackOfModule } from "@/lib/content";
 import { lp, t, type Lang } from "@/lib/i18n";
 import { Markdown } from "@/components/Markdown";
 import { Widget } from "@/components/widgets";
@@ -35,7 +35,7 @@ export function ModuleView({ moduleId, lang }: { moduleId: string; lang: Lang })
             {t(lang, "Cheat sheet")}
           </Button>
           {keyCount > 0 && (
-            <Button href={L(`/crash/concepts?m=${m.id}`)} variant="ghost">
+            <Button href={L(conceptsHref(m.id))} variant="ghost">
               🧠 {t(lang, "Must-know ({n})", { n: keyCount })}
             </Button>
           )}

@@ -109,6 +109,20 @@ physics error in the capstone, several overstated figures and Arabic glossary te
 - [x] Marked on lesson pages ("Must know" card after the objectives) and module pages; a step in every sprint module (plans rebalanced to ~8 h a day)
 - [x] `validateKeyConcepts` (ids, lessons, KaTeX, definition length, Arabic mirrors English) in `validate:content` and `tests/key.test.ts`; one owner module per concept
 
+## Phase 11 · Multi-track academy, architecture (2026-11-06)
+
+- [x] Environment audit, Nov 2026 research briefs (docs/research), plan (docs/ACADEMY_PLAN.md)
+- [x] Tracks model with globally unique ids; `/learn` hub, `/tracks/[id]` pages with per-competency readiness; dashboard across tracks; per-track diagnostic and practice filter; tutor and grader profile per track
+- [x] Arabic kept to Track 0 (routes and toggle)
+- [x] Private access: `src/proxy.ts` gates every page and data file on a Supabase cookie session plus email allowlist; `/login`, no sign-up; verified end to end (redirect, wrong password, allowlisted access, non-allowlisted denial)
+- [x] Live at https://learn.shazly.xyz
+- [x] Lesson blocks for visuals: `chart`, `flow`, `matrix`, plus `xref` cross-links; style validator (no em dashes, stealth cofounder never named)
+- [x] Founder Core calculators with tests: cap table and SAFE conversion (YC post-money rules), SAFE vs priced, unit economics and runway, pricing experiments, pipeline forecaster
+
+## Phase 12 · Founder Core content (in progress)
+
+- [ ] fc01 to fc10 plus capstone fc11, must-know concepts per module
+
 ## Known limitations / next ideas
 
 - Interactive widgets and diagrams are English-only (they render LTR inside Arabic pages). Library reference titles stay in their original language.

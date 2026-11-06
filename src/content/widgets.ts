@@ -5,6 +5,23 @@
  */
 
 export const WIDGETS = {
+  // Afterwave
+  "change-impact": "Test dependency graph and change-impact visualiser: pick changed firmware, model or rig artifacts; impact score 1 − Π(1 − w) per test, selection threshold, rig hours saved vs expected regressions caught. Props: none",
+  "bench-sync": "Bench data synchronisation demo: a DAQ stream and an app log on different clocks (offset, drift ppm, jitter); misalignment over time and after fitting offset and drift from sync pulses. Props: none",
+  "platform-economics": "Actuator test platform economics: rig capex, life, availability, utilisation, price per test hour, variable and fixed costs, data value; EBIT vs utilisation, breakeven utilisation, payback. Props: none",
+  "gsn-builder": "Safety case builder in Goal Structuring Notation: goals, strategies, solutions, context, assumptions; add/edit nodes and get structural checks (every goal supported down to evidence). Props: none",
+  // Mizan (the Track 0 "soiling" widget is the cleaning-interval optimiser)
+  "pr-correction": "Performance ratio with temperature correction: a year of daily PR for a desert plant, basic vs NREL weather-corrected PR, soiling sawtooth from rate and cleaning interval. Props: none",
+  "stow-decision": "Stow decision simulator: wind forecast vs vendor threshold, damage cost, energy lost while stowed, soiling avoided by a steep dust stow; expected-cost decision and curves vs wind speed. Props: none",
+  // Suhail
+  "event-pnl": "Event P&L and sponsorship model: attendees, tickets, four sponsor tiers with fulfilment cost, venue, catering, prizes, production, marketing, contingency; profit, sponsor share, cost per attendee. Props: none",
+  "community-funnel": "Community growth funnel: monthly reach, conversion, retention, referrals and contributor share; active members over time and steady state reach·conversion / (1 − retention − referral). Props: none",
+  // Founder Core
+  "cap-table": "Cap table and dilution simulator: founders, option pool, post-money SAFEs converting at a priced round, then a Series A; ownership % and fully diluted shares after each step, with the option-pool shuffle. Props: { founders?: number; poolPct?: number }",
+  "safe-vs-priced": "SAFE vs priced round calculator: the same raise as post-money SAFE (cap, discount), pre-money SAFE or priced seed; founder ownership after the Series A, conversion price and effective valuation. Props: { raise?: number; cap?: number; discount?: number; preMoney?: number }",
+  "unit-economics": "Unit economics and runway model: price, gross margin, CAC, monthly churn give LTV, LTV/CAC and CAC payback; cash, burn and revenue growth give runway months and default alive/dead. Props: { price?: number; grossMargin?: number; cac?: number; churn?: number; cash?: number; burn?: number }",
+  "pricing-experiment": "Pricing experiments: constant-elasticity demand, revenue and contribution margin vs price, profit-maximising price, A/B price test with sample-size check, good-better-best packaging mix. Props: { price?: number; elasticity?: number; unitCost?: number }",
+  "pipeline-forecast": "Sales pipeline forecaster: deals and value per stage, stage-to-close probabilities and cycle length give weighted pipeline, expected bookings per quarter and coverage vs target. Props: { target?: number; acv?: number }",
   "iv-curve": "PV single-diode I-V and P-V curves; sliders for irradiance and cell temperature. Props: { irradiance?: number; temperature?: number }",
   "sun-path": "Sun elevation/azimuth through a day at a latitude (default Kuwait 29.3°N) + single-axis tracker angle and POA irradiance vs fixed tilt. Props: { latitude?: number; dayOfYear?: number }",
   "kuwait-climate": "Monthly GHI, DNI and mean/max ambient temperature for Shagaya/Kuwait (indicative climatology). Props: { metric?: 'ghi'|'dni'|'temp' }",

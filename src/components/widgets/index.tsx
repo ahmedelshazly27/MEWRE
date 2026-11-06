@@ -16,6 +16,19 @@ function Loading() {
 
 /** Each widget is code-split and rendered client-side only. */
 const REGISTRY: Record<WidgetId, WidgetComponent> = {
+  "change-impact": dynamic(() => import("./venture/ChangeImpact"), { ssr: false, loading: Loading }),
+  "bench-sync": dynamic(() => import("./venture/BenchSync"), { ssr: false, loading: Loading }),
+  "platform-economics": dynamic(() => import("./venture/PlatformEconomics"), { ssr: false, loading: Loading }),
+  "gsn-builder": dynamic(() => import("./venture/GsnBuilder"), { ssr: false, loading: Loading }),
+  "pr-correction": dynamic(() => import("./venture/PrCorrection"), { ssr: false, loading: Loading }),
+  "stow-decision": dynamic(() => import("./venture/StowDecision"), { ssr: false, loading: Loading }),
+  "event-pnl": dynamic(() => import("./venture/EventPnl"), { ssr: false, loading: Loading }),
+  "community-funnel": dynamic(() => import("./venture/CommunityFunnel"), { ssr: false, loading: Loading }),
+  "cap-table": dynamic(() => import("./founder/CapTable"), { ssr: false, loading: Loading }),
+  "safe-vs-priced": dynamic(() => import("./founder/SafeVsPriced"), { ssr: false, loading: Loading }),
+  "unit-economics": dynamic(() => import("./founder/UnitEconomics"), { ssr: false, loading: Loading }),
+  "pricing-experiment": dynamic(() => import("./founder/PricingExperiment"), { ssr: false, loading: Loading }),
+  "pipeline-forecast": dynamic(() => import("./founder/PipelineForecast"), { ssr: false, loading: Loading }),
   "iv-curve": dynamic(() => import("./IvCurve"), { ssr: false, loading: Loading }),
   "sun-path": dynamic(() => import("./SunPath"), { ssr: false, loading: Loading }),
   "kuwait-climate": dynamic(() => import("./KuwaitClimate"), { ssr: false, loading: Loading }),

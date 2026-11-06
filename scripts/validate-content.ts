@@ -6,6 +6,7 @@ import { MODULES_AR } from "../src/content/ar";
 import { validateTranslation } from "../src/content/validate-translation";
 import { KEY_CONCEPTS } from "../src/content/key";
 import { validateKeyConcepts } from "../src/content/key/validate";
+import { validateStyle } from "../src/content/style";
 
 const filter = process.argv.slice(2);
 const arModules = MODULES.map((m) => MODULES_AR[m.id]).filter((m): m is NonNullable<typeof m> => !!m);
@@ -17,7 +18,8 @@ const arIssues = [
   ...arModules.flatMap((ar) => validateTranslation(MODULES.find((m) => m.id === ar.id)!, ar)),
 ];
 const keyIssues = ALL_MODULES.flatMap((m) => (KEY_CONCEPTS[m.id] ? validateKeyConcepts(m, KEY_CONCEPTS[m.id]) : [{ where: `${m.id} key`, message: "missing key concept set" }]));
-const issues = [...validateModules(ALL_MODULES), ...arIssues, ...keyIssues].filter(
+const styleIssues = ALL_MODULES.filter((m) => !/^m\d/.test(m.id)).flatMap((m) => validateStyle(m, KEY_CONCEPTS[m.id]));
+const issues = [...validateModules(ALL_MODULES), ...arIssues, ...keyIssues, ...styleIssues].filter(
   (i) => !filter.length || filter.some((f) => i.where.startsWith(f)),
 );
 for (const i of issues) console.log(`✗ ${i.where}: ${i.message}`);

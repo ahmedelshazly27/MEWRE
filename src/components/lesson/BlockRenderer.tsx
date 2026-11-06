@@ -10,6 +10,10 @@ import { Feynman } from "./Feynman";
 import { Checklist } from "./Checklist";
 import { InlineQuestion } from "./InlineQuestion";
 import { FormulaCard } from "./FormulaCard";
+import { Chart } from "@/components/blocks/Chart";
+import { Flow, Matrix } from "@/components/blocks/Visuals";
+import Link from "next/link";
+import { getTrack, trackOfModule } from "@/lib/content";
 
 const CALLOUT: Record<CalloutTone, { label: string; cls: string; icon: string }> = {
   why: { label: "Why it works", cls: "border-info/40 bg-info-soft/40", icon: "💡" },
@@ -104,6 +108,52 @@ export function BlockRenderer({ block, lesson, blockKey, lang = "en" }: { block:
             ))}
           </ul>
         </div>
+      );
+    }
+    case "chart":
+      return (
+        <figure className="my-6 rounded-xl border border-border bg-surface p-3" dir="ltr">
+          {block.title && <div className="mb-2 text-sm font-semibold">{block.title}</div>}
+          <Chart chart={block.chart} xKey={block.xKey} xLabel={block.xLabel} yLabel={block.yLabel} series={block.series} data={block.data} />
+          {block.caption && <figcaption className="mt-2 text-sm text-muted">{block.caption}</figcaption>}
+        </figure>
+      );
+    case "flow":
+      return (
+        <figure className="my-6">
+          {block.title && <div className="mb-2 text-sm font-semibold">{block.title}</div>}
+          <Flow steps={block.steps} />
+          {block.caption && <figcaption className="mt-2 text-sm text-muted">{block.caption}</figcaption>}
+        </figure>
+      );
+    case "matrix":
+      return (
+        <figure className="my-6">
+          {block.title && <div className="mb-2 text-sm font-semibold">{block.title}</div>}
+          <Matrix xAxis={block.xAxis} yAxis={block.yAxis} cells={block.cells} />
+          {block.caption && <figcaption className="mt-2 text-sm text-muted">{block.caption}</figcaption>}
+        </figure>
+      );
+    case "xref": {
+      const idx = index(lang);
+      const l = idx.lessons.get(block.to);
+      const c = l ? undefined : idx.concepts.get(block.to);
+      const target = l ? { module: l.module, lesson: l.lesson, label: l.lesson.title } : c ? { module: c.module, lesson: c.lesson, label: c.concept.name } : null;
+      if (!target) return null;
+      const track = getTrack(trackOfModule(target.module.id))!;
+      return (
+        <Link href={`/learn/${target.module.id}/${target.lesson.id}`} className="my-4 flex items-start gap-3 rounded-xl border border-info/40 bg-info-soft/30 px-4 py-3 no-underline hover:bg-info-soft/50">
+          <span className="text-lg" aria-hidden>
+            🔗
+          </span>
+          <span className="min-w-0">
+            <span className="block text-xs font-semibold uppercase tracking-wide text-info">
+              {track.short} · M{target.module.number}
+            </span>
+            <span className="block font-medium">{target.label}</span>
+            <span className="block text-sm text-muted">{block.note}</span>
+          </span>
+        </Link>
       );
     }
     case "bilingual":

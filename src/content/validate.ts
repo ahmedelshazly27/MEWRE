@@ -156,6 +156,23 @@ export function validateModules(modules: Module[]): ValidationIssue[] {
       case "question":
         checkQuestion(b.question, where);
         break;
+      case "chart": {
+        if (!b.series.length || !b.data.length) issues.push({ where, message: "chart needs series and data" });
+        for (const row of b.data) {
+          if (!(b.xKey in row)) issues.push({ where, message: `chart row missing x key "${b.xKey}"` });
+          for (const sr of b.series) if (typeof row[sr.key] !== "number") issues.push({ where, message: `chart row missing numeric "${sr.key}"` });
+        }
+        break;
+      }
+      case "flow":
+        if (b.steps.length < 2) issues.push({ where, message: "flow needs at least 2 steps" });
+        break;
+      case "matrix":
+        if (b.cells.length !== 4) issues.push({ where, message: "matrix needs exactly 4 cells" });
+        break;
+      case "xref":
+        if (!lessonIds.has(b.to) && !conceptIds.has(b.to)) issues.push({ where, message: `xref target "${b.to}" is not a lesson or concept id` });
+        break;
       case "widget":
         if (!(b.widget in WIDGETS)) issues.push({ where, message: `unknown widget "${b.widget}"` });
         break;

@@ -1,7 +1,21 @@
-# MEWRE Renewable PM Academy — Curriculum & Design Plan
+# Shazly Academy: Curriculum & Design Plan
 
-Personal applied-learning platform to prepare for a Project Manager role on renewable-energy
-projects at Kuwait's Ministry of Electricity, Water and Renewable Energy (MEWRE): Shagaya
+Private multi-track learning platform at https://learn.shazly.xyz. Since November 2026 it holds five tracks
+that share one learner store, one review queue and one concept graph:
+
+| Track | Purpose | Status |
+|---|---|---|
+| 0 · MEWRE Project Manager | Renewable-energy PM at Kuwait's MEWRE (this document, sections 1 to 6) | Complete, English and Arabic |
+| 1 · Founder Core | Running a venture-scale startup: product, GTM, sales, finance, fundraising, equity, operations, AI | Phase 2 |
+| 2 · Afterwave | Physical AI test infrastructure: the science and the business | Phase 3 |
+| 3 · Mizan | PV soiling analytics, cleaning optimisation and stow/tracker control in Kuwait and the Gulf | Phase 4 |
+| 4 · Suhail | Builder ecosystem for the Arab world | Phase 5 |
+
+Architecture, data model, lesson shape and module outlines for Tracks 1 to 4: [`docs/ACADEMY_PLAN.md`](docs/ACADEMY_PLAN.md).
+Authoring brief for Founder Core: [`docs/FOUNDER_BRIEF.md`](docs/FOUNDER_BRIEF.md).
+
+The rest of this document describes Track 0, the original MEWRE PM curriculum: preparation for a Project Manager
+role on renewable-energy projects at Kuwait's Ministry of Electricity, Water and Renewable Energy (MEWRE): Shagaya
 Renewable Energy Park and the utility-scale PV/BESS pipeline.
 
 Research brief with sources: [`docs/RESEARCH.md`](docs/RESEARCH.md). Build status: [`PROGRESS.md`](PROGRESS.md).

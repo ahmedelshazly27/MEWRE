@@ -168,7 +168,37 @@ export type Block =
   /** Cite references by id (from the module's references array). */
   | { kind: "sources"; refs: string[] }
   /** Bilingual text pair, e.g. a memo template in English and Arabic. */
-  | { kind: "bilingual"; title?: string; en: string; ar: string };
+  | { kind: "bilingual"; title?: string; en: string; ar: string }
+  /** Data-driven chart. `data` rows hold `xKey` plus one numeric field per series key. */
+  | {
+      kind: "chart";
+      chart: "line" | "bar" | "area" | "stacked-bar";
+      title?: string;
+      xKey: string;
+      xLabel?: string;
+      yLabel?: string;
+      series: { key: string; label: string }[];
+      data: Record<string, number | string>[];
+      caption?: string;
+    }
+  /** Process flow: boxes with arrows, in order. */
+  | { kind: "flow"; title?: string; steps: { label: string; detail?: string }[]; caption?: string }
+  /** 2×2 matrix. Cells in order: top-left, top-right, bottom-left, bottom-right. */
+  | {
+      kind: "matrix";
+      title?: string;
+      xAxis: [low: string, high: string];
+      yAxis: [low: string, high: string];
+      cells: [Cell, Cell, Cell, Cell];
+      caption?: string;
+    }
+  /** Cross-link to a lesson or concept in any track instead of repeating it. */
+  | { kind: "xref"; to: string; note: string };
+
+export interface Cell {
+  label: string;
+  detail?: string;
+}
 
 export interface Section {
   layer: Layer;

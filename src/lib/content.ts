@@ -215,3 +215,9 @@ export function trackHome(moduleId: string, lang: Lang = "en"): { href: string; 
   const t = getTrack(trackOfModule(moduleId))!;
   return { href: `/tracks/${t.id}`, label: t.short };
 }
+
+/** Must-know concepts page for a module: the MEWRE sprint page for Track 0, the track page otherwise. */
+export function conceptsHref(moduleId: string): string {
+  const t = trackOfModule(moduleId);
+  return t === "mewre" ? `/crash/concepts?m=${moduleId}` : `/tracks/${t}/concepts?m=${moduleId}`;
+}

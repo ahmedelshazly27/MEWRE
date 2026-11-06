@@ -37,6 +37,7 @@ export function GET() {
   const en = [
     ...STATIC_ROUTES,
     ...TRACKS.map((t) => `/tracks/${t.id}`),
+    ...TRACKS.filter((t) => t.id !== "mewre").map((t) => `/tracks/${t.id}/concepts`),
     ...moduleRoutes(liveModules("en")),
     ...scenarios.map((s) => `/scenarios/${s.scenario.id}`),
   ];

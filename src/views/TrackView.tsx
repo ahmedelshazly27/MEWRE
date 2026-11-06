@@ -53,6 +53,13 @@ export function TrackView({ trackId }: { trackId: string }) {
           </Link>
         </div>
       )}
+      {track.id !== "mewre" && lessons > 0 && (
+        <div className="mb-6 flex flex-wrap gap-2 text-sm">
+          <Link href={`/tracks/${track.id}/concepts`} className="rounded-lg border border-border px-3 py-1.5 hover:bg-surface-2">
+            🧠 Must-know concepts
+          </Link>
+        </div>
+      )}
       <TrackReadiness trackId={track.id} />
       <ModuleGrid track={track} lang="en" />
     </div>

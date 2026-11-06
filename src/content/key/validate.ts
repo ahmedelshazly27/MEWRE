@@ -27,6 +27,11 @@ export function validateKeyConcepts(mod: Module, set: KeyConceptSet): Validation
   };
   check(set.en, "en");
   check(set.ar, "ar");
+  // tracks without an Arabic edition keep `ar` empty
+  if (!/^m\d/.test(mod.id)) {
+    if (set.ar.length) at("[ar]", "only Track 0 has Arabic: leave ar empty");
+    return issues;
+  }
   const key = (k: KeyConcept) => [k.id, k.lesson, k.tier, k.term, !!k.example, !!k.confusion].join("|");
   if (set.en.map(key).join("\n") !== set.ar.map(key).join("\n")) at("[ar]", "Arabic list must mirror English (same order, ids, lessons, tiers, term, optional fields)");
   return issues;

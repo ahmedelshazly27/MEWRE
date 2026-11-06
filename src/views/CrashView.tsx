@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { KEY_CONCEPTS } from "@/content/key";
 import { CHECK_QUESTIONS, CRASH_TERMS, EXAM_MIN, EXAM_QUESTIONS, PLAYBOOK, SPRINT_BLOCKS } from "@/content/crash";
-import { getLesson, getModule, getScenario, index } from "@/lib/content";
+import { getLesson, getModule, getScenario, getTrack, index } from "@/lib/content";
 import { back, fwd, lp, t, type Lang } from "@/lib/i18n";
 import { Markdown } from "@/components/Markdown";
 import { CheckClient, CrashExamClient, SprintPlan, type BlockDto } from "@/components/crash/CrashClient";
@@ -167,10 +167,12 @@ export function CheckView({ moduleId, lang }: { moduleId: string; lang: Lang }) 
 }
 
 /** Must-know concepts for the given language, in sprint (job-relevance) order. */
-export function keyDtos(lang: Lang): KeyDto[] {
-  return SPRINT_BLOCKS.flatMap((b) => {
-    const m = getModule(b.module, lang)!;
-    return (KEY_CONCEPTS[b.module]?.[lang] ?? []).map((k) => ({
+/** Must-know concepts in a track's study order (Track 0: sprint order). */
+export function keyDtos(lang: Lang, trackId: string = "mewre"): KeyDto[] {
+  const order = trackId === "mewre" ? SPRINT_BLOCKS.map((b) => b.module) : getTrack(trackId)!.studyOrder;
+  return order.flatMap((id) => {
+    const m = getModule(id, lang)!;
+    return (KEY_CONCEPTS[id]?.[lang] ?? []).map((k) => ({
       ...k,
       module: m.id,
       moduleNumber: m.number,
@@ -190,6 +192,26 @@ export function KeyConceptsView({ lang }: { lang: Lang }) {
         subtitle={t(lang, "{n} concepts you should be able to explain on the spot if a colleague asks — each with the one sentence to memorize, how to say it, a picture to remember it by, why it matters and the classic mix-up.", { n: concepts.length })}
       />
       <KeyBoard concepts={concepts} />
+    </div>
+  );
+}
+
+/** Must-know concepts of a non-MEWRE track: /tracks/[id]/concepts. */
+export function TrackConceptsView({ trackId }: { trackId: string }) {
+  const track = getTrack(trackId)!;
+  const concepts = keyDtos("en", trackId);
+  return (
+    <div className="mx-auto max-w-3xl">
+      <nav className="mb-4 text-sm text-muted">
+        <Link href={`/tracks/${track.id}`} className="hover:text-text">
+          {track.short}
+        </Link>
+      </nav>
+      <PageHeader
+        title={`Must-know concepts · ${track.short}`}
+        subtitle={`${concepts.length} concepts to explain on the spot: the sentence to memorize, how to say it, a picture to remember it by, why it matters and the classic mix-up.`}
+      />
+      {concepts.length ? <KeyBoard concepts={concepts} /> : <div className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted">Concepts arrive with the track&apos;s modules.</div>}
     </div>
   );
 }

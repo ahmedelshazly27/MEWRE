@@ -22,8 +22,6 @@ export interface TrackStats {
   started: boolean;
 }
 
-/** Capstone run kind per track ("sim" is Track 0's simulation). */
-export const capstoneKind = (trackId: string) => (trackId === "mewre" ? "sim" : `capstone:${trackId}`);
 
 export function useTrackStats(): TrackStats[] | null {
   const store = useLearner();
@@ -39,8 +37,10 @@ export function useTrackStats(): TrackStats[] | null {
         .filter(([, c]) => mods.has(c.moduleId))
         .map(([id, c]) => ({ id, competency: c.competency }));
       const comps = competencyScores(concepts, mastery, track.competencies);
-      const caps = bestScores(d, capstoneKind(track.id));
-      const capBest = caps.size ? Math.max(...caps.values()) : null;
+      // capstone share of readiness: Track 0 simulation runs, or the best exam of the track's capstone module
+      const caps = track.capstone ? bestScores(d, track.capstone.kind) : new Map<string, number>();
+      const capVals = track.capstone?.ref ? [caps.get(track.capstone.ref)].filter((v): v is number => v !== undefined) : [...caps.values()];
+      const capBest = capVals.length ? Math.max(...capVals) : null;
       const lessons = content.lessons.filter((l) => l.track === track.id);
       const status = (id: string) => d.lessons.get(id)?.status;
       return {

@@ -38,6 +38,8 @@ export interface Track {
   arabic: boolean;
   /** Phase in which the track's content ships (shown while empty). */
   phase?: number;
+  /** Which run feeds the 15 % capstone share of readiness: run kind and optional ref (module id). */
+  capstone?: { kind: string; ref?: string };
 }
 
 const LEARNER_BASE =
@@ -70,6 +72,7 @@ export const TRACKS: Track[] = [
       ai: { label: "AI-native project management", weight: 0.8 },
     },
     readinessLabel: "Job readiness",
+    capstone: { kind: "sim" },
     tutorContext:
       "The learner is a System Energy Engineer with a strong systems-thinking and controls background, preparing to become a renewable-energy Project Manager at Kuwait's Ministry of Electricity, Water and Renewable Energy (MEWRE): Shagaya Renewable Energy Park and new utility-scale PV + BESS IPPs. Fluent in English and Arabic.",
     arabic: true,
@@ -96,6 +99,7 @@ export const TRACKS: Track[] = [
       "fc-ai": { label: "AI-native founder", weight: 0.9 },
     },
     readinessLabel: "Founder readiness",
+    capstone: { kind: "exam", ref: "fc11" },
     tutorContext: `${LEARNER_BASE} They run several early ventures and own everything except the technical build: go-to-market, sales, product management, strategy, pricing, partnerships, fundraising, finance, legal structuring, hiring and operations. Engineering partners build the product.`,
     arabic: false,
     phase: 2,

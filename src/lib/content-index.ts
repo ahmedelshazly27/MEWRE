@@ -12,6 +12,7 @@ export interface TrackSummary {
   /** Module ids in recommended order. */
   moduleIds: string[];
   phase?: number;
+  capstone?: { kind: string; ref?: string };
 }
 
 export interface ContentIndex {

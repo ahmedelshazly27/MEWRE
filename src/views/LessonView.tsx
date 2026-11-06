@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getLesson, index, isTranslated, lessonNeighbours, trackHome } from "@/lib/content";
+import { conceptsHref, getLesson, index, isTranslated, lessonNeighbours, trackHome } from "@/lib/content";
 import { back, fwd, lp, t, type Lang } from "@/lib/i18n";
 import { ConceptBadge, LessonMeta } from "@/components/progress";
 import { BlockRenderer } from "@/components/lesson/BlockRenderer";
@@ -85,7 +85,7 @@ export function LessonView({ moduleId, lessonId, lang }: { moduleId: string; les
           <ul className="space-y-2">
             {mustKnow.map((k) => (
               <li key={k.id}>
-                <Link href={L(`/crash/concepts?m=${module.id}#${k.id}`)} className="block rounded-lg px-2 py-1.5 hover:bg-surface-2">
+                <Link href={L(`${conceptsHref(module.id)}#${k.id}`)} className="block rounded-lg px-2 py-1.5 hover:bg-surface-2">
                   <span className="font-semibold">{lang === "ar" ? k.termAr : k.term}</span>
                   {k.tier === 2 && <span className="ms-2 text-xs text-muted">({t(lang, "Good to know")})</span>}
                   <Markdown className="prose-compact text-sm text-muted [&_p]:my-0">{k.definition}</Markdown>
