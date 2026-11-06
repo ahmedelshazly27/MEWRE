@@ -1,0 +1,246 @@
+import { md, type Formula } from "../../schema";
+
+const formulas: Formula[] = [
+  // l01
+  {
+    id: "mz03-performance-index",
+    name: "Performance index (normalised energy)",
+    tex: String.raw`\mathrm{PI}_d = \frac{E_{\mathrm{meas},d}}{E_{\mathrm{exp},d}}`,
+    vars: [
+      { sym: String.raw`\mathrm{PI}_d`, meaning: "Performance index on day d (RdTools calls it normalised energy)", unit: "dimensionless" },
+      { sym: String.raw`E_{\mathrm{meas},d}`, meaning: "Measured AC (or DC) energy on day d, over valid intervals only", unit: "kWh" },
+      { sym: String.raw`E_{\mathrm{exp},d}`, meaning: "Expected energy from a weather-driven model of a clean, undegraded plant over the same intervals", unit: "kWh" },
+    ],
+    explanation: md`The raw material of every soiling inference. A clean plant with a perfect model gives PI = 1. Everything that is not in the model (soiling, degradation, sensor error, outages, model bias) ends up in PI, which is why the filters and the model matter more than the soiling algorithm.`,
+    lesson: "mz03-l01",
+  },
+  {
+    id: "mz03-pi-decomposition",
+    name: "Multiplicative decomposition of the performance index",
+    tex: String.raw`\mathrm{PI}(t) = \mathrm{SR}(t)\,\bigl(1 - R_d\,t\bigr)\,\frac{1}{s_G(t)}\,b\,\varepsilon(t)`,
+    vars: [
+      { sym: String.raw`\mathrm{SR}(t)`, meaning: "Soiling ratio of the array (1 = clean)", unit: "dimensionless" },
+      { sym: String.raw`R_d`, meaning: "Plant degradation rate", unit: "1/yr" },
+      { sym: "t", meaning: "Time since the model baseline", unit: "yr" },
+      { sym: String.raw`s_G(t)`, meaning: "Irradiance sensor factor: reading divided by true irradiance (below 1 when the pyranometer is dirty or drifting low)", unit: "dimensionless" },
+      { sym: "b", meaning: "Constant model bias (nameplate tolerance, loss assumptions)", unit: "dimensionless" },
+      { sym: String.raw`\varepsilon(t)`, meaning: "Residual noise and unmodelled effects (spectral, IAM, shading)", unit: "dimensionless" },
+    ],
+    explanation: md`Soiling is one multiplicative factor among several. They are separated by **time scale** (soiling: days to weeks, with abrupt recoveries; degradation: years, monotonic) and by **signature** (sensor soiling divides the expected energy, so it hides plant soiling). Taking logarithms turns the product into a sum, which is how residual analysis treats it.`,
+    lesson: "mz03-l01",
+  },
+  {
+    id: "mz03-pr-weather-corrected",
+    name: "Weather-corrected performance ratio (NREL form)",
+    tex: String.raw`\mathrm{PR}_{\mathrm{corr}} = \frac{\sum_i E_{\mathrm{AC},i}}{\sum_i P_{\mathrm{STC}}\,\dfrac{G_{\mathrm{POA},i}}{G_{\mathrm{STC}}}\bigl[1 + \gamma\,(T_{c,i} - \bar T_{c})\bigr]\Delta t}`,
+    vars: [
+      { sym: String.raw`E_{\mathrm{AC},i}`, meaning: "AC energy in interval i", unit: "kWh" },
+      { sym: String.raw`P_{\mathrm{STC}}`, meaning: "DC nameplate at standard test conditions", unit: "kWp" },
+      { sym: String.raw`G_{\mathrm{POA},i}`, meaning: "Plane-of-array irradiance", unit: "W/m²" },
+      { sym: String.raw`G_{\mathrm{STC}}`, meaning: "1,000 W/m²", unit: "W/m²" },
+      { sym: String.raw`\gamma`, meaning: "Power temperature coefficient (negative, e.g. −0.0040 for poly-Si)", unit: "1/°C" },
+      { sym: String.raw`T_{c,i}`, meaning: "Cell temperature in interval i", unit: "°C" },
+      { sym: String.raw`\bar T_{c}`, meaning: "Irradiance-weighted annual average cell temperature (the reference)", unit: "°C" },
+      { sym: String.raw`\Delta t`, meaning: "Interval length", unit: "h" },
+    ],
+    explanation: md`The baseline KISR and IEC 61724 practice start from (Dierauf et al., NREL/TP-5200-57991). Correcting to the annual average cell temperature removes the seasonal swing so PR moves only with plant condition. Module mz02 teaches it in full; here it is the first, crude expected-energy model.`,
+    lesson: "mz03-l01",
+  },
+  // l02
+  {
+    id: "mz03-theil-sen",
+    name: "Theil-Sen slope estimator",
+    tex: String.raw`\hat m = \operatorname{median}_{i<j}\left\{\frac{y_j - y_i}{x_j - x_i}\right\}`,
+    vars: [
+      { sym: String.raw`\hat m`, meaning: "Robust slope estimate (soiling rate when y is PI and x is days)", unit: "1/day" },
+      { sym: String.raw`y_i`, meaning: "Performance index on day i of the interval", unit: "dimensionless" },
+      { sym: String.raw`x_i`, meaning: "Day number", unit: "day" },
+    ],
+    explanation: md`Median of all pairwise slopes. With n points there are $n(n-1)/2$ pairs. It tolerates up to about 29 % outliers (breakdown point), which is why SRR uses it on noisy daily PI instead of least squares. The intercept is the median of $y_i - \hat m x_i$.`,
+    lesson: "mz03-l02",
+  },
+  {
+    id: "mz03-insolation-weighted-sr",
+    name: "Insolation-weighted soiling ratio",
+    tex: String.raw`\overline{\mathrm{SR}}_H = \frac{\sum_d \mathrm{SR}_d\,H_d}{\sum_d H_d}, \qquad L_s = 1 - \overline{\mathrm{SR}}_H`,
+    vars: [
+      { sym: String.raw`\mathrm{SR}_d`, meaning: "Soiling ratio on day d", unit: "dimensionless" },
+      { sym: String.raw`H_d`, meaning: "Daily plane-of-array insolation", unit: "kWh/m²" },
+      { sym: String.raw`L_s`, meaning: "Energy-weighted soiling loss", unit: "fraction" },
+    ],
+    explanation: md`Soiling on a bright day costs more energy than on a hazy day, so the loss that matters for money is insolation-weighted. SRR reports the P50 of this quantity and its confidence interval. A simple time average understates the loss when the dirtiest periods are also the sunniest (Kuwait summer).`,
+    lesson: "mz03-l02",
+  },
+  {
+    id: "mz03-soiling-energy-loss",
+    name: "Energy lost to soiling",
+    tex: String.raw`E_{\mathrm{lost}} = \sum_d E_{\mathrm{meas},d}\left(\frac{1}{\mathrm{SR}_d} - 1\right) \approx \sum_d E_{\mathrm{clean},d}\,(1 - \mathrm{SR}_d)`,
+    vars: [
+      { sym: String.raw`E_{\mathrm{lost}}`, meaning: "Energy that a clean array would have added", unit: "MWh" },
+      { sym: String.raw`E_{\mathrm{meas},d}`, meaning: "Measured energy on day d", unit: "MWh" },
+      { sym: String.raw`E_{\mathrm{clean},d}`, meaning: "Energy the same plant would have produced clean", unit: "MWh" },
+    ],
+    explanation: md`Converts a soiling ratio into the number an operator and a CFO act on. Exclude clipped and curtailed intervals: energy that would have been clipped or curtailed anyway was not lost to soiling.`,
+    lesson: "mz03-l02",
+  },
+  // l03
+  {
+    id: "mz03-poa-isotropic",
+    name: "Plane-of-array irradiance (isotropic sky)",
+    tex: String.raw`G_{\mathrm{POA}} = \mathrm{DNI}\cos\theta_{\mathrm{AOI}} + \mathrm{DHI}\,\frac{1+\cos\beta}{2} + \mathrm{GHI}\,\rho\,\frac{1-\cos\beta}{2}`,
+    vars: [
+      { sym: String.raw`G_{\mathrm{POA}}`, meaning: "Irradiance on the module plane", unit: "W/m²" },
+      { sym: String.raw`\mathrm{DNI}, \mathrm{DHI}, \mathrm{GHI}`, meaning: "Direct normal, diffuse horizontal and global horizontal irradiance", unit: "W/m²" },
+      { sym: String.raw`\theta_{\mathrm{AOI}}`, meaning: "Angle of incidence of the beam on the module", unit: "°" },
+      { sym: String.raw`\beta`, meaning: "Module tilt", unit: "°" },
+      { sym: String.raw`\rho`, meaning: "Ground albedo (desert sand roughly 0.25 to 0.35)", unit: "dimensionless" },
+    ],
+    explanation: md`The transposition step of every expected-energy model. pvlib offers isotropic, Hay-Davies, Klucher, Reindl and Perez sky models; Perez or Hay-Davies is the usual choice. The beam term dominates on clear desert days, so solar position and tracker angle errors matter most.`,
+    lesson: "mz03-l03",
+  },
+  {
+    id: "mz03-sapm-cell-temp",
+    name: "Sandia (SAPM) module and cell temperature model",
+    tex: String.raw`T_m = G_{\mathrm{POA}}\,e^{\,a + b\,WS} + T_a, \qquad T_c = T_m + \frac{G_{\mathrm{POA}}}{1000}\,\Delta T`,
+    vars: [
+      { sym: String.raw`T_m, T_c`, meaning: "Module back-surface and cell temperature", unit: "°C" },
+      { sym: "a, b", meaning: "Empirical coefficients (open rack glass/glass: a = −3.47, b = −0.0594 s/m)", unit: "dimensionless, s/m" },
+      { sym: "WS", meaning: "Wind speed at 10 m", unit: "m/s" },
+      { sym: String.raw`T_a`, meaning: "Ambient air temperature", unit: "°C" },
+      { sym: String.raw`\Delta T`, meaning: "Cell to back-surface difference at 1,000 W/m² (3 °C for open rack glass/glass)", unit: "°C" },
+    ],
+    explanation: md`Implemented as pvlib.temperature.sapm_cell. At Kuwait summer conditions it gives cell temperatures of 65 to 75 °C. Alternatives: Faiman (u0, u1) and PVsyst (Uc, Uv). Fit the coefficients to measured back-of-module temperature if the plant has the sensors.`,
+    lesson: "mz03-l03",
+  },
+  {
+    id: "mz03-pvwatts-dc",
+    name: "PVWatts DC power model",
+    tex: String.raw`P_{\mathrm{dc}} = P_{\mathrm{dc0}}\,\frac{G_{\mathrm{POA,eff}}}{1000}\,\bigl[1 + \gamma\,(T_c - 25)\bigr]`,
+    vars: [
+      { sym: String.raw`P_{\mathrm{dc0}}`, meaning: "DC nameplate at STC", unit: "kW" },
+      { sym: String.raw`G_{\mathrm{POA,eff}}`, meaning: "Effective POA irradiance after IAM and spectral losses", unit: "W/m²" },
+      { sym: String.raw`\gamma`, meaning: "Power temperature coefficient", unit: "1/°C" },
+      { sym: String.raw`T_c`, meaning: "Cell temperature", unit: "°C" },
+    ],
+    explanation: md`pvlib.pvsystem.pvwatts_dc. Linear in irradiance, so it slightly overestimates at low irradiance (where real modules lose relative efficiency). Good enough for daily soiling work when combined with a high-irradiance filter.`,
+    lesson: "mz03-l03",
+  },
+  {
+    id: "mz03-log-residual",
+    name: "Log residual of the expected-energy model",
+    tex: String.raw`r_i = \ln\frac{P_{\mathrm{meas},i}}{P_{\mathrm{exp},i}} = \ln \mathrm{SR}_i + \ln(1-R_d t_i) + \ln b + \ln\varepsilon_i`,
+    vars: [
+      { sym: String.raw`r_i`, meaning: "Residual in interval i", unit: "dimensionless (log ratio)" },
+      { sym: String.raw`P_{\mathrm{meas},i}, P_{\mathrm{exp},i}`, meaning: "Measured and modelled power", unit: "kW" },
+    ],
+    explanation: md`Logs turn the multiplicative loss chain into a sum, so residuals can be regressed on candidate drivers (cell temperature, angle of incidence, irradiance, hour of day). Structure in the residual against any of these is model error, not soiling. For small losses $\ln(1-x) \approx -x$.`,
+    lesson: "mz03-l03",
+  },
+  // l04
+  {
+    id: "mz03-hsu-mass",
+    name: "Dust mass accumulation (HSU model)",
+    tex: String.raw`\omega(t) = \sum_{k} \bigl[v_{2.5}\,C_{2.5,k} + v_{10}\,(C_{10,k} - C_{2.5,k})\bigr]\cos\beta\,\Delta t_k`,
+    vars: [
+      { sym: String.raw`\omega`, meaning: "Accumulated dust mass on the glass since the last cleaning rain", unit: "g/m²" },
+      { sym: String.raw`v_{2.5}, v_{10}`, meaning: "Deposition velocities (pvlib defaults 0.0009 and 0.004)", unit: "m/s" },
+      { sym: String.raw`C_{2.5}, C_{10}`, meaning: "Surface PM2.5 and PM10 concentrations", unit: "g/m³" },
+      { sym: String.raw`\beta`, meaning: "Module tilt", unit: "°" },
+      { sym: String.raw`\Delta t_k`, meaning: "Time step", unit: "s" },
+    ],
+    explanation: md`Coello and Boyle's model (2019), in pvlib as soiling.hsu. Mass resets to zero when rainfall over the accumulation period exceeds a cleaning threshold. Deposition velocities are the most uncertain input: they depend on particle size, wind and surface stickiness (dew), and can be off by a factor of several in the Gulf.`,
+    lesson: "mz03-l04",
+  },
+  {
+    id: "mz03-hsu-sr",
+    name: "Soiling ratio from accumulated mass (HSU)",
+    tex: String.raw`\mathrm{SR} = 1 - 0.3437\,\operatorname{erf}\!\left(0.17\,\omega^{0.8473}\right)`,
+    vars: [
+      { sym: String.raw`\mathrm{SR}`, meaning: "Soiling ratio", unit: "dimensionless" },
+      { sym: String.raw`\omega`, meaning: "Accumulated mass", unit: "g/m²" },
+    ],
+    explanation: md`Empirical transmission loss curve used by the HSU model; it saturates at a loss of about 34 %. Check the coefficients against the current pvlib documentation before relying on them. Fitted on US data: in Gulf conditions treat it as a shape to be recalibrated, not a law.`,
+    lesson: "mz03-l04",
+  },
+  {
+    id: "mz03-proxy-calibration",
+    name: "Site calibration factor for a proxy soiling model",
+    tex: String.raw`k = \frac{\hat r_{\mathrm{ground}}}{\hat r_{\mathrm{model}}}, \qquad \hat r_{\mathrm{site}}(t) = k\,\hat r_{\mathrm{model}}(t)`,
+    vars: [
+      { sym: "k", meaning: "Calibration factor", unit: "dimensionless" },
+      { sym: String.raw`\hat r_{\mathrm{ground}}`, meaning: "Soiling rate measured on site (SRR on plant data or a soiling station)", unit: "%/day" },
+      { sym: String.raw`\hat r_{\mathrm{model}}`, meaning: "Rate from the reanalysis-driven model over the same periods", unit: "%/day" },
+    ],
+    explanation: md`The simplest honest use of a proxy: keep its timing (which weeks are dusty) and correct its level with local data. Fit k on some intervals and test it on others; a k that drifts by season means the model misses a mechanism (dew, resuspension), not just a scale.`,
+    lesson: "mz03-l04",
+  },
+  // l05
+  {
+    id: "mz03-error-metrics",
+    name: "Validation error metrics",
+    tex: String.raw`\mathrm{bias} = \frac{1}{n}\sum_i (\hat y_i - y_i), \qquad \mathrm{RMSE} = \sqrt{\frac{1}{n}\sum_i (\hat y_i - y_i)^2}`,
+    vars: [
+      { sym: String.raw`\hat y_i`, meaning: "Inferred soiling ratio (or loss) for period i", unit: "dimensionless" },
+      { sym: String.raw`y_i`, meaning: "Ground-truth value from a soiling station or cleaning test", unit: "dimensionless" },
+      { sym: "n", meaning: "Number of comparison periods", unit: "count" },
+    ],
+    explanation: md`Report both: bias says whether the method systematically over or under states soiling (what money decisions are sensitive to); RMSE says how far any single estimate can be trusted. Add precision and recall for cleaning-event detection.`,
+    lesson: "mz03-l05",
+  },
+  {
+    id: "mz03-did",
+    name: "Difference-in-differences estimate",
+    tex: String.raw`\hat\delta = \bigl(\bar Y_{T,\mathrm{post}} - \bar Y_{T,\mathrm{pre}}\bigr) - \bigl(\bar Y_{C,\mathrm{post}} - \bar Y_{C,\mathrm{pre}}\bigr)`,
+    vars: [
+      { sym: String.raw`\hat\delta`, meaning: "Effect of the treatment (here: loss of cleaning) on the outcome", unit: "same as Y" },
+      { sym: String.raw`\bar Y_{T}`, meaning: "Mean outcome (for example PI) of the affected section, before and after", unit: "dimensionless" },
+      { sym: String.raw`\bar Y_{C}`, meaning: "Mean outcome of a comparison section that kept being cleaned", unit: "dimensionless" },
+    ],
+    explanation: md`Removes everything common to both sections (season, irradiance model error, heat). Valid only under the parallel-trends assumption: without the treatment, both sections would have moved alike. Check it on the pre-period before believing the estimate.`,
+    lesson: "mz03-l05",
+  },
+  // l06
+  {
+    id: "mz03-optimal-interval",
+    name: "Optimal fixed cleaning interval (linear soiling)",
+    tex: String.raw`c(T) = \frac{C}{T} + \frac{V r T}{2}, \qquad T^* = \sqrt{\frac{2C}{V r}}, \qquad c(T^*) = \sqrt{2 C V r}`,
+    vars: [
+      { sym: "c(T)", meaning: "Average daily cost of soiling plus cleaning", unit: "USD/day" },
+      { sym: "C", meaning: "Cost of one full cleaning cycle", unit: "USD" },
+      { sym: "V", meaning: "Value of a clean plant's daily energy", unit: "USD/day" },
+      { sym: "r", meaning: "Soiling rate", unit: "1/day" },
+      { sym: "T", meaning: "Cleaning interval", unit: "day" },
+    ],
+    explanation: md`The square-root law behind the Track 0 soiling optimiser. Because $T^* \propto r^{-1/2}$, a 25 % error in r moves the optimum by only about 12 %, and the cost curve is flat near its minimum. The value of better soiling estimates lies mainly in catching events and changes, not in polishing the average rate. Module mz04 develops the economics.`,
+    lesson: "mz03-l06",
+  },
+  {
+    id: "mz03-event-cleaning",
+    name: "Break-even for an unscheduled cleaning",
+    tex: String.raw`\Delta\mathrm{SR}\cdot V \cdot \tau \;>\; C_{\mathrm{extra}}`,
+    vars: [
+      { sym: String.raw`\Delta\mathrm{SR}`, meaning: "Extra soiling loss from an event (for example a dust storm step)", unit: "fraction" },
+      { sym: "V", meaning: "Value of a clean plant's daily energy", unit: "USD/day" },
+      { sym: String.raw`\tau`, meaning: "Days until the next scheduled cleaning", unit: "day" },
+      { sym: String.raw`C_{\mathrm{extra}}`, meaning: "Marginal cost of cleaning now (crew, water, trucks)", unit: "USD" },
+    ],
+    explanation: md`Clean early if the energy recovered before the scheduled cleaning is worth more than the extra cleaning. With uncertainty, use the expected value of $\Delta\mathrm{SR}$ and require the lower confidence bound to clear the cost when crews are scarce.`,
+    lesson: "mz03-l06",
+  },
+  {
+    id: "mz03-mde",
+    name: "Minimum detectable change in mean PI",
+    tex: String.raw`\delta_{\min} = \bigl(z_{1-\alpha/2} + z_{1-\beta}\bigr)\,\frac{\sigma_d}{\sqrt{n}}`,
+    vars: [
+      { sym: String.raw`\delta_{\min}`, meaning: "Smallest shift in mean daily PI detectable", unit: "fraction" },
+      { sym: String.raw`z_{1-\alpha/2}`, meaning: "1.96 for a 5 % two-sided false-alarm rate", unit: "dimensionless" },
+      { sym: String.raw`z_{1-\beta}`, meaning: "0.84 for 80 % detection probability", unit: "dimensionless" },
+      { sym: String.raw`\sigma_d`, meaning: "Day-to-day standard deviation of PI after filtering", unit: "fraction" },
+      { sym: "n", meaning: "Days averaged", unit: "day" },
+    ],
+    explanation: md`Sets what an alert can honestly promise. With $\sigma_d$ = 1.5 % and a 7-day window, about 1.6 % is the smallest change worth alerting on. Treats days as independent, which is optimistic when weather errors persist for several days.`,
+    lesson: "mz03-l06",
+  },
+];
+
+export default formulas;

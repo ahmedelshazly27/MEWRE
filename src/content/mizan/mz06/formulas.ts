@@ -1,0 +1,220 @@
+import { md, type Formula } from "../../schema";
+
+const formulas: Formula[] = [
+  // l01
+  {
+    id: "mz06-pi-control",
+    name: "PI control law of a power plant controller",
+    tex: md`u(t) = K_p\,e(t) + K_i \int_0^t e(\tau)\,d\tau, \qquad e(t) = X_{ref}(t) - X_{POI}(t)`,
+    vars: [
+      { sym: md`u`, meaning: "Controller output (aggregate P or Q command sent to inverters and PCS)", unit: "MW or Mvar" },
+      { sym: md`X_{ref}`, meaning: "Set-point (P, Q, V or PF) received from the TSO or the EMS", unit: "MW, Mvar, pu" },
+      { sym: md`X_{POI}`, meaning: "Quantity measured at the point of interconnection", unit: "MW, Mvar, pu" },
+      { sym: md`K_p`, meaning: "Proportional gain", unit: "1" },
+      { sym: md`K_i`, meaning: "Integral gain", unit: "1/s" },
+    ],
+    explanation: md`The PPC measures at the POI and corrects the error, so collector losses, transformer reactive consumption and unavailable inverters are compensated automatically. The integral term removes steady-state error; it needs **anti-windup** (stop integrating when the output saturates) or the plant overshoots when a limit releases. Typical loop update 100 to 200 ms; gains are tuned to the grid strength (lower gains on a weak grid).`,
+    lesson: "mz06-l01",
+  },
+  {
+    id: "mz06-headroom",
+    name: "Upward headroom needed for full under-frequency droop response",
+    tex: md`P_{hr} = \frac{P_n}{R}\cdot\frac{|\Delta f_{max}| - db}{f_n}`,
+    vars: [
+      { sym: md`P_{hr}`, meaning: "Upward power reserve that must be available (BESS spare power, PV curtailment and POI capacity)", unit: "MW" },
+      { sym: md`P_n`, meaning: "Reference (rated) power of the plant", unit: "MW" },
+      { sym: md`R`, meaning: "Droop, per unit (0.04 = 4 %)", unit: "1" },
+      { sym: md`\Delta f_{max}`, meaning: "Largest frequency deviation the response must cover", unit: "Hz" },
+      { sym: md`db`, meaning: "Deadband half-width", unit: "Hz" },
+      { sym: md`f_n`, meaning: "Nominal frequency (50 Hz in Kuwait)", unit: "Hz" },
+    ],
+    explanation: md`The droop line from Track 0 (formula m06-droop) evaluated at the worst deviation. Headroom has to exist in three places at once: unused BESS power, curtailed PV, and spare capacity at the POI. Grid codes usually cap the required response (for example at 10 % of rating), which caps the headroom.`,
+    lesson: "mz06-l01",
+  },
+  {
+    id: "mz06-ramp-limit",
+    name: "Ramp-rate limit at the POI",
+    tex: md`\left|\frac{dP_{POI}}{dt}\right| \le r\,P_n`,
+    vars: [
+      { sym: md`P_{POI}`, meaning: "Active power at the point of interconnection", unit: "MW" },
+      { sym: md`r`, meaning: "Allowed ramp as a fraction of rating per minute (e.g. 0.10/min)", unit: "1/min" },
+      { sym: md`P_n`, meaning: "Rated power", unit: "MW" },
+    ],
+    explanation: md`PV alone can limit ramp-up (by curtailing) but not ramp-down when irradiance collapses. A hybrid plant meets the down-ramp limit with the BESS.`,
+    lesson: "mz06-l01",
+  },
+  {
+    id: "mz06-ramp-energy",
+    name: "BESS power and energy to hold a ramp limit through a step drop",
+    tex: md`P_{B,max} = \Delta P, \quad t_r = \frac{\Delta P}{\dot P_{max}}, \quad E_B = \frac{\Delta P^2}{2\,\dot P_{max}}\cdot\frac{1}{60}`,
+    vars: [
+      { sym: md`\Delta P`, meaning: "Step drop in PV output (worst case treated as instantaneous)", unit: "MW" },
+      { sym: md`\dot P_{max}`, meaning: "Allowed ramp at the POI, r times P_n", unit: "MW/min" },
+      { sym: md`t_r`, meaning: "Time for the POI output to ramp down to the new level", unit: "min" },
+      { sym: md`E_B`, meaning: "Energy the BESS discharges (triangle area)", unit: "MWh" },
+      { sym: md`P_{B,max}`, meaning: "Peak BESS discharge", unit: "MW" },
+    ],
+    explanation: md`The BESS fills the triangle between the allowed ramp and the actual drop. Energy grows with the square of the drop, so ramp-smoothing needs high power and little energy: a few MWh per hundred MW.`,
+    lesson: "mz06-l01",
+  },
+  {
+    id: "mz06-qv-slope",
+    name: "Voltage control with slope (Q-V droop)",
+    tex: md`Q = -\frac{V - V_{ref}}{s}\,Q_{max}, \qquad -Q_{max} \le Q \le Q_{max}`,
+    vars: [
+      { sym: md`Q`, meaning: "Reactive power at the POI (positive = injection, capacitive)", unit: "Mvar" },
+      { sym: md`V, V_{ref}`, meaning: "Measured and reference voltage at the POI", unit: "pu" },
+      { sym: md`s`, meaning: "Slope: voltage change that moves Q through its full range (e.g. 0.04 pu)", unit: "pu" },
+      { sym: md`Q_{max}`, meaning: "Reactive capability required at the POI", unit: "Mvar" },
+    ],
+    explanation: md`Low voltage gives reactive injection, high voltage gives absorption. The slope shares reactive duty with nearby plants and avoids controllers fighting each other.`,
+    lesson: "mz06-l01",
+  },
+  {
+    id: "mz06-q-capability",
+    name: "Reactive capability left at a given active power",
+    tex: md`Q_{avail} = \sqrt{S_n^2 - P^2}`,
+    vars: [
+      { sym: md`Q_{avail}`, meaning: "Available reactive power", unit: "Mvar" },
+      { sym: md`S_n`, meaning: "Apparent power rating of the inverters (derated for ambient temperature)", unit: "MVA" },
+      { sym: md`P`, meaning: "Active power being delivered", unit: "MW" },
+    ],
+    explanation: md`The current limit of the inverter is a circle in the P-Q plane. At 50 °C the MVA rating derates, so Q capability at full P shrinks exactly when Kuwait's summer voltage support is needed. Hence the P or Q priority setting in the PPC.`,
+    lesson: "mz06-l01",
+  },
+  // l02
+  {
+    id: "mz06-soc",
+    name: "State-of-charge update",
+    tex: md`SoC_{t+1} = SoC_t + \frac{\eta_c P_{c,t} - P_{d,t}/\eta_d}{E_n}\,\Delta t`,
+    vars: [
+      { sym: md`SoC`, meaning: "State of charge (fraction of nominal energy)", unit: "1" },
+      { sym: md`P_c, P_d`, meaning: "Charge and discharge power at the AC terminals", unit: "MW" },
+      { sym: md`\eta_c, \eta_d`, meaning: "Charge and discharge efficiency (product = round-trip efficiency)", unit: "1" },
+      { sym: md`E_n`, meaning: "Nominal (usable) energy", unit: "MWh" },
+      { sym: md`\Delta t`, meaning: "Time step", unit: "h" },
+    ],
+    explanation: md`The bookkeeping every EMS runs. In practice the BMS estimate drifts (LFP has a flat voltage curve), so the EMS recalibrates at full charge and keeps margins at both ends.`,
+    lesson: "mz06-l02",
+  },
+  {
+    id: "mz06-shift-margin",
+    name: "Margin per MWh discharged from energy shifting",
+    tex: md`m = p_d - \frac{p_c}{\eta_{rt}} - c_{deg}`,
+    vars: [
+      { sym: md`m`, meaning: "Net margin per MWh delivered", unit: "USD/MWh" },
+      { sym: md`p_d`, meaning: "Value of a MWh delivered at discharge time", unit: "USD/MWh" },
+      { sym: md`p_c`, meaning: "Value (opportunity cost) of a MWh used for charging; zero if it would have been curtailed", unit: "USD/MWh" },
+      { sym: md`\eta_{rt}`, meaning: "Round-trip efficiency", unit: "1" },
+      { sym: md`c_{deg}`, meaning: "Degradation cost per MWh delivered", unit: "USD/MWh" },
+    ],
+    explanation: md`Shift only when m > 0. Charging from energy that would otherwise be curtailed (POI limit, grid curtailment) has p_c close to zero, which is why hybrids with DC/AC and POI oversizing make BESS economics work.`,
+    lesson: "mz06-l02",
+  },
+  {
+    id: "mz06-dispatch-objective",
+    name: "EMS dispatch objective over a rolling horizon",
+    tex: md`\max_{P_c,P_d} \sum_{t=1}^{T} \Big[ p_t\,(P_{PV,t} - P_{c,t} + P_{d,t}) - c_{deg}\,P_{d,t} \Big]\Delta t + \sum_k \pi_k C_k`,
+    vars: [
+      { sym: md`p_t`, meaning: "Value of energy exported in interval t (contract or avoided cost)", unit: "USD/MWh" },
+      { sym: md`P_{PV,t}`, meaning: "Forecast PV output", unit: "MW" },
+      { sym: md`\pi_k, C_k`, meaning: "Price and committed capacity of service k (reserve, capacity)", unit: "USD/MW, MW" },
+      { sym: md`T`, meaning: "Horizon, re-solved every interval (e.g. 24 to 48 h, every 15 min)", unit: "intervals" },
+    ],
+    explanation: md`Solved as a linear or mixed-integer programme subject to SoC dynamics, SoC bounds, power limits, the POI limit and reserve commitments. Only the first interval is executed; then the forecast updates and it is solved again (model predictive control).`,
+    lesson: "mz06-l02",
+  },
+  // l03
+  {
+    id: "mz06-historian-volume",
+    name: "Historian storage per day",
+    tex: md`D = \frac{N_{tags}\cdot \dfrac{86{,}400}{T_s}\cdot b}{CR}`,
+    vars: [
+      { sym: md`D`, meaning: "Stored data per day", unit: "bytes/day" },
+      { sym: md`N_{tags}`, meaning: "Number of tags (data points)", unit: "1" },
+      { sym: md`T_s`, meaning: "Sampling period", unit: "s" },
+      { sym: md`b`, meaning: "Bytes per stored value (value, timestamp, quality)", unit: "bytes" },
+      { sym: md`CR`, meaning: "Compression ratio (deadband or swinging-door)", unit: "1" },
+    ],
+    explanation: md`Sizing for storage and for what a third-party analytics product will pull. Compression is lossy: a deadband set for operators can erase the slow soiling signal an analytics product needs.`,
+    lesson: "mz06-l03",
+  },
+  {
+    id: "mz06-alarm-rate",
+    name: "Alarm rate per operator",
+    tex: md`\lambda = \frac{N_{alarms}}{N_{op}\cdot T}`,
+    vars: [
+      { sym: md`\lambda`, meaning: "Alarms per operator per period", unit: "alarms per 10 min" },
+      { sym: md`N_{alarms}`, meaning: "Alarms annunciated in the period", unit: "1" },
+      { sym: md`N_{op}`, meaning: "Operators sharing the console", unit: "1" },
+      { sym: md`T`, meaning: "Number of 10-minute intervals in the period (144 per day)", unit: "1" },
+    ],
+    explanation: md`ISA-18.2 and EEMUA 191 benchmarks: about 1 alarm per 10 min per operator is very likely acceptable, about 2 is the maximum manageable, and more than 10 in 10 minutes is a flood.`,
+    lesson: "mz06-l03",
+  },
+  {
+    id: "mz06-parallel-availability",
+    name: "Availability of redundant (parallel) components",
+    tex: md`A_{sys} = 1 - (1 - A)^n, \qquad t_{down} = (1 - A_{sys})\cdot 8{,}760\ \text{h/yr}`,
+    vars: [
+      { sym: md`A`, meaning: "Availability of one component", unit: "1" },
+      { sym: md`n`, meaning: "Number of redundant components, any one sufficient", unit: "1" },
+      { sym: md`t_{down}`, meaning: "Expected downtime per year", unit: "h/yr" },
+    ],
+    explanation: md`Assumes independent failures and perfect switchover. Common-cause failures (same firmware bug, same power supply, same cabinet in a dust-laden room) break the independence, so real redundant systems do worse than this.`,
+    lesson: "mz06-l03",
+  },
+  // l04
+  {
+    id: "mz06-interface-count",
+    name: "Potential pairwise interfaces between parties",
+    tex: md`N_i = \frac{n(n-1)}{2}`,
+    vars: [
+      { sym: md`N_i`, meaning: "Number of possible two-party interfaces", unit: "1" },
+      { sym: md`n`, meaning: "Number of suppliers and parties in the control system", unit: "1" },
+    ],
+    explanation: md`Grows with the square of the number of vendors. Not every pair exchanges signals, but every pair can hide an unowned assumption, which is why an interface matrix with a single owner per interface is mandatory.`,
+    lesson: "mz06-l04",
+  },
+  {
+    id: "mz06-test-effort",
+    name: "Point-to-point test effort",
+    tex: md`T = \frac{N_{pts}\cdot t_{pt}}{60\,k}`,
+    vars: [
+      { sym: md`T`, meaning: "Elapsed test time", unit: "h" },
+      { sym: md`N_{pts}`, meaning: "Points to test", unit: "1" },
+      { sym: md`t_{pt}`, meaning: "Minutes per point (force, observe, record)", unit: "min" },
+      { sym: md`k`, meaning: "Parallel test crews", unit: "1" },
+    ],
+    explanation: md`The lever is N: templated, type-tested power blocks let you fully test a few and sample the rest. That is productisation showing up in a commissioning schedule.`,
+    lesson: "mz06-l04",
+  },
+  // l05
+  {
+    id: "mz06-blended-gm",
+    name: "Blended gross margin",
+    tex: md`GM = \frac{\sum_j R_j\,g_j}{\sum_j R_j}`,
+    vars: [
+      { sym: md`R_j`, meaning: "Revenue of line j (software, services, hardware resale)", unit: "USD" },
+      { sym: md`g_j`, meaning: "Gross margin of line j", unit: "1" },
+    ],
+    explanation: md`Investors and acquirers look through the blend to each line. A company with 80 % software and 30 % services margins is valued on the mix and on which line is growing.`,
+    lesson: "mz06-l05",
+  },
+  {
+    id: "mz06-arr-capacity",
+    name: "Recurring revenue priced per MW",
+    tex: md`ARR = \pi_{MW}\cdot C, \qquad \rho = \frac{R}{N_{FTE}}`,
+    vars: [
+      { sym: md`ARR`, meaning: "Annual recurring revenue", unit: "USD/yr" },
+      { sym: md`\pi_{MW}`, meaning: "Price per MW (or MWp) per year", unit: "USD/MW/yr" },
+      { sym: md`C`, meaning: "Capacity under subscription", unit: "MW" },
+      { sym: md`\rho`, meaning: "Revenue per full-time employee", unit: "USD/FTE" },
+      { sym: md`R, N_{FTE}`, meaning: "Revenue and headcount", unit: "USD, FTE" },
+    ],
+    explanation: md`Capacity pricing ties revenue to the asset, not to hours worked. Revenue per FTE is the quickest test of whether a company is a product company or a services company with software.`,
+    lesson: "mz06-l05",
+  },
+];
+
+export default formulas;
