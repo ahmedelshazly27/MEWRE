@@ -16,7 +16,7 @@ export const WIDGETS = {
   // Suhail
   "event-pnl": "Event P&L and sponsorship model: attendees, tickets, four sponsor tiers with fulfilment cost, venue, catering, prizes, production, marketing, contingency; profit, sponsor share, cost per attendee. Props: none",
   "community-funnel": "Community growth funnel: monthly reach, conversion, retention, referrals and contributor share; active members over time and steady state reach·conversion / (1 − retention − referral). Props: none",
-  // Founder Core
+  // Founder Core (percentage props accept a fraction 0.75 or a percent 75; money props accept full USD amounts; elasticity may be given as a positive or negative number)
   "cap-table": "Cap table and dilution simulator: founders, option pool, post-money SAFEs converting at a priced round, then a Series A; ownership % and fully diluted shares after each step, with the option-pool shuffle. Props: { founders?: number; poolPct?: number }",
   "safe-vs-priced": "SAFE vs priced round calculator: the same raise as post-money SAFE (cap, discount), pre-money SAFE or priced seed; founder ownership after the Series A, conversion price and effective valuation. Props: { raise?: number; cap?: number; discount?: number; preMoney?: number }",
   "unit-economics": "Unit economics and runway model: price, gross margin, CAC, monthly churn give LTV, LTV/CAC and CAC payback; cash, burn and revenue growth give runway months and default alive/dead. Props: { price?: number; grossMargin?: number; cac?: number; churn?: number; cash?: number; burn?: number }",

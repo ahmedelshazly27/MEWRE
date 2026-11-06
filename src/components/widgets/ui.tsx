@@ -13,6 +13,23 @@ export function numProp(props: Record<string, unknown> | undefined, key: string,
   return n;
 }
 
+/**
+ * Read a percentage prop given either as a fraction (0.75) or as percent (75); returns percent.
+ * Values in (0, 1] are treated as fractions.
+ */
+export function pctProp(props: Record<string, unknown> | undefined, key: string, fallbackPct: number, minPct?: number, maxPct?: number): number {
+  const raw = numProp(props, key, NaN);
+  const v = Number.isNaN(raw) ? fallbackPct : raw > 0 && raw <= 1 ? raw * 100 : raw;
+  return Math.min(maxPct ?? Infinity, Math.max(minPct ?? -Infinity, v));
+}
+
+/** Read a money prop shown in millions: accepts millions (2.5) or full amounts (2500000). */
+export function millionsProp(props: Record<string, unknown> | undefined, key: string, fallbackM: number, minM?: number, maxM?: number): number {
+  const raw = numProp(props, key, NaN);
+  const v = Number.isNaN(raw) ? fallbackM : Math.abs(raw) >= 1000 ? raw / 1e6 : raw;
+  return Math.min(maxM ?? Infinity, Math.max(minM ?? -Infinity, v));
+}
+
 /** Read a string-enum prop with fallback. */
 export function enumProp<T extends string>(props: Record<string, unknown> | undefined, key: string, allowed: readonly T[], fallback: T): T {
   const v = props?.[key];

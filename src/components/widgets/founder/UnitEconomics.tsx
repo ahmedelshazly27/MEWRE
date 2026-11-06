@@ -3,13 +3,13 @@
 import { useMemo, useState } from "react";
 import { CartesianGrid, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { runway, unitEconomics } from "@/lib/calc/founder";
-import { Card, ChartBox, Controls, Note, Slider, Split, Stat, Stats, axisLabel, axisLine, axisTick, fmt, gridProps, numProp, tooltipStyle, C, type WidgetProps } from "../ui";
+import { Card, ChartBox, Controls, Note, Slider, Split, Stat, Stats, axisLabel, axisLine, axisTick, fmt, gridProps, numProp, pctProp, tooltipStyle, C, type WidgetProps } from "../ui";
 
 export default function UnitEconomics({ props }: WidgetProps) {
   const [arpa, setArpa] = useState(numProp(props, "price", 2500, 50, 50_000));
-  const [gm, setGm] = useState(numProp(props, "grossMargin", 75, 10, 95));
+  const [gm, setGm] = useState(pctProp(props, "grossMargin", 75, 10, 95));
   const [cac, setCac] = useState(numProp(props, "cac", 30_000, 500, 300_000));
-  const [churn, setChurn] = useState(numProp(props, "churn", 2, 0.2, 10));
+  const [churn, setChurn] = useState(pctProp(props, "churn", 2, 0.2, 10));
   const [cash, setCash] = useState(numProp(props, "cash", 1_500_000, 50_000, 10_000_000));
   const [opex, setOpex] = useState(numProp(props, "burn", 90_000, 5_000, 1_000_000));
   const [rev, setRev] = useState(15_000);

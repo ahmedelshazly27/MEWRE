@@ -3,13 +3,13 @@
 import { useMemo, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { compareSeedInstruments } from "@/lib/calc/founder";
-import { Card, ChartBox, Controls, Note, Slider, Split, Stat, Stats, axisLine, axisTick, gridProps, legendStyle, numProp, pct, tooltipStyle, C, type WidgetProps } from "../ui";
+import { Card, ChartBox, Controls, Note, Slider, Split, Stat, Stats, axisLine, axisTick, gridProps, legendStyle, millionsProp, pct, pctProp, tooltipStyle, C, type WidgetProps } from "../ui";
 
 export default function SafeVsPriced({ props }: WidgetProps) {
-  const [raise, setRaise] = useState(numProp(props, "raise", 2, 0.1, 10));
-  const [cap, setCap] = useState(numProp(props, "cap", 12, 1, 60));
-  const [discount, setDiscount] = useState(numProp(props, "discount", 0, 0, 30));
-  const [preA, setPreA] = useState(numProp(props, "preMoney", 30, 5, 150));
+  const [raise, setRaise] = useState(millionsProp(props, "raise", 2, 0.25, 6));
+  const [cap, setCap] = useState(millionsProp(props, "cap", 12, 3, 40));
+  const [discount, setDiscount] = useState(pctProp(props, "discount", 0, 0, 30));
+  const [preA, setPreA] = useState(millionsProp(props, "preMoney", 30, 10, 150));
   const [raiseA, setRaiseA] = useState(8);
   const [poolA, setPoolA] = useState(10);
 

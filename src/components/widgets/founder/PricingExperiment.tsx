@@ -7,7 +7,7 @@ import { Card, ChartBox, Controls, Note, Slider, Split, Stat, Stats, axisLabel, 
 
 export default function PricingExperiment({ props }: WidgetProps) {
   const [price, setPrice] = useState(numProp(props, "price", 1000, 10, 100_000));
-  const [e, setE] = useState(numProp(props, "elasticity", 1.8, 0.2, 5));
+  const [e, setE] = useState(Math.min(4, Math.max(0.3, Math.abs(numProp(props, "elasticity", 1.8)))));
   const [cost, setCost] = useState(numProp(props, "unitCost", 300, 0, 50_000));
   const [q0, setQ0] = useState(100);
   const [base, setBase] = useState(4);

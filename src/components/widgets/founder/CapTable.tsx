@@ -3,13 +3,13 @@
 import { useMemo, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { classShare, ownership, postMoneySafeOwnership, pricedRound, totalShares, type Holder, type SafeInput } from "@/lib/calc/founder";
-import { Card, ChartBox, Controls, Hint, Note, Slider, Split, Stat, Stats, axisLine, axisTick, fmt, gridProps, legendStyle, numProp, pct, tooltipStyle, C, type WidgetProps } from "../ui";
+import { Card, ChartBox, Controls, Hint, Note, Slider, Split, Stat, Stats, axisLine, axisTick, fmt, gridProps, legendStyle, numProp, pct, pctProp, tooltipStyle, C, type WidgetProps } from "../ui";
 
 const M = (v: number) => `${fmt(v / 1e6, 3)}M`;
 
 export default function CapTable({ props }: WidgetProps) {
   const [founders, setFounders] = useState(numProp(props, "founders", 2, 1, 4));
-  const [pool0, setPool0] = useState(numProp(props, "poolPct", 10, 0, 25));
+  const [pool0, setPool0] = useState(pctProp(props, "poolPct", 10, 0, 25));
   const [s1, setS1] = useState(1);
   const [cap1, setCap1] = useState(10);
   const [s2, setS2] = useState(0.5);
