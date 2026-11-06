@@ -1,0 +1,367 @@
+import { md, type Formula } from "../../schema";
+
+const formulas: Formula[] = [
+  // ---------------------------------------------------------------- l01 training pipeline
+  {
+    id: "sh09-ce-loss",
+    name: "Pretraining loss: next-token cross-entropy",
+    tex: String.raw`\mathcal{L}_{\text{PT}}(\theta) = -\frac{1}{T}\sum_{t=1}^{T} \log p_\theta(x_t \mid x_{<t})`,
+    vars: [
+      { sym: String.raw`\theta`, meaning: "Model parameters (weights)", unit: "-" },
+      { sym: "T", meaning: "Number of tokens in the batch", unit: "tokens" },
+      { sym: String.raw`x_t`, meaning: "Token at position t", unit: "token id" },
+      { sym: String.raw`p_\theta(x_t \mid x_{<t})`, meaning: "Probability the model assigns to the true next token given all earlier tokens", unit: "0..1" },
+      { sym: String.raw`\mathcal{L}_{\text{PT}}`, meaning: "Mean negative log-likelihood per token", unit: "nats/token" },
+    ],
+    explanation: md`The only objective in pretraining: make the real next token likely. Natural log gives nats; divide by $\ln 2$ for bits. Loss is only comparable between models that use **the same tokenizer and the same evaluation text**, because a tokenizer that cuts words into more pieces has easier individual predictions but more of them. Typical late-training values for large models are around 1.8 to 2.2 nats/token on web text.`,
+    lesson: "sh09-l01",
+  },
+  {
+    id: "sh09-perplexity",
+    name: "Perplexity",
+    tex: String.raw`\text{PPL} = e^{\mathcal{L}}`,
+    vars: [
+      { sym: String.raw`\text{PPL}`, meaning: "Perplexity: the effective number of equally likely choices per token", unit: "-" },
+      { sym: String.raw`\mathcal{L}`, meaning: "Cross-entropy loss", unit: "nats/token" },
+    ],
+    explanation: md`A loss of 2.0 nats/token is a perplexity of $e^{2} = 7.39$: the model is, on average, as uncertain as if it were choosing among about 7 tokens. Same caveat as the loss: never compare perplexities across tokenizers. To compare across tokenizers use bits per byte or bits per word (total bits divided by bytes or words of the same text).`,
+    lesson: "sh09-l01",
+  },
+  {
+    id: "sh09-sft-loss",
+    name: "Supervised fine-tuning loss (response tokens only)",
+    tex: String.raw`\mathcal{L}_{\text{SFT}}(\theta) = -\frac{1}{|y|}\sum_{t=1}^{|y|} \log p_\theta(y_t \mid x, y_{<t})`,
+    vars: [
+      { sym: "x", meaning: "Prompt (instruction plus any context)", unit: "tokens" },
+      { sym: "y", meaning: "Target response written or approved by a human", unit: "tokens" },
+      { sym: "|y|", meaning: "Number of response tokens", unit: "tokens" },
+    ],
+    explanation: md`Same cross-entropy as pretraining, but computed only over the response tokens: the prompt tokens are masked out of the loss. SFT teaches format and behaviour (answer the question, follow the chat template, refuse what should be refused), not new knowledge. A few thousand to a few hundred thousand high-quality examples are typical.`,
+    lesson: "sh09-l01",
+  },
+  {
+    id: "sh09-bradley-terry",
+    name: "Reward-model loss (Bradley-Terry pairwise preference)",
+    tex: String.raw`\mathcal{L}_{\text{RM}}(\phi) = -\log \sigma\big(r_\phi(x, y_w) - r_\phi(x, y_l)\big)`,
+    vars: [
+      { sym: String.raw`r_\phi(x,y)`, meaning: "Scalar reward the reward model gives response y to prompt x", unit: "-" },
+      { sym: String.raw`y_w,\ y_l`, meaning: "Preferred (winner) and rejected (loser) responses in a human-labelled pair", unit: "-" },
+      { sym: String.raw`\sigma(z)`, meaning: "Logistic function $1/(1+e^{-z})$", unit: "0..1" },
+    ],
+    explanation: md`The Bradley-Terry model says the probability a rater prefers $y_w$ is $\sigma(r_w - r_l)$. Training minimises the negative log of that probability over many labelled pairs, so the reward model learns to score preferred answers higher. Only the difference of rewards matters, so the scale is arbitrary.`,
+    lesson: "sh09-l01",
+  },
+  {
+    id: "sh09-rlhf-objective",
+    name: "RLHF objective (reward with a KL leash)",
+    tex: String.raw`\max_{\pi_\theta}\ \mathbb{E}_{x\sim\mathcal{D},\,y\sim\pi_\theta(\cdot\mid x)}\big[r_\phi(x,y)\big] - \beta\,\mathrm{KL}\big(\pi_\theta(\cdot\mid x)\,\|\,\pi_{\text{ref}}(\cdot\mid x)\big)`,
+    vars: [
+      { sym: String.raw`\pi_\theta`, meaning: "Policy: the model being tuned", unit: "-" },
+      { sym: String.raw`\pi_{\text{ref}}`, meaning: "Reference policy, normally the SFT model, frozen", unit: "-" },
+      { sym: String.raw`\beta`, meaning: "KL penalty strength", unit: "-" },
+      { sym: String.raw`\mathrm{KL}`, meaning: "Kullback-Leibler divergence between policy and reference", unit: "nats" },
+    ],
+    explanation: md`Maximise the reward, but pay a penalty for drifting away from the SFT model. Without the KL term the policy finds outputs that fool the reward model (reward hacking: long, flattering, repetitive answers). Optimised with PPO in the InstructGPT recipe. Expensive: four models in memory (policy, reference, reward, value) and sampling inside the training loop.`,
+    lesson: "sh09-l01",
+  },
+  {
+    id: "sh09-dpo-loss",
+    name: "Direct Preference Optimisation (DPO) loss",
+    tex: String.raw`\mathcal{L}_{\text{DPO}} = -\log\sigma\!\left(\beta\log\frac{\pi_\theta(y_w\mid x)}{\pi_{\text{ref}}(y_w\mid x)} - \beta\log\frac{\pi_\theta(y_l\mid x)}{\pi_{\text{ref}}(y_l\mid x)}\right)`,
+    vars: [
+      { sym: String.raw`\pi_\theta(y\mid x)`, meaning: "Probability of the whole response under the policy (product of token probabilities; in practice a sum of log-probabilities)", unit: "0..1" },
+      { sym: String.raw`\pi_{\text{ref}}(y\mid x)`, meaning: "Same under the frozen reference (SFT) model", unit: "0..1" },
+      { sym: String.raw`\beta`, meaning: "Strength of the implicit KL constraint, typically 0.1 to 0.5", unit: "-" },
+    ],
+    explanation: md`DPO shows that the optimum of the RLHF objective can be written in closed form, so the reward model disappears: the implicit reward of a response is $\beta \log(\pi_\theta/\pi_{\text{ref}})$. The loss is the Bradley-Terry loss on those implicit rewards. At initialisation the policy equals the reference, the margin is 0 and the loss is $\ln 2 = 0.693$. Two models in memory, no sampling loop: this is why small teams use DPO and its variants.`,
+    lesson: "sh09-l01",
+  },
+  {
+    id: "sh09-minhash-lsh",
+    name: "MinHash LSH: probability two documents become duplicate candidates",
+    tex: String.raw`P(s) = 1 - \left(1 - s^{r}\right)^{b}`,
+    vars: [
+      { sym: "s", meaning: "Jaccard similarity of the two documents' shingle sets", unit: "0..1" },
+      { sym: "r", meaning: "Rows (hash values) per band", unit: "count" },
+      { sym: "b", meaning: "Number of bands; total hashes = b r", unit: "count" },
+    ],
+    explanation: md`Each MinHash value agrees between two documents with probability $s$. A band of $r$ values matches with probability $s^r$; the pair is a candidate if any of $b$ bands matches. The curve is an S with its threshold near $(1/b)^{1/r}$. With $b=20$, $r=5$ (100 hashes): $P(0.5)=0.47$, $P(0.8)=0.9996$, threshold about 0.55.`,
+    lesson: "sh09-l01",
+  },
+  // ---------------------------------------------------------------- l02 tokenisation
+  {
+    id: "sh09-fertility",
+    name: "Tokenizer fertility",
+    tex: String.raw`F = \frac{N_{\text{tokens}}}{N_{\text{words}}}`,
+    vars: [
+      { sym: "F", meaning: "Fertility: average tokens per whitespace word", unit: "tokens/word" },
+      { sym: String.raw`N_{\text{tokens}}`, meaning: "Tokens produced by the tokenizer on a sample", unit: "tokens" },
+      { sym: String.raw`N_{\text{words}}`, meaning: "Whitespace-separated words in the same sample", unit: "words" },
+    ],
+    explanation: md`Measure on a representative sample (thousands of sentences per variety: MSA news, Gulf social media, Egyptian, Maghrebi, diacritised religious or educational text). English with an English-centric tokenizer is around 1.3. Arabic with a tokenizer that saw little Arabic can be 2 to 4 or more; an Arabic-adapted vocabulary brings it down substantially. Report fertility per variety, never one blended number.`,
+    lesson: "sh09-l02",
+  },
+  {
+    id: "sh09-token-cost",
+    name: "Token count and cost of a text",
+    tex: String.raw`N_{\text{tokens}} = F\,W, \qquad \text{Cost} = \frac{N_{\text{tokens}}}{10^{6}}\,p_{\text{M}}`,
+    vars: [
+      { sym: "W", meaning: "Words of text", unit: "words" },
+      { sym: String.raw`p_{\text{M}}`, meaning: "Price per million tokens", unit: "USD per million tokens" },
+    ],
+    explanation: md`Every per-token quantity scales with fertility: API cost, latency, training tokens needed to cover a corpus, and GPU time. Doubling fertility doubles the bill for the same Arabic text.`,
+    lesson: "sh09-l02",
+  },
+  {
+    id: "sh09-effective-context",
+    name: "Effective context length in words",
+    tex: String.raw`W_{\text{ctx}} = \frac{L_{\text{ctx}}}{F}`,
+    vars: [
+      { sym: String.raw`L_{\text{ctx}}`, meaning: "Context window", unit: "tokens" },
+      { sym: String.raw`W_{\text{ctx}}`, meaning: "Words of that language that fit", unit: "words" },
+    ],
+    explanation: md`An 8,192-token window holds about 6,300 English words at $F=1.3$ but only about 2,700 Arabic words at $F=3.0$. Self-attention compute grows with the square of sequence length, so a high-fertility language pays roughly $F^2$ on the attention part and $F$ on everything else.`,
+    lesson: "sh09-l02",
+  },
+  {
+    id: "sh09-embedding-params",
+    name: "Parameters added by extending the vocabulary",
+    tex: String.raw`\Delta P = k\,\Delta V\,d_{\text{model}}`,
+    vars: [
+      { sym: String.raw`\Delta V`, meaning: "New tokens added to the vocabulary", unit: "tokens" },
+      { sym: String.raw`d_{\text{model}}`, meaning: "Hidden size (embedding width)", unit: "-" },
+      { sym: "k", meaning: "1 if input embedding and output head are tied, 2 if untied", unit: "-" },
+    ],
+    explanation: md`Adding 32,000 Arabic tokens to a model with $d_{\text{model}}=4096$ and untied embeddings adds $2 \times 32{,}000 \times 4{,}096 = 262$ M parameters (about 3.7 % of a 7B model). The new rows start untrained, so vocabulary extension must be followed by continued pretraining on enough Arabic text to learn them.`,
+    lesson: "sh09-l02",
+  },
+  // ---------------------------------------------------------------- l03 scaling laws
+  {
+    id: "sh09-train-flops",
+    name: "Training compute",
+    tex: String.raw`C \approx 6\,N\,D`,
+    vars: [
+      { sym: "C", meaning: "Training compute", unit: "FLOP" },
+      { sym: "N", meaning: "Model parameters (non-embedding, approximately all for large models)", unit: "parameters" },
+      { sym: "D", meaning: "Training tokens", unit: "tokens" },
+    ],
+    explanation: md`Each parameter does one multiply and one add (2 FLOP) per token in the forward pass and about twice that in the backward pass (gradients with respect to activations and to weights), so $2+4=6$ FLOP per parameter per token. Ignores attention over long contexts, which adds a few percent at typical lengths. Inference is about $2N$ FLOP per generated token.`,
+    lesson: "sh09-l03",
+  },
+  {
+    id: "sh09-kaplan-power-law",
+    name: "Kaplan scaling law (loss vs parameters, data unlimited)",
+    tex: String.raw`L(N) = \left(\frac{N_c}{N}\right)^{\alpha_N}, \qquad \alpha_N \approx 0.076`,
+    vars: [
+      { sym: "L", meaning: "Test loss", unit: "nats/token" },
+      { sym: String.raw`N_c`, meaning: "Fitted constant", unit: "parameters" },
+      { sym: String.raw`\alpha_N`, meaning: "Fitted exponent", unit: "-" },
+    ],
+    explanation: md`Kaplan et al. (2020) found loss falls as a power law in parameters, data and compute over many orders of magnitude, with a similar law in data ($\alpha_D \approx 0.095$). Their compute-allocation conclusion (grow parameters much faster than data) was later revised by Chinchilla, partly because the Kaplan runs used a learning-rate schedule that did not match the run length.`,
+    lesson: "sh09-l03",
+  },
+  {
+    id: "sh09-chinchilla-loss",
+    name: "Chinchilla parametric loss",
+    tex: String.raw`L(N, D) = E + \frac{A}{N^{\alpha}} + \frac{B}{D^{\beta}}`,
+    vars: [
+      { sym: "E", meaning: "Irreducible loss (entropy of text)", unit: "nats/token" },
+      { sym: String.raw`A,\ \alpha`, meaning: "Penalty for a finite model", unit: "-" },
+      { sym: String.raw`B,\ \beta`, meaning: "Penalty for finite data", unit: "-" },
+    ],
+    explanation: md`Hoffmann et al. (2022) published $E=1.69$, $A=406.4$, $B=410.7$, $\alpha=0.34$, $\beta=0.28$. The Epoch AI replication (Besiroglu et al., 2024) refitted the same data and found $E=1.82$, $A=482$, $B=2085$, $\alpha=0.348$, $\beta=0.366$, which agrees with the paper's other two methods (about 20 tokens per parameter). This module uses the replication values for arithmetic. The fit is for one data mix and one tokenizer (English-heavy MassiveText): use it for shape and ratios, not to predict an Arabic model's loss.`,
+    lesson: "sh09-l03",
+  },
+  {
+    id: "sh09-compute-optimal",
+    name: "Compute-optimal model size",
+    tex: String.raw`N_{\text{opt}}(C) = G\left(\frac{C}{6}\right)^{\frac{\beta}{\alpha+\beta}}, \quad G = \left(\frac{\alpha A}{\beta B}\right)^{\frac{1}{\alpha+\beta}}, \quad D_{\text{opt}} = \frac{C}{6N_{\text{opt}}}`,
+    vars: [
+      { sym: String.raw`N_{\text{opt}},\ D_{\text{opt}}`, meaning: "Parameters and tokens that minimise loss at fixed compute", unit: "parameters, tokens" },
+      { sym: "G", meaning: "Constant from the fit", unit: "-" },
+    ],
+    explanation: md`Minimise $L(N, C/6N)$ over $N$ by setting the derivative to zero. With the replication fit the exponent is $0.366/0.714 = 0.51$: parameters and tokens should grow roughly equally with compute. At $C = 10^{23}$ FLOP this gives $N_{\text{opt}} \approx 29$ B and $D_{\text{opt}} \approx 566$ B tokens, about 19 tokens per parameter.`,
+    lesson: "sh09-l03",
+  },
+  {
+    id: "sh09-chinchilla-rule",
+    name: "Chinchilla rule of thumb (20 tokens per parameter)",
+    tex: String.raw`D_{\text{opt}} \approx 20\,N_{\text{opt}} \;\Rightarrow\; C \approx 120\,N_{\text{opt}}^{2}, \quad N_{\text{opt}} \approx \sqrt{C/120}`,
+    vars: [
+      { sym: "C", meaning: "Compute budget", unit: "FLOP" },
+      { sym: String.raw`N_{\text{opt}}`, meaning: "Compute-optimal parameters", unit: "parameters" },
+    ],
+    explanation: md`Substitute $D = 20N$ into $C = 6ND$. Chinchilla itself: $70$ B parameters, $1.4$ T tokens, $6 \times 70\text{e}9 \times 1.4\text{e}12 = 5.9 \times 10^{23}$ FLOP. Compute-optimal means best loss per training FLOP, not best model to deploy: see over-training.`,
+    lesson: "sh09-l03",
+  },
+  {
+    id: "sh09-lifetime-compute",
+    name: "Lifetime compute (training plus inference)",
+    tex: String.raw`C_{\text{life}} \approx 6\,N\,D + 2\,N\,D_{\text{inf}}`,
+    vars: [
+      { sym: String.raw`D_{\text{inf}}`, meaning: "Tokens processed in inference over the model's life", unit: "tokens" },
+    ],
+    explanation: md`If a model will serve many tokens, a smaller model trained on more tokens than compute-optimal (over-trained) reaches the same quality at lower lifetime cost. Break-even serving volume between a big optimal model $N_1$ and a smaller over-trained $N_2$: $D_{\text{inf}} = (C_2 - C_1)/(2(N_1 - N_2))$.`,
+    lesson: "sh09-l03",
+  },
+  // ---------------------------------------------------------------- l04 compute cost
+  {
+    id: "sh09-gpu-hours",
+    name: "GPU-hours from compute and utilisation",
+    tex: String.raw`H_{\text{GPU}} = \frac{6\,N\,D}{\text{MFU}\cdot P_{\text{peak}}\cdot 3600}`,
+    vars: [
+      { sym: String.raw`H_{\text{GPU}}`, meaning: "GPU-hours for the run", unit: "GPU-h" },
+      { sym: String.raw`P_{\text{peak}}`, meaning: "Peak dense throughput of one GPU at the training precision (H100 SXM BF16 dense: about 989 TFLOP/s)", unit: "FLOP/s" },
+      { sym: "MFU", meaning: "Model FLOPs utilisation: useful model FLOP per second divided by peak", unit: "0..1" },
+    ],
+    explanation: md`MFU of 35 to 50 % is good for large dense training on a well-tuned stack; 20 to 30 % is common for small teams, long contexts or poorly tuned clusters. Multiply GPU-hours by the hourly price to get the cost of one clean run, then multiply by an overhead factor (2 to 3) for ablations, restarts and evaluations.`,
+    lesson: "sh09-l04",
+  },
+  {
+    id: "sh09-mfu",
+    name: "Model FLOPs utilisation",
+    tex: String.raw`\text{MFU} = \frac{6\,N\,\tau}{n_{\text{GPU}}\,P_{\text{peak}}}`,
+    vars: [
+      { sym: String.raw`\tau`, meaning: "Measured training throughput of the whole cluster", unit: "tokens/s" },
+      { sym: String.raw`n_{\text{GPU}}`, meaning: "GPUs in the job", unit: "count" },
+    ],
+    explanation: md`Defined in the PaLM paper. Ask any compute proposal for its measured tokens per second, then compute MFU yourself. Hardware FLOPs utilisation (HFU) also counts recomputed activations and is therefore higher; do not let a vendor quote HFU as if it were MFU.`,
+    lesson: "sh09-l04",
+  },
+  {
+    id: "sh09-train-memory",
+    name: "Training memory for weights, gradients and Adam states",
+    tex: String.raw`M_{\text{states}} \approx 16\,N \ \text{bytes}`,
+    vars: [
+      { sym: String.raw`M_{\text{states}}`, meaning: "Memory for model and optimiser state, mixed precision with Adam", unit: "bytes" },
+      { sym: "N", meaning: "Parameters", unit: "parameters" },
+    ],
+    explanation: md`Per parameter: 2 bytes BF16 weights, 2 bytes BF16 gradients, 4 bytes FP32 master weights, 4 bytes Adam first moment, 4 bytes second moment. A 7B model needs 112 GB before activations, more than one 80 GB GPU: hence ZeRO or FSDP sharding across GPUs. Inference needs only the weights: 2 bytes per parameter in BF16, about 0.5 in 4-bit.`,
+    lesson: "sh09-l04",
+  },
+  {
+    id: "sh09-activation-memory",
+    name: "Activation memory per transformer layer (no recomputation)",
+    tex: String.raw`M_{\text{act}} \approx s\,b\,h\left(34 + \frac{5\,a\,s}{h}\right) \ \text{bytes per layer}`,
+    vars: [
+      { sym: "s", meaning: "Sequence length", unit: "tokens" },
+      { sym: "b", meaning: "Micro-batch size", unit: "sequences" },
+      { sym: "h", meaning: "Hidden size", unit: "-" },
+      { sym: "a", meaning: "Attention heads", unit: "count" },
+    ],
+    explanation: md`From Korthikanti et al. (2022), 16-bit activations, no tensor parallelism. The $5as/h$ term is the stored attention-score matrices, which grow with $s^2$; fused attention kernels (FlashAttention) avoid storing them, leaving about $34\,sbh$. Activation checkpointing keeps only each layer's input ($2\,sbh$ bytes) and recomputes the rest in the backward pass, costing roughly one extra forward pass.`,
+    lesson: "sh09-l04",
+  },
+  {
+    id: "sh09-kv-cache",
+    name: "KV-cache memory per token at inference",
+    tex: String.raw`M_{\text{KV}} = 2\,n_{\text{layers}}\,n_{\text{kv}}\,d_{\text{head}}\,b_{\text{p}}`,
+    vars: [
+      { sym: String.raw`n_{\text{layers}}`, meaning: "Transformer layers", unit: "count" },
+      { sym: String.raw`n_{\text{kv}}`, meaning: "Key-value heads (fewer than query heads with grouped-query attention)", unit: "count" },
+      { sym: String.raw`d_{\text{head}}`, meaning: "Head dimension", unit: "-" },
+      { sym: String.raw`b_{\text{p}}`, meaning: "Bytes per value (2 for BF16)", unit: "bytes" },
+    ],
+    explanation: md`The 2 is for keys and values. An 8B-class model with 32 layers, 8 KV heads of dimension 128 in BF16: $2 \times 32 \times 8 \times 128 \times 2 = 131{,}072$ bytes = 128 KiB per token, so one 8,192-token sequence holds 1 GiB of cache. High Arabic fertility multiplies this directly.`,
+    lesson: "sh09-l04",
+  },
+  // ---------------------------------------------------------------- l05 evaluation
+  {
+    id: "sh09-accuracy-se",
+    name: "Standard error of a benchmark accuracy",
+    tex: String.raw`\mathrm{SE}(\hat p) = \sqrt{\frac{\hat p\,(1-\hat p)}{n}}, \qquad \text{95 \% CI} \approx \hat p \pm 1.96\,\mathrm{SE}`,
+    vars: [
+      { sym: String.raw`\hat p`, meaning: "Measured accuracy", unit: "0..1" },
+      { sym: "n", meaning: "Independent items in the benchmark", unit: "items" },
+    ],
+    explanation: md`Treats each item as an independent Bernoulli trial. At $\hat p = 0.70$ and $n = 500$: SE = 2.05 pp, 95 % CI about $\pm 4.0$ pp. Items that come in clusters (several questions on one passage) are not independent: use a clustered standard error, which is larger.`,
+    lesson: "sh09-l05",
+  },
+  {
+    id: "sh09-paired-se",
+    name: "Standard error of a paired accuracy difference",
+    tex: String.raw`\mathrm{SE}(\hat\Delta) = \sqrt{\frac{p_{10} + p_{01} - (p_{10} - p_{01})^2}{n}}, \qquad \hat\Delta = p_{10} - p_{01}`,
+    vars: [
+      { sym: String.raw`p_{10}`, meaning: "Share of items model A gets right and model B wrong", unit: "0..1" },
+      { sym: String.raw`p_{01}`, meaning: "Share of items B gets right and A wrong", unit: "0..1" },
+      { sym: String.raw`\hat\Delta`, meaning: "Accuracy of A minus accuracy of B", unit: "0..1" },
+    ],
+    explanation: md`When both models answer the same items, only the items where they disagree carry information about the difference. Pairing removes shared item difficulty and gives a smaller SE than the unpaired $\sqrt{\mathrm{SE}_A^2 + \mathrm{SE}_B^2}$. A difference is significant at about 95 % if $|\hat\Delta| > 1.96\,\mathrm{SE}(\hat\Delta)$ (equivalently McNemar's test).`,
+    lesson: "sh09-l05",
+  },
+  {
+    id: "sh09-sample-size",
+    name: "Items needed to detect an accuracy difference",
+    tex: String.raw`n \approx \frac{(z_{1-\alpha/2} + z_{1-\beta_p})^2 \cdot 2\,p(1-p)}{\delta^2}`,
+    vars: [
+      { sym: String.raw`\delta`, meaning: "Smallest difference you want to detect", unit: "0..1" },
+      { sym: "p", meaning: "Typical accuracy", unit: "0..1" },
+      { sym: String.raw`z_{1-\alpha/2}`, meaning: "1.96 for 95 % confidence", unit: "-" },
+      { sym: String.raw`z_{1-\beta_p}`, meaning: "0.84 for 80 % power", unit: "-" },
+    ],
+    explanation: md`Unpaired, two independent samples. At $p = 0.7$ and $\delta = 2$ pp: $n \approx 7.84 \times 0.42 / 0.0004 = 8{,}241$ items. Pairing reduces this, but the lesson stands: a 500-item benchmark cannot rank models that are 2 points apart.`,
+    lesson: "sh09-l05",
+  },
+  {
+    id: "sh09-cohen-kappa",
+    name: "Cohen's kappa (agreement beyond chance)",
+    tex: String.raw`\kappa = \frac{p_o - p_e}{1 - p_e}`,
+    vars: [
+      { sym: String.raw`p_o`, meaning: "Observed agreement between two raters (human-human or judge-human)", unit: "0..1" },
+      { sym: String.raw`p_e`, meaning: "Agreement expected by chance from each rater's label frequencies", unit: "0..1" },
+    ],
+    explanation: md`Use it to validate an LLM judge against native-speaker labels before trusting it, and to measure annotator agreement on a new dataset. Rough reading: below 0.4 weak, 0.4 to 0.6 moderate, 0.6 to 0.8 substantial, above 0.8 near perfect. 75 % raw agreement can be only $\kappa = 0.5$ if chance agreement is 50 %.`,
+    lesson: "sh09-l05",
+  },
+  {
+    id: "sh09-ngram-count",
+    name: "Number of n-grams in a test item",
+    tex: String.raw`n_g = T - n + 1`,
+    vars: [
+      { sym: "T", meaning: "Tokens (or words) in the item", unit: "tokens" },
+      { sym: "n", meaning: "n-gram length used for the overlap check (for example 13)", unit: "tokens" },
+    ],
+    explanation: md`A 40-token item has 28 overlapping 13-grams. The contamination check looks each one up in an index of the training corpus and flags the item if any (or a set fraction) appear. Items shorter than $n$ cannot be checked this way.`,
+    lesson: "sh09-l05",
+  },
+  // ---------------------------------------------------------------- l06 datasets
+  {
+    id: "sh09-temperature-sampling",
+    name: "Temperature (exponent) sampling across data sources",
+    tex: String.raw`q_i = \frac{n_i^{\alpha}}{\sum_j n_j^{\alpha}}, \qquad 0 < \alpha \le 1`,
+    vars: [
+      { sym: String.raw`n_i`, meaning: "Tokens available in source or dialect i", unit: "tokens" },
+      { sym: String.raw`q_i`, meaning: "Share of the training mix drawn from source i", unit: "0..1" },
+      { sym: String.raw`\alpha`, meaning: "Exponent: 1 = proportional, smaller values up-weight small sources", unit: "-" },
+    ],
+    explanation: md`Used in multilingual models to stop the biggest language drowning the rest. Up-weighting a small source means repeating it: check epochs before choosing $\alpha$.`,
+    lesson: "sh09-l06",
+  },
+  {
+    id: "sh09-epochs",
+    name: "Epochs over a source",
+    tex: String.raw`e_i = \frac{q_i\,D}{n_i}`,
+    vars: [
+      { sym: String.raw`e_i`, meaning: "Times each token of source i is seen", unit: "epochs" },
+      { sym: "D", meaning: "Total training tokens", unit: "tokens" },
+    ],
+    explanation: md`Muennighoff et al. (2023) found that up to about 4 epochs of repeated data is almost as good as fresh data, with fast-diminishing returns beyond that. A small dialect corpus sampled at 12 or 27 epochs will be memorised, not learned.`,
+    lesson: "sh09-l06",
+  },
+  {
+    id: "sh09-annotation-hours",
+    name: "Annotation effort",
+    tex: String.raw`H = \frac{n_{\text{items}}\,k}{v} + \frac{f_d\,n_{\text{items}}}{v_{\text{adj}}}`,
+    vars: [
+      { sym: String.raw`n_{\text{items}}`, meaning: "Items to label", unit: "items" },
+      { sym: "k", meaning: "Annotators per item", unit: "count" },
+      { sym: "v", meaning: "Labelling speed", unit: "items/h" },
+      { sym: String.raw`f_d`, meaning: "Share of items with disagreement sent to adjudication", unit: "0..1" },
+      { sym: String.raw`v_{\text{adj}}`, meaning: "Adjudication speed", unit: "items/h" },
+    ],
+    explanation: md`Pilot 100 items first to measure $v$ and $f_d$; guesses are usually optimistic by a factor of 2. Multiply hours by the hourly rate (or count them as volunteer hours you must recruit).`,
+    lesson: "sh09-l06",
+  },
+];
+
+export default formulas;
