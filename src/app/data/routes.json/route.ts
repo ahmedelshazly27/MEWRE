@@ -38,6 +38,7 @@ export function GET() {
     ...STATIC_ROUTES,
     ...TRACKS.map((t) => `/tracks/${t.id}`),
     ...TRACKS.filter((t) => t.id !== "mewre").map((t) => `/tracks/${t.id}/concepts`),
+    ...TRACKS.filter((t) => t.id !== "mewre").map((t) => `/formulas/${t.id}`),
     ...moduleRoutes(liveModules("en")),
     ...scenarios.map((s) => `/scenarios/${s.scenario.id}`),
   ];
