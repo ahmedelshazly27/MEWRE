@@ -207,6 +207,7 @@ One page that fixes definitions: what counts as ARR (live, committed, excluding 
 - **Ignoring warranty and returns in hardware margin.** Provision for them from the first unit.
 - **Forgetting working capital in the runway.** A hardware order you win can shorten runway if you prepay the supplier and the customer pays in 120 days.`,
         },
+        { kind: "sources", refs: ["fc06-r5", "fc06-r6", "fc06-r7"] },
         {
           kind: "checklist",
           title: "Board-pack metrics checklist",

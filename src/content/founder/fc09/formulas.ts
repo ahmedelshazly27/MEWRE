@@ -1,0 +1,236 @@
+import { md, type Formula } from "../../schema";
+
+const formulas: Formula[] = [
+  // ---------------------------------------------------------------- l01 hiring
+  {
+    id: "fc09-variance-explained",
+    name: "Share of performance variance explained by a selection method",
+    tex: String.raw`R^2 = r^2`,
+    vars: [
+      { sym: "r", meaning: "Validity coefficient: correlation between the method's score and later job performance", unit: "dimensionless, -1 to 1" },
+      { sym: "R^2", meaning: "Share of the variance in job performance the method explains", unit: "dimensionless, 0 to 1" },
+    ],
+    explanation: md`A structured interview at $r = 0.42$ to $0.51$ explains 18 to 26% of the variance in performance; an unstructured interview at $r = 0.19$ to $0.38$ explains 4 to 14%. Even good methods leave most variance unexplained, so combine independent methods and measure outcomes after the hire.`,
+    lesson: "fc09-l01",
+  },
+  {
+    id: "fc09-bad-hire-cost",
+    name: "Cost of a bad hire",
+    tex: String.raw`C_{\text{bad}} = c_m\,(t_d + t_x) + S + R + M + O`,
+    vars: [
+      { sym: "c_m", meaning: "Fully loaded monthly cost of the hire (salary times loading factor for social charges, pension, equipment)", unit: "EUR/month" },
+      { sym: "t_d", meaning: "Months until the problem is detected and acted on", unit: "month" },
+      { sym: "t_x", meaning: "Months from decision to exit (notice, handover)", unit: "month" },
+      { sym: "S", meaning: "Settlement or severance", unit: "EUR" },
+      { sym: "R", meaning: "Cost of rehiring (recruiter fee or equivalent time)", unit: "EUR" },
+      { sym: "M", meaning: "Founder and team time spent supervising, managing out and re-interviewing, at a shadow hourly value", unit: "EUR" },
+      { sym: "O", meaning: "Opportunity cost: lost or delayed output (pilots, deals, releases)", unit: "EUR" },
+    ],
+    explanation: md`Build it from the mechanism rather than quoting folklore percentages. For early hires $O$ and the pay-until-exit term dominate, which makes detection time $t_d$ the biggest lever: written 90-day outcomes shorten it. Illustrative Afterwave case: EUR 122,000, about 1.5 times base salary.`,
+    lesson: "fc09-l01",
+  },
+  {
+    id: "fc09-hiring-process-value",
+    name: "Expected value of a better hiring process",
+    tex: String.raw`\Delta EV = (p_0 - p_1)\,C_{\text{bad}} - \Delta C_{\text{proc}}`,
+    vars: [
+      { sym: "p_0", meaning: "Probability of a bad hire with the current process", unit: "dimensionless" },
+      { sym: "p_1", meaning: "Probability of a bad hire with the improved process", unit: "dimensionless" },
+      { sym: "C_{\\text{bad}}", meaning: "Cost of a bad hire", unit: "EUR" },
+      { sym: "\\Delta C_{\\text{proc}}", meaning: "Extra cost of the improved process per hire (paid work samples, interviewer time)", unit: "EUR" },
+    ],
+    explanation: md`Break-even improvement is $\Delta C_{\text{proc}}/C_{\text{bad}}$. With a EUR 122,000 bad-hire cost and EUR 4,500 of extra process, a 3.7 percentage point reduction pays for itself; the illustrative 15 points is worth EUR 13,800 per hire.`,
+    lesson: "fc09-l01",
+  },
+  // ---------------------------------------------------------------- l02 equity compensation
+  {
+    id: "fc09-grant-paper-value",
+    name: "Paper value of an option grant",
+    tex: String.raw`G = g \, V_{\text{post}}`,
+    vars: [
+      { sym: "G", meaning: "Paper value of the grant at the latest round price", unit: "EUR" },
+      { sym: "g", meaning: "Grant as a fraction of fully diluted shares", unit: "dimensionless" },
+      { sym: "V_{\\text{post}}", meaning: "Latest post-money valuation (preferred share price times fully diluted shares)", unit: "EUR" },
+    ],
+    explanation: md`The number candidates and advisers often quote. It overstates the value of common options because it uses the preferred price (which carries liquidation preferences) and ignores the strike. Divide by the vesting period for a per-year figure: 0.8% of EUR 12 m is EUR 96,000, or EUR 24,000 per year over 4 years.`,
+    lesson: "fc09-l02",
+  },
+  {
+    id: "fc09-dilution-retention",
+    name: "Retention of an ownership percentage through later rounds",
+    tex: String.raw`g_{\text{exit}} = g \prod_{i=1}^{n} (1 - d_i) = g\,\rho`,
+    vars: [
+      { sym: "g", meaning: "Ownership fraction at grant (fully diluted)", unit: "dimensionless" },
+      { sym: "d_i", meaning: "Dilution of round i: new shares issued divided by post-round fully diluted shares", unit: "dimensionless" },
+      { sym: "\\rho", meaning: "Retention factor, the product of (1 minus dilution) over all later rounds", unit: "dimensionless" },
+      { sym: "g_{\\text{exit}}", meaning: "Ownership fraction at exit", unit: "dimensionless" },
+    ],
+    explanation: md`Dilution compounds: 20%, 20% and 15% give $\rho = 0.8 \times 0.8 \times 0.85 = 0.544$, not $1 - 0.55$. Pool top-ups before a round count as dilution for existing holders too.`,
+    lesson: "fc09-l02",
+  },
+  {
+    id: "fc09-equity-ev",
+    name: "Expected value of an option grant",
+    tex: String.raw`EV_{\text{eq}} = P_{\text{exit}} \left( g\,\rho\,V_{\text{exit}} - g\,V_K \right)`,
+    vars: [
+      { sym: "P_{\\text{exit}}", meaning: "Probability of an exit at value V_exit (the scenario where options pay)", unit: "dimensionless" },
+      { sym: "g", meaning: "Grant as a fraction of fully diluted shares at grant", unit: "dimensionless" },
+      { sym: "\\rho", meaning: "Retention factor through later rounds", unit: "dimensionless" },
+      { sym: "V_{\\text{exit}}", meaning: "Equity value at exit available to common shares (after liquidation preferences)", unit: "EUR" },
+      { sym: "V_K", meaning: "Company value implied by the strike price (strike times fully diluted shares at grant)", unit: "EUR" },
+    ],
+    explanation: md`A risk-neutral, pre-tax value. The strike bill $g V_K$ is not diluted because the number of shares under option does not change. In a modest exit, preferences can take most of the proceeds, so use the value left for common shares. Illustrative: 0.8%, $\rho = 0.544$, EUR 400 m at 8%, $V_K$ = EUR 6 m gives EUR 135,424.`,
+    lesson: "fc09-l02",
+  },
+  {
+    id: "fc09-breakeven-grant",
+    name: "Break-even grant for a salary reduction",
+    tex: String.raw`g^{*} = \frac{\Delta S \, T}{P_{\text{exit}} \left( \rho\,V_{\text{exit}} - V_K \right)}`,
+    vars: [
+      { sym: "g^{*}", meaning: "Grant at which the expected equity value equals the salary forgone", unit: "dimensionless" },
+      { sym: "\\Delta S", meaning: "Annual salary below market", unit: "EUR/yr" },
+      { sym: "T", meaning: "Vesting period", unit: "yr" },
+      { sym: "P_{\\text{exit}}", meaning: "Probability of the paying exit", unit: "dimensionless" },
+      { sym: "\\rho", meaning: "Retention factor", unit: "dimensionless" },
+      { sym: "V_{\\text{exit}}", meaning: "Exit value available to common", unit: "EUR" },
+      { sym: "V_K", meaning: "Strike-implied company value", unit: "EUR" },
+    ],
+    explanation: md`Risk-neutral break-even; a risk-averse candidate needs more. Ignores discounting over the years to exit, which would raise $g^*$ further. Illustrative: EUR 20,000/yr over 4 years, $\rho = 0.544$, EUR 400 m at 8%, $V_K$ = EUR 6 m gives 0.47%.`,
+    lesson: "fc09-l02",
+  },
+  // ---------------------------------------------------------------- l03 cadence
+  {
+    id: "fc09-meeting-cost",
+    name: "Direct cost of a recurring meeting",
+    tex: String.raw`C = N \, h \, w \, f`,
+    vars: [
+      { sym: "C", meaning: "Direct cost over the period", unit: "EUR/yr" },
+      { sym: "N", meaning: "Number of attendees", unit: "people" },
+      { sym: "h", meaning: "Duration", unit: "h" },
+      { sym: "w", meaning: "Loaded hourly cost per attendee (or a shadow rate for founders and volunteers)", unit: "EUR/h" },
+      { sym: "f", meaning: "Occurrences per period", unit: "1/yr" },
+    ],
+    explanation: md`Excludes preparation and the context-switch cost the meeting imposes on maker time (Lesson 5), so it is a lower bound. A weekly 60-minute sync of 6 people at EUR 75/h over 48 weeks costs EUR 21,600 a year.`,
+    lesson: "fc09-l03",
+  },
+  {
+    id: "fc09-kr-score",
+    name: "Key result score from a baseline",
+    tex: String.raw`s = \min\!\left(1,\ \max\!\left(0,\ \frac{x - x_0}{x^{*} - x_0}\right)\right)`,
+    vars: [
+      { sym: "s", meaning: "Key result score", unit: "0 to 1" },
+      { sym: "x", meaning: "Value achieved at the end of the period", unit: "metric unit" },
+      { sym: "x_0", meaning: "Baseline at the start of the period", unit: "metric unit" },
+      { sym: "x^{*}", meaning: "Target", unit: "metric unit" },
+    ],
+    explanation: md`Works for targets above or below the baseline (both numerator and denominator change sign). For counts from zero it reduces to $x/x^*$. Aspirational OKRs averaging 0.6 to 0.7 indicate well-set stretch targets; committed OKRs should reach 1.0.`,
+    lesson: "fc09-l03",
+  },
+  // ---------------------------------------------------------------- l04 board and investors
+  {
+    id: "fc09-runway",
+    name: "Runway",
+    tex: String.raw`R = \frac{\text{Cash}}{B_{\text{net}}}`,
+    vars: [
+      { sym: "R", meaning: "Runway: months until cash runs out at the current burn", unit: "month" },
+      { sym: "\\text{Cash}", meaning: "Cash in the bank (not receivables that have not been paid)", unit: "EUR" },
+      { sym: "B_{\\text{net}}", meaning: "Net monthly burn: cash out minus cash in", unit: "EUR/month" },
+    ],
+    explanation: md`A static estimate: if burn is rising (hires planned), use the planned burn path, not the current month. Count customer cash only when received; public buyers in Kuwait and enterprise procurement can pay months after invoice. Illustrative: EUR 600,000 at EUR 45,000/month gives 13.3 months.`,
+    lesson: "fc09-l04",
+  },
+  {
+    id: "fc09-raise-trigger",
+    name: "Latest time to start a fundraise",
+    tex: String.raw`t_{\text{start}} = R - \left(t_{\text{raise}} + t_{\text{buffer}}\right)`,
+    vars: [
+      { sym: "t_{\\text{start}}", meaning: "Months from now until the raise must start", unit: "month" },
+      { sym: "R", meaning: "Runway", unit: "month" },
+      { sym: "t_{\\text{raise}}", meaning: "Expected time from first investor meeting to cash in the bank", unit: "month" },
+      { sym: "t_{\\text{buffer}}", meaning: "Safety margin so you never negotiate with almost no cash", unit: "month" },
+    ],
+    explanation: md`If $t_{\text{start}} \le 0$ you are already late: cut burn or raise from existing investors now. Every hire moves this date: an extra EUR 8,667/month on EUR 45,000 burn and EUR 600,000 cash brings it forward from 4.3 to 2.2 months (illustrative).`,
+    lesson: "fc09-l04",
+  },
+  // ---------------------------------------------------------------- l05 founder time
+  {
+    id: "fc09-switch-cost",
+    name: "Effective hours after context switches",
+    tex: String.raw`H_{\text{eff}} = H - k\,s`,
+    vars: [
+      { sym: "H_{\\text{eff}}", meaning: "Effective working hours", unit: "h/week" },
+      { sym: "H", meaning: "Hours worked", unit: "h/week" },
+      { sym: "k", meaning: "Number of context switches (between ventures or between maker and manager work)", unit: "1/week" },
+      { sym: "s", meaning: "Recovery time per switch", unit: "h" },
+    ],
+    explanation: md`A first-order model: it ignores the quality loss from attention residue, so it understates the cost. Calibrate $s$ on yourself (15 to 25 minutes is a common working assumption). Illustrative: 55 h with 60 switches at 20 minutes gives 35 h; with 10 switches, 51.7 h.`,
+    lesson: "fc09-l05",
+  },
+  {
+    id: "fc09-weinberg-share",
+    name: "Useful time with n concurrent projects (Weinberg rule of thumb)",
+    tex: String.raw`H_{\text{useful}} = H\,\bigl(1 - L(n)\bigr),\quad L(1..5) = 0,\ 0.2,\ 0.4,\ 0.6,\ 0.75`,
+    vars: [
+      { sym: "H_{\\text{useful}}", meaning: "Hours of useful work across all projects", unit: "h/week" },
+      { sym: "H", meaning: "Hours worked", unit: "h/week" },
+      { sym: "L(n)", meaning: "Share of time lost to switching with n concurrent projects", unit: "dimensionless" },
+      { sym: "n", meaning: "Number of projects actively carried at the same time", unit: "count" },
+    ],
+    explanation: md`From Weinberg's *Quality Software Management* (1992): an experience-based estimate, not a measured law. Use it to compare set-ups, not to predict exact hours. 55 h with 3 projects gives 33 useful hours; with 2, 44.`,
+    lesson: "fc09-l05",
+  },
+  // ---------------------------------------------------------------- l06 decisions
+  {
+    id: "fc09-expected-value",
+    name: "Expected value and standard deviation of a decision",
+    tex: String.raw`EV = \sum_i p_i\,x_i, \qquad \sigma = \sqrt{\sum_i p_i\,x_i^2 - EV^2}`,
+    vars: [
+      { sym: "p_i", meaning: "Probability of outcome i (sums to 1)", unit: "dimensionless" },
+      { sym: "x_i", meaning: "Value of outcome i (NPV, cash, or another common unit)", unit: "EUR" },
+      { sym: "EV", meaning: "Expected value", unit: "EUR" },
+      { sym: "\\sigma", meaning: "Standard deviation of the outcome", unit: "EUR" },
+    ],
+    explanation: md`EV is the right criterion for many independent, survivable bets. When a single bad outcome is ruinous or irreversible, also compare the worst case with cash and runway. Illustrative test-platform case: build now EV 250 k, $\sigma$ = 443 k; wait EV 230 k, $\sigma$ = 308 k.`,
+    lesson: "fc09-l06",
+  },
+  {
+    id: "fc09-evpi",
+    name: "Expected value of perfect information",
+    tex: String.raw`\text{EVPI} = \sum_j p_j \max_a v(a, s_j) \;-\; \max_a \sum_j p_j\, v(a, s_j)`,
+    vars: [
+      { sym: "p_j", meaning: "Probability of state of the world j", unit: "dimensionless" },
+      { sym: "v(a, s_j)", meaning: "Value of action a if state j occurs", unit: "EUR" },
+      { sym: "\\text{EVPI}", meaning: "Most that perfect, immediate information about the state could be worth", unit: "EUR" },
+    ],
+    explanation: md`First term: choose the best action after seeing the state. Second term: the best action chosen now. Real information is imperfect and slow, so pay well below EVPI. Illustrative: 310 k minus 250 k gives EVPI = 60 k; a six-month wait that costs 80 k is overpaying for information.`,
+    lesson: "fc09-l06",
+  },
+  {
+    id: "fc09-bayes-odds",
+    name: "Bayes' rule in odds form",
+    tex: String.raw`\frac{P(H\mid E)}{P(\neg H\mid E)} = \frac{P(H)}{P(\neg H)} \times \frac{P(E\mid H)}{P(E\mid \neg H)}`,
+    vars: [
+      { sym: "H", meaning: "Hypothesis (e.g. the pilot converts to a paid contract)", unit: "event" },
+      { sym: "E", meaning: "Evidence observed (e.g. the champion has a budget line)", unit: "event" },
+      { sym: "P(H)/P(\\neg H)", meaning: "Prior odds, from the base rate of the reference class", unit: "dimensionless" },
+      { sym: "P(E\\mid H)/P(E\\mid \\neg H)", meaning: "Likelihood ratio: how much more often E occurs if H is true", unit: "dimensionless" },
+    ],
+    explanation: md`Convert back with $p = \text{odds}/(1 + \text{odds})$. Independent pieces of evidence multiply. An LR of 1 means the evidence is uninformative, however vivid. Illustrative: base rate 25% (odds 1/3) with LR 3 gives odds 1, probability 50%.`,
+    lesson: "fc09-l06",
+  },
+  {
+    id: "fc09-brier-score",
+    name: "Brier score (forecast calibration)",
+    tex: String.raw`BS = \frac{1}{N}\sum_{i=1}^{N} \left(f_i - o_i\right)^2`,
+    vars: [
+      { sym: "f_i", meaning: "Forecast probability for event i", unit: "0 to 1" },
+      { sym: "o_i", meaning: "Outcome: 1 if the event happened, 0 if not", unit: "0 or 1" },
+      { sym: "N", meaning: "Number of forecasts scored", unit: "count" },
+      { sym: "BS", meaning: "Brier score; 0 is perfect, always forecasting 0.5 scores 0.25", unit: "dimensionless" },
+    ],
+    explanation: md`Introduced by Brier (1950) for weather forecasts and used in forecasting research (Tetlock). Score your decision journal yearly: if your 80% forecasts come true far less than 80% of the time, you are overconfident. Example: forecasts 0.9, 0.7, 0.2, 0.6 with outcomes 1, 1, 0, 0 give 0.125.`,
+    lesson: "fc09-l06",
+  },
+];
+
+export default formulas;

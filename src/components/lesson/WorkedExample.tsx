@@ -23,7 +23,7 @@ export function WorkedExample({ title, mode, given, steps, result }: { title: st
   return (
     <div className="my-5 overflow-hidden rounded-xl border border-border bg-surface">
       <div className="flex flex-wrap items-center gap-2 border-b border-border bg-surface-2 px-4 py-2.5">
-        <Pill tone={mode === "worked" ? "sun" : "info"}>{mode === "worked" ? t("Worked example") : t("Your turn — faded example")}</Pill>
+        <Pill tone={mode === "worked" ? "sun" : "info"}>{mode === "worked" ? t("Worked example") : t("Your turn: faded example")}</Pill>
         <span className="font-medium">{title}</span>
       </div>
       <div className="px-4 py-3">

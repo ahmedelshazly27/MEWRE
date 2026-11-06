@@ -117,7 +117,7 @@ export function TrackCards({ compact = false }: { compact?: boolean }) {
   return (
     <div className={`grid gap-3 sm:grid-cols-2 ${compact ? "xl:grid-cols-3" : "lg:grid-cols-3"}`}>
       {stats.map((s) => (
-        <Link key={s.track.id} href={href(`/tracks/${s.track.id}`)} className="block rounded-xl border border-border bg-surface p-4 transition-colors hover:border-accent/60">
+        <Link key={s.track.id} href={href(`/tracks/${s.track.id}`)} className="block min-w-0 rounded-xl border border-border bg-surface p-4 transition-colors hover:border-accent/60">
           <div className="flex items-start gap-3">
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent-soft text-accent">
               <Icon name={s.track.icon} className="h-5 w-5" />

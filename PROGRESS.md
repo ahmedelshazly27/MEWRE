@@ -119,9 +119,13 @@ physics error in the capstone, several overstated figures and Arabic glossary te
 - [x] Lesson blocks for visuals: `chart`, `flow`, `matrix`, plus `xref` cross-links; style validator (no em dashes, stealth cofounder never named)
 - [x] Founder Core calculators with tests: cap table and SAFE conversion (YC post-money rules), SAFE vs priced, unit economics and runway, pricing experiments, pipeline forecaster
 
-## Phase 12 · Founder Core content (in progress)
+## Phase 12 · Founder Core (2026-11-06)
 
-- [ ] fc01 to fc10 plus capstone fc11, must-know concepts per module
+- [x] 11 modules, 69 lessons, 534 questions, 447 flashcards, 318 glossary terms (EN/AR), 190 formulas, ~110 must-know concepts
+- [x] Every lesson: why it matters for you, mechanism with equations, a visual (widget, chart, flow, matrix or data table), worked and faded examples with venture numbers labelled illustrative, practice section, graded "produce it" exercise, quiz and flashcards
+- [x] Scenarios (investor, procurement, journalist, cofounder decisions) and Feynman checks in every module; capstone fc11 (seed round package) feeds Founder readiness
+- [x] Cross-links to Track 0 (finance, contracts, procurement, communication, AI-native PM) instead of duplication
+- [x] Verified: content validator (incl. no em dashes, stealth cofounder never named), 310 tests, production build, browser sweep of all 69 lessons on desktop and a phone sample (no errors, no overflow, no KaTeX errors)
 
 ## Known limitations / next ideas
 

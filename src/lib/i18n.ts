@@ -110,7 +110,7 @@ const AR: Record<string, string> = {
 
   // worked examples
   "Worked example": "مثال محلول",
-  "Your turn — faded example": "دورك — مثال متدرّج",
+  "Your turn: faded example": "دورك — مثال متدرّج",
   Given: "المعطيات",
   Answer: "الإجابة",
   Check: "تحقّق",

@@ -1,0 +1,258 @@
+import { md, type Formula } from "../../schema";
+
+const formulas: Formula[] = [
+  // ---------------------------------------------------------------- l01 cap tables and dilution
+  {
+    id: "fc08-ownership",
+    name: "Fully diluted ownership",
+    tex: String.raw`p_i = \frac{n_i}{N_{FD}}`,
+    vars: [
+      { sym: "p_i", meaning: "Ownership fraction of holder i", unit: "fraction" },
+      { sym: "n_i", meaning: "Shares (or as-converted shares) held by i", unit: "shares" },
+      { sym: "N_{FD}", meaning: "Fully diluted shares: issued shares plus all granted options, the unallocated pool and warrants", unit: "shares" },
+    ],
+    explanation: md`Investors and term sheets quote percentages on a **fully diluted** basis. Using issued shares only flatters founders, because the pool and outstanding options will become shares.`,
+    lesson: "fc08-l01",
+  },
+  {
+    id: "fc08-dilution",
+    name: "Dilution from a new issue",
+    tex: String.raw`p_{\text{after}} = p_{\text{before}}\,(1-d), \qquad d = \frac{\Delta N}{N+\Delta N} = \frac{I}{V_{\text{post}}}`,
+    vars: [
+      { sym: "p_{\\text{after}}", meaning: "Holder's ownership after the round", unit: "fraction" },
+      { sym: "p_{\\text{before}}", meaning: "Holder's ownership before the round", unit: "fraction" },
+      { sym: "d", meaning: "Fraction of the post-round company sold in the round", unit: "fraction" },
+      { sym: "\\Delta N", meaning: "New shares issued", unit: "shares" },
+      { sym: "N", meaning: "Fully diluted shares before the round", unit: "shares" },
+      { sym: "I", meaning: "New money invested", unit: "EUR or USD" },
+      { sym: "V_{\\text{post}}", meaning: "Post-money valuation", unit: "EUR or USD" },
+    ],
+    explanation: md`Every existing holder is diluted by the same factor $(1-d)$. Over several rounds the factors multiply: three rounds selling 20 %, 20 % and 15 % leave $0.8\times0.8\times0.85 = 0.544$ of your starting stake.`,
+    lesson: "fc08-l01",
+  },
+  {
+    id: "fc08-new-shares",
+    name: "Shares to issue for a target stake",
+    tex: String.raw`\Delta N = N\,\frac{d}{1-d}`,
+    vars: [
+      { sym: "\\Delta N", meaning: "New shares to issue", unit: "shares" },
+      { sym: "N", meaning: "Fully diluted shares before the issue", unit: "shares" },
+      { sym: "d", meaning: "Target fraction of the post-issue total", unit: "fraction" },
+    ],
+    explanation: md`Rearranged from $d = \Delta N/(N+\Delta N)$. To give an investor 20 % you issue $N\times0.25$ new shares, not $N\times0.20$. The same formula sizes an option pool that must be a given percentage of the post-issue total.`,
+    lesson: "fc08-l01",
+  },
+  // ---------------------------------------------------------------- l02 SAFEs and notes
+  {
+    id: "fc08-post-safe-ownership",
+    name: "Post-money SAFE ownership",
+    tex: String.raw`p_{\text{SAFE}} = \frac{I_{\text{SAFE}}}{V_{\text{cap,post}}}`,
+    vars: [
+      { sym: "p_{\\text{SAFE}}", meaning: "SAFE holder's ownership of the company capitalization just before the priced round's new money", unit: "fraction" },
+      { sym: "I_{\\text{SAFE}}", meaning: "Purchase amount of the SAFE", unit: "USD" },
+      { sym: "V_{\\text{cap,post}}", meaning: "Post-money valuation cap", unit: "USD" },
+    ],
+    explanation: md`The defining feature of the YC post-money SAFE: the holder's percentage is fixed when signed (USD 125k on a USD 1.786 m post-money cap is 7 %). It is then diluted only by the priced round's new money and any pool increase that the SAFE excludes from its capitalization.`,
+    lesson: "fc08-l02",
+  },
+  {
+    id: "fc08-safe-conversion-price",
+    name: "SAFE or note conversion price",
+    tex: String.raw`P_{\text{conv}} = \min\!\left(\frac{V_{\text{cap}}}{N_{\text{cap}}},\; (1-\delta)\,P_{\text{round}}\right)`,
+    vars: [
+      { sym: "P_{\\text{conv}}", meaning: "Price per share at which the instrument converts", unit: "currency/share" },
+      { sym: "V_{\\text{cap}}", meaning: "Valuation cap", unit: "currency" },
+      { sym: "N_{\\text{cap}}", meaning: "Share count the cap is divided by (company capitalization as defined in the instrument)", unit: "shares" },
+      { sym: "\\delta", meaning: "Discount to the round price (e.g. 0.20)", unit: "fraction" },
+      { sym: "P_{\\text{round}}", meaning: "Price per share paid by new investors in the priced round", unit: "currency/share" },
+    ],
+    explanation: md`The holder gets whichever price is lower, so the cap protects against a high round valuation and the discount rewards early risk when the round is priced below the cap. An uncapped, no-discount MFN SAFE converts at $P_{\text{round}}$. What $N_{\text{cap}}$ includes is the pre-money versus post-money difference.`,
+    lesson: "fc08-l02",
+  },
+  {
+    id: "fc08-note-conversion",
+    name: "Convertible note conversion shares",
+    tex: String.raw`n_{\text{note}} = \frac{P_0\,(1 + i\,t)}{P_{\text{conv}}}`,
+    vars: [
+      { sym: "n_{\\text{note}}", meaning: "Shares issued on conversion", unit: "shares" },
+      { sym: "P_0", meaning: "Note principal", unit: "currency" },
+      { sym: "i", meaning: "Simple annual interest rate", unit: "1/yr" },
+      { sym: "t", meaning: "Time from issue to conversion", unit: "yr" },
+      { sym: "P_{\\text{conv}}", meaning: "Conversion price (cap or discount, whichever is lower)", unit: "currency/share" },
+    ],
+    explanation: md`Notes are debt: interest accrues (usually simple, 2 to 8 % a year) and normally converts with the principal. A note also has a maturity date; if no qualifying round happens by then, the holder can in principle demand repayment, which is the main risk a SAFE removes.`,
+    lesson: "fc08-l02",
+  },
+  // ---------------------------------------------------------------- l03 priced rounds
+  {
+    id: "fc08-post-money",
+    name: "Post-money valuation",
+    tex: String.raw`V_{\text{post}} = V_{\text{pre}} + I`,
+    vars: [
+      { sym: "V_{\\text{post}}", meaning: "Post-money valuation", unit: "currency" },
+      { sym: "V_{\\text{pre}}", meaning: "Pre-money valuation", unit: "currency" },
+      { sym: "I", meaning: "New money invested in the round", unit: "currency" },
+    ],
+    explanation: md`The investor's stake is $I/V_{\text{post}}$. "EUR 2 m at EUR 8 m" is ambiguous until you ask "pre or post": 20 % if pre, 25 % if post.`,
+    lesson: "fc08-l03",
+  },
+  {
+    id: "fc08-price-per-share",
+    name: "Price per share in a priced round",
+    tex: String.raw`P_{\text{round}} = \frac{V_{\text{pre}}}{N_{\text{pre,FD}}}`,
+    vars: [
+      { sym: "P_{\\text{round}}", meaning: "Price per share paid by new investors", unit: "currency/share" },
+      { sym: "V_{\\text{pre}}", meaning: "Headline pre-money valuation", unit: "currency" },
+      { sym: "N_{\\text{pre,FD}}", meaning: "Pre-money fully diluted shares, including converting SAFEs/notes and any pool increase the term sheet puts in the pre-money", unit: "shares" },
+    ],
+    explanation: md`The denominator is where negotiation hides. Everything put into $N_{\text{pre,FD}}$ (pool top-up, SAFE conversions) lowers the price and is paid for by existing holders, not by the new investor.`,
+    lesson: "fc08-l03",
+  },
+  {
+    id: "fc08-effective-pre-money",
+    name: "Effective pre-money after the option pool shuffle",
+    tex: String.raw`V_{\text{pre,eff}} = V_{\text{pre}} - \Delta N_{\text{pool}}\,P_{\text{round}}`,
+    vars: [
+      { sym: "V_{\\text{pre,eff}}", meaning: "Value attributed to the shares that existed before the round", unit: "currency" },
+      { sym: "V_{\\text{pre}}", meaning: "Headline pre-money valuation", unit: "currency" },
+      { sym: "\\Delta N_{\\text{pool}}", meaning: "New pool shares created inside the pre-money", unit: "shares" },
+      { sym: "P_{\\text{round}}", meaning: "Round price per share", unit: "currency/share" },
+    ],
+    explanation: md`A pool top-up inside the pre-money is a price cut in disguise. If the pool is created from zero, $V_{\text{pre,eff}} = V_{\text{pre}} - \text{pool}\%\times V_{\text{post}}$: EUR 12 m pre with a 10 % post-money pool on a EUR 15 m post is an effective EUR 10.5 m.`,
+    lesson: "fc08-l03",
+  },
+  // ---------------------------------------------------------------- l04 vesting
+  {
+    id: "fc08-vesting",
+    name: "Vested shares with a cliff (monthly vesting)",
+    tex: String.raw`n_{\text{vested}}(t) = \begin{cases} 0 & t < t_c \\ N_g \cdot \dfrac{\min(t,\,T)}{T} & t \ge t_c \end{cases}`,
+    vars: [
+      { sym: "n_{\\text{vested}}", meaning: "Vested shares at month t", unit: "shares" },
+      { sym: "N_g", meaning: "Shares or options in the grant", unit: "shares" },
+      { sym: "t", meaning: "Months since the vesting start date", unit: "months" },
+      { sym: "t_c", meaning: "Cliff (typically 12 months)", unit: "months" },
+      { sym: "T", meaning: "Total vesting period (typically 48 months)", unit: "months" },
+    ],
+    explanation: md`On a 4-year schedule with a 1-year cliff, nothing vests for 11 months, 25 % vests at month 12 and 1/48 of the grant vests each month after. Founders usually apply this as **reverse vesting**: they own the shares on day one and the company can buy back the unvested part if they leave.`,
+    lesson: "fc08-l04",
+  },
+  {
+    id: "fc08-nl-option-2027",
+    name: "Proposed Dutch start-up option taxable base (from 2027)",
+    tex: String.raw`B_{\text{tax}} = 0.65\,\big(V_{\text{share}} - K\big)\,n`,
+    vars: [
+      { sym: "B_{\\text{tax}}", meaning: "Taxable wage amount under the proposed regime", unit: "EUR" },
+      { sym: "V_{\\text{share}}", meaning: "Share value at the taxable moment (deferred until the shares are sold, under the proposal)", unit: "EUR/share" },
+      { sym: "K", meaning: "Exercise price", unit: "EUR/share" },
+      { sym: "n", meaning: "Number of options", unit: "options" },
+    ],
+    explanation: md`Proposal in the Dutch *Wet fiscale stimulering startups en scale-ups* (consultation April 2026, intended start 1 January 2027): only 65 % of the option gain is taxed, and tax is deferred until the shares are sold, for options granted from 17 April 2025. Treat as **proposed** until you confirm it was enacted and which companies qualify.`,
+    lesson: "fc08-l04",
+  },
+  // ---------------------------------------------------------------- l05 preferences and anti-dilution
+  {
+    id: "fc08-nonparticipating",
+    name: "1x non-participating preference payout (single preferred class)",
+    tex: String.raw`X_{\text{pref}} = \max\!\big(\min(m\,I,\;E),\;p\,E\big)`,
+    vars: [
+      { sym: "X_{\\text{pref}}", meaning: "Payout to the preferred holder", unit: "currency" },
+      { sym: "m", meaning: "Preference multiple (1x, 2x...)", unit: "-" },
+      { sym: "I", meaning: "Amount the preferred holder invested", unit: "currency" },
+      { sym: "E", meaning: "Exit proceeds available to shareholders (after debt and fees)", unit: "currency" },
+      { sym: "p", meaning: "Holder's as-converted ownership", unit: "fraction" },
+    ],
+    explanation: md`The holder takes the preference **or** converts to common, whichever is larger. The indifference point is $E^{*} = mI/p$: below it the preference binds, above it everyone shares pro rata. For EUR 6 m at 25 %, $E^{*} =$ EUR 24 m.`,
+    lesson: "fc08-l05",
+  },
+  {
+    id: "fc08-participating",
+    name: "Participating preference payout (single preferred class)",
+    tex: String.raw`X_{\text{pref}} = \min(m\,I,\;E) + p\,\max(E - m\,I,\;0)`,
+    vars: [
+      { sym: "X_{\\text{pref}}", meaning: "Payout to the preferred holder", unit: "currency" },
+      { sym: "m", meaning: "Preference multiple", unit: "-" },
+      { sym: "I", meaning: "Amount invested", unit: "currency" },
+      { sym: "E", meaning: "Exit proceeds", unit: "currency" },
+      { sym: "p", meaning: "As-converted ownership", unit: "fraction" },
+    ],
+    explanation: md`"Double dip": the investor gets its money back **and** its percentage of the rest. With a cap (e.g. 3x total) the payout is $\max(\min(X_{\text{pref}}, c\,I),\,pE)$, so above the cap the holder converts. Participation costs the common exactly $p\cdot mI$ at every exit above $mI$ until the cap.`,
+    lesson: "fc08-l05",
+  },
+  {
+    id: "fc08-bbwa",
+    name: "Broad-based weighted average anti-dilution",
+    tex: String.raw`CP_2 = CP_1\cdot\frac{A + B}{A + C}, \qquad B = \frac{I_{\text{new}}}{CP_1}`,
+    vars: [
+      { sym: "CP_2", meaning: "Adjusted conversion price of the protected preferred", unit: "currency/share" },
+      { sym: "CP_1", meaning: "Conversion price before the down round (normally the original issue price)", unit: "currency/share" },
+      { sym: "A", meaning: "Fully diluted shares outstanding before the new issue (broad-based)", unit: "shares" },
+      { sym: "B", meaning: "Shares the new money would have bought at CP1", unit: "shares" },
+      { sym: "C", meaning: "Shares actually issued in the new round", unit: "shares" },
+      { sym: "I_{\\text{new}}", meaning: "New money raised in the down round", unit: "currency" },
+    ],
+    explanation: md`The protected holder now converts into $I_{\text{orig}}/CP_2$ shares. Broad-based means $A$ counts all common, options and the pool, which makes the adjustment mild; narrow-based (preferred only) makes it harsher. This is the NVCA market standard.`,
+    lesson: "fc08-l05",
+  },
+  {
+    id: "fc08-full-ratchet",
+    name: "Full ratchet anti-dilution",
+    tex: String.raw`CP_2 = P_{\text{new}}`,
+    vars: [
+      { sym: "CP_2", meaning: "Adjusted conversion price", unit: "currency/share" },
+      { sym: "P_{\\text{new}}", meaning: "Price per share of the down round", unit: "currency/share" },
+    ],
+    explanation: md`The protected investor is repriced to the new low price regardless of how few shares are sold. One share sold at a low price triggers the full adjustment, which is why founders should refuse it.`,
+    lesson: "fc08-l05",
+  },
+  {
+    id: "fc08-conversion-shares",
+    name: "Shares on conversion of preferred",
+    tex: String.raw`n_{\text{conv}} = \frac{I_{\text{orig}}}{CP}`,
+    vars: [
+      { sym: "n_{\\text{conv}}", meaning: "Common shares received on conversion", unit: "shares" },
+      { sym: "I_{\\text{orig}}", meaning: "Original purchase amount of the preferred", unit: "currency" },
+      { sym: "CP", meaning: "Current conversion price", unit: "currency/share" },
+    ],
+    explanation: md`Without an anti-dilution adjustment $CP$ equals the issue price and conversion is 1:1. Anti-dilution works entirely by lowering $CP$, which increases $n_{\text{conv}}$ and dilutes everyone else.`,
+    lesson: "fc08-l05",
+  },
+  {
+    id: "fc08-pro-rata",
+    name: "Pro rata allocation",
+    tex: String.raw`I_{\text{pro rata}} = p\cdot I_{\text{round}}`,
+    vars: [
+      { sym: "I_{\\text{pro rata}}", meaning: "Amount the holder may invest to keep its percentage", unit: "currency" },
+      { sym: "p", meaning: "Holder's fully diluted ownership before the round", unit: "fraction" },
+      { sym: "I_{\\text{round}}", meaning: "Total new money in the round", unit: "currency" },
+    ],
+    explanation: md`Buying $p$ of the new shares keeps the holder at $p$ (ignoring pool top-ups). A 16 % holder in a EUR 15 m round needs EUR 2.4 m. Large pro rata rights for many small holders can crowd out a new lead.`,
+    lesson: "fc08-l05",
+  },
+  // ---------------------------------------------------------------- l07 contracts
+  {
+    id: "fc08-sla-downtime",
+    name: "Allowed downtime under an availability SLA",
+    tex: String.raw`t_{\text{down}} = (1 - A)\,T`,
+    vars: [
+      { sym: "t_{\\text{down}}", meaning: "Maximum downtime before the SLA is breached", unit: "h" },
+      { sym: "A", meaning: "Committed availability (e.g. 0.995)", unit: "fraction" },
+      { sym: "T", meaning: "Measurement period", unit: "h" },
+    ],
+    explanation: md`99.5 % over a 30-day month is 3.6 h; 99.9 % is 43.2 min. Check the measurement period, what counts as downtime (planned maintenance, customer-caused, on-prem infrastructure the customer runs) and the remedy (service credits as the sole remedy or not).`,
+    lesson: "fc08-l07",
+  },
+  {
+    id: "fc08-liability-cap",
+    name: "Liability cap as a multiple of fees",
+    tex: String.raw`L_{\max} = k\cdot F_{12}`,
+    vars: [
+      { sym: "L_{\\max}", meaning: "Aggregate cap on the supplier's liability", unit: "currency" },
+      { sym: "k", meaning: "Multiple (commonly 1x; 2x to 3x as a super-cap for data or confidentiality breaches)", unit: "-" },
+      { sym: "F_{12}", meaning: "Fees paid or payable in the 12 months before the claim", unit: "currency" },
+    ],
+    explanation: md`For a EUR 40k pilot a 1x cap is EUR 40k. Carve-outs (usually uncapped or super-capped): fraud, wilful misconduct, IP infringement indemnity, sometimes confidentiality and data protection. Indirect and consequential losses are normally excluded entirely.`,
+    lesson: "fc08-l07",
+  },
+];
+
+export default formulas;

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { conceptsHref, getLesson, index, isTranslated, lessonNeighbours, trackHome } from "@/lib/content";
+import { conceptsHref, getLesson, index, isTranslated, lessonNeighbours, trackHome, trackOfModule } from "@/lib/content";
 import { back, fwd, lp, t, type Lang } from "@/lib/i18n";
 import { ConceptBadge, LessonMeta } from "@/components/progress";
 import { BlockRenderer } from "@/components/lesson/BlockRenderer";
@@ -8,7 +8,7 @@ import { QuizRunner } from "@/components/quiz/QuizRunner";
 import { CompleteButton, LessonTimer, NotesPanel } from "@/components/lesson/LessonClient";
 import { TutorDrawer } from "@/components/lesson/TutorDrawer";
 import { Markdown } from "@/components/Markdown";
-import { Card, LAYER_META, Pill } from "@/components/ui";
+import { Card, LAYER_HINT_GENERAL, LAYER_META, Pill } from "@/components/ui";
 import { UntranslatedNote } from "./UntranslatedNote";
 
 export function lessonTitle(lessonId: string, lang: Lang) {
@@ -100,7 +100,7 @@ export function LessonView({ moduleId, lessonId, lang }: { moduleId: string; les
         <section key={si} id={`s${si}`} className="mb-10 scroll-mt-20">
           <div className="mb-2 flex items-center gap-2">
             <Pill tone={LAYER_META[s.layer].tone}>{t(lang, LAYER_META[s.layer].label)}</Pill>
-            <span className="text-xs text-muted">{t(lang, LAYER_META[s.layer].hint)}</span>
+            <span className="text-xs text-muted">{trackOfModule(module.id) === "mewre" ? t(lang, LAYER_META[s.layer].hint) : LAYER_HINT_GENERAL[s.layer]}</span>
           </div>
           <h2 className="mb-3 text-2xl font-semibold tracking-tight">{s.title}</h2>
           {s.blocks.map((b, bi) => (

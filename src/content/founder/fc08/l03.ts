@@ -61,18 +61,18 @@ With $d = 20\%$ and $q = 15\%$ the founders end at **65 %**, not the $80\%\times
         {
           kind: "chart",
           chart: "bar",
-          title: "Illustrative: existing holders' ownership after a EUR 2 m seed at EUR 8 m pre",
+          title: "Illustrative: founders' ownership after a EUR 2 m seed at EUR 8 m pre",
           xKey: "case",
           xLabel: "Pool treatment",
-          yLabel: "Existing holders, fully diluted (%)",
-          series: [{ key: "founders", label: "Existing holders %" }],
+          yLabel: "Founders, fully diluted (%)",
+          series: [{ key: "founders", label: "Founders %" }],
           data: [
             { case: "No pool top-up", founders: 76.0 },
             { case: "15 % pool after round", founders: 67.3 },
             { case: "10 % pool in pre-money", founders: 70.0 },
             { case: "15 % pool in pre-money", founders: 65.0 },
           ],
-          caption: "Existing holders: 9.5 m founder shares and 0.5 m unallocated pool shares before the round (the 0.5 m count toward the pool target). Numbers from the worked example below.",
+          caption: "Founders hold 9.5 m shares and 0.5 m unallocated pool shares exist before the round (they count toward the pool target). Numbers from the worked example below.",
         },
         {
           kind: "flow",
@@ -198,7 +198,7 @@ With $d = 20\%$ and $q = 15\%$ the founders end at **65 %**, not the $80\%\times
             type: "short",
             prompt: md`A lead investor offers Afterwave **EUR 2.5 m at EUR 10 m pre-money with a 15 % post-money pool inside the pre-money** (illustrative). Existing fully diluted shares are 10,000,000 with no unallocated pool. Write the counter-proposal email you would send: propose a pool size justified by a short hiring plan, and show the investor's and your effective pre-money and price per share under both pool sizes.`,
             rubric: [
-              "Computes the investor stake (20 %) and, for 15 %, founders 65 %, price EUR 0.65 and effective pre EUR 8.125 m (or equivalent correct figures)",
+              "Computes the investor stake (20 %) and, for 15 %, founders 65 %, price EUR 0.8125 and effective pre EUR 8.125 m (or equivalent correct figures)",
               "Proposes a smaller pool tied to a concrete hiring plan with grant sizes per role that sum to the proposed pool",
               "Recomputes price and effective pre-money for the proposed pool correctly",
               "Keeps the headline valuation and investor stake unchanged, framing the ask as aligning the pool with the plan",
@@ -208,9 +208,9 @@ With $d = 20\%$ and $q = 15\%$ the founders end at **65 %**, not the $80\%\times
 
 Thanks for the term sheet; we are aligned on EUR 2.5 m at EUR 10 m pre and on your 20 %. One point to align: the pool.
 
-At a 15 % post-money pool inside the pre-money, existing holders end at 65 %: post-money shares $10{,}000{,}000/0.65 = 15{,}384{,}615$, price EUR 0.65, effective pre-money $10 - 0.15\times12.5 = $ EUR 8.125 m.
+At a 15 % post-money pool inside the pre-money, existing holders end at 65 %: post-money shares $10{,}000{,}000/0.65 = 15{,}384{,}615$, price $10{,}000{,}000/12{,}307{,}692 = $ EUR 0.8125, effective pre-money $10 - 0.15\times12.5 = $ EUR 8.125 m.
 
-Our 18-month hiring plan (illustrative): senior test-systems engineer 1.0 %, two software engineers 0.5 % each, first enterprise AE 0.75 %, field applications engineer 0.5 %, two later hires 0.25 % each, plus 6 % reserve for the post-seed team and refreshes: about 10 %. At a 10 % pool: existing holders 70 %, post-money shares 14,285,714, price EUR 0.70, effective pre-money $10 - 0.10\times12.5 = $ EUR 8.75 m.
+Our 18-month hiring plan (illustrative): senior test-systems engineer 1.0 %, two software engineers 0.5 % each, first enterprise AE 0.75 %, field applications engineer 0.5 %, two later hires 0.25 % each, plus a 6 % reserve for later seed-stage hires and refreshes: 9.75 %, rounded to 10 %. At a 10 % pool: existing holders 70 %, post-money shares 14,285,714, price $10{,}000{,}000/11{,}428{,}571 = $ EUR 0.875, effective pre-money $10 - 0.10\times12.5 = $ EUR 8.75 m.
 
 We propose 10 %, with a top-up at the Series A sized to that round's plan. Your ownership is unchanged at 20 %. Happy to walk through the plan on a call this week.`,
             explanation: md`The strongest counter keeps the investor's economics intact and changes only what the founders can justify with a plan; the effective pre-money shows both sides what is at stake in euros.`,

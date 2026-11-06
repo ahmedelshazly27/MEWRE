@@ -101,6 +101,13 @@ export function fmtDuration(seconds: number): string {
   return `${h}h ${m.toString().padStart(2, "0")}m`;
 }
 
+/** Section hints for the founder and venture tracks (Track 0 keeps LAYER_META's Kuwait wording). */
+export const LAYER_HINT_GENERAL = {
+  theory: "The mechanism and the why",
+  applied: "Worked examples with realistic numbers",
+  field: "How it is done in practice, and your exercise",
+} as const;
+
 export const LAYER_META = {
   theory: { label: "Theory", tone: "info" as const, hint: "The science and the why" },
   applied: { label: "Applied", tone: "sun" as const, hint: "Worked examples with Kuwait numbers" },
