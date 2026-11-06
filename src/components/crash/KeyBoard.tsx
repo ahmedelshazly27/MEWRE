@@ -62,7 +62,7 @@ export function KeyCard({ k, mode, known, onKnown }: { k: KeyDto; mode: "study" 
   useEffect(() => setOpen(false), [mode]);
   const showAll = mode === "study" || open;
   return (
-    <article id={k.id} className={`scroll-mt-20 rounded-xl border bg-surface p-4 ${known ? "border-ok/50" : "border-border"}`}>
+    <article id={k.id} className={`min-w-0 scroll-mt-20 rounded-xl border bg-surface p-4 [overflow-wrap:anywhere] ${known ? "border-ok/50" : "border-border"}`}>
       <div className="flex flex-wrap items-start gap-2">
         <div className="min-w-0 flex-1">
           <h3 className="text-lg font-semibold leading-snug">{lang === "ar" ? k.termAr : k.term}</h3>
