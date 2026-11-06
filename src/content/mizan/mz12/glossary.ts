@@ -1,0 +1,40 @@
+import { md, type GlossaryTerm } from "../../schema";
+
+const glossary: GlossaryTerm[] = [
+  // l01
+  { id: "mz12-build-vs-buy", en: "Build, partner or resell", ar: "البناء أو الشراكة أو إعادة البيع", definition: md`The three sourcing modes for a product line: own it, integrate or white-label someone else's under a share, or sell someone else's as distributor or agent.`, lesson: "mz12-l01", category: "pm" },
+  { id: "mz12-gross-margin", en: "Gross margin", ar: "هامش الربح الإجمالي", definition: md`$(P - C)/P$: the share of price left after the cost of goods or service. Report it per line, never blended.`, lesson: "mz12-l01", category: "financial" },
+  { id: "mz12-contribution", en: "Contribution per unit", ar: "المساهمة الحدية لكل وحدة", definition: md`Price minus variable cost per unit, $u = P - c$; what each extra MW or unit adds towards fixed costs.`, lesson: "mz12-l01", category: "financial" },
+  { id: "mz12-control-point", en: "Control point", ar: "نقطة السيطرة", definition: md`An asset that decides who captures value in a line: the customer contract, plant data history, decision logic, the brand on the screen, people on site.`, lesson: "mz12-l01", category: "pm" },
+  // l02
+  { id: "mz12-commercial-agency", en: "Commercial agency", ar: "الوكالة التجارية", definition: md`An arrangement in which a local agent promotes a foreign principal's products for a commission; regulated in Kuwait by statute with registration at the Ministry of Commerce and Industry (details to be confirmed with counsel).`, lesson: "mz12-l02", category: "contractual" },
+  { id: "mz12-principal", en: "Principal", ar: "الموكِّل (الشركة المصنّعة أو المورّد الأجنبي)", definition: md`The vendor whose products an agent or distributor sells.`, lesson: "mz12-l02", category: "contractual" },
+  { id: "mz12-distributor", en: "Distributor", ar: "الموزِّع", definition: md`A company that buys from the principal and resells in its own name, taking title, stock, credit and warranty-handling risk for a resale margin.`, lesson: "mz12-l02", category: "contractual" },
+  { id: "mz12-var", en: "Value-added reseller (VAR)", ar: "موزّع ذو قيمة مضافة", definition: md`A distributor that adds integration, commissioning and service around the resold product.`, lesson: "mz12-l02", category: "contractual" },
+  { id: "mz12-exclusivity", en: "Exclusivity", ar: "الحصرية", definition: md`A promise that the principal will not appoint another seller, or sell itself, within a defined territory, product scope and segment.`, lesson: "mz12-l02", category: "contractual" },
+  { id: "mz12-territory", en: "Territory", ar: "النطاق الجغرافي للوكالة", definition: md`The geographic area (and, by extension, segments) covered by a distribution or agency agreement.`, lesson: "mz12-l02", category: "contractual" },
+  { id: "mz12-minimum-purchase", en: "Minimum purchase commitment", ar: "الحد الأدنى الملزم للمشتريات", definition: md`Volume or value a distributor commits to buy per period; the remedy for a shortfall can be loss of exclusivity or a payment (take-or-pay).`, lesson: "mz12-l02", category: "contractual" },
+  { id: "mz12-termination-compensation", en: "Termination compensation", ar: "التعويض عن إنهاء الوكالة", definition: md`Compensation owed to an agent or distributor when the principal ends or does not renew the agreement without cause, where the law or contract provides for it.`, lesson: "mz12-l02", category: "contractual" },
+  { id: "mz12-authorisation-letter", en: "Manufacturer's authorisation letter", ar: "خطاب تفويض من الشركة المصنّعة", definition: md`A letter from the manufacturer naming a bidder as authorised to offer its products in a tender; often a mandatory tender document.`, lesson: "mz12-l02", category: "institutional" },
+  // l03
+  { id: "mz12-due-diligence", en: "Vendor due diligence", ar: "العناية الواجبة تجاه المورّد", definition: md`Structured corporate, technical, commercial and compliance checks on a supplier before contracting.`, lesson: "mz12-l03", category: "pm" },
+  { id: "mz12-incoterms", en: "Incoterms", ar: "شروط التجارة الدولية (إنكوترمز)", definition: md`ICC rules (current edition 2020) defining where cost and risk pass from seller to buyer: FOB, CIF, DAP, DDP and others.`, lesson: "mz12-l03", category: "contractual" },
+  { id: "mz12-landed-cost", en: "Landed cost", ar: "التكلفة الواصلة إلى الموقع", definition: md`FOB price plus freight, insurance, duty, clearance and inland transport: the true cost of goods.`, lesson: "mz12-l03", category: "financial" },
+  { id: "mz12-letter-of-credit", en: "Letter of credit (LC)", ar: "الاعتماد المستندي (خطاب الاعتماد)", definition: md`A bank's undertaking under ICC UCP 600 to pay the seller against documents that comply with the credit.`, lesson: "mz12-l03", category: "financial" },
+  { id: "mz12-confirmed-lc", en: "Confirmed letter of credit", ar: "اعتماد مستندي معزَّز", definition: md`An LC to which a second bank (usually in the seller's country) adds its own payment undertaking.`, lesson: "mz12-l03", category: "financial" },
+  { id: "mz12-warranty-bond", en: "Warranty bond", ar: "ضمان فترة الصيانة (كفالة الضمان)", definition: md`A bank guarantee the buyer can call if the seller fails to honour warranty obligations; often replaces cash retention at acceptance.`, lesson: "mz12-l03", category: "financial" },
+  { id: "mz12-back-to-back-warranty", en: "Back-to-back warranty", ar: "ضمان متقابل مطابق", definition: md`A supplier warranty that matches, in scope, duration and response, the warranty Mizan gives its customer.`, lesson: "mz12-l03", category: "contractual" },
+  { id: "mz12-fat", en: "Factory acceptance test (FAT)", ar: "اختبار القبول في المصنع", definition: md`Tests witnessed at the factory before shipment to confirm the equipment meets the specification.`, lesson: "mz12-l03", category: "technical" },
+  // l04
+  { id: "mz12-white-label", en: "White-labelling", ar: "إعادة التوسيم (العلامة البيضاء)", definition: md`Selling a partner's product under your own brand and interface, with you as first-line support.`, lesson: "mz12-l04", category: "contractual" },
+  { id: "mz12-revenue-share", en: "Revenue share", ar: "تقاسم الإيرادات", definition: md`A split of the customer price between partners; Mizan's net is $(sP - c_l)Q - F_p$.`, lesson: "mz12-l04", category: "financial" },
+  { id: "mz12-change-of-control", en: "Change of control clause", ar: "بند تغيير السيطرة", definition: md`A term giving a party rights (typically to terminate with transition support) if the other is acquired.`, lesson: "mz12-l04", category: "contractual" },
+  { id: "mz12-escrow", en: "Source code or model escrow", ar: "إيداع الشيفرة المصدرية لدى طرف ثالث", definition: md`Deposit of code or models with a third party, released to the customer if the vendor fails, so service can continue.`, lesson: "mz12-l04", category: "contractual" },
+  { id: "mz12-data-residency", en: "Data residency", ar: "توطين البيانات", definition: md`A requirement that data be stored and processed within a given country; can decide whether a foreign-hosted service is allowed for government plants.`, lesson: "mz12-l04", category: "institutional" },
+  // l05
+  { id: "mz12-evidence-ladder", en: "Evidence ladder", ar: "سُلّم الأدلة للتصريحات العلنية", definition: md`Rungs a public claim can stand on (discussed, targeted or in preparation, signed, running, results measured, validated or published); the wording may never exceed the rung.`, lesson: "mz12-l05", category: "pm" },
+  { id: "mz12-open-licence", en: "Open-source and open-data licences", ar: "رخص المصدر المفتوح والبيانات المفتوحة", definition: md`Licences that grant reuse rights: Apache-2.0 or MIT for code; CC BY 4.0 or ODbL for data.`, lesson: "mz12-l05", category: "contractual" },
+  { id: "mz12-doi", en: "Digital Object Identifier (DOI)", ar: "المعرّف الرقمي للكائن", definition: md`A persistent identifier that makes a dataset or software release citable, issued for example through Zenodo.`, lesson: "mz12-l05", category: "technical" },
+];
+
+export default glossary;

@@ -1,0 +1,137 @@
+import { md, type Formula } from "../../schema";
+
+const formulas: Formula[] = [
+  {
+    id: "sh04-fit-score",
+    name: "Partner fit score",
+    tex: String.raw`S = \sum_{i=1}^{n} w_i\, s_i, \qquad \sum_{i=1}^{n} w_i = 1`,
+    vars: [
+      { sym: "S", meaning: "Fit score of a candidate partner", unit: "0 to 5" },
+      { sym: "w_i", meaning: "Weight of criterion i, fixed before scoring", unit: "fraction" },
+      { sym: "s_i", meaning: "Score of the candidate on criterion i", unit: "0 to 5" },
+      { sym: "n", meaning: "Number of criteria", unit: "count" },
+    ],
+    explanation: md`A triage tool for ranking targets. Suggested Suhail criteria: mission alignment, resources available, decision speed, credibility with builders, independence risk (inverted so 5 is low risk). Differences below about 0.2 are noise; read the components to choose the approach.`,
+    lesson: "sh04-l01",
+  },
+  {
+    id: "sh04-net-value",
+    name: "Net value of a partnership to Suhail",
+    tex: String.raw`V_{net} = C + u\,F - D - E`,
+    vars: [
+      { sym: "V_{net}", meaning: "Net value of the deal to Suhail", unit: "USD" },
+      { sym: "C", meaning: "Cash received (net of withholding, excluding VAT)", unit: "USD" },
+      { sym: "F", meaning: "Fair market value of in-kind support (venue, food, travel)", unit: "USD" },
+      { sym: "u", meaning: "Share of the in-kind value that replaces spend Suhail would otherwise make", unit: "fraction" },
+      { sym: "D", meaning: "Cost to deliver the partner's benefits (staff time valued, materials, reporting)", unit: "USD" },
+      { sym: "E", meaning: "Opportunity cost of exclusivity or other restrictions", unit: "USD" },
+    ],
+    explanation: md`In-kind support counts only to the extent it replaces a cost you would really incur ($u<1$ for a venue bigger or pricier than you need). Credits given to participants create value for builders but usually do not reduce Suhail's budget, so treat them separately from $C$ and $F$.`,
+    lesson: "sh04-l02",
+  },
+  {
+    id: "sh04-exclusivity-cost",
+    name: "Exclusivity opportunity cost and minimum exclusive price",
+    tex: String.raw`E = \sum_{k} p_k\,(R_k - D_k), \qquad C_{excl} \ge C_0 + E`,
+    vars: [
+      { sym: "E", meaning: "Expected net revenue forgone from competitors excluded during the exclusivity term", unit: "USD" },
+      { sym: "p_k", meaning: "Probability that excluded competitor k would have partnered", unit: "fraction" },
+      { sym: "R_k", meaning: "Revenue competitor k would have paid over the term", unit: "USD" },
+      { sym: "D_k", meaning: "Cost of delivering competitor k's benefits", unit: "USD" },
+      { sym: "C_0", meaning: "Price the partner would pay without exclusivity", unit: "USD" },
+      { sym: "C_{excl}", meaning: "Minimum price for the exclusive deal", unit: "USD" },
+    ],
+    explanation: md`Exclusivity is a product with a cost. Narrow it (one category, one event, one country, a short term) to shrink $E$, and price it explicitly. Exclusivity also has non-cash costs (builders lose choice of tools, the community looks captured) that the formula does not capture.`,
+    lesson: "sh04-l02",
+  },
+  {
+    id: "sh04-wht-gross-up",
+    name: "Withholding tax gross-up and VAT on a sponsorship invoice",
+    tex: String.raw`G = \frac{N}{1 - t_w}, \qquad I = G\,(1 + t_v)`,
+    vars: [
+      { sym: "N", meaning: "Net amount Suhail must actually receive", unit: "USD" },
+      { sym: "t_w", meaning: "Withholding tax rate the payer deducts, if any applies", unit: "fraction" },
+      { sym: "G", meaning: "Gross fee before VAT", unit: "USD" },
+      { sym: "t_v", meaning: "VAT rate charged on the invoice, if Suhail must charge it", unit: "fraction" },
+      { sym: "I", meaning: "Invoice total", unit: "USD" },
+    ],
+    explanation: md`Agree in the contract whether the price is net or gross of withholding and exclusive of VAT. Whether withholding or VAT applies depends on the country, the paying and receiving entities, where the service is performed and how it is classified: confirm with a tax adviser in that country before quoting.`,
+    lesson: "sh04-l03",
+  },
+  {
+    id: "sh04-stage-probability",
+    name: "Stage-to-paid probability",
+    tex: String.raw`p_s = \prod_{i \ge s} c_i`,
+    vars: [
+      { sym: "p_s", meaning: "Probability that a deal now in stage s ends up paid", unit: "fraction" },
+      { sym: "c_i", meaning: "Conversion from stage i to the next stage", unit: "fraction" },
+    ],
+    explanation: md`Suhail has no history, so every $c_i$ is an assumption: label it, keep it conservative, and replace it with real conversions after about 20 to 30 closed deals. The last factor is payment: a signed sponsorship that is never paid is worth nothing.`,
+    lesson: "sh04-l04",
+  },
+  {
+    id: "sh04-weighted-pipeline",
+    name: "Weighted partnership pipeline",
+    tex: String.raw`P_w = \sum_{j} V_j\, p_{s(j)}`,
+    vars: [
+      { sym: "P_w", meaning: "Expected cash from the pipeline", unit: "USD" },
+      { sym: "V_j", meaning: "Cash value of deal j", unit: "USD" },
+      { sym: "p_{s(j)}", meaning: "Stage-to-paid probability of deal j's stage", unit: "fraction" },
+    ],
+    explanation: md`Count only deals that can be paid before the money is needed (for an event, usually several weeks before the date). Report it with the deal list: with ten deals the outcome is lumpy.`,
+    lesson: "sh04-l04",
+  },
+  {
+    id: "sh04-coverage",
+    name: "Pipeline coverage and required coverage",
+    tex: String.raw`\text{Coverage} = \frac{P}{T - B}, \qquad \text{Required} \approx \frac{1}{W}`,
+    vars: [
+      { sym: "P", meaning: "Unweighted in-period pipeline", unit: "USD" },
+      { sym: "T", meaning: "Target for the period", unit: "USD" },
+      { sym: "B", meaning: "Already received (or signed) in the period", unit: "USD" },
+      { sym: "W", meaning: "Blended win rate of the counted deals", unit: "fraction" },
+    ],
+    explanation: md`If counted deals win at $W$, you need about $1/W$ times the remaining target in open pipeline. Early-stage pipelines need much more than the folk rule of 3x.`,
+    lesson: "sh04-l04",
+  },
+  {
+    id: "sh04-health-score",
+    name: "Partner health score",
+    tex: String.raw`H = \frac{100}{5} \sum_{k} w_k\, h_k, \qquad \sum_k w_k = 1`,
+    vars: [
+      { sym: "H", meaning: "Health of an active partnership", unit: "0 to 100" },
+      { sym: "w_k", meaning: "Weight of health dimension k", unit: "fraction" },
+      { sym: "h_k", meaning: "Score on dimension k (sponsor engagement, delivery, outcomes, responsiveness, renewal signals)", unit: "0 to 5" },
+    ],
+    explanation: md`Review monthly for active partners. A falling score three to six months before renewal is the signal to act. Below about 60, schedule a review with the partner's decision owner.`,
+    lesson: "sh04-l04",
+  },
+  {
+    id: "sh04-hhi",
+    name: "Partner revenue concentration (Herfindahl-Hirschman index)",
+    tex: String.raw`\text{HHI} = \sum_{j} \sigma_j^{2}, \qquad \sigma_j = \frac{R_j}{\sum_m R_m}`,
+    vars: [
+      { sym: "\\text{HHI}", meaning: "Concentration of partner revenue", unit: "0 to 1" },
+      { sym: "\\sigma_j", meaning: "Share of partner j in total partner revenue", unit: "fraction" },
+      { sym: "R_j", meaning: "Revenue from partner j in the period", unit: "USD" },
+    ],
+    explanation: md`HHI equals $1/n$ for $n$ equal partners and 1 for a single partner; $1/\text{HHI}$ is the effective number of partners. Track it with the largest single share: a partner above about a third of revenue can, in practice, set your agenda.`,
+    lesson: "sh04-l05",
+  },
+  {
+    id: "sh04-placement-breakeven",
+    name: "Placement fee and subscription break-even",
+    tex: String.raw`F_p = f\,S_y, \qquad n^{*} = \frac{A}{F_p}`,
+    vars: [
+      { sym: "F_p", meaning: "Fee for one placed hire", unit: "USD" },
+      { sym: "f", meaning: "Placement fee rate", unit: "fraction of salary" },
+      { sym: "S_y", meaning: "First-year base salary of the hire", unit: "USD/yr" },
+      { sym: "A", meaning: "Annual hiring-partner subscription price", unit: "USD/yr" },
+      { sym: "n^{*}", meaning: "Hires per year at which subscription and per-hire fees cost the employer the same", unit: "hires/yr" },
+    ],
+    explanation: md`Employers expecting more than $n^*$ hires prefer the subscription; fewer, the per-hire fee. Charging per placement may require a recruitment-agency licence in some countries; check before offering it.`,
+    lesson: "sh04-l06",
+  },
+];
+
+export default formulas;
