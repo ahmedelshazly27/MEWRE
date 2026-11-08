@@ -37,9 +37,23 @@ A **stage** is a period of work that produces defined deliverables. A **gate** i
 - **Go**: release budget and authority for the next stage.
 - **Go with conditions**: proceed, but named gaps must close by a date (for example, a geotechnical report still pending).
 - **Recycle / hold**: redo or extend the current stage.
-- **Stop**: kill the project and record the lessons.
-
-Each gate answers a different question. A typical sequence for a PV or battery project:
+- **Stop**: kill the project and record the lessons.`,
+      },
+      {
+        kind: "flow",
+        title: "What happens at every gate",
+        steps: [
+          { label: "Stage work", detail: "Studies, surveys, tender documents" },
+          { label: "Deliverables package", detail: "Submitted before the gate" },
+          { label: "Gate review", detail: "Against criteria written in advance" },
+          { label: "Decision", detail: "Go / go with conditions / recycle / stop" },
+          { label: "Next stage funded", detail: "Only on go, or go with conditions" },
+        ],
+        caption: "The same loop repeats at G0 to G7. Notice that the criteria exist before the review, and that recycle and stop are real outcomes, not failures of the process.",
+      },
+      {
+        kind: "md",
+        md: md`Each gate answers a different question. A typical sequence for a PV or battery project:
 
 | Gate | Question | Stage before it typically takes |
 |---|---|---|
@@ -58,14 +72,33 @@ Along the way:
 - **Site, permits and EIA**: land allocation, no-objection letters (oil and gas, defence, aviation, utilities), surveys, flood and unexploded-ordnance checks, and the **environmental impact assessment (EIA)** with the Environment Public Authority.
 - **Design, procurement, construction** overlap. Long-lead items such as HV transformers are ordered early.
 - **Testing and commissioning** end at **COD** (commercial operation date) or **taking over**: the owner takes the plant, delay damages stop, and the **defects notification period (DNP)** starts.
-- At the end of the DNP the **Performance Certificate** is issued; only then are the works accepted.
-
-The cost estimate gets sharper at each gate. A screening number at G1 can be off by half or double; a budget number at G3 should be within about −20 % to +30 %.`,
+- At the end of the DNP the **Performance Certificate** is issued; only then are the works accepted.`,
       },
       {
         kind: "widget",
         widget: "lifecycle",
         caption: "Click each stage. Notice that the stages before construction add up to as long as building the plant, and that design, manufacturing and construction overlap.",
+      },
+      {
+        kind: "md",
+        md: md`The cost estimate gets sharper at each gate. A screening number at G1 can be off by half or double; a budget number at G3 should be within about −20 % to +30 %.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "How wide the cost range is at each gate (AACE estimate classes, approximate)",
+        xKey: "gate",
+        yLabel: "% from the final cost",
+        series: [
+          { key: "high", label: "Upper bound (%)" },
+          { key: "low", label: "Lower bound (%)" },
+        ],
+        data: [
+          { gate: "G1 Class 5", high: 100, low: -50 },
+          { gate: "G2 Class 4", high: 50, low: -30 },
+          { gate: "G3 Class 3", high: 30, low: -20 },
+        ],
+        caption: "The funnel narrows gate by gate, and the upper bound is always further out than the lower one: early estimates miss on the high side more than the low side.",
       },
       {
         kind: "md",
@@ -224,7 +257,28 @@ The **owner's engineer (OE)** is a consultancy that works for MEWRE (it is not n
 
 Do not confuse it with **the Engineer** (a role named in a FIDIC Red or Yellow contract, which issues certificates and must act neutrally when it makes determinations) or with the **lenders' technical advisor** (works for the banks on a project-financed IPP).
 
-What the **MEWRE PM still owns**: the decision and the signature; the contract deadlines (review periods); priorities (design basis, SLDs, grid studies and protection first); MEWRE's own interfaces (grid, control centre, approvals); the budget and the escalation. The OE advises, you decide.`,
+| | Owner's engineer (OE) | The Engineer (FIDIC Red / Yellow) | Lenders' technical advisor |
+|---|---|---|---|
+| Works for | MEWRE | Named in the contract by the Employer | The banks |
+| Neutral? | No, on MEWRE's side | Must act neutrally when making determinations | No, on the lenders' side |
+| Typical job | Reviews, witnesses tests, recommends | Issues certificates, makes determinations | Checks the project is bankable and on track |
+| Where you meet it | EPC and IPP projects | Red and Yellow Book contracts | Project-financed IPPs |
+
+*Three advisers with similar titles: ask first who pays them and whether they must be neutral.*
+
+What the **MEWRE PM still owns**: the decision and the signature; the contract deadlines (review periods); priorities (design basis, SLDs, grid studies and protection first); MEWRE's own interfaces (grid, control centre, approvals); the budget and the escalation. The OE advises, you decide.
+
+| Task | EPC contractor | Owner's engineer | MEWRE PM |
+|---|---|---|---|
+| Prepare the design, keep design responsibility | **Does and owns** | | |
+| Review submittals, draft comments | | **Does** | Checks the wording |
+| Issue the review code (A / B / C) | | Recommends | **Decides and signs** |
+| Meet the contract review period | | Delivers on time | **Accountable** |
+| Witness tests, recalculate raw data | Runs the test | **Does** | Accepts or rejects |
+| Set review priorities (design basis, SLDs, grid, protection) | | Advises | **Decides** |
+| MEWRE interfaces, budget, escalation | | | **Owns** |
+
+*Read the MEWRE PM column: every row where a decision or a deadline sits ends with you, not the OE.*`,
       },
       {
         kind: "callout",
@@ -325,17 +379,7 @@ Where the analogy breaks: a power plant's "road test" result depends heavily on 
 - **Grid compliance tests** at the connection point, witnessed by MEWRE's transmission and control centre: power setpoints, ramps, frequency response, reactive power and voltage control.
 - **Performance tests**: **PR test** (performance ratio over days), **capacity test** (short regression test), battery capacity and efficiency.
 - **Reliability run**: continuous operation without contractor-caused trips.
-- **COD / taking over**.
-
-**The performance ratio** compares what the plant produced with what its size and the sunlight say it should:
-
-$$PR = \dfrac{E / P_0}{H / G_{STC}}$$
-
-$E$ is energy delivered, $P_0$ the plant's rated DC power, $H$ the sunlight received on the modules and $G_{STC} = 1$ kW/m². Example: a 100 MWp plant receives 70 kWh/m² over a 10-day test and delivers 5,600 MWh. Final yield $5{,}600/100 = 56$ kWh/kWp; reference yield 70 h; $PR = 56/70 = 0.80$.
-
-Modules lose about 0.3 to 0.4 % of power per °C of cell temperature, so the PR is **temperature-corrected** to a **reference temperature**. That choice moves the number: corrected to 25 °C, a good plant shows about 0.85 to 0.88; corrected to the annual average cell temperature (around 42 to 47 °C in Kuwait), the same plant shows about 0.80 to 0.83.
-
-**COD typically requires**: all tests passed (or damages paid where the contract allows), MEWRE's grid approval, all **Category A** punch items closed (safety, reliability, performance, legal compliance), provisional O&M manuals and as-builts, spares, training, permits and insurance. **Category B** items (minor, cosmetic, documentation) close during the defects period, often against a retained amount. With the **Taking-Over Certificate** (FIDIC 2017 Clause 10.1), care and risk pass to the owner, delay damages stop and the defects period starts.`,
+- **COD / taking over**.`,
       },
       {
         kind: "flow",
@@ -353,6 +397,66 @@ Modules lose about 0.3 to 0.4 % of power per °C of cell temperature, so the PR 
           { label: "COD / taking over", detail: "Category A punch items closed" },
         ],
         caption: "Each step must pass before the next one starts. MEWRE is directly involved at energisation and the grid tests, and the owner's engineer witnesses the rest.",
+      },
+      {
+        kind: "md",
+        md: md`**The performance ratio** compares what the plant produced with what its size and the sunlight say it should:
+
+$$PR = \dfrac{E / P_0}{H / G_{STC}}$$
+
+$E$ is energy delivered, $P_0$ the plant's rated DC power, $H$ the sunlight received on the modules and $G_{STC} = 1$ kW/m². Example: a 100 MWp plant receives 70 kWh/m² over a 10-day test and delivers 5,600 MWh. Final yield $5{,}600/100 = 56$ kWh/kWp; reference yield 70 h; $PR = 56/70 = 0.80$.`,
+      },
+      {
+        kind: "chart",
+        chart: "stacked-bar",
+        title: "The PR example as one bar (100 MWp plant, 10-day test)",
+        xKey: "test",
+        yLabel: "kWh per kWp",
+        series: [
+          { key: "delivered", label: "Delivered: final yield (56)" },
+          { key: "lost", label: "Lost: heat, dust, cables, inverters (14)" },
+        ],
+        data: [{ test: "Reference yield 70 h", delivered: 56, lost: 14 }],
+        caption: "The full bar is what the sunlight says a perfect plant would give; PR is the delivered share, 56 / 70 = 0.80.",
+      },
+      {
+        kind: "md",
+        md: md`Modules lose about 0.3 to 0.4 % of power per °C of cell temperature, so the PR is **temperature-corrected** to a **reference temperature**. That choice moves the number: corrected to 25 °C, a good plant shows about 0.85 to 0.88; corrected to the annual average cell temperature (around 42 to 47 °C in Kuwait), the same plant shows about 0.80 to 0.83.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "Same good plant, two reference temperatures",
+        xKey: "basis",
+        yLabel: "PR",
+        series: [
+          { key: "low", label: "Low end of typical range" },
+          { key: "high", label: "High end of typical range" },
+        ],
+        data: [
+          { basis: "Corrected to 25 °C", low: 0.85, high: 0.88 },
+          { basis: "Corrected to annual average cell temp. (42 to 47 °C)", low: 0.8, high: 0.83 },
+        ],
+        caption: "Nothing about the plant changed between the two pairs of bars, only the reference temperature. A guarantee and a test on different bases differ by about 0.05.",
+      },
+      {
+        kind: "md",
+        md: md`**COD typically requires**: all tests passed (or damages paid where the contract allows), MEWRE's grid approval, all **Category A** punch items closed (safety, reliability, performance, legal compliance), provisional O&M manuals and as-builts, spares, training, permits and insurance. **Category B** items (minor, cosmetic, documentation) close during the defects period, often against a retained amount. With the **Taking-Over Certificate** (FIDIC 2017 Clause 10.1), care and risk pass to the owner, delay damages stop and the defects period starts.
+
+| | Category A punch item | Category B punch item |
+|---|---|---|
+| What it is | Safety, reliability, performance, legal compliance | Minor, cosmetic, documentation |
+| Example | A faulty protection relay | A missing label, an as-built drawing to update |
+| Must close | **Before COD** | During the defects period |
+| Leverage | COD is withheld | A retained amount is held until it closes |
+
+| At the Taking-Over Certificate | Before | After |
+|---|---|---|
+| Care and risk of the plant | Contractor | Owner (MEWRE or the project company) |
+| Delay damages | Accruing | Stop |
+| Defects notification period | Not started | Starts |
+
+*The first table decides whether you may sign; the second shows what your signature switches over.*`,
       },
       {
         kind: "callout",
@@ -449,25 +553,23 @@ A **WBS** breaks the total scope into deliverables:
 
 A typical Level 2 for a PV + battery EPC: engineering; PV field (split into blocks of about 25 MWac); battery; MV collection; 400 kV substation; plant control and SCADA; infrastructure; testing and commissioning; project management and documentation. Splitting the field by **physical block** keeps progress honest: a block is energised or it is not.
 
-Each work package gets a **WBS dictionary** entry: scope, deliverables, boundary, **exclusions**, acceptance criteria, responsible party, interfaces, budget.
+| Code | Level | WBS element (a deliverable, a noun) |
+|---|---|---|
+| 1 | 1 | 1,000 MWac PV + battery EPC |
+| 1.1 | 2 | Engineering |
+| 1.2 | 2 | PV field |
+| 1.2.01 | 3 | PV Block 01 (about 25 MWac): a work package |
+| 1.2.02 | 3 | PV Block 02 |
+| ... | 3 | ... up to PV Block 40 |
+| 1.3 | 2 | Battery |
+| 1.4 | 2 | MV collection |
+| 1.5 | 2 | 400 kV substation |
+| 1.6 | 2 | Plant control and SCADA |
+| 1.7 | 2 | Infrastructure |
+| 1.8 | 2 | Testing and commissioning |
+| 1.9 | 2 | Project management and documentation |
 
-On a KAPP IPP there are **three WBSs**: MEWRE's (400 kV line and bay, telecom and SCADA, metering, land and permits, test witnessing, PPA oversight), the project company's, and the EPC's. They must reconcile at the interfaces.
-
-**Scope creep** is growth through informal requests; **gold-plating** is extras the team adds unasked. Both bypass change control.
-
-**Interfaces** are points where one party's work depends on another's: physical (a cable termination), functional (protection signals, SCADA points), contractual (who gives what by when), organisational (approvals, outages). They are tracked in an **interface register** (parties, need date, give date, owner, status) and agreed in a signed **interface control document (ICD)**.`,
-      },
-      {
-        kind: "flow",
-        title: "How scope becomes something you can control",
-        steps: [
-          { label: "Scope statement / Employer's Requirements", detail: "What is in, what is out, battery limits" },
-          { label: "WBS Level 2 to 3", detail: "Deliverables, coded" },
-          { label: "Work packages", detail: "About 1 to 4 % of value each" },
-          { label: "WBS dictionary", detail: "Boundary, exclusions, owner, interfaces" },
-          { label: "Schedule, budget, earned value, risks", detail: "All roll up on the same codes" },
-        ],
-        caption: "Every control tool hangs from the WBS. If the contractor's WBS and yours do not reconcile at Level 2 to 3, you cannot check their progress claims.",
+*Read it as a tree: each code's children sum to it (40 blocks of about 25 MWac make the 1,000 MWac field), and no verb appears anywhere.*`,
       },
       {
         kind: "chart",
@@ -488,6 +590,67 @@ On a KAPP IPP there are **three WBSs**: MEWRE's (400 kV line and bay, telecom an
           { element: "Commissioning", bac: 8.4 },
         ],
         caption: "Module and tracker supply are half the money (USD 140 m of 280 m), yet small elements like the substation and commissioning often decide the end date.",
+      },
+      {
+        kind: "md",
+        md: md`Each work package gets a **WBS dictionary** entry: scope, deliverables, boundary, **exclusions**, acceptance criteria, responsible party, interfaces, budget.`,
+      },
+      {
+        kind: "flow",
+        title: "How scope becomes something you can control",
+        steps: [
+          { label: "Scope statement / Employer's Requirements", detail: "What is in, what is out, battery limits" },
+          { label: "WBS Level 2 to 3", detail: "Deliverables, coded" },
+          { label: "Work packages", detail: "About 1 to 4 % of value each" },
+          { label: "WBS dictionary", detail: "Boundary, exclusions, owner, interfaces" },
+          { label: "Schedule, budget, earned value, risks", detail: "All roll up on the same codes" },
+        ],
+        caption: "Every control tool hangs from the WBS. If the contractor's WBS and yours do not reconcile at Level 2 to 3, you cannot check their progress claims.",
+      },
+      {
+        kind: "md",
+        md: md`On a KAPP IPP there are **three WBSs**: MEWRE's (400 kV line and bay, telecom and SCADA, metering, land and permits, test witnessing, PPA oversight), the project company's, and the EPC's. They must reconcile at the interfaces.
+
+**Scope creep** is growth through informal requests; **gold-plating** is extras the team adds unasked. Both bypass change control.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "Scope creep adds up: informal requests against the change allowance (KWD m, Track 0 example)",
+        xKey: "request",
+        xLabel: "Informal requests (small ones first)",
+        yLabel: "KWD m",
+        series: [
+          { key: "total", label: "Cumulative cost of requests" },
+          { key: "allowance", label: "Change allowance (0.80)" },
+        ],
+        data: [
+          { request: "1", total: 0.048, allowance: 0.8 },
+          { request: "2", total: 0.096, allowance: 0.8 },
+          { request: "3", total: 0.144, allowance: 0.8 },
+          { request: "4", total: 0.192, allowance: 0.8 },
+          { request: "5", total: 0.24, allowance: 0.8 },
+          { request: "6", total: 0.288, allowance: 0.8 },
+          { request: "7", total: 0.336, allowance: 0.8 },
+          { request: "8", total: 0.384, allowance: 0.8 },
+          { request: "9", total: 0.432, allowance: 0.8 },
+          { request: "10 (feeder bay)", total: 0.782, allowance: 0.8 },
+          { request: "11 (weather station)", total: 1.002, allowance: 0.8 },
+        ],
+        caption: "Nine requests of KWD 48 k each barely move the line; two larger ones push the total to about KWD 1.0 m, 125 % of the allowance, and none was assessed for time.",
+      },
+      {
+        kind: "md",
+        md: md`**Interfaces** are points where one party's work depends on another's: physical (a cable termination), functional (protection signals, SCADA points), contractual (who gives what by when), organisational (approvals, outages). They are tracked in an **interface register** (parties, need date, give date, owner, status) and agreed in a signed **interface control document (ICD)**.
+
+| Type | Example on a KAPP IPP | Gives | Needs it to |
+|---|---|---|---|
+| Physical | 400 kV line and bay ready at the gantry | MEWRE | EPC: terminate and energise |
+| Functional | SCADA points list, protection signals | MEWRE control centre | EPC: configure the plant controller and relays |
+| Contractual | Notice of grid compliance tests | EPC | MEWRE: book witnesses and dispatch windows |
+| Organisational | Outage window for the tie-in | MEWRE | EPC: connect to the live network |
+
+*Illustrative rows. In the real register each row also carries a need date, a give date, one owner and a status; MEWRE is the giver in most of them.*`,
       },
       {
         kind: "callout",
@@ -568,6 +731,23 @@ You are cooking dinner for guests arriving at 8 pm.
 The meat chain is the longest: 2 h 25 min. It sets the earliest time dinner can be ready. That is the **critical path**. If the marinade starts 15 minutes late, dinner is 15 minutes late. The salad has lots of spare time (**float**): it can start late without anyone noticing. But if you also start the rice late, at some point the rice becomes the longest chain and it is now critical.`,
       },
       {
+        kind: "chart",
+        chart: "stacked-bar",
+        title: "Dinner at 8 pm: each chain's work and its spare time (minutes)",
+        xKey: "chain",
+        yLabel: "minutes",
+        series: [
+          { key: "work", label: "Work" },
+          { key: "float", label: "Float (spare time)" },
+        ],
+        data: [
+          { chain: "Meat: marinate + grill", work: 145, float: 0 },
+          { chain: "Rice", work: 40, float: 105 },
+          { chain: "Salad", work: 10, float: 135 },
+        ],
+        caption: "Every bar is 145 minutes tall because every chain must be ready by the same moment. The meat has no spare time: it is the critical path.",
+      },
+      {
         kind: "md",
         md: md`### What is actually happening
 
@@ -579,11 +759,30 @@ A schedule is a network:
 - **Total float** = latest start − earliest start: how far an activity can slip without moving completion.
 - **Critical path**: the longest chain through the network; its activities have zero (or the least) float. **Near-critical**: little float, e.g. under 10 working days.
 
-Float belongs to the **path**, not the activity: use it upstream and everything downstream on that path loses it. If an activity slips by more than its float, completion moves by the difference.
-
-**Baseline** and **updates**: the approved schedule is frozen as the **baseline**. Each month the contractor submits an **update** with actual dates and remaining durations as of the **data date** (left of it is actual, right of it is forecast). Changing the baseline happens only through change control.
-
-**P6 words you will hear** (Primavera P6 is the standard tool): WBS, activity codes (filter by block, discipline, "MEWRE responsibility"), calendars (weekends, holidays, Ramadan, summer hours), baseline, data date, **longest path**, and the **XER** file (P6's native export: always ask for it, not just a PDF).`,
+Float belongs to the **path**, not the activity: use it upstream and everything downstream on that path loses it. If an activity slips by more than its float, completion moves by the difference.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "An activity with 10 weeks of total float: how its slip moves completion",
+        xKey: "slip",
+        xLabel: "Slip of the activity (weeks)",
+        yLabel: "Completion delay (weeks)",
+        series: [{ key: "delay", label: "Completion delay (weeks)" }],
+        data: [
+          { slip: "0", delay: 0 },
+          { slip: "2", delay: 0 },
+          { slip: "4", delay: 0 },
+          { slip: "6", delay: 0 },
+          { slip: "8", delay: 0 },
+          { slip: "10", delay: 0 },
+          { slip: "12", delay: 2 },
+          { slip: "14", delay: 4 },
+          { slip: "16", delay: 6 },
+          { slip: "18", delay: 8 },
+          { slip: "20", delay: 10 },
+        ],
+        caption: "Flat while the float absorbs the slip, then one week of delay for every extra week of slip: the hockey stick behind 'completion delay = slip − float'.",
       },
       {
         kind: "widget",
@@ -592,11 +791,31 @@ Float belongs to the **path**, not the activity: use it upstream and everything 
       },
       {
         kind: "md",
+        md: md`**Baseline** and **updates**: the approved schedule is frozen as the **baseline**. Each month the contractor submits an **update** with actual dates and remaining durations as of the **data date** (left of it is actual, right of it is forecast). Changing the baseline happens only through change control.
+
+**P6 words you will hear** (Primavera P6 is the standard tool): WBS, activity codes (filter by block, discipline, "MEWRE responsibility"), calendars (weekends, holidays, Ramadan, summer hours), baseline, data date, **longest path**, and the **XER** file (P6's native export: always ask for it, not just a PDF).`,
+      },
+      {
+        kind: "md",
         md: md`### What to look for in a contractor's schedule
 
-Under FIDIC 2017 (Sub-Clause 8.3) the contractor submits its initial programme within 28 days of the Commencement Date notice, and the Engineer has 21 days to say where it does not comply. Use that window: an accepted programme becomes the yardstick for every future extension-of-time claim.
-
-1. **Trace the critical path backwards from completion.** Does it make physical sense (procurement, installation, commissioning)?
+Under FIDIC 2017 (Sub-Clause 8.3) the contractor submits its initial programme within 28 days of the Commencement Date notice, and the Engineer has 21 days to say where it does not comply. Use that window: an accepted programme becomes the yardstick for every future extension-of-time claim.`,
+      },
+      {
+        kind: "flow",
+        title: "FIDIC 2017 Sub-Clause 8.3: getting the programme accepted",
+        steps: [
+          { label: "Commencement Date notice", detail: "Day 0" },
+          { label: "Contractor submits initial programme", detail: "Within 28 days" },
+          { label: "Engineer reviews", detail: "Within 21 days, states where it does not comply" },
+          { label: "Contractor revises if needed", detail: "Resubmits" },
+          { label: "Accepted programme", detail: "The yardstick for every extension-of-time claim" },
+        ],
+        caption: "The 21-day review is MEWRE's one cheap chance to fix missing MEWRE activities and bad logic; after acceptance, the same flaws become the contractor's evidence.",
+      },
+      {
+        kind: "md",
+        md: md`1. **Trace the critical path backwards from completion.** Does it make physical sense (procurement, installation, commissioning)?
 2. **Long-lead chains complete**: submittal, Employer review, manufacture, FAT, shipping, customs, delivery. Transformers and HV switchgear take 12 to 18+ months.
 3. **MEWRE's activities present** with realistic durations: approvals, design reviews, grid works, outages, energisation permits. This is where extension-of-time claims come from.
 4. **Calendars** with summer restrictions, Ramadan, weekends and holidays.
@@ -694,9 +913,16 @@ Earned value uses three cumulative numbers at the status date, all against the *
 
 - **Planned value (PV)**: budget of the work the baseline says should be done by now.
 - **Earned value (EV)**: budget of the work **actually done**. Not money spent: budget earned.
-- **Actual cost (AC)**: what that work actually cost. For MEWRE's own budget, AC is typically what has been certified plus accrued.
-
-Then:
+- **Actual cost (AC)**: what that work actually cost. For MEWRE's own budget, AC is typically what has been certified plus accrued.`,
+      },
+      {
+        kind: "diagram",
+        diagram: "evm-scurve",
+        caption: "Three cumulative curves at the status date: the gap from EV down to PV is the schedule variance, the gap from EV up to AC is the cost variance. Here EV is below both: late and over cost, like the painter.",
+      },
+      {
+        kind: "md",
+        md: md`Then:
 
 | Measure | Formula | Bad when |
 |---|---|---|
@@ -712,17 +938,61 @@ Then:
 - CV = 36 − 45 = −9; SV = 36 − 40 = −4.
 - CPI = 36/45 = **0.80**: each dinar buys 80 fils of work. SPI = 36/40 = **0.90**: 10 % behind.
 - EAC = 100/0.80 = **125** if performance continues; 45 + (100 − 36) = **109** if the rest goes exactly to budget. Report the range, say which you believe.
-- TCPI = 64/55 = **1.16**: finishing on budget needs 1.16 efficiency from now on, against 0.80 so far. Not credible.
-
-EV is only as good as the **rules of credit** (how progress is measured), agreed before work starts: count units (piles, modules installed **and** inspected) and use fixed milestone weights for supply. Watch for **progress inflation**: credit at purchase order, installed-but-untested work, subjective percentages.
-
-Two cautions: cost-based SPI drifts back to 1.0 as a late project finishes (EV = PV = BAC at the end), so in the last third use the time-based **SPI(t)** from earned schedule. And cumulative CPI rarely improves much once a project is about 20 % complete.`,
+- TCPI = 64/55 = **1.16**: finishing on budget needs 1.16 efficiency from now on, against 0.80 so far. Not credible.`,
       },
       {
         kind: "widget",
         widget: "evm",
         props: { bac: 100, pv: 40, ev: 36, ac: 45 },
         caption: "The example above: CPI 0.80, SPI 0.90. Notice how far apart the EAC methods are, and that TCPI 1.16 makes 'we will finish on budget' an extraordinary claim.",
+      },
+      {
+        kind: "md",
+        md: md`EV is only as good as the **rules of credit** (how progress is measured), agreed before work starts: count units (piles, modules installed **and** inspected) and use fixed milestone weights for supply. Watch for **progress inflation**: credit at purchase order, installed-but-untested work, subjective percentages.`,
+      },
+      {
+        kind: "flow",
+        title: "Rules of credit for module supply (Track 0 example): weight, then cumulative earned",
+        steps: [
+          { label: "Approval", detail: "5 %, cumulative 5 %" },
+          { label: "Purchase order", detail: "5 %, cumulative 10 %" },
+          { label: "FAT passed", detail: "15 %, cumulative 25 %" },
+          { label: "Shipped", detail: "15 %, cumulative 40 %" },
+          { label: "Delivered and inspected on site", detail: "60 %, cumulative 100 %" },
+        ],
+        caption: "Most of the credit waits until the modules are on site and inspected, so paperwork alone can never earn more than 10 %.",
+      },
+      {
+        kind: "md",
+        md: md`Two cautions: cost-based SPI drifts back to 1.0 as a late project finishes (EV = PV = BAC at the end), so in the last third use the time-based **SPI(t)** from earned schedule. And cumulative CPI rarely improves much once a project is about 20 % complete.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "A 10-month plan that takes 13 months: two ways to measure schedule (illustrative)",
+        xKey: "month",
+        xLabel: "Month",
+        yLabel: "Index (1.0 = on plan)",
+        series: [
+          { key: "spi", label: "SPI = EV / PV (cost-based)" },
+          { key: "spit", label: "SPI(t) from earned schedule" },
+        ],
+        data: [
+          { month: "1", spi: 0.68, spit: 0.77 },
+          { month: "2", spi: 0.58, spit: 0.77 },
+          { month: "3", spi: 0.5, spit: 0.77 },
+          { month: "4", spi: 0.46, spit: 0.77 },
+          { month: "5", spi: 0.47, spit: 0.77 },
+          { month: "6", spi: 0.55, spit: 0.77 },
+          { month: "7", spi: 0.67, spit: 0.77 },
+          { month: "8", spi: 0.8, spit: 0.77 },
+          { month: "9", spi: 0.89, spit: 0.77 },
+          { month: "10", spi: 0.94, spit: 0.77 },
+          { month: "11", spi: 0.98, spit: 0.77 },
+          { month: "12", spi: 0.99, spit: 0.77 },
+          { month: "13", spi: 1, spit: 0.77 },
+        ],
+        caption: "Cost-based SPI climbs back to 1.00 at month 13 although the project is 3 months late; SPI(t) stays at 0.77 (10 planned months / 13 actual) the whole way.",
       },
       {
         kind: "callout",
@@ -808,33 +1078,25 @@ You are driving to the airport for an international flight.
 
 **Risk register.** Write each risk as **cause, event, effect**: "Because the 400 kV route crosses an oil-sector corridor, right-of-way approval may take longer than planned, delaying energisation and exposing MEWRE to PPA compensation." Each risk has one **owner**, a **response** (avoid, transfer, mitigate, accept, escalate) with actions and dates, and a **score**.
 
-**Probability × impact.** Score each from 1 to 5 and multiply (1 to 25). Typical bands: 15 to 25 red (response plan, steering committee sees it), 8 to 12 amber (owner manages), 1 to 6 green (monitor). An HSE impact of 5 is red regardless of probability. The score is a **ranking**, not a quantity: never add scores up. For money, use **expected monetary value (EMV)** = probability × cost impact (40 % × USD 6 m = USD 2.4 m).
-
-**Monte Carlo, in one paragraph.** Give each key duration or cost a range (minimum, most likely, maximum), add risk events with their probability, and let the computer run the schedule thousands of times. You get a distribution: **P50** is the date or cost you hit half the time, **P80** the one you hit 80 % of the time. Owners usually set contingency at **P80 minus the base estimate**; contractors price nearer P50. Parallel paths make the single-line date optimistic: two independent paths each at P50 by week 40 have only a 25 % chance of both being done by then.
-
-**Change control.** Every change goes through: identify, log, assess (cost, time, risk, quality, HSE), decide (by the delegated authority), instruct formally (never orally), implement and re-baseline, close. Under FIDIC 2017, Clause 13 covers variations (by instruction or by request for proposal) and Clause 20 claims (notice within 28 days, fully detailed claim within 84 days). An **RFI** clarifies; it never changes scope.
-
-**Interfaces.** Keep an **interface register** with give and need dates and owners; MEWRE's own "gives" (line ready, points list, outage window) are milestones in the schedule.
-
-**The monthly report to seniors**: 2 to 4 pages, **decisions first**.
-
-1. Overall status and **decisions needed**.
-2. Key dates: baseline against forecast (energisation, grid connection, COD).
-3. Schedule: critical path and float, SPI(t), S-curves of physical progress.
-4. Cost: budget, EAC range, contingency drawdown.
-5. HSE and quality.
-6. Top 5 risks and issues; MEWRE-side interface status.
-7. Approvals and stakeholders.
-
-Each status is **RAG with criteria defined in advance**, a trend arrow and a path to green. Amber is a request for attention; red is a request for a decision. (The contractor's own monthly report under FIDIC 2017 Sub-Clause 4.20 is due within 7 days after each period and is a different, much longer document.)
-
-**QA/QC**: the inspection and test plan (ITP) sets **hold points** (work stops until you release it) and witness points; non-conformance reports (NCRs) record work that misses the spec.
-**HSE**: permit to work and heat-stress control in 45 to 50 °C, and remember PV strings are live whenever the sun shines.`,
+**Probability × impact.** Score each from 1 to 5 and multiply (1 to 25). Typical bands: 15 to 25 red (response plan, steering committee sees it), 8 to 12 amber (owner manages), 1 to 6 green (monitor). An HSE impact of 5 is red regardless of probability. The score is a **ranking**, not a quantity: never add scores up. For money, use **expected monetary value (EMV)** = probability × cost impact (40 % × USD 6 m = USD 2.4 m).`,
       },
       {
         kind: "widget",
         widget: "risk-matrix",
         caption: "Move 'Grid connection works late' around: a MEWRE-side risk that is likely and severe lands in the red corner, and the widget suggests the response.",
+      },
+      {
+        kind: "md",
+        md: md`**Monte Carlo, in one paragraph.** Give each key duration or cost a range (minimum, most likely, maximum), add risk events with their probability, and let the computer run the schedule thousands of times. You get a distribution: **P50** is the date or cost you hit half the time, **P80** the one you hit 80 % of the time. Owners usually set contingency at **P80 minus the base estimate**; contractors price nearer P50. Parallel paths make the single-line date optimistic: two independent paths each at P50 by week 40 have only a 25 % chance of both being done by then.`,
+      },
+      {
+        kind: "widget",
+        widget: "monte-carlo",
+        caption: "In schedule mode, compare the dashed 'det.' line (the single-line programme date) with P50 and P80, and read 'P(≤ deterministic)': the programme date is usually hit less than half the time. 'P80 contingency' is the time an owner holds.",
+      },
+      {
+        kind: "md",
+        md: md`**Change control.** Every change goes through: identify, log, assess (cost, time, risk, quality, HSE), decide (by the delegated authority), instruct formally (never orally), implement and re-baseline, close. Under FIDIC 2017, Clause 13 covers variations (by instruction or by request for proposal) and Clause 20 claims (notice within 28 days, fully detailed claim within 84 days). An **RFI** clarifies; it never changes scope.`,
       },
       {
         kind: "flow",
@@ -848,6 +1110,39 @@ Each status is **RAG with criteria defined in advance**, a trend arrow and a pat
           { label: "Re-baseline and close", detail: "Scope, schedule, budget updated" },
         ],
         caption: "A change that skips 'assess' has no time impact on record, which is exactly what a later delay claim will exploit.",
+      },
+      {
+        kind: "md",
+        md: md`**Interfaces.** Keep an **interface register** with give and need dates and owners; MEWRE's own "gives" (line ready, points list, outage window) are milestones in the schedule.
+
+**The monthly report to seniors**: 2 to 4 pages, **decisions first**.
+
+1. Overall status and **decisions needed**.
+2. Key dates: baseline against forecast (energisation, grid connection, COD).
+3. Schedule: critical path and float, SPI(t), S-curves of physical progress.
+4. Cost: budget, EAC range, contingency drawdown.
+5. HSE and quality.
+6. Top 5 risks and issues; MEWRE-side interface status.
+7. Approvals and stakeholders.
+
+Each status is **RAG with criteria defined in advance**, a trend arrow and a path to green. Amber is a request for attention; red is a request for a decision. (The contractor's own monthly report under FIDIC 2017 Sub-Clause 4.20 is due within 7 days after each period and is a different, much longer document.)`,
+      },
+      {
+        kind: "md",
+        md: md`| Area | RAG | Trend | Criterion (agreed in advance) | Path to green / decision |
+|---|---|---|---|---|
+| Schedule (energisation) | Amber | Worse | 1 to 4 weeks late = amber | 3 weeks late; recovery plan from EPC due this month |
+| Cost | Green | Stable | CPI ≥ 0.97 = green | CPI 0.98, EAC within budget |
+| HSE | Green | Stable | No lost-time incident this month | Heat-stress controls audited |
+| Grid connection (MEWRE side) | Red | Worse | Key date at risk = red | **Decision needed**: approve extra crews for the 400 kV line, or accept a later COD |
+| Approvals | Amber | Better | Any approval past its planned date = amber | Audit Bureau query answered, awaiting reply |
+
+*An illustrative page-1 status table: every colour has a written criterion, a trend and a next step, and the one red row ends in a decision for seniors.*`,
+      },
+      {
+        kind: "md",
+        md: md`**QA/QC**: the inspection and test plan (ITP) sets **hold points** (work stops until you release it) and witness points; non-conformance reports (NCRs) record work that misses the spec.
+**HSE**: permit to work and heat-stress control in 45 to 50 °C, and remember PV strings are live whenever the sun shines.`,
       },
       {
         kind: "callout",
