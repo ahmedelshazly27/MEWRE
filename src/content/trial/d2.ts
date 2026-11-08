@@ -43,9 +43,23 @@ Slide the angle below and watch the red area: energy handed back to the grid eve
         kind: "md",
         md: md`### Why the grid cares: voltage
 
-Here is the part most engineers miss. On transmission lines, **moving reactive power is what moves voltage**. Pull a lot of Q across a long line and the voltage at the far end sags; supply Q close to where it is used and the voltage holds.
-
-So the grid needs reactive power **sources near the loads**: generators, capacitor banks, SVCs and STATCOMs, and today **inverters of PV and BESS plants**. That is why the grid code makes a PV plant supply or absorb Q at its connection point, and why inverters are rated in **MVA larger than the plant's MW**: they need headroom to deliver Q even at full sunshine.`,
+Here is the part most engineers miss. On transmission lines, **moving reactive power is what moves voltage**. Pull a lot of Q across a long line and the voltage at the far end sags; supply Q close to where it is used and the voltage holds.`,
+      },
+      {
+        kind: "flow",
+        title: "Why pulling reactive power across a line sags the voltage",
+        steps: [
+          { label: "Summer afternoon: AC motors absorb Q", detail: "Lagging current, millions of compressors" },
+          { label: "Q is pulled from distant generators", detail: "Extra current flows along long transmission lines" },
+          { label: "The line's reactance drops voltage", detail: "Lines are mostly reactive, so Q flow sets the drop" },
+          { label: "Voltage sags at the load end", detail: "Motors draw even more current; equipment is stressed" },
+          { label: "Fix: supply Q near the loads", detail: "Capacitor banks, SVCs, STATCOMs, PV and BESS inverters" },
+        ],
+        caption: "Follow the chain from the motors to the sagging voltage, then see where the fix breaks it: a local Q source means the reactive current no longer has to cross the line.",
+      },
+      {
+        kind: "md",
+        md: md`So the grid needs reactive power **sources near the loads**: generators, capacitor banks, SVCs and STATCOMs, and today **inverters of PV and BESS plants**. That is why the grid code makes a PV plant supply or absorb Q at its connection point, and why inverters are rated in **MVA larger than the plant's MW**: they need headroom to deliver Q even at full sunshine.`,
       },
       { kind: "widget", widget: "power-triangle", props: { p: 800, pf: 0.8 }, caption: "The same idea as a triangle: P along the bottom, Q up the side, S the long side. Correct the power factor and S, the current, shrinks while P stays the same." },
       {
@@ -109,7 +123,7 @@ So the grid needs reactive power **sources near the loads**: generators, capacit
     id: "x-three-phase",
     day: 2,
     title: "Three-phase: three waves taking turns",
-    minutes: 12,
+    minutes: 13,
     module: "m01",
     hook: "Every voltage on a MEWRE single-line diagram (400 kV, 132 kV, 33 kV) is a three-phase voltage, and every current check on a drawing uses a √3. Once three-phase clicks, you can sanity-check a cable or a breaker rating in your head in a design review.",
     blocks: [
@@ -129,21 +143,64 @@ Where the analogy breaks: a three-cylinder engine still has a little ripple in i
 
 The generator has three coils (windings) spaced evenly around it. As the magnet spins past them, each coil makes its own sine wave, 120° apart. The three outputs are the **phases**, often called L1, L2, L3 (or A, B, C, or red, yellow, blue). Three things fall out of this:
 
-- **Constant power.** Add up the power in the three phases at any instant and the dips cancel. Big generators and motors feel a steady push instead of a 100 Hz shake.
-- **Three wires instead of six.** Three separate single-phase circuits would need six wires (out and back for each). In three-phase, when the three currents are equal (**balanced**), they add up to zero at every instant, so the "return" currents cancel and no return wire is needed. That is why a transmission line has three conductors (plus earth wires on top for lightning, which carry no load current).
+- **Constant power.** Add up the power in the three phases at any instant and the dips cancel. Big generators and motors feel a steady push instead of a 100 Hz shake.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "Power delivered over one 20 ms cycle: single-phase against balanced three-phase (same average, unity power factor)",
+        xKey: "t",
+        xLabel: "time (ms)",
+        yLabel: "power (× the average)",
+        series: [
+          { key: "single", label: "Single-phase: pulses 0 to 2" },
+          { key: "a", label: "Three-phase, phase A share" },
+          { key: "b", label: "Phase B share" },
+          { key: "c", label: "Phase C share" },
+          { key: "total", label: "Three-phase total: flat at 1" },
+        ],
+        data: [
+          { t: 0, single: 0, a: 0, b: 0.5, c: 0.5, total: 1 }, { t: 1, single: 0.19, a: 0.06, b: 0.64, c: 0.3, total: 1 }, { t: 2, single: 0.69, a: 0.23, b: 0.66, c: 0.11, total: 1 },
+          { t: 3, single: 1.31, a: 0.44, b: 0.56, c: 0.01, total: 1 }, { t: 4, single: 1.81, a: 0.6, b: 0.37, c: 0.03, total: 1 }, { t: 5, single: 2, a: 0.67, b: 0.17, c: 0.17, total: 1 },
+          { t: 6, single: 1.81, a: 0.6, b: 0.03, c: 0.37, total: 1 }, { t: 7, single: 1.31, a: 0.44, b: 0.01, c: 0.56, total: 1 }, { t: 8, single: 0.69, a: 0.23, b: 0.11, c: 0.66, total: 1 },
+          { t: 9, single: 0.19, a: 0.06, b: 0.3, c: 0.64, total: 1 }, { t: 10, single: 0, a: 0, b: 0.5, c: 0.5, total: 1 }, { t: 11, single: 0.19, a: 0.06, b: 0.64, c: 0.3, total: 1 },
+          { t: 12, single: 0.69, a: 0.23, b: 0.66, c: 0.11, total: 1 }, { t: 13, single: 1.31, a: 0.44, b: 0.56, c: 0.01, total: 1 }, { t: 14, single: 1.81, a: 0.6, b: 0.37, c: 0.03, total: 1 },
+          { t: 15, single: 2, a: 0.67, b: 0.17, c: 0.17, total: 1 }, { t: 16, single: 1.81, a: 0.6, b: 0.03, c: 0.37, total: 1 }, { t: 17, single: 1.31, a: 0.44, b: 0.01, c: 0.56, total: 1 },
+          { t: 18, single: 0.69, a: 0.23, b: 0.11, c: 0.66, total: 1 }, { t: 19, single: 0.19, a: 0.06, b: 0.3, c: 0.64, total: 1 }, { t: 20, single: 0, a: 0, b: 0.5, c: 0.5, total: 1 },
+        ],
+        caption: "The single-phase supply hits zero twice per cycle (a 100 Hz pulse). The three phase shares rise and fall in turn, and whenever one dips the other two make up for it, so their total is a flat line: the engine with no shake.",
+      },
+      {
+        kind: "md",
+        md: md`- **Three wires instead of six.** Three separate single-phase circuits would need six wires (out and back for each). In three-phase, when the three currents are equal (**balanced**), they add up to zero at every instant, so the "return" currents cancel and no return wire is needed. That is why a transmission line has three conductors (plus earth wires on top for lightning, which carry no load current).
 - **A rotating magnetic field.** Feed three coils spaced around a motor with three currents peaking in turn, and the magnetic field turns by itself, at a speed set by the frequency. Every large motor (including the compressors in Kuwait's air-conditioning load) works this way: it starts and runs without the extra starting tricks a single-phase motor needs.
 
-**Line vs phase voltage.** In the common **star** connection each coil sits between one line and a shared middle point (the **neutral**). The voltage from a line to neutral is the **phase voltage**; the voltage between two lines is the **line voltage**, and it is $\sqrt3 \approx 1.73$ times bigger (the two waves are 120° apart, so their difference is bigger than either one, but not double). A generic example: European low voltage is **400/230 V** (230 V line to neutral, $230 \times 1.73 \approx 400$ V between lines). Track 0 describes Kuwaiti homes as fed at **415/240 V**. **Equipment is always labelled with the line voltage**: "33 kV" means 33 kV between phases and 19.05 kV from each phase to earth.
-
-**Power.** The one formula you will use on the job:
+**Line vs phase voltage.** In the common **star** connection each coil sits between one line and a shared middle point (the **neutral**). The voltage from a line to neutral is the **phase voltage**; the voltage between two lines is the **line voltage**, and it is $\sqrt3 \approx 1.73$ times bigger (the two waves are 120° apart, so their difference is bigger than either one, but not double). A generic example: European low voltage is **400/230 V** (230 V line to neutral, $230 \times 1.73 \approx 400$ V between lines). Track 0 describes Kuwaiti homes as fed at **415/240 V**. **Equipment is always labelled with the line voltage**: "33 kV" means 33 kV between phases and 19.05 kV from each phase to earth.`,
+      },
+      { kind: "widget", widget: "three-phase", props: { unbalance: 0 }, caption: "Balanced: the three waves add to zero at every instant (no return wire needed) and line voltage is 1.73 × phase voltage. Then drag 'Phase A amplitude drop' to 20 %: the sum stops being zero, and that leftover is the unbalance (described below) that a neutral wire must carry." },
+      {
+        kind: "md",
+        md: md`**Power.** The one formula you will use on the job:
 
 $P = \sqrt3 \times V_\text{line} \times I \times \text{PF}$
 
-Example from Track 0: a 33 kV feeder carrying 30 MW at PF 0.95 carries $30{,}000{,}000 / (1.73 \times 33{,}000 \times 0.95) \approx 553$ A.
-
-**Unbalance.** If the three phases are loaded unequally (many single-phase AC units on one phase, a blown fuse, a fault), the currents no longer cancel. The leftover flows in the neutral, and the unequal voltages heat motors and generators and can make inverters reduce output or trip.`,
+Example from Track 0: a 33 kV feeder carrying 30 MW at PF 0.95 carries $30{,}000{,}000 / (1.73 \times 33{,}000 \times 0.95) \approx 553$ A.`,
       },
-      { kind: "widget", widget: "three-phase", props: { unbalance: 0 }, caption: "Balanced: the three waves add to zero at every instant and line voltage is 1.73 × phase voltage. Now drag the phase A drop to 20 % and watch the sum stop being zero: that leftover is what a neutral wire must carry." },
+      {
+        kind: "flow",
+        title: "The feeder current check in four steps (30 MW at 33 kV, PF 0.95)",
+        steps: [
+          { label: "Start with real power", detail: "30 MW" },
+          { label: "Divide by the power factor", detail: "30 / 0.95 ≈ 31.6 MVA: what the cable really carries" },
+          { label: "Divide by √3 × line voltage", detail: "1.73 × 33 kV ≈ 57.2" },
+          { label: "Current in each line", detail: "31.6 / 57.2 ≈ 0.553 kA ≈ 553 A" },
+        ],
+        caption: "The same chain works for any feeder: MW, then MVA, then divide by 1.73 × kV to get kA. Use √3 once, with the line voltage.",
+      },
+      {
+        kind: "md",
+        md: md`**Unbalance.** If the three phases are loaded unequally (many single-phase AC units on one phase, a blown fuse, a fault), the currents no longer cancel. The leftover flows in the neutral, and the unequal voltages heat motors and generators and can make inverters reduce output or trip.`,
+      },
       {
         kind: "callout",
         tone: "tip",
@@ -206,7 +263,7 @@ Example from Track 0: a 33 kV feeder carrying 30 MW at PF 0.95 carries $30{,}000
     id: "x-transformers-voltage-levels",
     day: 2,
     title: "Transformers and voltage levels: why 400 kV",
-    minutes: 13,
+    minutes: 14,
     module: "m01",
     hook: "A Shagaya-scale PV plant's output goes through two sets of transformers before it reaches the 400 kV grid, and the main transformer is one of the longest-lead, most expensive items on the project. Knowing why voltages step up, and how a transformer is rated for a 50 °C summer, lets you follow the grid-connection and procurement discussions from day one.",
     blocks: [
@@ -237,11 +294,42 @@ A transformer is two **coils (windings)** wound on the same iron **core**. AC in
 | 132 kV | about 4,800 A | about 9 × |
 | 400 kV | about 1,590 A | 1 × |
 
-The price is bigger towers, wider clearances and costlier substations, worth it for bulk power over long distances.
-
-**Ratings.** A transformer is rated in **MVA**, not MW, because heat comes from current whatever the power factor (the beer-and-foam glass from the reactive-power explainer). The datasheet shows the cooling class: **ONAN** (oil and air move naturally) and **ONAF** (fans blow on the radiators). "ONAN/ONAF 200/250 MVA" means 200 MVA with fans off, 250 MVA with fans running.
+The price is bigger towers, wider clearances and costlier substations, worth it for bulk power over long distances.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "Line losses for 1,100 MW on the same wire, relative to 400 kV",
+        xKey: "kv",
+        xLabel: "transmission voltage",
+        yLabel: "relative I²R loss (400 kV = 1)",
+        series: [{ key: "loss", label: "relative loss" }],
+        data: [
+          { kv: "33 kV (19,200 A)", loss: 147 },
+          { kv: "132 kV (4,800 A)", loss: 9.2 },
+          { kv: "400 kV (1,590 A)", loss: 1 },
+        ],
+        caption: "The 400 kV bar is barely visible next to 33 kV: about 12 times less current means about 147 times less heat in the wire. That is the whole case for stepping up before leaving site.",
+      },
+      {
+        kind: "md",
+        md: md`**Ratings.** A transformer is rated in **MVA**, not MW, because heat comes from current whatever the power factor (the beer-and-foam glass from the reactive-power explainer). The datasheet shows the cooling class: **ONAN** (oil and air move naturally) and **ONAF** (fans blow on the radiators). "ONAN/ONAF 200/250 MVA" means 200 MVA with fans off, 250 MVA with fans running.
 
 **Heat is the real limit.** The IEC standard rating assumes air at most 40 °C (30 °C hottest-month average, 20 °C yearly average). Kuwait goes past all three, with summer maxima of 50 °C and more. A standard unit run at nameplate in Kuwait runs hotter and its insulation ages faster. The fix is to specify the site ambient in the purchase specification, or to derate a standard unit (a rough planning rule is about 1 % of rating per °C above the design ambient, always confirmed by the manufacturer's thermal calculation).`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "Usable share of a standard (40 °C) transformer's rating as the site gets hotter, rough planning rule",
+        xKey: "amb",
+        xLabel: "maximum site ambient (°C)",
+        yLabel: "% of nameplate MVA",
+        series: [{ key: "pct", label: "usable rating (about 1 % less per °C above 40 °C)" }],
+        data: [
+          { amb: 40, pct: 100 }, { amb: 42, pct: 98 }, { amb: 44, pct: 96 }, { amb: 46, pct: 94 },
+          { amb: 48, pct: 92 }, { amb: 50, pct: 90 }, { amb: 52, pct: 88 }, { amb: 54, pct: 86 },
+        ],
+        caption: "A rough rule, not a design value: by a 50 °C summer a standard unit has lost about a tenth of its nameplate. Either specify the site ambient up front or plan to run the unit about 10 % below nameplate; the manufacturer's thermal calculation has the final word.",
       },
       {
         kind: "md",
@@ -318,7 +406,7 @@ Follow the energy on the plant drawing below:
     id: "x-frequency-inertia",
     day: 2,
     title: "Frequency and inertia: the grid's heartbeat",
-    minutes: 14,
+    minutes: 15,
     module: "m01",
     hook: "Kuwait's summer system runs with thin reserves, and a single 300 MW unit trip in June 2024 led to rolling cuts. As gigawatts of PV arrive, a 1,100 MW solar plant becomes one of the biggest things that can trip, so frequency response and fault ride-through clauses in every PPA you touch are system-security issues, not details.",
     blocks: [
@@ -344,9 +432,24 @@ Every large conventional generator spins in step with the grid: at 50 Hz a typic
   1. **Inertia** (first seconds): automatic, physics only, slows the fall.
   2. **Primary control** (seconds): each generator's **governor** opens up in proportion to the frequency drop. This proportional rule is called **droop**: with 4 % droop, a 0.2 Hz fall asks a unit for 10 % more of its rating, if it has room (**headroom**).
   3. **Secondary control** (tens of seconds to minutes): the control centre moves set-points to bring frequency back to 50 Hz.
-  4. **Under-frequency load shedding** (last resort): if frequency keeps falling (to about 49.0 to 48.8 Hz in typical settings), relays disconnect blocks of customers to save the rest.
-
-**Why PV changes the picture.** PV panels and batteries connect through **inverters**: electronics with no spinning mass, so they add **no physical inertia**. When PV displaces gas units at midday, the same trip makes frequency fall faster. But inverters can react very fast: a battery can inject power in well under a second (**fast frequency response**), faster than any steam governor. Grid codes now ask for exactly that, and some new inverters are **grid-forming**, designed to imitate inertia.`,
+  4. **Under-frequency load shedding** (last resort): if frequency keeps falling (to about 49.0 to 48.8 Hz in typical settings), relays disconnect blocks of customers to save the rest.`,
+      },
+      {
+        kind: "flow",
+        title: "The defences after a big generator trips, in time order",
+        steps: [
+          { label: "t = 0: unit trips", detail: "Demand now exceeds generation; frequency starts to fall at the RoCoF (Hz/s)" },
+          { label: "0 to a few seconds: inertia", detail: "Spinning rotors give up stored energy automatically and slow the fall. A battery's fast frequency response can add power in under 0.5 to 1 s" },
+          { label: "Seconds (about 5 to 10 s for steam): primary control", detail: "Governors respond by droop, if they have headroom; the fall stops at the lowest point (nadir)" },
+          { label: "Tens of seconds to minutes: secondary control", detail: "The control centre moves set-points and brings frequency back to 50 Hz" },
+          { label: "Minutes onward: reserves restored", detail: "Other units are started or re-dispatched so headroom is ready for the next trip" },
+        ],
+        caption: "Each defence buys time for the next, slower one. If steps 2 and 3 cannot stop the fall, under-frequency load shedding (about 49.0 to 48.8 Hz in typical settings) is the last resort.",
+      },
+      { kind: "widget", widget: "droop", props: { droop: 4 }, caption: "Step 3 up close. With 4 % droop a unit gives 10 % of its rating for each 0.2 Hz beyond its deadband, until it runs out of headroom. A PV plant at full output has no headroom unless it is deliberately held back." },
+      {
+        kind: "md",
+        md: md`**Why PV changes the picture.** PV panels and batteries connect through **inverters**: electronics with no spinning mass, so they add **no physical inertia**. When PV displaces gas units at midday, the same trip makes frequency fall faster. But inverters can react very fast: a battery can inject power in well under a second (**fast frequency response**), faster than any steam governor. Grid codes now ask for exactly that, and some new inverters are **grid-forming**, designed to imitate inertia.`,
       },
       {
         kind: "chart",
@@ -375,7 +478,6 @@ Every large conventional generator spins in step with the grid: at 50 Hz a typic
         ],
         caption: "Illustrative shapes, not Kuwait data. Less inertia: a steeper first fall (about 0.39 vs 0.50 Hz/s in Track 0's example) and a lower lowest point. Fast battery response catches the fall early.",
       },
-      { kind: "widget", widget: "droop", props: { droop: 4 }, caption: "With 4 % droop a unit gives 10 % of its rating for each 0.2 Hz beyond its deadband, until it runs out of headroom. A PV plant at full output has no headroom unless it is deliberately held back." },
       {
         kind: "callout",
         tone: "tip",
@@ -443,7 +545,7 @@ Every large conventional generator spins in step with the grid: at 50 Hz a typic
     id: "x-fault-level-protection",
     day: 2,
     title: "Fault levels and protection: when things short-circuit",
-    minutes: 13,
+    minutes: 14,
     module: "m01",
     hook: "Every switchgear panel and breaker on a PV plant drawing carries a kA rating, and MEWRE Transmission must declare the fault level at the connection point. If the numbers do not match, the equipment can fail violently on the first real fault, so this is one of the interface checks a PM must chase.",
     blocks: [
@@ -461,10 +563,25 @@ A **short circuit (fault)** is the burst pipe: a conductor touches another condu
 
 - **Fault current** is limited only by the impedance (Day 1) of the generators, transformers and lines between the sources and the fault. Close to big generators or strong substations, it can be tens of thousands of amperes.
 - **Fault level** is quoted two ways: as a current in **kA** at a bus, or as **MVA** ($\sqrt3 \times$ voltage $\times$ fault current). For example 15,000 MVA at 400 kV is about 21.7 kA.
-- **Breakers** must be able to **interrupt** that current (their **breaking rating**, for example 31.5 kA at 33 kV) and the busbars must withstand it for a set time (for example 1 or 3 s). If the real fault level exceeds the rating, the breaker may fail to clear the fault, or explode.
-- **Protection relays** watch currents and voltages through **CTs and VTs** (current and voltage transformers that make small copies of the signals). When they see a fault in their zone, they send a trip signal to the right breaker. Protection must be **selective** (trip only the faulty part) and **fast**: 400 kV faults are typically cleared in about 80 to 120 ms. A **protection coordination study** sets each relay so that the nearest breaker trips first and backups wait.
-
-**Why fault level is also good news.** A high fault level means a **strong** grid: the voltage hardly moves when a big plant ramps up or down. Synchronous generators push 4 to 7 times their rated current into a fault. Inverters are electronics that limit themselves to about **1.0 to 1.5 times** rated current, so PV and batteries add little fault current. At a remote desert substation with lots of PV, the grid becomes **weak**: inverter controls, which track the grid voltage, can start interacting and oscillating, and relays may not see faults clearly. The screening number is the **short-circuit ratio (SCR)**: fault level at the connection point divided by the plant's MW. Below about 3 means detailed electromagnetic (EMT) studies; below about 2 is very weak.`,
+- **Breakers** must be able to **interrupt** that current (their **breaking rating**, for example 31.5 kA at 33 kV) and the busbars must withstand it for a set time (for example 1 or 3 s). If the real fault level exceeds the rating, the breaker may fail to clear the fault, or explode.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "Track 0 example at a plant's 33 kV bus: normal current, switchgear rating and fault current",
+        xKey: "what",
+        yLabel: "current (kA)",
+        series: [{ key: "ka", label: "kA" }],
+        data: [
+          { what: "Full load of the 300 MVA transformer", ka: 5.25 },
+          { what: "Switchgear breaking rating", ka: 31.5 },
+          { what: "Prospective fault current", ka: 32.8 },
+        ],
+        caption: "A fault pushes about six times the transformer's full-load current, and here it tops the 31.5 kA the breakers can interrupt, before inverters or future grid growth are even added. That gap is what a PM must close before ordering switchgear.",
+      },
+      {
+        kind: "md",
+        md: md`- **Protection relays** watch currents and voltages through **CTs and VTs** (current and voltage transformers that make small copies of the signals). When they see a fault in their zone, they send a trip signal to the right breaker. Protection must be **selective** (trip only the faulty part) and **fast**: 400 kV faults are typically cleared in about 80 to 120 ms. A **protection coordination study** sets each relay so that the nearest breaker trips first and backups wait.`,
       },
       {
         kind: "flow",
@@ -477,6 +594,26 @@ A **short circuit (fault)** is the burst pipe: a conductor touches another condu
           { label: "Fault cleared", detail: "About 80 to 120 ms at 400 kV; the rest of the grid stays on" },
         ],
         caption: "Every link must work: a relay that never sees the fault, or a breaker rated below the fault level, and the fault spreads.",
+      },
+      {
+        kind: "md",
+        md: md`**Why fault level is also good news.** A high fault level means a **strong** grid: the voltage hardly moves when a big plant ramps up or down. Synchronous generators push 4 to 7 times their rated current into a fault. Inverters are electronics that limit themselves to about **1.0 to 1.5 times** rated current, so PV and batteries add little fault current. At a remote desert substation with lots of PV, the grid becomes **weak**: inverter controls, which track the grid voltage, can start interacting and oscillating, and relays may not see faults clearly. The screening number is the **short-circuit ratio (SCR)**: fault level at the connection point divided by the plant's MW. Below about 3 means detailed electromagnetic (EMT) studies; below about 2 is very weak.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "How much current each kind of plant pushes into a fault (multiples of its rated current)",
+        xKey: "src",
+        yLabel: "× rated current",
+        series: [
+          { key: "low", label: "low end" },
+          { key: "high", label: "high end" },
+        ],
+        data: [
+          { src: "Synchronous generator", low: 4, high: 7 },
+          { src: "Inverter (PV, battery)", low: 1, high: 1.5 },
+        ],
+        caption: "Swap a gas unit for the same MW of inverters and the fault current it supplies drops to well under half (1 to 1.5 times rated instead of 4 to 7). Less fault current means a weaker grid: voltage moves more and relays see smaller faults.",
       },
       { kind: "widget", widget: "substation-sld", caption: "Find the breakers, CTs and relays on the 400/132/33 kV substation. For each breaker, ask: what fault current must it interrupt, and which relay tells it to open?" },
       {
@@ -544,7 +681,7 @@ A **short circuit (fault)** is the burst pipe: a conductor touches another condu
     id: "x-load-curve-kuwait",
     day: 2,
     title: "Kuwait's load curve: air conditioning runs the grid",
-    minutes: 12,
+    minutes: 13,
     module: "m01",
     hook: "Kuwait's power cuts in 2024 and 2025 happened on hot summer afternoons, and the ministry's case for solar and batteries rests on the shape of that daily load curve. When someone in a meeting says \"solar covers the peak\", you need to know which peak, at what hour.",
     blocks: [
@@ -562,11 +699,30 @@ Kuwait's grid is that kitchen, and air conditioning is the dinner rush: a tall s
 
 - **The daily summer curve.** Demand climbs through the morning as buildings heat up, peaks in the hottest hours of the afternoon, and **stays high into the evening** as people come home and walls release the day's heat.
 - **The year.** Summer (July and August) sets the peak. Winter demand is much lower (Track 0 uses roughly half the summer peak as an **illustrative** value; no official figure yet).
-- **Load factor** = average demand ÷ peak demand. Kuwait's is low, around **0.5 to 0.55** on Track 0's illustrative annual energy, versus about 0.6 to 0.7 in temperate systems. Low load factor means a lot of expensive capacity that rarely runs.
-- **PV fits the afternoon.** Solar output is high from late morning to mid-afternoon, right in the stress window. That is Kuwait's biggest solar advantage.
-- **The catch: net load and the duck curve.** The thermal fleet must cover **net load** = demand minus solar. As PV grows, the afternoon is covered but the **net peak moves to the evening**, after sunset, with a steep ramp up as solar fades. Plotted, net load looks like a duck: a sagging midday belly (deepest in winter, when demand is low) and a rising evening neck.
-
-Track 0's illustrative summer day with 3 GW of tracking PV:
+- **Load factor** = average demand ÷ peak demand. Kuwait's is low, around **0.5 to 0.55** on Track 0's illustrative annual energy, versus about 0.6 to 0.7 in temperate systems. Low load factor means a lot of expensive capacity that rarely runs.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "Load factor as a picture: the peak the grid is built for against the average it actually serves (illustrative)",
+        xKey: "what",
+        yLabel: "GW",
+        series: [{ key: "gw", label: "GW" }],
+        data: [
+          { what: "Peak demand (built for)", gw: 17.5 },
+          { what: "Average demand over the year", gw: 9.59 },
+        ],
+        caption: "Illustrative: 17.5 GW peak and Track 0's illustrative 84 TWh a year (84,000,000 MWh ÷ 8,760 h ≈ 9.6 GW average). The short bar is about 55 % of the tall one: that ratio is the load factor, and the gap is capacity that waits for summer.",
+      },
+      {
+        kind: "md",
+        md: md`- **PV fits the afternoon.** Solar output is high from late morning to mid-afternoon, right in the stress window. That is Kuwait's biggest solar advantage.
+- **The catch: net load and the duck curve.** The thermal fleet must cover **net load** = demand minus solar. As PV grows, the afternoon is covered but the **net peak moves to the evening**, after sunset, with a steep ramp up as solar fades. Plotted, net load looks like a duck: a sagging midday belly (deepest in winter, when demand is low) and a rising evening neck.`,
+      },
+      { kind: "widget", widget: "load-curve", props: { season: "summer", pvMW: 3000 }, caption: "Summer with 3 GW of PV: the net-load peak slides to the evening. Switch to winter and raise PV to see the midday belly, when thermal units are pushed toward their minimum output." },
+      {
+        kind: "md",
+        md: md`Track 0's illustrative summer day with 3 GW of tracking PV:
 
 | Hour | Load (GW) | PV (GW) | Net load (GW) |
 |---|---|---|---|
@@ -577,7 +733,25 @@ Track 0's illustrative summer day with 3 GW of tracking PV:
 
 The gross peak was 17.5 GW at 15:00; the net peak is 16.55 GW at 18:00. Three GW of PV cut the peak the thermal fleet must meet by only 0.95 GW (about 32 %), and each extra GW of PV helps the peak less. That is why **batteries** (charge from midday PV, discharge into the evening) and other evening supply matter.`,
       },
-      { kind: "widget", widget: "load-curve", props: { season: "summer", pvMW: 3000 }, caption: "Summer with 3 GW of PV: the net-load peak slides to the evening. Switch to winter and raise PV to see the midday belly, when thermal units are pushed toward their minimum output." },
+      {
+        kind: "chart",
+        chart: "stacked-bar",
+        title: "Track 0's illustrative summer day: who covers the load at four hours (GW)",
+        xKey: "hour",
+        xLabel: "hour",
+        yLabel: "GW",
+        series: [
+          { key: "net", label: "Net load (thermal fleet)" },
+          { key: "pv", label: "PV (3 GW installed)" },
+        ],
+        data: [
+          { hour: "12:00", net: 13.95, pv: 2.85 },
+          { hour: "15:00", net: 15.25, pv: 2.25 },
+          { hour: "18:00", net: 16.55, pv: 0.45 },
+          { hour: "20:00", net: 16.3, pv: 0 },
+        ],
+        caption: "Each bar is the total load; the PV slice shrinks from 2.85 GW at noon to nothing at 20:00. The tallest thermal part is at 18:00, not at the 15:00 gross peak: that is the net peak moving into the evening.",
+      },
       {
         kind: "callout",
         tone: "kuwait",

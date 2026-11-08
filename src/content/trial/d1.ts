@@ -25,6 +25,7 @@ Think of a closed loop of water pipe, completely full of water, with a pump in i
 
 More pressure, more flow. A narrower pipe, less flow for the same pressure. That is the whole idea; the rest is units.`,
       },
+      { kind: "widget", widget: "water-analogy", props: { mode: "resistor", v: 240, r: 24 }, caption: "Raise the pump pressure and the flow speeds up; narrow the pipe and it slows. Watch the heat number: double the flow and the heat goes up four times." },
       {
         kind: "md",
         md: md`### What is actually happening
@@ -40,17 +41,7 @@ The three are tied together by **Ohm's law**:
 
 $$V = I \times R$$
 
-Kuwaiti homes are supplied at **240 V** (the 415/240 V low-voltage system). A heater element of 24 Ω plugged into a 240 V outlet draws $I = V/R = 240/24 = 10$ A. A 48 Ω element on the same outlet draws only 5 A.
-
-**Where the energy goes: heat.** When current is pushed through a resistance, the electrical energy turns into heat. The heat rate is $I^2 R$: double the current and the heat goes up **four** times. That is how a kettle works, and also why cables get warm, why cables have a maximum current rating, and why the grid sends power at very high voltage (for the same power, higher voltage means less current, so far less heat lost in the lines; more on this tomorrow).
-
-Where the water picture breaks:
-
-- **Cut a water pipe and water pours out. Cut a wire and the current simply stops.** Electricity needs a complete loop, out and back. No closed circuit, no current.
-- **Current is not used up.** The same amps that go into a heater come out of it. What gets used is energy: the charge leaves at lower "pressure" than it arrived.
-- **The electrons crawl** (well under a millimetre per second in a typical wire), but the push travels through the full pipe almost instantly, which is why a lamp lights the moment you flip the switch.
-
-**In one sentence:** voltage is the push between two points, current is the flow that push causes, and resistance decides how much flow you get for a given push.`,
+Kuwaiti homes are supplied at **240 V** (the 415/240 V low-voltage system). A heater element of 24 Ω plugged into a 240 V outlet draws $I = V/R = 240/24 = 10$ A. A 48 Ω element on the same outlet draws only 5 A.`,
       },
       {
         kind: "chart",
@@ -73,6 +64,34 @@ Where the water picture breaks:
           { v: 240, r24: 10, r48: 5 },
         ],
         caption: "Both lines are straight: current rises in proportion to voltage. The lower resistance (wider pipe) gets twice the current at every voltage; at 240 V that is 10 A against 5 A.",
+      },
+      {
+        kind: "md",
+        md: md`**Where the energy goes: heat.** When current is pushed through a resistance, the electrical energy turns into heat. The heat rate is $I^2 R$: double the current and the heat goes up **four** times. That is how a kettle works, and also why cables get warm, why cables have a maximum current rating, and why the grid sends power at very high voltage (for the same power, higher voltage means less current, so far less heat lost in the lines; more on this tomorrow).`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "Heat produced in the 24 Ω element as the current rises (I²R)",
+        xKey: "i",
+        xLabel: "current (A)",
+        yLabel: "heat (W)",
+        series: [{ key: "w", label: "heat I²R (W)" }],
+        data: [
+          { i: 0, w: 0 }, { i: 1, w: 24 }, { i: 2, w: 96 }, { i: 3, w: 216 }, { i: 4, w: 384 }, { i: 5, w: 600 },
+          { i: 6, w: 864 }, { i: 7, w: 1176 }, { i: 8, w: 1536 }, { i: 9, w: 1944 }, { i: 10, w: 2400 },
+        ],
+        caption: "Not a straight line but a curve that bends upward: 5 A gives 600 W, 10 A gives 2,400 W. Double the current, four times the heat; this curve is why cables have current limits.",
+      },
+      {
+        kind: "md",
+        md: md`Where the water picture breaks:
+
+- **Cut a water pipe and water pours out. Cut a wire and the current simply stops.** Electricity needs a complete loop, out and back. No closed circuit, no current.
+- **Current is not used up.** The same amps that go into a heater come out of it. What gets used is energy: the charge leaves at lower "pressure" than it arrived.
+- **The electrons crawl** (well under a millimetre per second in a typical wire), but the push travels through the full pipe almost instantly, which is why a lamp lights the moment you flip the switch.
+
+**In one sentence:** voltage is the push between two points, current is the flow that push causes, and resistance decides how much flow you get for a given push.`,
       },
       {
         kind: "md",
@@ -153,7 +172,7 @@ Click any line or box: the panel shows what that level does and how much current
     id: "x-power-energy",
     day: 1,
     title: "Power and energy: MW is speed, MWh is distance",
-    minutes: 12,
+    minutes: 13,
     module: "m01",
     hook: "Plants are sized in MW, PPAs pay per MWh, and peak demand in Kuwait is quoted in GW. Mixing the two is the single most common mistake in briefings, and the first thing a senior will catch.",
     blocks: [
@@ -178,9 +197,28 @@ $$P = V \times I$$
 
 The 24 Ω heater from the last explainer, at 240 V and 10 A, uses $240 \times 10 = 2{,}400$ W $= 2.4$ kW. (Check: $I^2R = 10^2 \times 24 = 2{,}400$ W, the same answer.) For AC this simple product holds for heaters; motors and other "reactive" loads need one extra factor, which comes on Day 2.
 
-**Energy = power × time.** Run that heater for 3 hours and it uses $2.4 \times 3 = 7.2$ kWh. That is what the electricity meter counts.
-
-The prefixes go up in steps of 1,000:
+**Energy = power × time.** Run that heater for 3 hours and it uses $2.4 \times 3 = 7.2$ kWh. That is what the electricity meter counts.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "The 2.4 kW heater over 3 hours: power stays flat, energy piles up",
+        xKey: "h",
+        xLabel: "hours switched on",
+        yLabel: "kW (power) or kWh (energy so far)",
+        series: [
+          { key: "p", label: "Power, kW (the speed)" },
+          { key: "e", label: "Energy so far, kWh (the distance)" },
+        ],
+        data: [
+          { h: 0, p: 2.4, e: 0 }, { h: 0.5, p: 2.4, e: 1.2 }, { h: 1, p: 2.4, e: 2.4 }, { h: 1.5, p: 2.4, e: 3.6 },
+          { h: 2, p: 2.4, e: 4.8 }, { h: 2.5, p: 2.4, e: 6 }, { h: 3, p: 2.4, e: 7.2 },
+        ],
+        caption: "Power is a level (2.4 kW the whole time, like a steady 100 km/h); energy is a running total that climbs to 7.2 kWh after 3 hours, like the odometer.",
+      },
+      {
+        kind: "md",
+        md: md`The prefixes go up in steps of 1,000:
 
 | Power (rate) | Energy (amount) |
 |---|---|
@@ -190,9 +228,31 @@ The prefixes go up in steps of 1,000:
 
 **A 1 MW plant running flat out for 1 hour delivers 1 MWh.** For 10 hours, 10 MWh.
 
-**Capacity vs energy.** A plant's **capacity** (MW) is the most it can deliver at once: it decides the size of cables, transformers and the grid connection. Its **energy** (MWh per year) is what it actually produces: it decides revenue and how much fuel it saves. A PV plant has a big capacity but makes nothing at night, so its yearly energy is much less than capacity × 8,760 hours.
-
-**Capacity factor** links the two:
+**Capacity vs energy.** A plant's **capacity** (MW) is the most it can deliver at once: it decides the size of cables, transformers and the grid connection. Its **energy** (MWh per year) is what it actually produces: it decides revenue and how much fuel it saves. A PV plant has a big capacity but makes nothing at night, so its yearly energy is much less than capacity × 8,760 hours.`,
+      },
+      {
+        kind: "chart",
+        chart: "area",
+        title: "A 100 MW PV plant on an illustrative clear day: capacity is the box, energy is the hill",
+        xKey: "h",
+        xLabel: "hour of the day",
+        yLabel: "MW",
+        series: [
+          { key: "cap", label: "Capacity, 100 MW all day" },
+          { key: "pv", label: "Actual PV output (MW)" },
+        ],
+        data: [
+          { h: 0, cap: 100, pv: 0 }, { h: 1, cap: 100, pv: 0 }, { h: 2, cap: 100, pv: 0 }, { h: 3, cap: 100, pv: 0 }, { h: 4, cap: 100, pv: 0 },
+          { h: 5, cap: 100, pv: 0 }, { h: 6, cap: 100, pv: 0 }, { h: 7, cap: 100, pv: 26 }, { h: 8, cap: 100, pv: 50 }, { h: 9, cap: 100, pv: 71 },
+          { h: 10, cap: 100, pv: 87 }, { h: 11, cap: 100, pv: 97 }, { h: 12, cap: 100, pv: 100 }, { h: 13, cap: 100, pv: 97 }, { h: 14, cap: 100, pv: 87 },
+          { h: 15, cap: 100, pv: 71 }, { h: 16, cap: 100, pv: 50 }, { h: 17, cap: 100, pv: 26 }, { h: 18, cap: 100, pv: 0 }, { h: 19, cap: 100, pv: 0 },
+          { h: 20, cap: 100, pv: 0 }, { h: 21, cap: 100, pv: 0 }, { h: 22, cap: 100, pv: 0 }, { h: 23, cap: 100, pv: 0 }, { h: 24, cap: 100, pv: 0 },
+        ],
+        caption: "Illustrative shape, not measured data. The full box is 100 MW × 24 h = 2,400 MWh; the hill under the PV curve holds only about 760 MWh (about 32 % that day). The ratio of hill to box is the capacity factor.",
+      },
+      {
+        kind: "md",
+        md: md`**Capacity factor** links the two:
 
 $$\text{CF} = \frac{\text{energy actually delivered}}{\text{capacity} \times \text{hours}}$$
 
@@ -274,7 +334,7 @@ A 1,100 MW PV plant at a 26 % capacity factor produces $1{,}100 \times 8{,}760 \
     id: "x-dc-vs-ac",
     day: 1,
     title: "DC and AC: one-way flow and back-and-forth",
-    minutes: 12,
+    minutes: 13,
     module: "m01",
     hook: "Solar modules and batteries make DC; the grid runs on AC. Every PV and BESS plant MEWRE buys is, at its heart, a machine for turning one into the other, and the plant's size is quoted on both sides.",
     blocks: [
@@ -299,9 +359,23 @@ Can sloshing water do useful work? Yes. Put a paddle in the pipe that gets warm 
 
 **Why the grid uses AC: transformers.** A transformer can step AC voltage up or down with no moving parts and over 99 % efficiency, but it only works with a voltage that keeps changing (the next explainer shows why). That lets the grid generate at a convenient voltage, step up to 132 or 400 kV to send power far with little loss, then step down to 33 kV, 11 kV and finally 415/240 V for homes. Doing the same with DC needs power electronics, which is why DC is used only for special links (very long or subsea connections, called HVDC).
 
-**Inverters** are the bridge. A PV plant's modules make DC; its **inverters** chop and shape that into 50 Hz AC synchronised with the grid. A battery plant does the same in both directions (its converter is often called a PCS, power conversion system). That is why a PV plant has two sizes: **MWp on the DC side** (modules) and **MW on the AC side** (inverters and grid connection).
-
-**RMS: one number for a wave.** The AC voltage is constantly changing, so which number is "240 V"? It is the **RMS** (root mean square) value: the DC voltage that would heat a kettle exactly as much. The wave actually swings higher: its **peak** is $\sqrt{2} \approx 1.41$ times the RMS, so a 240 V socket peaks at $240 \times 1.414 \approx 339$ V, then swings to −339 V. Every voltage and current you will be quoted (400 kV, 33 kV, 1,500 A) is RMS unless it says otherwise.
+**Inverters** are the bridge. A PV plant's modules make DC; its **inverters** chop and shape that into 50 Hz AC synchronised with the grid. A battery plant does the same in both directions (its converter is often called a PCS, power conversion system). That is why a PV plant has two sizes: **MWp on the DC side** (modules) and **MW on the AC side** (inverters and grid connection).`,
+      },
+      {
+        kind: "flow",
+        title: "Where DC ends and AC begins in a solar and battery plant",
+        steps: [
+          { label: "PV modules: DC", detail: "A few tens of volts each; strings in series reach up to 1,500 V DC. Rated in MWp" },
+          { label: "Inverter: DC to AC", detail: "Chops and shapes DC into 50 Hz AC in step with the grid. Rated in MW (AC)" },
+          { label: "Step-up transformer: AC", detail: "A few hundred volts AC raised to 33 kV across the site" },
+          { label: "Plant substation and grid: AC", detail: "33 kV raised to 400 kV; the grid is AC from here to every socket" },
+          { label: "Battery: DC, through a two-way converter (PCS)", detail: "Charges from the AC grid (AC to DC) and discharges back into it (DC to AC)" },
+        ],
+        caption: "DC lives only in the modules and the battery cells. Everything after the inverter or PCS is AC: the converter is the border post, and the plant has one size on each side of it.",
+      },
+      {
+        kind: "md",
+        md: md`**RMS: one number for a wave.** The AC voltage is constantly changing, so which number is "240 V"? It is the **RMS** (root mean square) value: the DC voltage that would heat a kettle exactly as much. The wave actually swings higher: its **peak** is $\sqrt{2} \approx 1.41$ times the RMS, so a 240 V socket peaks at $240 \times 1.414 \approx 339$ V, then swings to −339 V. Every voltage and current you will be quoted (400 kV, 33 kV, 1,500 A) is RMS unless it says otherwise.
 
 **In one sentence:** DC pushes one way all the time, AC pushes back and forth 50 times a second, and the grid uses AC because transformers can easily change its voltage.`,
       },
@@ -313,19 +387,20 @@ Can sloshing water do useful work? Yes. Put a paddle in the pipe that gets warm 
         xLabel: "time (ms)",
         yLabel: "voltage (V)",
         series: [
-          { key: "dc", label: "DC, 240 V" },
-          { key: "ac", label: "AC, 240 V RMS (peak 339 V)" },
+          { key: "dc", label: "DC 240 V (also the AC wave's RMS level)" },
+          { key: "pk", label: "AC peak, 339 V" },
+          { key: "ac", label: "AC, 240 V RMS" },
         ],
         data: [
-          { t: 0, dc: 240, ac: 0 }, { t: 1.25, dc: 240, ac: 130 }, { t: 2.5, dc: 240, ac: 240 }, { t: 3.75, dc: 240, ac: 314 }, { t: 5, dc: 240, ac: 339 },
-          { t: 6.25, dc: 240, ac: 314 }, { t: 7.5, dc: 240, ac: 240 }, { t: 8.75, dc: 240, ac: 130 }, { t: 10, dc: 240, ac: 0 }, { t: 11.25, dc: 240, ac: -130 },
-          { t: 12.5, dc: 240, ac: -240 }, { t: 13.75, dc: 240, ac: -314 }, { t: 15, dc: 240, ac: -339 }, { t: 16.25, dc: 240, ac: -314 }, { t: 17.5, dc: 240, ac: -240 },
-          { t: 18.75, dc: 240, ac: -130 }, { t: 20, dc: 240, ac: 0 }, { t: 21.25, dc: 240, ac: 130 }, { t: 22.5, dc: 240, ac: 240 }, { t: 23.75, dc: 240, ac: 314 },
-          { t: 25, dc: 240, ac: 339 }, { t: 26.25, dc: 240, ac: 314 }, { t: 27.5, dc: 240, ac: 240 }, { t: 28.75, dc: 240, ac: 130 }, { t: 30, dc: 240, ac: 0 },
-          { t: 31.25, dc: 240, ac: -130 }, { t: 32.5, dc: 240, ac: -240 }, { t: 33.75, dc: 240, ac: -314 }, { t: 35, dc: 240, ac: -339 }, { t: 36.25, dc: 240, ac: -314 },
-          { t: 37.5, dc: 240, ac: -240 }, { t: 38.75, dc: 240, ac: -130 }, { t: 40, dc: 240, ac: 0 },
+          { t: 0, dc: 240, pk: 339, ac: 0 }, { t: 1.25, dc: 240, pk: 339, ac: 130 }, { t: 2.5, dc: 240, pk: 339, ac: 240 }, { t: 3.75, dc: 240, pk: 339, ac: 314 }, { t: 5, dc: 240, pk: 339, ac: 339 },
+          { t: 6.25, dc: 240, pk: 339, ac: 314 }, { t: 7.5, dc: 240, pk: 339, ac: 240 }, { t: 8.75, dc: 240, pk: 339, ac: 130 }, { t: 10, dc: 240, pk: 339, ac: 0 }, { t: 11.25, dc: 240, pk: 339, ac: -130 },
+          { t: 12.5, dc: 240, pk: 339, ac: -240 }, { t: 13.75, dc: 240, pk: 339, ac: -314 }, { t: 15, dc: 240, pk: 339, ac: -339 }, { t: 16.25, dc: 240, pk: 339, ac: -314 }, { t: 17.5, dc: 240, pk: 339, ac: -240 },
+          { t: 18.75, dc: 240, pk: 339, ac: -130 }, { t: 20, dc: 240, pk: 339, ac: 0 }, { t: 21.25, dc: 240, pk: 339, ac: 130 }, { t: 22.5, dc: 240, pk: 339, ac: 240 }, { t: 23.75, dc: 240, pk: 339, ac: 314 },
+          { t: 25, dc: 240, pk: 339, ac: 339 }, { t: 26.25, dc: 240, pk: 339, ac: 314 }, { t: 27.5, dc: 240, pk: 339, ac: 240 }, { t: 28.75, dc: 240, pk: 339, ac: 130 }, { t: 30, dc: 240, pk: 339, ac: 0 },
+          { t: 31.25, dc: 240, pk: 339, ac: -130 }, { t: 32.5, dc: 240, pk: 339, ac: -240 }, { t: 33.75, dc: 240, pk: 339, ac: -314 }, { t: 35, dc: 240, pk: 339, ac: -339 }, { t: 36.25, dc: 240, pk: 339, ac: -314 },
+          { t: 37.5, dc: 240, pk: 339, ac: -240 }, { t: 38.75, dc: 240, pk: 339, ac: -130 }, { t: 40, dc: 240, pk: 339, ac: 0 },
         ],
-        caption: "One AC cycle every 20 ms. The wave peaks at 339 V, crosses zero 100 times a second, and heats a kettle exactly as much as the flat 240 V DC line: that is what 240 V RMS means.",
+        caption: "One AC cycle every 20 ms. The top flat line marks the 339 V peak the wave touches; the 240 V line is both the DC supply and the AC wave's RMS level. The wave crosses zero 100 times a second yet heats a kettle exactly as much as that flat 240 V line: that is what 240 V RMS means.",
       },
       {
         kind: "md",
@@ -335,6 +410,7 @@ Can sloshing water do useful work? Yes. Put a paddle in the pipe that gets warm 
 - **Inverters are where the plant meets the grid.** Grid-code behaviour (voltage support, frequency response, fault ride-through) is mostly inverter software and rating. Batteries connect through the same kind of converter.
 - **Insulation is designed for peaks, heating for RMS.** A 240 V cable's insulation must survive 339 V every cycle, plus surges.`,
       },
+      { kind: "widget", widget: "dc-ac-ratio", props: { ratio: 1.3 }, caption: "100 MWp of DC modules behind about 77 MW of AC inverters (ratio 1.3): the DC curve would rise above the AC limit, so the inverters shave (clip) only the top of clear middays. Slide the ratio to see why one plant is quoted with two sizes." },
       {
         kind: "callout",
         tone: "tip",
@@ -420,6 +496,7 @@ Put a **heavy water wheel** in our pipe loop, one that the water must turn as it
 
 The wheel does not resist flow. It resists **changes** in flow. It soaks up energy while speeding up and gives it back while slowing down. A coil of wire, an **inductor**, behaves exactly like this towards current.`,
       },
+      { kind: "widget", widget: "water-analogy", props: { mode: "coil" }, caption: "Switch the pump off and on and watch the trace: with the heavy wheel the flow builds and dies away slowly instead of jumping. That delay is inductance." },
       {
         kind: "md",
         md: md`### What is actually happening
@@ -427,23 +504,27 @@ The wheel does not resist flow. It resists **changes** in flow. It soaks up ener
 Two facts of nature, both discovered in the 1800s, run the entire power system:
 
 1. **Current makes a magnetic field.** Any wire carrying current is surrounded by a magnetic field. Wind the wire into a coil, especially around an iron core, and the field becomes strong and concentrated.
-2. **A changing magnetic field makes a voltage** (Faraday's law of **induction**). If the magnetic field through a coil changes, a voltage appears across the coil. A steady field does nothing; only change counts.
-
-Everything follows from these:
+2. **A changing magnetic field makes a voltage** (Faraday's law of **induction**). If the magnetic field through a coil changes, a voltage appears across the coil. A steady field does nothing; only change counts.`,
+      },
+      {
+        kind: "flow",
+        title: "The two facts as one chain of cause and effect",
+        steps: [
+          { label: "Current flows in a wire or coil", detail: "Steady or changing" },
+          { label: "A magnetic field forms around it", detail: "Fact 1. An iron core concentrates it" },
+          { label: "The current changes (AC, switching on or off)", detail: "So the field grows, shrinks or reverses" },
+          { label: "A voltage is induced", detail: "Fact 2 (Faraday). In a second coil: a transformer. In the same coil: self-inductance" },
+          { label: "No change, no voltage", detail: "Steady DC gives a steady field and induces nothing" },
+        ],
+        caption: "Read it left to right: current makes field, changing field makes voltage. Generators, transformers, motors and the lag of a coil's current all come from this one chain.",
+      },
+      {
+        kind: "md",
+        md: md`Everything follows from these:
 
 - **Generator**: a spinning magnet (driven by a turbine) sweeps its field past coils, so the field through them keeps changing and a voltage is induced. One turn of a simple two-pole machine gives one AC cycle, so it turns at 3,000 rpm to make 50 Hz.
 - **Transformer**: AC in the first coil makes a constantly changing field in an iron core; that changing field induces a voltage in a second coil. More turns on the second coil, higher voltage. No moving parts, but it **needs change**, which is why it works with AC and not with steady DC.
-- **Motor**: the reverse of a generator. Current in a magnetic field feels a force, and the shaft turns.
-
-**Inductance.** A coil's own changing field induces a voltage in the coil itself that **opposes the change in current**. Try to increase the current and the coil pushes back; try to cut it and the coil pushes to keep it going (which is why switching off a big motor or transformer can draw a spark, and why breakers must handle arcs). The coil stores energy in its magnetic field and returns it. This property is **inductance** (L, henries, H).
-
-**In AC the current lags.** AC is changing all the time, so a coil is pushing back all the time. The result: the current reaches its peak **after** the voltage. In a pure coil it lags by a quarter of a cycle (90°, 5 ms at 50 Hz). Energy flows into the field for a quarter-cycle and back out the next, so a pure coil uses **no** energy on average. Real motors are part resistance (useful work) and part coil, so their current lags by less, typically 25 to 40°.
-
-Memory trick, first half: **ELI**. In an inductor (L), voltage (E) comes before current (I).
-
-Where the wheel breaks: a coil's energy is stored in a magnetic field around it, not in moving mass, and that field reaches out into space. Another coil nearby can pick it up, which is the whole basis of the transformer. A water wheel has no equivalent.
-
-**In one sentence:** current makes a magnetic field, a changing field makes a voltage, and a coil uses this to resist any change in current, so in AC its current lags behind its voltage.`,
+- **Motor**: the reverse of a generator. Current in a magnetic field feels a force, and the shaft turns.`,
       },
       {
         kind: "flow",
@@ -457,7 +538,21 @@ Where the wheel breaks: a coil's energy is stored in a magnetic field around it,
         ],
         caption: "Every box depends on a magnetic field, and every one of them absorbs reactive power. That is why the grid as a whole draws lagging current.",
       },
+      {
+        kind: "md",
+        md: md`**Inductance.** A coil's own changing field induces a voltage in the coil itself that **opposes the change in current**. Try to increase the current and the coil pushes back; try to cut it and the coil pushes to keep it going (which is why switching off a big motor or transformer can draw a spark, and why breakers must handle arcs). The coil stores energy in its magnetic field and returns it. This property is **inductance** (L, henries, H).
+
+**In AC the current lags.** AC is changing all the time, so a coil is pushing back all the time. The result: the current reaches its peak **after** the voltage. In a pure coil it lags by a quarter of a cycle (90°, 5 ms at 50 Hz). Energy flows into the field for a quarter-cycle and back out the next, so a pure coil uses **no** energy on average. Real motors are part resistance (useful work) and part coil, so their current lags by less, typically 25 to 40°.`,
+      },
       { kind: "widget", widget: "ac-power", props: { phi: 90 }, caption: "A pure coil: current peaks a quarter-cycle after voltage. Power (p = v × i) is positive half the time and negative half the time, so the net energy delivered is zero. Then pick 'AC compressor' to see a real motor." },
+      {
+        kind: "md",
+        md: md`Memory trick, first half: **ELI**. In an inductor (L), voltage (E) comes before current (I).
+
+Where the wheel breaks: a coil's energy is stored in a magnetic field around it, not in moving mass, and that field reaches out into space. Another coil nearby can pick it up, which is the whole basis of the transformer. A water wheel has no equivalent.
+
+**In one sentence:** current makes a magnetic field, a changing field makes a voltage, and a coil uses this to resist any change in current, so in AC its current lags behind its voltage.`,
+      },
       {
         kind: "callout",
         tone: "tip",
@@ -530,7 +625,7 @@ Where the wheel breaks: a coil's energy is stored in a magnetic field around it,
     id: "x-capacitance",
     day: 1,
     title: "Capacitors: storing charge and resisting changes in voltage",
-    minutes: 13,
+    minutes: 14,
     module: "m01",
     hook: "Capacitor banks correct power factor in substations, long underground cables behave like giant capacitors, and every inverter has a bank of them inside. Capacitors are the mirror image of coils, and together they make up reactive power.",
     blocks: [
@@ -546,6 +641,7 @@ Stretch a **rubber membrane** across our pipe, sealing it completely.
 
 A coil (the heavy wheel) resists changes in **flow**. The membrane resists changes in **pressure**: you cannot change the pressure across it instantly, because it must stretch first. That is a **capacitor**, and pressure is voltage.`,
       },
+      { kind: "widget", widget: "water-analogy", props: { mode: "capacitor" }, caption: "Switch the pump on: a rush of flow that dies away as the membrane stretches. Switch it off: the membrane pushes the water back. No steady flow ever passes: a capacitor blocks DC." },
       {
         kind: "md",
         md: md`### What is actually happening
@@ -554,23 +650,70 @@ A capacitor is **two conducting plates separated by an insulator**. Put a voltag
 
 - **Capacitance** (C, farads, F) is how much charge the plates hold per volt. Bigger plates, closer together, more capacitance.
 - The voltage across a capacitor **cannot jump**: it changes only as charge flows in or out. So a capacitor **resists changes in voltage**, the mirror image of a coil resisting changes in current.
-- **DC is blocked** once the plates are charged. **AC passes**, because the plates keep charging one way, then the other.
+- **DC is blocked** once the plates are charged. **AC passes**, because the plates keep charging one way, then the other.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "Switching a capacitor onto a steady (DC) voltage through a resistor",
+        xKey: "t",
+        xLabel: "time after switching on (relative units)",
+        yLabel: "% of final value",
+        series: [
+          { key: "v", label: "Voltage across the capacitor (% of supply)" },
+          { key: "i", label: "Current into it (% of the first rush)" },
+        ],
+        data: [
+          { t: 0, v: 0, i: 100 }, { t: 0.5, v: 39, i: 61 }, { t: 1, v: 63, i: 37 }, { t: 1.5, v: 78, i: 22 }, { t: 2, v: 86, i: 14 }, { t: 2.5, v: 92, i: 8 },
+          { t: 3, v: 95, i: 5 }, { t: 3.5, v: 97, i: 3 }, { t: 4, v: 98, i: 2 }, { t: 4.5, v: 99, i: 1 }, { t: 5, v: 99, i: 1 },
+        ],
+        caption: "The voltage climbs smoothly from zero: it cannot jump. The current does the opposite: a full rush at the first instant that dies away to nothing as the plates fill. Current first, voltage after: the seed of 'current leads'.",
+      },
+      {
+        kind: "md",
+        md: md`**In AC the current leads.** Current flows most when the voltage is changing fastest (as it crosses zero) and stops when the voltage peaks (the plates are full). So the current peaks **before** the voltage, by a quarter-cycle (90°) in a pure capacitor. Like a coil, it borrows energy for a quarter-cycle and returns it the next, using none on average.`,
+      },
+      { kind: "widget", widget: "ac-power", props: { phi: -90 }, caption: "A pure capacitor: current peaks a quarter-cycle before voltage. Compare with the coil (pick 'Pure coil'): the same shape shifted the other way. That is why a capacitor bank can cancel a motor's lagging current." },
+      {
+        kind: "md",
+        md: md`Memory trick, second half: **ICE**. In a capacitor (C), current (I) comes before voltage (E). Together: **ELI the ICE man**.
 
-**In AC the current leads.** Current flows most when the voltage is changing fastest (as it crosses zero) and stops when the voltage peaks (the plates are full). So the current peaks **before** the voltage, by a quarter-cycle (90°) in a pure capacitor. Like a coil, it borrows energy for a quarter-cycle and returns it the next, using none on average.
+The coil and the capacitor side by side, as mirror images:
 
-Memory trick, second half: **ICE**. In a capacitor (C), current (I) comes before voltage (E). Together: **ELI the ICE man**.
-
-**Where capacitors show up on the job:**
+| | Coil (inductor, L) | Capacitor (C) |
+|---|---|---|
+| Water picture | heavy wheel | rubber membrane |
+| Resists sudden change in | current | voltage |
+| Stores energy in | a magnetic field | an electric field |
+| On steady DC | after the start, just a piece of wire | after charging, blocks completely |
+| In AC, current | lags voltage by 90° (ELI) | leads voltage by 90° (ICE) |
+| Energy used on average | none | none |`,
+      },
+      {
+        kind: "md",
+        md: md`**Where capacitors show up on the job:**
 
 - **Capacitor banks** in substations and factories. Their leading current cancels the lagging current of motors, so the grid carries less current. This is **power-factor correction**.
 - **Underground cables**: the conductor and the earthed metal sheath around it are two "plates" with insulation between, kilometres long. A long cable is a big capacitor; even with no load it draws **charging current** and generates reactive power. Large PV plants with many kilometres of 33 kV cable see this at night.
-- **Inverters**: a **DC link** capacitor bank inside every PV inverter and battery converter smooths the DC voltage while the electronics chop it into AC.
-
-Where the membrane breaks: it suggests a capacitor "fills up" with extra charge. It does not. As much charge leaves one plate as arrives on the other; it stores **separated** charge, not more of it. And a word clash: engineers write charge as Q, but on Day 2 **Q means reactive power**. Context tells you which.
+- **Inverters**: a **DC link** capacitor bank inside every PV inverter and battery converter smooths the DC voltage while the electronics chop it into AC.`,
+      },
+      {
+        kind: "flow",
+        title: "How a capacitor bank corrects power factor",
+        steps: [
+          { label: "Motors draw lagging current", detail: "Part of their current only builds magnetic fields" },
+          { label: "Capacitor bank draws leading current", detail: "Installed next to the motors, at the same substation or factory" },
+          { label: "The two cancel locally", detail: "Energy sloshes between bank and motors instead of across the network" },
+          { label: "Network carries less current", detail: "Same real power, lower current: less I²R heat and less voltage drop" },
+        ],
+        caption: "The bank does not add energy; it supplies the motors' back-and-forth need on the spot, so the cables upstream are freed for useful current.",
+      },
+      {
+        kind: "md",
+        md: md`Where the membrane breaks: it suggests a capacitor "fills up" with extra charge. It does not. As much charge leaves one plate as arrives on the other; it stores **separated** charge, not more of it. And a word clash: engineers write charge as Q, but on Day 2 **Q means reactive power**. Context tells you which.
 
 **In one sentence:** a capacitor is two plates with a gap that store charge in an electric field, it resists sudden changes in voltage, and in AC its current leads its voltage, the opposite of a coil.`,
       },
-      { kind: "widget", widget: "ac-power", props: { phi: -90 }, caption: "A pure capacitor: current peaks a quarter-cycle before voltage. Compare with the coil (pick 'Pure coil'): the same shape shifted the other way. That is why a capacitor bank can cancel a motor's lagging current." },
       {
         kind: "callout",
         tone: "tip",
@@ -664,27 +807,7 @@ All three limit how much water sloshes for a given pump stroke. The narrow pipe 
 Unlike resistance, reactance **depends on frequency**:
 
 - **Coil**: $X_L = 2\pi f L$. Faster changes, harder push-back, so X rises with frequency. At zero frequency (DC) a coil is just a piece of wire.
-- **Capacitor**: $X_C = 1/(2\pi f C)$. Faster back-and-forth, more current flows, so X falls with frequency. At DC a capacitor blocks completely.
-
-**Impedance** (Z, ohms) is the total opposition to AC, resistance and reactance together. It is what sets the current, so Ohm's law for AC becomes $V = I \times Z$. The catch: R and X do **not** simply add, because they act a quarter-cycle apart. For a resistor and a coil in series:
-
-$$Z = \sqrt{R^2 + X^2}$$
-
-Example: a 30 Ω resistor in series with a coil of 40 Ω reactance has $Z = \sqrt{30^2 + 40^2} = 50$ Ω, not 70 Ω. On 240 V it draws $240/50 = 4.8$ A (the resistor alone would draw 8 A), and the current lags the voltage. A coil's reactance and a capacitor's reactance work in **opposite** directions, so in a circuit they partly cancel.
-
-**ELI the ICE man, recap:**
-
-| Element | Opposes | Current vs voltage | Energy |
-|---|---|---|---|
-| Resistor (R) | flow | in step | turned into heat |
-| Coil (X_L) | change in current | lags (ELI) | stored and returned |
-| Capacitor (X_C) | change in voltage | leads (ICE) | stored and returned |
-
-**Why transmission lines are mostly reactive.** An overhead line is a long loop of conductor with a magnetic field around it: a long, thin coil. At 400 kV its reactance is typically **10 to 40 times** its resistance. So when power moves along a line, the voltage drop along it is set mostly by the **reactance** and by the reactive current flowing through it. That is the link you will meet tomorrow: **moving reactive power is what moves voltage** on the grid.
-
-Where the water picture breaks: with water it is hard to see why the wheel and membrane should care how fast the pump strokes. With electricity they do, strongly, and that frequency dependence is what makes reactance different from resistance.
-
-**In one sentence:** reactance is the opposition of coils and capacitors to AC, it stores energy instead of burning it and changes with frequency, and impedance is resistance and reactance combined, which sets how much current flows.`,
+- **Capacitor**: $X_C = 1/(2\pi f C)$. Faster back-and-forth, more current flows, so X falls with frequency. At DC a capacitor blocks completely.`,
       },
       {
         kind: "chart",
@@ -706,6 +829,33 @@ Where the water picture breaks: with water it is hard to see why the wheel and m
           { f: 150, xl: 94.2, xc: 10.6 },
         ],
         caption: "The coil's reactance climbs in a straight line with frequency; the capacitor's falls. These two values happen to cross near 50 Hz, where they would cancel (resonance), which is why capacitor banks need a harmonic study.",
+      },
+      {
+        kind: "md",
+        md: md`**Impedance** (Z, ohms) is the total opposition to AC, resistance and reactance together. It is what sets the current, so Ohm's law for AC becomes $V = I \times Z$. The catch: R and X do **not** simply add, because they act a quarter-cycle apart. For a resistor and a coil in series:
+
+$$Z = \sqrt{R^2 + X^2}$$
+
+Example: a 30 Ω resistor in series with a coil of 40 Ω reactance has $Z = \sqrt{30^2 + 40^2} = 50$ Ω, not 70 Ω. On 240 V it draws $240/50 = 4.8$ A (the resistor alone would draw 8 A), and the current lags the voltage. A coil's reactance and a capacitor's reactance work in **opposite** directions, so in a circuit they partly cancel.`,
+      },
+      { kind: "widget", widget: "power-triangle", props: { p: 30, pf: 0.6 }, caption: "Borrowed from tomorrow's power triangle, set so its short sides are 30 and 40. Read P as R = 30 Ω and Q as X = 40 Ω: the long side, Z, is 50, not 70, and the angle (53°) is how far the current lags. Ignore the capacitor controls until Day 2." },
+      {
+        kind: "md",
+        md: md`**ELI the ICE man, recap:**
+
+| Element | Opposes | Current vs voltage | Energy | On DC | As frequency rises |
+|---|---|---|---|---|---|
+| Resistor (R) | flow | in step | turned into heat | same R | no change |
+| Coil (X_L) | change in current | lags (ELI) | stored and returned | just a wire | X_L rises |
+| Capacitor (X_C) | change in voltage | leads (ICE) | stored and returned | blocks | X_C falls |`,
+      },
+      {
+        kind: "md",
+        md: md`**Why transmission lines are mostly reactive.** An overhead line is a long loop of conductor with a magnetic field around it: a long, thin coil. At 400 kV its reactance is typically **10 to 40 times** its resistance. So when power moves along a line, the voltage drop along it is set mostly by the **reactance** and by the reactive current flowing through it. That is the link you will meet tomorrow: **moving reactive power is what moves voltage** on the grid.
+
+Where the water picture breaks: with water it is hard to see why the wheel and membrane should care how fast the pump strokes. With electricity they do, strongly, and that frequency dependence is what makes reactance different from resistance.
+
+**In one sentence:** reactance is the opposition of coils and capacitors to AC, it stores energy instead of burning it and changes with frequency, and impedance is resistance and reactance combined, which sets how much current flows.`,
       },
       {
         kind: "callout",
