@@ -25,7 +25,7 @@ export const TRIAL_DAYS: TrialDay[] = [
     title: "Electricity from zero to the grid",
     goal: "Say in your own words what voltage, current, DC and AC, coils, capacitors and reactance are, then explain reactive power and three-phase and why the grid cares.",
     core: ["x-voltage-current-resistance", "x-power-energy", "x-dc-vs-ac", "x-magnetism-inductance", "x-capacitance", "x-reactance-impedance", "x-reactive-power", "x-three-phase"],
-    optional: ["x-transformers-voltage-levels", "x-frequency-inertia", "x-fault-level-protection", "x-load-curve-kuwait"],
+    optional: ["x-frequency-inertia", "x-fault-level-protection", "x-load-curve-kuwait"],
     modules: ["m01"],
     playbook: ["intro"],
   },
