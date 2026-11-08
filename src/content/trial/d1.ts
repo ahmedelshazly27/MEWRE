@@ -8,7 +8,7 @@ export const D1: Explainer[] = [
     id: "x-voltage-current-resistance",
     day: 1,
     title: "Voltage, current and resistance: pressure, flow and the narrow pipe",
-    minutes: 12,
+    minutes: 15,
     module: "m01",
     hook: "Every drawing, datasheet and grid study you will see at MEWRE is written in volts, amps and ohms. Get these three words solid today and everything else this week (power, AC, reactive power, transformers) is built on top of them.",
     blocks: [
@@ -75,10 +75,26 @@ Where the water picture breaks:
         caption: "Both lines are straight: current rises in proportion to voltage. The lower resistance (wider pipe) gets twice the current at every voltage; at 240 V that is 10 A against 5 A.",
       },
       {
+        kind: "md",
+        md: md`### From the power station to your socket
+
+Because heat loss grows with current squared, the grid moves power at very high voltage and steps it down only near the people who use it. Every step happens in a **substation** through a **transformer** (the two-circle symbol below). Read the drawing left to right:
+
+- **Power station**: the generator makes about 11 to 21 kV; a step-up transformer next to it raises that to transmission voltage.
+- **400 kV transmission**: the backbone, over long distances. A 1,100 MW plant at 400 kV needs about 1,600 A per phase.
+- **Grid substation, 400/132 kV**, then **132 kV** sub-transmission to the cities and big industry.
+- **Primary substation, 132/33/11 kV**: 33 kV for districts and large customers, 11 kV along the streets.
+- **Distribution substation, 11 kV/415 V**: the last step, in every neighbourhood. 415 V feeds air-conditioning units; one phase to neutral gives **240 V** at the socket.
+- **A solar plant goes the other way**: DC at the modules, AC at a few hundred volts out of the inverters, **33 kV** across the site, then **33/400 kV** at the plant substation into the network.
+
+Click any line or box: the panel shows what that level does and how much current the same power needs there.`,
+      },
+      { kind: "widget", widget: "grid-topology", props: { level: "ehv", mw: 100 }, caption: "Move the power slider, then click 400 kV and 240 V: the same 100 MW needs about 144 A on the transmission line and over 400,000 A at socket voltage. That is the whole reason for the voltage ladder." },
+      {
         kind: "callout",
         tone: "tip",
         title: "Numbers you will hear",
-        md: md`- **240 V** at a Kuwaiti socket and **415 V** between phases on the low-voltage network (Track 0, lesson 3). Grid levels: **11 kV and 33 kV** distribution, **132 kV and 400 kV** transmission (1 kV = 1,000 V).
+        md: md`- **240 V** at a Kuwaiti socket and **415 V** between phases on the low-voltage network (Track 0, lesson 3). Grid levels: **400 kV** transmission (confirmed for Kuwait), with **132 kV** sub-transmission and **33 kV and 11 kV** distribution commonly cited (confirm with MEWRE; older EHV circuits are quoted as 300 or 275 kV). 1 kV = 1,000 V.
 - Currents: a few amps for a laptop, **10 to 30 A** for an air conditioner or heater, hundreds to a few thousand amps in the cables and busbars of a PV plant or substation.
 - Resistance of a long cable is small (fractions of an ohm), but with large currents the $I^2R$ heat is large.
 - **Triple the voltage, one third the current, one ninth the heat loss** for the same power through the same wire. 400 kV against 132 kV is almost exactly this.`,
@@ -327,7 +343,7 @@ Can sloshing water do useful work? Yes. Put a paddle in the pipe that gets warm 
 - **RMS × 1.414 = peak.** 240 V RMS peaks at 339 V.
 - PV strings: **up to 1,500 V DC**. Inverter AC output is typically a few hundred volts, then a transformer raises it to **33 kV** inside the plant.
 - **DC/AC ratio** of a PV plant: typically **1.2 to 1.4** (MWp of modules per MW of inverter).
-- Kuwait's chain: generation → **400 / 132 kV** transmission → **33 / 11 kV** distribution → **415 / 240 V** to customers (Track 0 lessons 3 and 6).`,
+- Kuwait's chain: generation → **400 kV** transmission (confirmed) → **132 kV** → **33 / 11 kV** distribution → **415 / 240 V** to customers. Only 400 kV is confirmed in our sources; the lower levels are commonly cited (Track 0 m06 lesson 1).`,
       },
     ],
     say: [
