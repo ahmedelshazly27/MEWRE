@@ -158,6 +158,14 @@ physics error in the capstone, several overstated figures and Arabic glossary te
 - [x] Exercise workshop in the tutor (`/tutor?exercise=<id>`): the tutor sees the exercise, rubric and venture facts, asks for your facts first, co-drafts, then critiques against the rubric
 - [x] `/work` (My work): latest version of every written answer grouped by venture (Afterwave, Mizan, Suhail, general, MEWRE), score, judgement, feedback, versions, exercises still to do, Markdown export and print
 
+## Phase 17 · Trial week: 4-day plan in plain language (2026-11-08)
+
+- [x] `/trial`: 4 days of 2 to 3 hours before the trial on 15 November, with a countdown, daily review, a core path sized to the budget (2.3 to 2.8 h a day) and an optional list per day, must-know self-tests, playbook sections and the final exam on the last day
+- [x] 45 explainers (`src/content/trial/`, brief in `docs/TRIAL_BRIEF.md`), each 8 to 15 minutes: why it matters at MEWRE, an everyday picture, the mechanism in plain words, an interactive visual, the numbers you will hear, phrases for meetings, the classic trap, three questions that feed review, and links to the full lessons for after the trial
+- [x] Day 1 starts from zero (voltage, current, resistance, power vs energy, DC vs AC, coils, capacitors, reactance) before reactive power and three-phase; one analogy (a closed water loop) with its limits stated
+- [x] New `ac-power` widget: voltage, current and instantaneous power with energy returned per cycle, tested calculators
+- [x] Kuwait facts only from Track 0 lessons with their confidence labels; validator checks every explainer against Track 0 ids and that each appears once in the plan (`tests/trial.test.ts`)
+
 ## Known limitations / next ideas
 
 - Venture tracks: uncertain external facts (standards editions, Gulf tax and permit rules, PPA terms, vendor features) sit in `unverified` callouts and `unverified: true` references; many references point at a publisher's root URL and deserve a link-check pass.
