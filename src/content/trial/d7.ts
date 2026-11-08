@@ -34,16 +34,75 @@ The plant's **monitoring system (SCADA)** logs irradiance on the modules, module
 - **Performance ratio**: $PR = Y_f / Y_r$. It captures everything between sunlight on the glass and energy at the meter: heat, dust, cables, inverters, downtime, curtailment.
 - **Temperature-corrected PR** strips out the summer heat effect, so a falling trend means a sick plant, not a hot month.
 - **Availability**: the share of the time (or of the possible energy) the plant could generate. **Time-based** counts hours. **Energy-based** weights each outage by the energy it lost, so an inverter down at noon in July counts far more than one down at 7 am in January. Contracts should use energy-based availability.
-- **Exclusions**: grid curtailment ordered by the National Control Centre, declared force majeure, agreed night maintenance. Each must be **evidenced** (NCC logs, set-point records), never just declared.
-
-**Data first.** Every normalised KPI divides by irradiance. In Kuwait, dust on the sensor dome is the main source of error: a sensor reading 3 % low makes PR look 3 % better and hides underperformance. Ask for sensor cleaning and calibration logs before you believe any PR.
-
-**Root cause analysis in one paragraph.** When energy is below expected, work top-down: validate the data, compare the plant with the weather-adjusted model, remove the evidenced exclusions, compare blocks and inverters with each other (one outlier means a local fault; a uniform shortfall means a plant-wide cause such as soiling, a sensor or degradation), drill down to strings and trackers, check in the field (drone thermography, IV curves), then find the root cause with **5 Whys** or a **fishbone** diagram, fix it and confirm the energy came back. Each loss has a **signature**: a flat top at inverter rating on a cool clear day is clipping (designed); a plateau at a set-point during an NCC instruction is curtailment; a slow decline that recovers after cleaning or rain is soiling.`,
+- **Exclusions**: grid curtailment ordered by the National Control Centre, declared force majeure, agreed night maintenance. Each must be **evidenced** (NCC logs, set-point records), never just declared.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "One illustrative month: availability and PR measure different things",
+        xKey: "day",
+        xLabel: "Day of the month",
+        yLabel: "%",
+        series: [
+          { key: "availability", label: "Energy-based availability (%)" },
+          { key: "pr", label: "Performance ratio (%)" },
+        ],
+        // illustrative: clean PR 81 %, soiling 0.3 %/day (relative), cleaning on day 16, inverter outage on days 11 and 12
+        data: Array.from({ length: 30 }, (_, k) => {
+          const day = k + 1;
+          const availability = day === 11 ? 96 : day === 12 ? 97 : 100;
+          const sinceClean = day >= 16 ? day - 16 : day - 1;
+          return { day, availability, pr: Math.round(81 * (1 - 0.003 * sinceClean) * availability) / 100 };
+        }),
+        caption: "The inverter outage on days 11 and 12 hits both lines; the slow slide between cleanings (the handbrake) hits only PR, while availability reads 100 %.",
       },
       {
         kind: "widget",
         widget: "pr-correction",
         caption: "Watch basic PR sag every summer from heat alone, while the temperature-corrected PR stays flat and shows the real problem: the soiling sawtooth between cleanings.",
+      },
+      {
+        kind: "md",
+        md: md`**Data first.** Every normalised KPI divides by irradiance. In Kuwait, dust on the sensor dome is the main source of error: a sensor reading 3 % low makes PR look 3 % better and hides underperformance. Ask for sensor cleaning and calibration logs before you believe any PR.
+
+**Root cause analysis in one paragraph.** When energy is below expected, work top-down: validate the data, compare the plant with the weather-adjusted model, remove the evidenced exclusions, compare blocks and inverters with each other (one outlier means a local fault; a uniform shortfall means a plant-wide cause such as soiling, a sensor or degradation), drill down to strings and trackers, check in the field (drone thermography, IV curves), then find the root cause with **5 Whys** or a **fishbone** diagram, fix it and confirm the energy came back.`,
+      },
+      {
+        kind: "flow",
+        title: "Root cause analysis, top-down",
+        steps: [
+          { label: "Validate the data", detail: "Sensors clean and calibrated, data complete" },
+          { label: "Compare with the weather-adjusted model", detail: "How many MWh are really missing?" },
+          { label: "Remove evidenced exclusions", detail: "NCC curtailment, force majeure, agreed maintenance" },
+          { label: "Compare blocks and inverters", detail: "One outlier: local fault. Uniform shortfall: plant-wide cause" },
+          { label: "Drill down and check in the field", detail: "Strings, trackers, drone thermography, IV curves" },
+          { label: "Root cause, fix, confirm", detail: "5 Whys or fishbone; check the energy came back" },
+        ],
+        caption: "Never skip the first box: in Kuwait a dusty irradiance sensor can hide a real loss, or invent one, before any engineering starts.",
+      },
+      {
+        kind: "md",
+        md: md`Each loss has a **signature**: a flat top at inverter rating on a cool clear day is clipping (designed); a plateau at a set-point during an NCC instruction is curtailment; a slow decline that recovers after cleaning or rain is soiling.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "Two loss signatures on one clear day (illustrative, % of inverter AC rating)",
+        xKey: "hour",
+        xLabel: "Hour of day",
+        yLabel: "% of inverter rating",
+        series: [
+          { key: "potential", label: "What the modules could deliver" },
+          { key: "clipped", label: "Clipping: flat top at 100 %" },
+          { key: "curtailed", label: "Curtailment: plateau at a 70 % set-point, 11:00 to 14:00" },
+        ],
+        data: Array.from({ length: 25 }, (_, k) => {
+          const hour = 6 + k / 2;
+          const potential = Math.round(120 * Math.sin((Math.PI * (hour - 6)) / 12));
+          const clipped = Math.min(100, potential);
+          return { hour, potential, clipped, curtailed: hour >= 11 && hour <= 14 ? Math.min(clipped, 70) : clipped };
+        }),
+        caption: "Clipping sits exactly at the inverter rating and is designed in; a plateau below it that matches an NCC instruction window is curtailment, and needs the NCC log as evidence.",
       },
       {
         kind: "md",
@@ -150,11 +209,43 @@ A solar plant works the same way, at a scale of millions of modules and thousand
 
 **Availability guarantee and LDs.** The contractor guarantees, say, 99 % energy-based availability. Below that, it pays **liquidated damages (LDs)**: usually the shortfall energy times the tariff times a multiplier, capped at a share of the annual fee. With Gulf solar tariffs this low, energy-valued LDs are small, so good contracts add bonus/malus bands or higher multipliers to keep the incentive real.
 
-**Spares.** Failures during the resupply lead time follow a Poisson pattern with mean $\mu = N \lambda L$ (fleet size times annual failure rate times lead time in years). Stocking only the average gives roughly a 63 % chance of not running out: a stock-out more than one time in three. Stock for 95 to 99 %. **Strategic** spares (main transformer) are shared or covered by an OEM agreement; **critical** spares (inverter power modules, tracker controllers, BESS modules) sit on site.
-
-**Cleaning in dust.** Soiling loss grows each day after a cleaning; each cleaning costs money. The optimum is where daily cleaning cost equals daily lost-energy value. The catch for MEWRE: the **value of energy differs by stakeholder**. The IPP values it at its low tariff; the ministry values it at avoided fuel and peak reliability. So the IPP's best interval is longer than the ministry's, and the PPA or O&M regime (PR guarantee, cleaning standard) must close that gap. In winter, **dew cements dust** onto the glass, so dry robots alone are not enough.
-
-**Warranties and degradation.** Modules lose power over time: a first-year drop, then a slow linear decline (field median around **0.5 %/yr**, higher in hot climates). The **power warranty** promises a minimum, for example at most 1 % loss in year 1 and 0.4 %/yr after. A claim needs: notice within the time limit, serial numbers, a random sample, flash tests at an **ISO/IEC 17025** lab corrected to STC, proof of correct O&M, and chain of custody. Watch the **measurement tolerance** (often 3 %): does it only decide eligibility, or is it subtracted from what you are paid? And remember warranties exclude **consequential loss**: the lost energy is never refunded.`,
+**Spares.** Failures during the resupply lead time follow a Poisson pattern with mean $\mu = N \lambda L$ (fleet size times annual failure rate times lead time in years). Stocking only the average gives roughly a 63 % chance of not running out: a stock-out more than one time in three. Stock for 95 to 99 %. **Strategic** spares (main transformer) are shared or covered by an OEM agreement; **critical** spares (inverter power modules, tracker controllers, BESS modules) sit on site.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "Chance of not running out during the lead time (Track 0 example: mean 9.6 failures)",
+        xKey: "stock",
+        xLabel: "Spare power modules on site",
+        yLabel: "Chance of no stock-out (%)",
+        series: [{ key: "service", label: "Service level (%)" }],
+        // cumulative Poisson, mean = 3,125 inverters x 2 %/yr x 8/52 yr = 9.6
+        data: (() => {
+          const mu = 9.6;
+          let p = Math.exp(-mu);
+          let cum = p;
+          const rows: { stock: number; service: number }[] = [];
+          for (let k = 1; k <= 18; k++) {
+            p *= mu / k;
+            cum += p;
+            if (k >= 6) rows.push({ stock: k, service: Math.round(cum * 1000) / 10 });
+          }
+          return rows;
+        })(),
+        caption: "Stocking the average (10) gives about 63 %; it takes 15 to pass 95 %. The last few spares buy most of the reliability.",
+      },
+      {
+        kind: "md",
+        md: md`**Cleaning in dust.** Soiling loss grows each day after a cleaning; each cleaning costs money. The optimum is where daily cleaning cost equals daily lost-energy value. The catch for MEWRE: the **value of energy differs by stakeholder**. The IPP values it at its low tariff; the ministry values it at avoided fuel and peak reliability. So the IPP's best interval is longer than the ministry's, and the PPA or O&M regime (PR guarantee, cleaning standard) must close that gap. In winter, **dew cements dust** onto the glass, so dry robots alone are not enough.`,
+      },
+      {
+        kind: "widget",
+        widget: "soiling",
+        caption: "Set soiling to 0.4 %/day and cleaning cost to 0.15 USD/kWp, then move the energy value from 14 to 55 USD/MWh: the best interval falls from about 29 to about 15 days, the same halving as Track 0's 25 to 12.",
+      },
+      {
+        kind: "md",
+        md: md`**Warranties and degradation.** Modules lose power over time: a first-year drop, then a slow linear decline (field median around **0.5 %/yr**, higher in hot climates). The **power warranty** promises a minimum, for example at most 1 % loss in year 1 and 0.4 %/yr after. A claim needs: notice within the time limit, serial numbers, a random sample, flash tests at an **ISO/IEC 17025** lab corrected to STC, proof of correct O&M, and chain of custody. Watch the **measurement tolerance** (often 3 %): does it only decide eligibility, or is it subtracted from what you are paid? And remember warranties exclude **consequential loss**: the lost energy is never refunded.`,
       },
       {
         kind: "widget",
@@ -172,6 +263,20 @@ A batch of 120,000 modules of 600 Wp, in year 6, with the warranty above:
 - Valid if measured below 97.0 − 3.0 = 94.0 %. The lab sample averages **93.2 %**: claim valid.
 - Refund of the full 3.8 % shortfall at USD 0.11/Wp: about **USD 301 k**. If only the part beyond the tolerance (0.8 %) is paid: about **USD 63 k**.
 - The energy lost over the remaining 24 years is worth around **USD 2 m** (at an illustrative USD 14/MWh). So push for **replacement** when degradation is progressive, and negotiate the tolerance wording at procurement.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "The same degradation claim, three ways to count it",
+        xKey: "what",
+        yLabel: "USD thousand",
+        series: [{ key: "usd", label: "USD thousand" }],
+        data: [
+          { what: "Paid if tolerance is deducted", usd: 63 },
+          { what: "Paid on the full shortfall", usd: 301 },
+          { what: "Energy lost over 24 years", usd: 2000 },
+        ],
+        caption: "Even the best payout is about 15 % of the lost energy, which the warranty never refunds: that is why replacement and the tolerance wording matter more than the claim.",
       },
       {
         kind: "callout",
@@ -263,13 +368,48 @@ The structure feels slow to an engineer from the private sector. It is built for
 
 **Formal vs practical authority.** Formal authority is a signature under the **delegation of authority** (تفويض الصلاحيات). Practical authority belongs to the **drafters** (whoever writes the memo frames the options), the **gatekeepers** (office managers, committee secretaries, legal and financial reviewers) and trusted advisers.
 
-**The annotation is the decision.** Each level writes a تأشيرة on the memo: موافق (approved), للعرض (for presentation upward), لاتخاذ اللازم (take the necessary action). A verbal "go ahead" in a meeting is agreement in principle only.
+**The annotation is the decision.** Each level writes a تأشيرة on the memo: موافق (approved), للعرض (for presentation upward), لاتخاذ اللازم (take the necessary action). A verbal "go ahead" in a meeting is agreement in principle only.`,
+      },
+      {
+        kind: "flow",
+        title: "The baton: one memo going up the chain",
+        steps: [
+          { label: "PM or section head drafts", detail: "Frames the options: the drafter's quiet power" },
+          { label: "Department director", detail: "Reviews, annotates للعرض (for presentation upward)" },
+          { label: "Assistant Undersecretary", detail: "Your sector's head and budget owner" },
+          { label: "Financial and Legal Affairs", detail: "Budget certification and legal review, in parallel" },
+          { label: "Undersecretary", detail: "Annotates موافق: now it is a decision" },
+          { label: "State Audit Bureau", detail: "Prior review, if the contract is above the reported threshold" },
+        ],
+        caption: "Each arrow is a desk where the file can wait; your job is to make every desk's annotation quick and obvious.",
+      },
+      {
+        kind: "md",
+        md: md`How long the relay takes: Track 0's illustrative chain for a KD 450,000 contract extension needs about **46 working days**, and more than half of it is outside the ministry.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "Where the 46 working days go (Track 0 illustrative critical path)",
+        xKey: "step",
+        yLabel: "Working days",
+        series: [{ key: "days", label: "Working days" }],
+        data: [
+          { step: "Draft memo", days: 3 },
+          { step: "Director", days: 2 },
+          { step: "Asst. Undersecretary", days: 3 },
+          { step: "Legal (Finance in parallel)", days: 7 },
+          { step: "Undersecretary", days: 3 },
+          { step: "Audit Bureau review", days: 20 },
+          { step: "One round of queries", days: 8 },
+        ],
+        caption: "The two tall bars on the right are outside your control once the file leaves; a complete file that avoids the query round saves more than chasing every desk inside.",
+      },
+      {
+        kind: "md",
+        md: md`**Decision culture, four forces**: consensus across sectors (one silent sector can stall a file without ever saying no); **precedent** ("what did we do last time?"); **audit consciousness**; and **trust** (a memo from a PM the Undersecretary trusts is read first). For novel decisions, bring external legitimacy: a standard, a consultant's report, a GCC precedent.
 
-**Decision culture, four forces**: consensus across sectors (one silent sector can stall a file without ever saying no); **precedent** ("what did we do last time?"); **audit consciousness**; and **trust** (a memo from a PM the Undersecretary trusts is read first). For novel decisions, bring external legitimacy: a standard, a consultant's report, a GCC precedent.
-
-**Writing for seniors: BLUF** (bottom line up front). The first paragraph says what decision is needed, by when, and what you recommend. If the reader stops there and writes موافق, the memo worked. Everything below is for the reviewers and the file.
-
-**Formal letters** in Arabic follow a fixed frame: reference number and date, addressee with title (السيد/ ... المحترم), subject, تحية طيبة وبعد،،،, a reference to prior correspondence by number and date, numbered points, a clear request with a deadline, the closing formula, signature, attachments and copies. Copy exact forms from your sector's recent outgoing letters. Firmness comes from facts and clause references, never adjectives.`,
+**Writing for seniors: BLUF** (bottom line up front). The first paragraph says what decision is needed, by when, and what you recommend. If the reader stops there and writes موافق, the memo worked. Everything below is for the reviewers and the file.`,
       },
       {
         kind: "flow",
@@ -303,6 +443,10 @@ Approve a 6-month extension of the Owner's Engineer contract, estimated at KD 45
 
 **أولاً: المطلوب (قبل تاريخ [ ])**
 نأمل التكرم بالموافقة على تمديد عقد خدمات مهندس المالك لمدة ستة أشهر بقيمة تقديرية قدرها (450,000) د.ك، وإحالته إلى ديوان المحاسبة للرقابة المسبقة. ونوصي بالموافقة.`,
+      },
+      {
+        kind: "md",
+        md: md`**Formal letters** in Arabic follow a fixed frame: reference number and date, addressee with title (السيد/ ... المحترم), subject, تحية طيبة وبعد،،،, a reference to prior correspondence by number and date, numbered points, a clear request with a deadline, the closing formula, signature, attachments and copies. Copy exact forms from your sector's recent outgoing letters. Firmness comes from facts and clause references, never adjectives.`,
       },
       {
         kind: "callout",
@@ -388,13 +532,62 @@ Approve a 6-month extension of the Owner's Engineer contract, estimated at KD 45
         kind: "md",
         md: md`### What is actually happening
 
-**Running meetings and minutes.** Standard progress agenda: safety first, previous actions (only the overdue or blocked ones), progress vs programme, engineering and procurement, quality, risks, commercial, decisions required, new actions. Before closing, **read back** each action with its owner and date. Approved minutes are **evidence**: tribunals weigh what was recorded at the time. If the contractor records "the delay is due to late access", do not delete it; record the Employer's answer: "The Employer does not accept this statement; the matter will be addressed through the contractual procedure." And **minutes are not Notices**: a claim or instruction still needs the formal Notice the contract requires.
+**Running meetings and minutes.** Standard progress agenda: safety first, previous actions (only the overdue or blocked ones), progress vs programme, engineering and procurement, quality, risks, commercial, decisions required, new actions. Before closing, **read back** each action with its owner and date. Approved minutes are **evidence**: tribunals weigh what was recorded at the time. If the contractor records "the delay is due to late access", do not delete it; record the Employer's answer: "The Employer does not accept this statement; the matter will be addressed through the contractual procedure." And **minutes are not Notices**: a claim or instruction still needs the formal Notice the contract requires.`,
+      },
+      {
+        kind: "flow",
+        title: "A progress meeting agenda, in order",
+        steps: [
+          { label: "Safety", detail: "Always first" },
+          { label: "Previous actions", detail: "Only the overdue or blocked ones" },
+          { label: "Progress vs programme" },
+          { label: "Engineering and procurement" },
+          { label: "Quality" },
+          { label: "Risks" },
+          { label: "Commercial" },
+          { label: "Decisions required" },
+          { label: "New actions, read back", detail: "Owner and date for each, before anyone leaves" },
+        ],
+        caption: "Status reading belongs in the pre-read; the meeting's output is the last two boxes.",
+      },
+      {
+        kind: "md",
+        md: md`**Managing consultants (the Owner's Engineer).** They know more than you about their work and their incentives differ from the ministry's (the **principal-agent** problem). Control them with a clear scope and authority matrix, a KPI scorecard (look at the components, not only the total), and above all your own **verification** of samples of their work. Consultants advise and prepare; officials decide and sign.
 
-**Managing consultants (the Owner's Engineer).** They know more than you about their work and their incentives differ from the ministry's (the **principal-agent** problem). Control them with a clear scope and authority matrix, a KPI scorecard (look at the components, not only the total), and above all your own **verification** of samples of their work. Consultants advise and prepare; officials decide and sign.
-
-**Presenting to seniors.** Decision first. Open with Situation, Complication, Question, then the answer. Three slides: the answer, why, the asks; detail in the appendix. Translate numbers into things the leader already knows: MW as a share of the summer peak, KD as a share of the contingency, a delay as a range ("8 to 13 weeks, most likely 10"). Bad news: cause, impact, plan, ask, and early beats perfect: never let your superior be surprised. Never guess a number in a question; commit to a dated follow-up. Never contradict your superior in front of external parties.
-
-**Negotiation basics.** Your **BATNA** (best alternative to a negotiated agreement) is what happens if talks fail: for a claim, the Engineer's determination, then the dispute board and arbitration. It sets your **reservation price** (walk-away point). The overlap between both sides' reservation prices is the **ZOPA** (zone of possible agreement). Then negotiate on **interests, not positions**: the contractor's position is "KD 3.2 m and 120 days", its interests are cash flow, avoiding delay damages and its reputation. Trade currencies: time, money, milestones, guarantees. With public money, a settlement must rest on **entitlement and substantiated quantum** under the contract, not on splitting the difference. In the Gulf, relationship and **face** (ماء الوجه) matter: give the counterpart a dignified way to concede, such as an objective criterion or a senior-to-senior close.`,
+**Presenting to seniors.** Decision first. Open with Situation, Complication, Question, then the answer. Three slides: the answer, why, the asks; detail in the appendix. Translate numbers into things the leader already knows: MW as a share of the summer peak, KD as a share of the contingency, a delay as a range ("8 to 13 weeks, most likely 10"). Bad news: cause, impact, plan, ask, and early beats perfect: never let your superior be surprised. Never guess a number in a question; commit to a dated follow-up. Never contradict your superior in front of external parties.`,
+      },
+      {
+        kind: "flow",
+        title: "Bad news to a senior, in four beats",
+        steps: [
+          { label: "Cause", detail: "What happened, in one sentence" },
+          { label: "Impact", detail: "As a range: 8 to 13 weeks, most likely 10" },
+          { label: "Plan", detail: "What is already being done to recover" },
+          { label: "Ask", detail: "The decision or support you need, and by when" },
+        ],
+        caption: "Lead with the headline, then these four; early and incomplete beats late and perfect.",
+      },
+      {
+        kind: "md",
+        md: md`**Negotiation basics.** Your **BATNA** (best alternative to a negotiated agreement) is what happens if talks fail: for a claim, the Engineer's determination, then the dispute board and arbitration. It sets your **reservation price** (walk-away point). The overlap between both sides' reservation prices is the **ZOPA** (zone of possible agreement). Then negotiate on **interests, not positions**: the contractor's position is "KD 3.2 m and 120 days", its interests are cash flow, avoiding delay damages and its reputation. Trade currencies: time, money, milestones, guarantees. With public money, a settlement must rest on **entitlement and substantiated quantum** under the contract, not on splitting the difference. In the Gulf, relationship and **face** (ماء الوجه) matter: give the counterpart a dignified way to concede, such as an objective criterion or a senior-to-senior close.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "Track 0 example: a KD 3.2 m claim, expected award KD 1.76 m",
+        xKey: "settlement",
+        xLabel: "Settlement amount (KD m)",
+        yLabel: "Gain vs going to dispute (KD m)",
+        series: [
+          { key: "ministry", label: "Ministry's gain (2.01 minus settlement)" },
+          { key: "contractor", label: "Contractor's gain (settlement minus 1.46)" },
+        ],
+        // RP_E = EV + C_E = 1.76 + 0.25 = 2.01; RP_C = EV - C_C = 1.76 - 0.30 = 1.46
+        data: Array.from({ length: 23 }, (_, k) => {
+          const settlement = Math.round((1.2 + 0.05 * k) * 100) / 100;
+          return { settlement, ministry: Math.round((2.01 - settlement) * 100) / 100, contractor: Math.round((settlement - 1.46) * 100) / 100 };
+        }),
+        caption: "Both lines are above zero only between KD 1.46 m and 2.01 m: that window is the ZOPA. Track 0's entitlement-backed target, KD 1.55 m, sits inside it.",
       },
       {
         kind: "matrix",
@@ -501,11 +694,41 @@ That is an **LLM** (large language model): superb at transforming text you give 
 An LLM predicts the next word-piece (**token**) from probabilities, again and again. Its output is **plausible, not verified**. When it lacks a fact it does not stop: it produces something that sounds right. That is **hallucination**, and it concentrates in exactly what matters in official work: **numbers, dates, clause and article numbers, laws, citations and names**. Each model also has a **knowledge cutoff**: it will not know Law No. 94 of 2026 unless you give it the text.
 
 **Good at** (with your documents supplied): summarising, extracting clauses and dates into tables, comparing a bid with the requirements, drafting letters, memos and minutes in English and Arabic, generating risks and questions, writing code to analyse data.
-**Weak at**: facts not in the context, arithmetic over many numbers (let it write code, and let the code calculate), exact citations unless it quotes verbatim, and judgements that need accountability (award, acceptance, determination). **AI produces evidence; the committee and the signatory decide.**
-
-**Reviewing contracts with AI**: tell it to use **only the attached text**, quote verbatim with clause and page, write NOT FOUND when something is absent, and not to fill gaps from "standard FIDIC". Then verify: every high-severity row and every row with legal effect (time bars, LDs) in full, plus a **random sample** of the rest to estimate the error rate.
-
-**Drafting with AI**: you write a **facts sheet** (numbers, dates, references), the AI drafts, you critique and revise. Never take reference numbers, Hijri dates, figures or clause numbers from the model. Copy defined Arabic terms (صاحب العمل، المهندس، المقاول) from your contract.
+**Weak at**: facts not in the context, arithmetic over many numbers (let it write code, and let the code calculate), exact citations unless it quotes verbatim, and judgements that need accountability (award, acceptance, determination). **AI produces evidence; the committee and the signatory decide.**`,
+      },
+      {
+        kind: "matrix",
+        title: "Can I trust this AI output? Two questions",
+        xAxis: ["Works on text you supplied", "Answers from its own memory"],
+        yAxis: ["Low stakes", "Legal or financial effect"],
+        cells: [
+          { label: "Use it, then verify", detail: "Clause tables, bid vs requirements, draft letters. Check every high-severity row against the source." },
+          { label: "Do not rely on it", detail: "Article numbers, laws, figures, dates, citations. Open the primary source yourself." },
+          { label: "Use it freely", detail: "Summaries and rewording of a document you gave it, with a quick read." },
+          { label: "Fine for ideas", detail: "Explaining a concept, brainstorming risks or questions. Treat as a starting point." },
+        ],
+        caption: "Move right and the risk of hallucination jumps; move up and the cost of one error jumps. The highlighted corner is where invented clause numbers end up in signed memos.",
+      },
+      {
+        kind: "md",
+        md: md`**Reviewing contracts with AI**: tell it to use **only the attached text**, quote verbatim with clause and page, write NOT FOUND when something is absent, and not to fill gaps from "standard FIDIC". Then verify: every high-severity row and every row with legal effect (time bars, LDs) in full, plus a **random sample** of the rest to estimate the error rate.`,
+      },
+      {
+        kind: "flow",
+        title: "An AI contract review you can defend",
+        steps: [
+          { label: "Supply the text", detail: "Approved tool; the contract and its Particular Conditions" },
+          { label: "Constrain the prompt", detail: "Only the attached text; quote verbatim with clause and page; NOT FOUND if absent" },
+          { label: "AI builds the table", detail: "Obligations, time bars, LDs, securities" },
+          { label: "Check every critical row", detail: "High severity and anything with legal effect, in full" },
+          { label: "Sample the rest", detail: "Random rows; error rate = errors / rows checked" },
+          { label: "Decide and sign", detail: "A person owns the result" },
+        ],
+        caption: "The AI saves time in the third box; the fourth and fifth are what make the result usable in an official file.",
+      },
+      {
+        kind: "md",
+        md: md`**Drafting with AI**: you write a **facts sheet** (numbers, dates, references), the AI drafts, you critique and revise. Never take reference numbers, Hijri dates, figures or clause numbers from the model. Copy defined Arabic terms (صاحب العمل، المهندس، المقاول) from your contract.
 
 **Confidentiality.** Classify before you paste. **Never put ministry documents, bidder data, evaluations, claims positions or personal information (Civil IDs, salaries) into an unapproved tool**, consumer accounts included. Anonymising is harder than removing names: "the 1,100 MW Kuwaiti PV IPP whose preferred bidder was just selected" identifies the project without a single name. If the uniqueness is the point, use an approved tool or none.`,
       },

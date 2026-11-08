@@ -33,7 +33,19 @@ A **contracting strategy** answers three questions: who designs, how many contra
 - **Yellow Book** (Plant and Design-Build): the Contractor designs to the **Employer's Requirements** and is paid a **lump sum**. This is design-build.
 - **Silver Book** (EPC/Turnkey): the Contractor designs, procures and builds, for a **fixed lump sum**, and carries most of the risk, including **unforeseeable ground conditions**. This is EPC/turnkey, and the base of most IPP construction contracts.
 
-Each book has **General Conditions** (the standard text) and **Particular Conditions** (Part A: contract data; Part B: the Employer's amendments). Always read Part B before quoting a clause.
+| | Red | Yellow | Silver |
+|---|---|---|---|
+| Who designs | Employer | Contractor, to the Employer's Requirements | Contractor |
+| How it is paid | Measured quantities (BoQ times rates) | Lump sum | Fixed lump sum |
+| Ground risk (4.12) | Employer | Employer | Contractor |
+| Who administers | Engineer | Engineer | Employer's Representative |
+| Delivery model | Design-bid-build | Design-build | EPC/turnkey |
+
+*Read the table left to right: design, then price certainty, then ground risk move to the Contractor.*`,
+      },
+      {
+        kind: "md",
+        md: md`Each book has **General Conditions** (the standard text) and **Particular Conditions** (Part A: contract data; Part B: the Employer's amendments). Always read Part B before quoting a clause.
 
 Three roles to keep straight:
 
@@ -48,9 +60,25 @@ A fourth body, the **DAAB** (Dispute Avoidance/Adjudication Board), is appointed
         kind: "md",
         md: md`### Why it matters at MEWRE
 
-The guiding rule is: put a risk with the party that can **control** it; if nobody controls it, with the party that can **bear** it most cheaply. Pushing a risk onto someone who can do neither does not remove it. It comes back as a **risk premium** in the price ($RP = k \cdot EV$, with $k$ typically 1.5 for well-understood risks up to 3 or more for risks the contractor cannot control), plus a dispute when the event happens.
-
-Two habits that cause trouble: MEWRE staff making the Engineer's determinations themselves on a Red or Yellow contract (it breaks the neutrality the contract promises), and reviewing every drawing on a Silver contract (it quietly turns turnkey into a hybrid and invites claims).`,
+The guiding rule is: put a risk with the party that can **control** it; if nobody controls it, with the party that can **bear** it most cheaply. Pushing a risk onto someone who can do neither does not remove it. It comes back as a **risk premium** in the price ($RP = k \cdot EV$, with $k$ typically 1.5 for well-understood risks up to 3 or more for risks the contractor cannot control), plus a dispute when the event happens.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "What one risk costs MEWRE: keep it, or pay a contractor to carry it",
+        xKey: "who",
+        yLabel: "KWD m",
+        series: [{ key: "cost", label: "Cost to MEWRE (KWD m)" }],
+        data: [
+          { who: "MEWRE keeps it (EV)", cost: 1.0 },
+          { who: "Contractor, k = 1.5", cost: 1.5 },
+          { who: "Contractor, k = 3", cost: 3.0 },
+        ],
+        caption: "Same risk (20 % chance of KWD 5 m, EV = KWD 1 m): the contractor charges 1.5 to 3 times the expected cost, the most for risks it cannot control.",
+      },
+      {
+        kind: "md",
+        md: md`Two habits that cause trouble: MEWRE staff making the Engineer's determinations themselves on a Red or Yellow contract (it breaks the neutrality the contract promises), and reviewing every drawing on a Silver contract (it quietly turns turnkey into a hybrid and invites claims).`,
       },
       { kind: "widget", widget: "risk-allocation", caption: "Click across a row: the same risk (ground, design, change in law, grid delay) moves from Employer to Contractor as you go from Red to Silver to an IPP EPC." },
       {
@@ -139,12 +167,47 @@ FIDIC turns this common sense into deadlines that bind both sides.`,
   - **Notice of Claim** within **28 days** of becoming aware of the event. Miss it and the claim is **time-barred** (lost), for the Contractor **and** for the Employer.
   - **Fully detailed Claim** with its legal basis within **84 days**, or the Notice lapses.
   - The **Engineer** then agrees or determines it under **3.7** (42 days to try to agree, then 42 days to determine).
-- An **Extension of Time (EOT)** moves the completion date (Sub-Clause 8.5) when an Employer-risk event or a Variation **delays completion**. That is a critical-path question: if the delayed activity had float, the EOT is only the delay beyond the float: $EOT = \max(0, d - TF)$. An EOT also protects the Employer: it keeps the delay damages clause enforceable.
-- **Climatic conditions**: only **exceptionally** adverse weather counts, judged against the site's climate data. Seasonal shamal sandstorms are foreseeable in Kuwait. Climate gives **time, not money**, and Silver gives nothing for it.
+- An **Extension of Time (EOT)** moves the completion date (Sub-Clause 8.5) when an Employer-risk event or a Variation **delays completion**. That is a critical-path question: if the delayed activity had float, the EOT is only the delay beyond the float: $EOT = \max(0, d - TF)$. An EOT also protects the Employer: it keeps the delay damages clause enforceable.`,
+      },
+      {
+        kind: "chart",
+        chart: "stacked-bar",
+        title: "Float absorbs delay first: three events on an activity with 10 days of float",
+        xKey: "event",
+        yLabel: "Days of delay",
+        series: [
+          { key: "absorbed", label: "Absorbed by float (no EOT)" },
+          { key: "eot", label: "EOT due" },
+        ],
+        data: [
+          { event: "5-day delay", absorbed: 5, eot: 0 },
+          { event: "15-day delay", absorbed: 10, eot: 5 },
+          { event: "25-day delay", absorbed: 10, eot: 15 },
+        ],
+        caption: "EOT = max(0, d minus TF): only the part of the bar above the float line moves the completion date.",
+      },
+      {
+        kind: "md",
+        md: md`- **Climatic conditions**: only **exceptionally** adverse weather counts, judged against the site's climate data. Seasonal shamal sandstorms are foreseeable in Kuwait. Climate gives **time, not money**, and Silver gives nothing for it.
 
-**Delay analysis in one paragraph.** To prove how much an event delayed completion, planners insert it into the programme and measure the shift in the end date. The method preferred during the project is **Time Impact Analysis (TIA)**: add the event to the **updated** programme current at that time, not to the original baseline. After the event, analysts use windows or as-built methods. When an Employer delay and a Contractor delay overlap (**concurrent delay**), the usual approach (SCL Protocol) is **time but not money**: an EOT, but no extra cost for that period, unless the contract says otherwise.
-
-**Disputes.** If a Party disagrees with a determination it gives a **Notice of Dissatisfaction (NOD)** within 28 days and refers the dispute to the standing **DAAB**. The DAAB decides within 84 days and its decision is **binding at once**: both sides comply, even while one goes on to arbitration.`,
+**Delay analysis in one paragraph.** To prove how much an event delayed completion, planners insert it into the programme and measure the shift in the end date. The method preferred during the project is **Time Impact Analysis (TIA)**: add the event to the **updated** programme current at that time, not to the original baseline. After the event, analysts use windows or as-built methods. When an Employer delay and a Contractor delay overlap (**concurrent delay**), the usual approach (SCL Protocol) is **time but not money**: an EOT, but no extra cost for that period, unless the contract says otherwise.`,
+      },
+      {
+        kind: "matrix",
+        title: "Who caused the delay decides time and money",
+        xAxis: ["No Employer-risk delay", "Employer-risk delay"],
+        yAxis: ["No Contractor delay", "Contractor delay"],
+        cells: [
+          { label: "Contractor delay only", detail: "No EOT. Delay damages run after the Time for Completion." },
+          { label: "Concurrent delay", detail: "Usually time but not money (SCL Protocol), unless the contract says otherwise." },
+          { label: "Neither", detail: "On programme: nothing to claim." },
+          { label: "Employer-risk delay only", detail: "EOT, plus cost where the clause gives it. Exceptional weather: time only, and nothing on Silver." },
+        ],
+        caption: "Find the box first, then check notices and float: the highlighted concurrent case is where most delay arguments end up.",
+      },
+      {
+        kind: "md",
+        md: md`**Disputes.** If a Party disagrees with a determination it gives a **Notice of Dissatisfaction (NOD)** within 28 days and refers the dispute to the standing **DAAB**. The DAAB decides within 84 days and its decision is **binding at once**: both sides comply, even while one goes on to arbitration.`,
       },
       {
         kind: "flow",
@@ -257,9 +320,30 @@ Where it breaks: an on-demand bond is easier to call than a deposit is to keep, 
 - **Performance security** (performance bond): commonly **10 %** of the contract price, delivered within 28 days of the Letter of Acceptance (FIDIC 2017, 4.2), kept until the **Performance Certificate**. Covers contractor default.
 - **Advance payment guarantee (APG)**: equal to the advance (commonly 10 to 20 % of the price). The advance is recovered from each payment certificate (FIDIC default: **25 %** of each IPC once certified payments exceed 10 % of the price), and the APG reduces as it is recovered.
 - **Retention**: money held back from each payment, for example **10 % of each IPC up to 5 %** of the price; **half released at Taking-Over**, half at the end of the defects period.
-- Most Gulf bank guarantees are **on-demand**: the bank pays a compliant written demand without checking whether the contractor really defaulted. The contract still says the Employer may claim only what it is **entitled** to, and must indemnify the contractor for an unjustified call.
-
-**Liquidated damages** are fixed sums for a specified breach, instead of proving the actual loss:
+- Most Gulf bank guarantees are **on-demand**: the bank pays a compliant written demand without checking whether the contractor really defaulted. The contract still says the Employer may claim only what it is **entitled** to, and must indemnify the contractor for an unjustified call.`,
+      },
+      {
+        kind: "flow",
+        title: "Which security is live when (FIDIC 2017 defaults)",
+        steps: [
+          { label: "Bid", detail: "Bid bond: covers a bidder withdrawing its bid" },
+          { label: "Letter of Acceptance + 28 days", detail: "Performance security, about 10 % of the price, delivered" },
+          { label: "Advance paid", detail: "Against an APG of the same amount" },
+          { label: "Each payment certificate", detail: "25 % recovers the advance (APG shrinks); 10 % retention held, up to 5 % of the price" },
+          { label: "Taking-Over", detail: "Delay LDs stop; half the retention released" },
+          { label: "Performance Certificate", detail: "Rest of the retention released; performance security returned" },
+        ],
+        caption: "Track every expiry date against this line: a bond that expires before the Performance Certificate protects nothing when you need it.",
+      },
+      {
+        kind: "widget",
+        widget: "cashflow-scurve",
+        props: { contractValue: 20 },
+        caption: "Set to a 20 m contract (the widget counts in USD m; the mechanics are the same in KWD): watch the advance go out in month 0, come back through deductions, and retention build up to 5 % before it is released.",
+      },
+      {
+        kind: "md",
+        md: md`**Liquidated damages** are fixed sums for a specified breach, instead of proving the actual loss:
 
 - **Delay LDs** (FIDIC "Delay Damages", 8.8): a daily rate for every day after the Time for Completion **as extended by any EOT**, until Taking-Over. They are the sole remedy for delay (except termination).
 - **Performance LDs**: if the plant fails its guaranteed capacity or performance ratio at the tests, the contractor "buys down" the shortfall with a lump sum reflecting the lost energy over the plant's life. Below a **minimum performance level**, money is not enough: the contractor must fix it, or the Employer can reject the Works.
@@ -381,15 +465,38 @@ An **Independent Power Producer (IPP)** is a privately financed company that bui
 - **Lenders**: banks that provide most of the money, typically **70 to 80 %** of capex, repaid only from the SPV's revenue (**non-recourse project finance**). They read every PPA clause asking "does this protect the debt?".
 - **Offtaker**: the buyer. In Kuwait, **MEWRE**.
 - **PPA** (Power Purchase Agreement): the 30-year sales contract. It sets the **tariff** (price per kWh), the commercial operation date (COD), grid connection, dispatch, metering, and termination.
-- **EPC and O&M contractors**: the SPV hires them to build and operate, on terms back-to-back with the PPA.
-
-Key payment ideas:
+- **EPC and O&M contractors**: the SPV hires them to build and operate, on terms back-to-back with the PPA.`,
+      },
+      { kind: "diagram", diagram: "ppp-structure", caption: "Follow the money: MEWRE pays the tariff to the SPV, which pays its EPC and O&M contractors, services the lenders and then pays dividends to sponsors and shareholders. KAPP procures and holds the state's shares." },
+      {
+        kind: "flow",
+        title: "One year of money through the SPV, in order",
+        steps: [
+          { label: "MEWRE pays the tariff", detail: "Energy delivered (plus any deemed energy) times the PPA tariff" },
+          { label: "SPV pays operating costs", detail: "O&M contractor, insurance and other opex" },
+          { label: "SPV pays the lenders", detail: "Interest plus principal on the 70 to 80 % of capex that was borrowed" },
+          { label: "What is left goes to equity", detail: "Dividends to sponsors and the state's shareholding via KAPP" },
+        ],
+        caption: "Lenders are paid before shareholders, which is why they read every PPA clause that could cut the first box.",
+      },
+      {
+        kind: "md",
+        md: md`Key payment ideas:
 
 - **Energy-only tariff**: one price per MWh delivered. The norm for solar; the SPV carries sunshine, soiling and performance risk.
 - **Take-or-pay / must-take**: the offtaker must accept all the energy delivered (or pay for a minimum).
-- **Deemed energy**: if the plant could have generated but did not because of the offtaker's side (grid outage, curtailment beyond an annual allowance, late grid connection), the offtaker **pays as if the energy had been delivered**. MEWRE controls the grid, so it carries that risk; otherwise bidders would price it into 30 years of tariff.`,
+- **Deemed energy**: if the plant could have generated but did not because of the offtaker's side (grid outage, curtailment beyond an annual allowance, late grid connection), the offtaker **pays as if the energy had been delivered**. MEWRE controls the grid, so it carries that risk; otherwise bidders would price it into 30 years of tariff.
+
+| What happened to the energy | Who loses | Does MEWRE pay? |
+|---|---|---|
+| Delivered to the grid | Nobody | Yes, at the tariff |
+| Not generated: low sun, dust, plant fault | SPV | No |
+| Curtailed, within the annual allowance | SPV | No |
+| Curtailed beyond the allowance, or a MEWRE grid outage | MEWRE | Yes, as deemed energy |
+| MEWRE's grid connection late | MEWRE | Deemed energy or a later COD, per the PPA wording |
+
+*The dividing line is control: the SPV carries the sun and its own plant, MEWRE carries its grid.*`,
       },
-      { kind: "diagram", diagram: "ppp-structure", caption: "Follow the money: MEWRE pays the tariff to the SPV, which pays its EPC and O&M contractors, services the lenders and then pays dividends to sponsors and shareholders. KAPP procures and holds the state's shares." },
       {
         kind: "md",
         md: md`### Why it matters at MEWRE
@@ -478,16 +585,84 @@ Going the other way: how much would you need to put in the bank today to have KW
         md: md`### What is actually happening
 
 - **Time value of money**: a dinar today beats a dinar later because it can earn a return. The **discount rate** $r$ is that return (for a project, usually its cost of capital, the **WACC**).
-- **Discount factor** for year $t$: $1/(1+r)^t$. At 6.2 %: year 10 is 0.548, year 20 is 0.300, year 30 is 0.165. A payment in year 30 counts for only a sixth of its face value today.
-- **NPV** (net present value): add up every cash flow (capex out, revenues in, costs out), each multiplied by its discount factor. **NPV > 0** means the project earns more than the discount rate; between options, pick the highest NPV.
-- **IRR** (internal rate of return): the discount rate at which NPV equals zero. It is the project's "interest rate". Easy to communicate, but it ignores the size of the project and can mislead when cash flows change sign more than once. Use NPV to decide, IRR to communicate.
-- **LCOE** (levelised cost of electricity): the constant price per MWh that would exactly pay back all lifetime costs (capex, opex) at the discount rate. Formally, discounted lifetime costs divided by **discounted** lifetime energy:
+- **Discount factor** for year $t$: $1/(1+r)^t$. At 6.2 %: year 10 is 0.548, year 20 is 0.300, year 30 is 0.165. A payment in year 30 counts for only a sixth of its face value today.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "Track 0 base case (flat tariff 1.80 US¢/kWh): each year's cash, and its value today at 6.2 %",
+        xKey: "year",
+        xLabel: "Year of operation",
+        yLabel: "USD m",
+        series: [
+          { key: "cash", label: "Net cash that year" },
+          { key: "pv", label: "Present value today" },
+        ],
+        // revenue 3,003 GWh x 1.80 US cents/kWh, energy -0.4 %/yr; opex USD 7.5 m, +2 %/yr (Track 0 m10 base case)
+        data: Array.from({ length: 30 }, (_, k) => {
+          const cash = 3003 * 0.018 * 0.996 ** k - 7.5 * 1.02 ** k;
+          return { year: k + 1, cash: Math.round(cash * 10) / 10, pv: Math.round((cash / 1.062 ** (k + 1)) * 10) / 10 };
+        }),
+        caption: "The plant earns roughly the same cash every year (about USD 47 m falling to 35 m), but the discounted bars shrink to about USD 6 m by year 30: distant money counts for little.",
+      },
+      {
+        kind: "md",
+        md: md`- **NPV** (net present value): add up every cash flow (capex out, revenues in, costs out), each multiplied by its discount factor. **NPV > 0** means the project earns more than the discount rate; between options, pick the highest NPV.
+- **IRR** (internal rate of return): the discount rate at which NPV equals zero. It is the project's "interest rate". Easy to communicate, but it ignores the size of the project and can mislead when cash flows change sign more than once. Use NPV to decide, IRR to communicate.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "Running total of the same project: plain cash vs discounted cash",
+        xKey: "year",
+        xLabel: "Year (0 = capex of USD 560 m at COD)",
+        yLabel: "Cumulative USD m",
+        series: [
+          { key: "plain", label: "Cumulative cash" },
+          { key: "discounted", label: "Cumulative discounted cash (6.2 %)" },
+        ],
+        data: (() => {
+          let plain = -560;
+          let discounted = -560;
+          const rows = [{ year: 0, plain, discounted }];
+          for (let t = 1; t <= 30; t++) {
+            const cash = 3003 * 0.018 * 0.996 ** (t - 1) - 7.5 * 1.02 ** (t - 1);
+            plain += cash;
+            discounted += cash / 1.062 ** t;
+            rows.push({ year: t, plain: Math.round(plain), discounted: Math.round(discounted) });
+          }
+          return rows;
+        })(),
+        caption: "Plain cash pays back in year 13; discounted cash only in year 28, and ends at the NPV of about +USD 14 m. NPV just above zero means the IRR (6.45 %) is just above the 6.2 % discount rate.",
+      },
+      {
+        kind: "md",
+        md: md`- **LCOE** (levelised cost of electricity): the constant price per MWh that would exactly pay back all lifetime costs (capex, opex) at the discount rate. Formally, discounted lifetime costs divided by **discounted** lifetime energy:
 
 $$\mathrm{LCOE} = \frac{\sum (I_t + O_t)(1+r)^{-t}}{\sum E_t (1+r)^{-t}}$$
 
 Think of it as the plant's "cost price" per MWh over its life. A bidder's tariff must sit at or above its own LCOE (plus the return its equity wants), or it loses money.
 
 **What drives LCOE for desert PV** (Track 0 base case, 1,100 MW plant, ranked by swing): **energy yield** (±10 % moves LCOE by 0.356 US¢/kWh), then **capex** and **WACC** (±10 % capex or ±1 point WACC: 0.288 each), then **opex**, then **degradation**. Solar has no fuel, so it is a capital business: the cost of money matters as much as the cost of modules.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "LCOE tornado, Track 0 base case (1.764 US¢/kWh)",
+        xKey: "driver",
+        yLabel: "Change in LCOE (US¢/kWh)",
+        series: [
+          { key: "good", label: "Favourable case" },
+          { key: "bad", label: "Unfavourable case" },
+        ],
+        data: [
+          { driver: "Yield ±10 %", good: -0.161, bad: 0.196 },
+          { driver: "Capex ±10 %", good: -0.145, bad: 0.144 },
+          { driver: "WACC ±1 pt", good: -0.141, bad: 0.147 },
+          { driver: "Opex ±20 %", good: -0.065, bad: 0.064 },
+          { driver: "Degradation 0.25 to 0.70 %/yr", good: -0.027, bad: 0.053 },
+        ],
+        caption: "Taller bars matter more: yield, capex and WACC are the big three; opex and degradation are second order.",
       },
       { kind: "widget", widget: "lcoe", props: { capexPerKw: 510, cf: 0.31, wacc: 0.062 }, caption: "Start near the Track 0 base case (about USD 510/kWac, 31 % capacity factor, 6.2 % WACC). Move WACC by one point, then capacity factor by three points: see which moves LCOE more." },
       {
@@ -573,9 +748,27 @@ In project finance the "salary" is the plant's electricity revenue, and the bank
 - **Project finance**: the SPV borrows against its own future cash flows and contracts, with little or no recourse to the sponsors. Typical Gulf solar: about **80 % debt, 20 % equity**. Debt is cheaper than equity, so more debt means a lower tariff.
 - **CFADS** (cash flow available for debt service): revenue minus opex and tax.
 - **DSCR** (debt service cover ratio) $= \text{CFADS} / \text{debt service}$ (interest plus principal) in each period. Lenders size debt so the DSCR stays above a target, for example **1.25x on P50** energy, and test a downside at about **1.0 to 1.10x on P90**.
-- **Why P90**: P50 is the yield exceeded in half of years; **P90** is the yield exceeded in 90 % of years. Lenders are paid first but never share the upside, so they care about the bad years. In the Track 0 base case a single P90 year (7 % less energy) drops the DSCR from 1.287x to 1.183x: below a 1.20x **lock-up** (dividends are blocked) but above the 1.05x default level.
-
-**Comparing tariff bids.** Bids can be flat or escalating. A low first-year tariff that rises 1.5 % a year can cost more over 30 years than a higher flat one. The fair yardstick is the **levelised tariff**: the flat tariff with the same present value of payments for the same energy, using a discount rate published in the RFP **before** bids are opened.
+- **Why P90**: P50 is the yield exceeded in half of years; **P90** is the yield exceeded in 90 % of years. Lenders are paid first but never share the upside, so they care about the bad years. In the Track 0 base case a single P90 year (7 % less energy) drops the DSCR from 1.287x to 1.183x: below a 1.20x **lock-up** (dividends are blocked) but above the 1.05x default level.`,
+      },
+      {
+        kind: "chart",
+        chart: "stacked-bar",
+        title: "Year-1 cash of the Track 0 base case: who gets paid in a P50 and a P90 year",
+        xKey: "year",
+        yLabel: "USD m",
+        series: [
+          { key: "debt", label: "Debt service (paid first)" },
+          { key: "equity", label: "Left for equity" },
+        ],
+        data: [
+          { year: "P50 year (DSCR 1.287x)", debt: 36.16, equity: 10.39 },
+          { year: "P90 year (DSCR 1.183x)", debt: 36.16, equity: 6.61 },
+        ],
+        caption: "Debt service stays the same, so 8 % less cash cuts equity's share by 36 %; below the 1.20x lock-up even that share is trapped in the SPV.",
+      },
+      {
+        kind: "md",
+        md: md`**Comparing tariff bids.** Bids can be flat or escalating. A low first-year tariff that rises 1.5 % a year can cost more over 30 years than a higher flat one. The fair yardstick is the **levelised tariff**: the flat tariff with the same present value of payments for the same energy, using a discount rate published in the RFP **before** bids are opened.
 
 Track 0 example (hypothetical bids, 30 years, constant energy, 7 % discount rate):
 
@@ -585,9 +778,44 @@ Track 0 example (hypothetical bids, 30 years, constant energy, 7 % discount rate
 | B | 3.90 | 1.5 %/yr | 4.541 |
 | C | 4.00 | 0.5 %/yr | 4.203 |
 
-The lowest headline (B) is the most expensive.
-
-**Technical scoring.** KAPP opens **technical envelopes first**; only bidders who pass have their price opened (two-envelope). For consultancy, a weighted score (**QCBS**) combines technical and financial scores, and the weights must be fixed before opening: moving from 70/30 to 80/20 can flip the winner. Finally, test an unusually **low bid**: a tariff below credible cost risks failure to reach financial close, delay, quality cuts or renegotiation.`,
+The lowest headline (B) is the most expensive.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "What MEWRE pays per kWh each year under the three bids",
+        xKey: "year",
+        xLabel: "PPA year",
+        yLabel: "fils/kWh",
+        series: [
+          { key: "A", label: "A: 4.20 flat" },
+          { key: "B", label: "B: 3.90 + 1.5 %/yr" },
+          { key: "C", label: "C: 4.00 + 0.5 %/yr" },
+        ],
+        data: Array.from({ length: 30 }, (_, k) => ({
+          year: k + 1,
+          A: 4.2,
+          B: Math.round(3.9 * 1.015 ** k * 100) / 100,
+          C: Math.round(4.0 * 1.005 ** k * 100) / 100,
+        })),
+        caption: "B starts cheapest but passes A in year 6 and reaches about 6.0 fils by year 30; levelised at 7 %, that is 4.54 against A's 4.20.",
+      },
+      {
+        kind: "md",
+        md: md`**Technical scoring.** KAPP opens **technical envelopes first**; only bidders who pass have their price opened (two-envelope). For consultancy, a weighted score (**QCBS**) combines technical and financial scores, and the weights must be fixed before opening: moving from 70/30 to 80/20 can flip the winner. Finally, test an unusually **low bid**: a tariff below credible cost risks failure to reach financial close, delay, quality cuts or renegotiation.`,
+      },
+      {
+        kind: "flow",
+        title: "From sealed envelopes to a ranking (two-envelope IPP bid)",
+        steps: [
+          { label: "Fix the rules", detail: "Discount rate, energy profile, weights and pass marks published in the RFP" },
+          { label: "Open technical envelopes", detail: "Score each bid against the pass mark" },
+          { label: "Open financial envelopes", detail: "Only for bidders who passed" },
+          { label: "Levelise every tariff", detail: "Same discount rate and energy for all bids" },
+          { label: "Rank", detail: "Lowest levelised tariff, or the weighted score where QCBS applies" },
+          { label: "Test the winner", detail: "Unusually low? Ask for the capex, yield and financing that make it work" },
+        ],
+        caption: "The first box is the one that protects MEWRE: anything decided after the envelopes open can be challenged.",
       },
       { kind: "widget", widget: "tariff-eval", caption: "Enter a flat bid and an escalating bid with a lower first-year price, then raise the discount rate: watch the escalating bid look cheaper as the rate rises, and see how technical weighting changes the ranking." },
       {
@@ -678,13 +906,7 @@ In Kuwait, MEWRE is the cook, **CAPT** (or **KAPP** for partnership projects) is
 - **MEWRE** (your sector) writes the need, budget certificate, specifications, Bill of Quantities and evaluation criteria, and runs the **technical evaluation**.
 - **CAPT** owns the procedure: issues the tender, answers clarifications through addenda, receives bids with a **bid bond**, opens them publicly, and makes the award decision. The usual rule is the **lowest price once technical compliance is established**.
 - The **State Audit Bureau** gives **prior approval** before signature for contracts above a reported **KD 100,000** (Law 30/1964). Signing without it is a violation.
-- The winner provides a **final guarantee** of at least 10 % of contract value.
-
-**Law 94/2026** (gazetted 27 September 2026, effective about three months later, so around 27 December 2026) lets ministries contract directly up to **KD 1 m per financial year for the same items**, bans local and commission agents, and adds local content: at least **30 % of products** from the Industrial Guide and **30 % of works subcontracted** locally. It does **not** remove Audit Bureau review, and splitting a need into smaller orders to stay below the limit is still a violation. During your trial week the old KD 75,000 rule still applies.
-
-**Partnership projects (KAPP).** IPPs go through **KAPP** under PPP Law 116/2014, not CAPT: MEWRE request, KAPP feasibility, Higher Committee approval, RFQ, RFP (technical envelopes first, then financial), preferred bidder, Higher Committee again, Audit Bureau, PPA signing, financial close. The **Fatwa and Legislation Department** reviews legal terms (its exact stage is not confirmed).
-
-**Delays, and how PMs handle them.** Track 0's evidence: bid-deadline extensions are the norm (Zone 1 RFP: 14 Sep 2025 to 15 Jan 2026), post-bid approvals take months, and the 400 kV line took about 11 months from lowest bid to award, and went to a higher bidder. Experienced PMs: map the committee calendar (Ramadan, summer leave), pre-clear files with legal affairs and the Audit Bureau liaison, prepare the next gate in parallel, use standard documents, track bid-validity expiry, and escalate with a cost-of-delay number. They never start work before approval.`,
+- The winner provides a **final guarantee** of at least 10 % of contract value.`,
       },
       {
         kind: "flow",
@@ -701,7 +923,40 @@ In Kuwait, MEWRE is the cook, **CAPT** (or **KAPP** for partnership projects) is
         ],
         caption: "Each box is a place where a file can be returned with observations; most delay comes from returns and missed committee dates, not from the work itself.",
       },
+      {
+        kind: "md",
+        md: md`**Law 94/2026** (gazetted 27 September 2026, effective about three months later, so around 27 December 2026) lets ministries contract directly up to **KD 1 m per financial year for the same items**, bans local and commission agents, and adds local content: at least **30 % of products** from the Industrial Guide and **30 % of works subcontracted** locally. It does **not** remove Audit Bureau review, and splitting a need into smaller orders to stay below the limit is still a violation. During your trial week the old KD 75,000 rule still applies.
+
+| | Now (Law 49/2016) | After Law 94/2026 |
+|---|---|---|
+| Purchase without CAPT | Up to KD 75,000 | Up to KD 1 m per financial year, same items |
+| Audit Bureau prior review | Above a reported KD 100,000 | Still applies |
+| Splitting a need | Violation | Still a violation |
+| In force | Yes, during your trial week | About 27 Dec 2026 |
+
+*Only the first row loosens; prior review and the splitting ban stay (the new law also adds local content and bans agents).*
+
+**Partnership projects (KAPP).** IPPs go through **KAPP** under PPP Law 116/2014, not CAPT: MEWRE request, KAPP feasibility, Higher Committee approval, RFQ, RFP (technical envelopes first, then financial), preferred bidder, Higher Committee again, Audit Bureau, PPA signing, financial close. The **Fatwa and Legislation Department** reviews legal terms (its exact stage is not confirmed).`,
+      },
+      {
+        kind: "flow",
+        title: "A solar IPP through KAPP (PPP Law 116/2014)",
+        steps: [
+          { label: "MEWRE request", detail: "Need statement, site, grid connection concept" },
+          { label: "KAPP feasibility", detail: "Technical, financial, legal; value for money; risk allocation" },
+          { label: "Higher Committee approval", detail: "Chaired by the Minister of Finance" },
+          { label: "RFQ, then RFP", detail: "Prequalify developers; RFP opens technical envelopes first, then financial" },
+          { label: "Preferred bidder", detail: "Evaluation report and recommendation" },
+          { label: "Higher Committee again, then Audit Bureau", detail: "Fatwa reviews legal terms (stage not confirmed)" },
+          { label: "PPA signing, financial close", detail: "MEWRE signs as offtaker; lenders' conditions precedent met" },
+        ],
+        caption: "A second Higher Committee gate and the Audit Bureau come after the bids are in: the stretch from preferred bidder to financial close is where Track 0 sees recurring delay.",
+      },
       { kind: "widget", widget: "institution-map", caption: "Click each body to see who approves what: MEWRE needs and evaluates, CAPT or KAPP procures, the Higher Committee, Audit Bureau and Fatwa approve or review." },
+      {
+        kind: "md",
+        md: md`**Delays, and how PMs handle them.** Track 0's evidence: bid-deadline extensions are the norm (Zone 1 RFP: 14 Sep 2025 to 15 Jan 2026), post-bid approvals take months, and the 400 kV line took about 11 months from lowest bid to award, and went to a higher bidder. Experienced PMs: map the committee calendar (Ramadan, summer leave), pre-clear files with legal affairs and the Audit Bureau liaison, prepare the next gate in parallel, use standard documents, track bid-validity expiry, and escalate with a cost-of-delay number. They never start work before approval.`,
+      },
       {
         kind: "callout",
         tone: "kuwait",
