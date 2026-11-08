@@ -18,7 +18,7 @@ export function trackOfModuleId(moduleId: string): string {
 
 /** True for paths that only exist in English (every track except Track 0). */
 export function isEnglishOnlyPath(pathname: string): boolean {
-  if (/^\/formulas\/[a-z]+/.test(pathname)) return true;
+  if (/^\/formulas\/[a-z]+/.test(pathname) || /^\/trial(\/|$)/.test(pathname)) return true;
   const m = pathname.match(/^\/(?:learn|print)\/([a-z]+\d+)/) ?? pathname.match(/^\/tracks\/([a-z]+)/);
   if (!m) return false;
   const key = m[1];

@@ -116,3 +116,30 @@ describe("droop", () => {
     expect(droopResponse({ freqHz: 49, droopPct: 4, pRated: 100, pSetpoint: 90, pAvailable: 95 })).toBe(95);
   });
 });
+
+import { acEnergySplit, acWaveforms } from "./power";
+
+describe("AC waveforms and the reactive slosh", () => {
+  it("average instantaneous power equals cos φ and p = v·i", () => {
+    for (const phi of [0, 36.87, 60, 90, -45]) {
+      const pts = acWaveforms(phi, 4800, 1).slice(0, -1);
+      const avg = pts.reduce((s, x) => s + x.p, 0) / pts.length;
+      expect(avg).toBeCloseTo(Math.cos((phi * Math.PI) / 180), 3);
+      for (const x of pts.slice(0, 50)) expect(x.p).toBeCloseTo(x.v * x.i, 12);
+    }
+  });
+
+  it("splits energy into forward and returned with net = P", () => {
+    const r0 = acEnergySplit(0);
+    expect(r0.returned).toBeCloseTo(0, 6);
+    expect(r0.forward).toBeCloseTo(1, 3);
+    const r90 = acEnergySplit(90);
+    expect(r90.net).toBeCloseTo(0, 3);
+    expect(r90.forward).toBeCloseTo(r90.returned, 3);
+    const pf08 = acEnergySplit(Math.acos(0.8) * (180 / Math.PI));
+    expect(pf08.net).toBeCloseTo(0.8, 3);
+    expect(pf08.q).toBeCloseTo(0.6, 6);
+    expect(pf08.returned).toBeGreaterThan(0.02);
+    expect(pf08.returned).toBeLessThan(0.04);
+  });
+});

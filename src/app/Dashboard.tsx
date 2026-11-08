@@ -90,6 +90,19 @@ export function Dashboard() {
         )}
       </div>
 
+      {lang === "en" && (
+        <Link href="/trial" className="flex items-center gap-3 rounded-xl border border-accent bg-accent-soft/60 px-4 py-3 hover:bg-accent-soft">
+          <span className="text-2xl" aria-hidden>
+            ⏱
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block font-semibold">Trial week plan: 7 days, 2 to 3 hours a day</span>
+            <span className="block text-sm text-muted">Electricity from zero up to contracts and the ministry: short plain-language explainers, a visual and three questions each.</span>
+          </span>
+          <span className="text-accent">{fwd(lang)}</span>
+        </Link>
+      )}
+
       <Link href={href("/crash")} className="flex items-center gap-3 rounded-xl border border-accent/50 bg-accent-soft/40 px-4 py-3 hover:bg-accent-soft/70">
         <span className="text-2xl" aria-hidden>
           ⚡

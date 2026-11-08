@@ -80,7 +80,7 @@ function groups(due: number, errors: number, lang: Lang): { title: string; items
           { href: "/learn", label: "All tracks", icon: "layers" },
           ...TRACK_META.flatMap((t): Item[] => [
             { href: `/tracks/${t.id}`, label: t.short, icon: t.icon },
-            ...(t.id === "mewre" ? [{ href: "/crash", label: "Crash course", icon: "bolt" }] : []),
+            ...(t.id === "mewre" ? [{ href: "/trial", label: "Trial week", icon: "timer" }, { href: "/crash", label: "Crash course", icon: "bolt" }] : []),
           ]),
         ];
   const raw: { title: string; items: Item[] }[] = [

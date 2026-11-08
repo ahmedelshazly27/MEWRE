@@ -25,6 +25,7 @@ export const WIDGETS = {
   "iv-curve": "PV single-diode I-V and P-V curves; sliders for irradiance and cell temperature. Props: { irradiance?: number; temperature?: number }",
   "sun-path": "Sun elevation/azimuth through a day at a latitude (default Kuwait 29.3°N) + single-axis tracker angle and POA irradiance vs fixed tilt. Props: { latitude?: number; dayOfYear?: number }",
   "kuwait-climate": "Monthly GHI, DNI and mean/max ambient temperature for Shagaya/Kuwait (indicative climatology). Props: { metric?: 'ghi'|'dni'|'temp' }",
+  "ac-power": "Voltage, current and instantaneous power p = v·i over two cycles; slide the phase angle or pick a load (heater, AC compressor, pure coil, capacitor bank) to see energy delivered vs handed back, P, Q, S, power factor and extra current. Props: { phi?: number (degrees, positive = lagging) }",
   "power-triangle": "P, Q, S and power factor phasor diagram with sliders; shows capacitor size needed to correct PF. Props: { p?: number; pf?: number }",
   "three-phase": "Three-phase voltage waveforms, phasors, line vs phase voltage, balanced vs unbalanced sum. Props: { unbalance?: number }",
   "load-curve": "Kuwait-style summer vs winter daily load profile with PV overlay showing net load (duck curve). Props: { pvMW?: number; season?: 'summer'|'winter' }",

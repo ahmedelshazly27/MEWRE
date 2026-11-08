@@ -140,3 +140,38 @@ export function droopResponse(opts: {
   const dp = (-(eff / fNom) / (droopPct / 100)) * pRated;
   return Math.max(0, Math.min(pAvail, pSetpoint + dp));
 }
+
+/**
+ * Single-phase AC with RMS voltage and current of 1 and current lagging voltage by phi (degrees; negative = leading).
+ * v(t) = √2 sin ωt, i(t) = √2 sin(ωt − φ), so p(t) = v·i = cos φ − cos(2ωt − φ).
+ * Average power = cos φ (real power P per unit); the oscillating part has amplitude 1 (= S), and its
+ * reactive share Q = sin φ never does work on average.
+ */
+export function acWaveforms(phiDeg: number, samples = 240, cycles = 2) {
+  const phi = (phiDeg * Math.PI) / 180;
+  const pts: { t: number; v: number; i: number; p: number }[] = [];
+  for (let k = 0; k <= samples; k++) {
+    const wt = (k / samples) * cycles * 2 * Math.PI;
+    const v = Math.SQRT2 * Math.sin(wt);
+    const i = Math.SQRT2 * Math.sin(wt - phi);
+    pts.push({ t: wt / (2 * Math.PI), v, i, p: v * i });
+  }
+  return pts;
+}
+
+/**
+ * Energy per cycle flowing to the load (forward) and back to the source (returned), per unit, for the p(t) above.
+ * Forward − returned = cos φ (net work per cycle, normalised to one cycle of unit time).
+ */
+export function acEnergySplit(phiDeg: number, steps = 20000) {
+  const phi = (phiDeg * Math.PI) / 180;
+  let fwd = 0;
+  let back = 0;
+  for (let k = 0; k < steps; k++) {
+    const wt = ((k + 0.5) / steps) * 2 * Math.PI;
+    const p = Math.cos(phi) - Math.cos(2 * wt - phi);
+    if (p >= 0) fwd += p / steps;
+    else back -= p / steps;
+  }
+  return { forward: fwd, returned: back, net: fwd - back, p: Math.cos(phi), q: Math.sin(phi), pf: Math.abs(Math.cos(phi)) };
+}

@@ -1,3 +1,4 @@
+import { EXPLAINERS } from "@/content/trial";
 import fs from "node:fs";
 import path from "node:path";
 import { TRACKS, index, liveModules, trackOfModule } from "@/lib/content";
@@ -39,6 +40,8 @@ export function GET() {
     ...TRACKS.map((t) => `/tracks/${t.id}`),
     ...TRACKS.filter((t) => t.id !== "mewre").map((t) => `/tracks/${t.id}/concepts`),
     ...TRACKS.filter((t) => t.id !== "mewre").map((t) => `/formulas/${t.id}`),
+    "/trial",
+    ...EXPLAINERS.map((e) => `/trial/${e.id}`),
     ...moduleRoutes(liveModules("en")),
     ...scenarios.map((s) => `/scenarios/${s.scenario.id}`),
   ];

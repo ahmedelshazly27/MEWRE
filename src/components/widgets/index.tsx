@@ -32,6 +32,7 @@ const REGISTRY: Record<WidgetId, WidgetComponent> = {
   "iv-curve": dynamic(() => import("./IvCurve"), { ssr: false, loading: Loading }),
   "sun-path": dynamic(() => import("./SunPath"), { ssr: false, loading: Loading }),
   "kuwait-climate": dynamic(() => import("./KuwaitClimate"), { ssr: false, loading: Loading }),
+  "ac-power": dynamic(() => import("./AcPower"), { ssr: false, loading: Loading }),
   "power-triangle": dynamic(() => import("./PowerTriangle"), { ssr: false, loading: Loading }),
   "three-phase": dynamic(() => import("./ThreePhase"), { ssr: false, loading: Loading }),
   "load-curve": dynamic(() => import("./LoadCurve"), { ssr: false, loading: Loading }),
