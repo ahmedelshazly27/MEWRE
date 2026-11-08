@@ -57,6 +57,7 @@ Here is the part most engineers miss. On transmission lines, **moving reactive p
         ],
         caption: "Follow the chain from the motors to the sagging voltage, then see where the fix breaks it: a local Q source means the reactive current no longer has to cross the line.",
       },
+      { kind: "widget", widget: "line-drop", props: { p: 0.6, q: 0.4, xr: 10 }, caption: "Push Q up, then P up: reactive power drops the voltage about ten times faster on a line with X ten times R. Then add the capacitor bank and watch the voltage come back." },
       {
         kind: "md",
         md: md`So the grid needs reactive power **sources near the loads**: generators, capacitor banks, SVCs and STATCOMs, and today **inverters of PV and BESS plants**. That is why the grid code makes a PV plant supply or absorb Q at its connection point, and why inverters are rated in **MVA larger than the plant's MW**: they need headroom to deliver Q even at full sunshine.`,
@@ -343,6 +344,7 @@ Follow the energy on the plant drawing below:
 4. **Main transformer** at the plant's high-voltage substation: 33 kV to **400 kV**.
 5. **400 kV line** to the grid (for Shagaya, the Shagaya to Al-Wafra 400 kV line that MEWRE procured separately).`,
       },
+      { kind: "widget", widget: "transformer", props: { preset: "400-33", mva: 300 }, caption: "A 300 MVA, 400/33 kV unit: about 430 A on the 400 kV side and over 5,000 A on the 33 kV side for the same power. That current is why the 33 kV side needs the heavy cables and switchgear." },
       { kind: "widget", widget: "pv-sld", caption: "Click the inverter transformer and the main HV transformer. For each, ask two questions: what voltages does it join, and at what ambient temperature is its MVA rating guaranteed?" },
       {
         kind: "callout",

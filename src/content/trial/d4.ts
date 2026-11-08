@@ -31,18 +31,85 @@ That is CSP: mirrors make heat, heat makes steam, steam makes electricity, and a
 **Two main designs** concentrate the sun:
 
 - **Parabolic trough** (the workhorse, about 75 % of installed CSP worldwide). Long curved mirrors in north-south rows track the sun east to west and focus it onto a **receiver tube** (a black steel pipe inside a vacuum glass tube). A **heat transfer fluid (HTF)**, usually synthetic oil, is heated from about 293 °C to 393 °C. Decades of bankable operating history.
-- **Solar tower**. A field of flat, individually tracking mirrors (**heliostats**) focuses onto a receiver at the top of a tower, heating **molten salt** to about 565 °C. Hotter means a more efficient turbine and about three times more energy stored per tonne of salt, but fewer reference plants, and the hot tank has been the weak point (Noor III in Morocco and Crescent Dunes in the US both had long storage-related outages).
+- **Solar tower**. A field of flat, individually tracking mirrors (**heliostats**) focuses onto a receiver at the top of a tower, heating **molten salt** to about 565 °C. Hotter means a more efficient turbine and about three times more energy stored per tonne of salt, but fewer reference plants, and the hot tank has been the weak point (Noor III in Morocco and Crescent Dunes in the US both had long storage-related outages).`,
+      },
+      {
+        kind: "md",
+        md: md`| | Parabolic trough | Solar tower |
+|---|---|---|
+| Concentrator | Curved mirrors in north-south rows, tracking east to west | Field of flat heliostats around a tower |
+| Fluid heated | Synthetic oil, 293 to 393 °C | Molten salt, about 290 to 565 °C |
+| Turbine cycle efficiency | About 37 to 38 % | About 41 to 44 % |
+| Heat stored per tonne of salt | 1× | About 3× |
+| Track record | About 75 % of installed CSP, decades of bankable operation | Fewer reference plants; hot-tank outages (Noor III, Crescent Dunes) |`,
+      },
+      {
+        kind: "md",
+        md: md`**Thermal energy storage (TES)**: two big insulated tanks of **solar salt** (60 % sodium nitrate, 40 % potassium nitrate). Daytime surplus heat moves salt from the cold tank (about 290 °C) to the hot tank; in the evening the hot salt gives its heat back to make steam. The stored heat is simply $E = m\,c_p\,\Delta T$, so a bigger temperature difference stores more. Salt freezes at about 238 °C, so pipes need **heat tracing** and a freeze-recovery procedure.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "A trough plant's day with storage (illustrative summer day)",
+        xKey: "hour",
+        xLabel: "Local time",
+        yLabel: "%",
+        series: [
+          { key: "tank", label: "Hot tank (% full)" },
+          { key: "turbine", label: "Turbine output (% of rated)" },
+        ],
+        data: [
+          { hour: "06:00", tank: 0, turbine: 0 },
+          { hour: "07:00", tank: 0, turbine: 0 },
+          { hour: "08:00", tank: 5, turbine: 100 },
+          { hour: "09:00", tank: 15, turbine: 100 },
+          { hour: "10:00", tank: 28, turbine: 100 },
+          { hour: "11:00", tank: 42, turbine: 100 },
+          { hour: "12:00", tank: 56, turbine: 100 },
+          { hour: "13:00", tank: 70, turbine: 100 },
+          { hour: "14:00", tank: 82, turbine: 100 },
+          { hour: "15:00", tank: 92, turbine: 100 },
+          { hour: "16:00", tank: 98, turbine: 100 },
+          { hour: "17:00", tank: 100, turbine: 100 },
+          { hour: "18:00", tank: 100, turbine: 100 },
+          { hour: "19:00", tank: 89, turbine: 100 },
+          { hour: "20:00", tank: 78, turbine: 100 },
+          { hour: "21:00", tank: 66, turbine: 100 },
+          { hour: "22:00", tank: 55, turbine: 100 },
+          { hour: "23:00", tank: 44, turbine: 100 },
+          { hour: "00:00", tank: 33, turbine: 100 },
+          { hour: "01:00", tank: 21, turbine: 100 },
+          { hour: "02:00", tank: 10, turbine: 100 },
+          { hour: "03:00", tank: 0, turbine: 0 },
+          { hour: "04:00", tank: 0, turbine: 0 },
+        ],
+        caption: "The mirror field runs the turbine and fills the hot tank during the day; after sunset the tank drains and the turbine keeps going at full load until about 03:00 (1,200 MWh_th × 0.37 ÷ 50 MW ≈ 9 h). Shape only, not Shagaya data.",
+      },
+      { kind: "widget", widget: "thermal-storage", props: { massTonnes: 30000 }, caption: "Click the Trough preset and set the turbine to 50 MWe: about 30,000 t of salt stores roughly 1,200 MWh_th, close to 9 hours at full load (our estimate, not a Shagaya figure). Then click Tower: the same salt holds almost three times the energy." },
+      {
+        kind: "md",
+        md: md`**Power block**: a **steam generator**, a **steam turbine** and a synchronous generator, exactly like a conventional steam station. Start-up takes 30 to 90 minutes, and the spinning generator gives the grid real inertia and fault current.
 
-**Thermal energy storage (TES)**: two big insulated tanks of **solar salt** (60 % sodium nitrate, 40 % potassium nitrate). Daytime surplus heat moves salt from the cold tank (about 290 °C) to the hot tank; in the evening the hot salt gives its heat back to make steam. The stored heat is simply $E = m\,c_p\,\Delta T$, so a bigger temperature difference stores more. Salt freezes at about 238 °C, so pipes need **heat tracing** and a freeze-recovery procedure.
-
-**Power block**: a **steam generator**, a **steam turbine** and a synchronous generator, exactly like a conventional steam station. Start-up takes 30 to 90 minutes, and the spinning generator gives the grid real inertia and fault current.
-
-**Cooling**: the steam must be condensed. **Dry cooling** (air-cooled condensers) uses about 0.2 to 0.4 m³ of water per MWh instead of 3 to 3.5 m³ for wet cooling, but loses up to 7 to 10 % of output on the hottest afternoons (2 to 5 % over a year).
-
-**CSP uses only DNI** (direct normal irradiance, the beam coming straight from the sun's disc). Mirrors cannot focus diffuse light, and dust and haze scatter the direct beam into diffuse light. Receiver heat losses stay roughly fixed, so a 10 % shortfall in annual DNI means roughly 12 to 15 % less electricity. KISR found that satellite DNI data diverge significantly from ground measurements in Kuwait, so any CSP yield must rest on **ground-measured DNI**.`,
+**Cooling**: the steam must be condensed. **Dry cooling** (air-cooled condensers) uses about 0.2 to 0.4 m³ of water per MWh instead of 3 to 3.5 m³ for wet cooling, but loses up to 7 to 10 % of output on the hottest afternoons (2 to 5 % over a year).`,
       },
       { kind: "diagram", diagram: "parabolic-trough", caption: "Follow the heat: mirror, receiver tube, oil loop, then either the hot salt tank (store) or the steam generator, turbine and condenser. Storage sits between collecting and generating, which is the whole point of CSP." },
-      { kind: "widget", widget: "thermal-storage", props: { massTonnes: 30000 }, caption: "Click the Trough preset and set the turbine to 50 MWe: about 30,000 t of salt stores roughly 1,200 MWh_th, close to 9 hours at full load (our estimate, not a Shagaya figure). Then click Tower: the same salt holds almost three times the energy." },
+      {
+        kind: "md",
+        md: md`**CSP uses only DNI** (direct normal irradiance, the beam coming straight from the sun's disc). Mirrors cannot focus diffuse light, and dust and haze scatter the direct beam into diffuse light. Receiver heat losses stay roughly fixed, so a 10 % shortfall in annual DNI means roughly 12 to 15 % less electricity. KISR found that satellite DNI data diverge significantly from ground measurements in Kuwait, so any CSP yield must rest on **ground-measured DNI**.`,
+      },
+      {
+        kind: "flow",
+        title: "Why dust hurts CSP more than it hurts PV",
+        steps: [
+          { label: "Dust and haze", detail: "Scatter the direct beam into diffuse light" },
+          { label: "Less DNI on the mirrors", detail: "Diffuse light cannot be focused" },
+          { label: "Less heat at the receiver", detail: "The collected heat falls with DNI" },
+          { label: "Receiver losses stay put", detail: "The fixed heat loss takes a bigger share" },
+          { label: "Electricity falls faster", detail: "10 % less DNI ≈ 12 to 15 % less electricity" },
+          { label: "Insist on ground DNI", detail: "KISR: satellite DNI diverges significantly in Kuwait" },
+        ],
+        caption: "The fixed receiver loss is the amplifier: a shortfall in sunlight becomes a bigger shortfall in MWh.",
+      },
       {
         kind: "md",
         md: md`### Shagaya and what operators have learned
@@ -157,13 +224,19 @@ For a short evening, the batteries win. For hot water all night, the big tank st
 1. **Daytime energy** for the 11:00 to 17:00 summer peak (PV does this natively and cheaply).
 2. **Evening and night energy** after sunset (needs storage or conventional plant).
 3. **Firm capacity**: will the plant reliably be there at the annual peak hour?
-4. **Grid support**: inertia, fault current, frequency and voltage control.
+4. **Grid support**: inertia, fault current, frequency and voltage control.`,
+      },
+      { kind: "widget", widget: "load-curve", props: { season: "summer", pvMW: 6000 }, caption: "Indicative summer day with 6,000 MW of PV: service 1 is covered, but the net load (load minus PV) now peaks around sunset and stays high into the night. Services 2 and 3 are what storage has to buy." },
+      {
+        kind: "md",
+        md: md`**Compare like with like.** One MWh at 13:00 in April is worth far less than one MWh at 21:00 in August. The fair test is the cost of delivering the **same profile**, for example "200 MW from 18:00 for 6 hours, every day".
 
-**Compare like with like.** One MWh at 13:00 in April is worth far less than one MWh at 21:00 in August. The fair test is the cost of delivering the **same profile**, for example "200 MW from 18:00 for 6 hours, every day".
-
-**Why duration decides.** A CSP plant's cost is mostly the mirror field and the power block; each extra hour of salt storage is cheap. A battery's cost rises almost in step with its MWh. So at 2 to 4 h batteries win comfortably; somewhere around **8 to 12 h** CSP's cheap storage starts to compete. As battery prices fall, that crossover keeps moving out.
-
-**The other factors**, roughly for a 100 MW class plant:
+**Why duration decides.** A CSP plant's cost is mostly the mirror field and the power block; each extra hour of salt storage is cheap. A battery's cost rises almost in step with its MWh. So at 2 to 4 h batteries win comfortably; somewhere around **8 to 12 h** CSP's cheap storage starts to compete. As battery prices fall, that crossover keeps moving out.`,
+      },
+      { kind: "widget", widget: "csp-vs-pvbess", caption: "Start at 200 MW for 6 h and compare the two costs. Then drag the duration towards 12 to 14 h and raise the BESS capex: watch where the gap closes. These are screening numbers, not quotes." },
+      {
+        kind: "md",
+        md: md`**The other factors**, roughly for a 100 MW class plant:
 
 | | CSP with storage | PV + BESS |
 |---|---|---|
@@ -174,7 +247,19 @@ For a short evening, the batteries win. For hot water all night, the big tank st
 | Technology risk | Moderate to high (tanks, receivers) | Low to moderate (fire safety, degradation) |
 | Supply chain | Few suppliers | Deep and competitive |`,
       },
-      { kind: "widget", widget: "csp-vs-pvbess", caption: "Start at 200 MW for 6 h and compare the two costs. Then drag the duration towards 12 to 14 h and raise the BESS capex: watch where the gap closes. These are screening numbers, not quotes." },
+      {
+        kind: "matrix",
+        title: "Where each option fits",
+        xAxis: ["Short storage (2 to 4 h)", "Long storage (10 h or more)"],
+        yAxis: ["Energy only", "Energy plus inertia and fault current"],
+        cells: [
+          { label: "PV + BESS, grid-forming", detail: "Fast response covers most support needs; check what the grid study asks for" },
+          { label: "CSP's natural niche", detail: "Cheap long storage plus a spinning generator with real inertia and fault current" },
+          { label: "PV + BESS wins clearly", detail: "Cheaper, faster to build, modular, deep supply chain" },
+          { label: "The contest zone", detail: "Around 8 to 12 h CSP starts to compete on cost; the crossover moves out as battery prices fall" },
+        ],
+        caption: "Read the need first (how many hours, what grid support), then the box. MEWRE's reported battery plan (about 4 h) sits bottom-left.",
+      },
       {
         kind: "flow",
         title: "A technology decision a ministry can defend",
@@ -272,6 +357,36 @@ Hold your hand out of a car window. At 50 km/h you feel a push; at 100 km/h the 
 That single fact explains why wind people obsess over a few tenths of a metre per second.`,
       },
       {
+        kind: "chart",
+        chart: "line",
+        title: "Power in the wind per square metre of rotor (W/m²)",
+        xKey: "v",
+        xLabel: "Wind speed (m/s)",
+        yLabel: "W/m²",
+        series: [
+          { key: "cool", label: "Air at 15 °C (1.225 kg/m³)" },
+          { key: "hot", label: "Air at 45 °C (about 1.11 kg/m³)" },
+        ],
+        data: [
+          { v: 0, cool: 0, hot: 0 },
+          { v: 1, cool: 1, hot: 1 },
+          { v: 2, cool: 5, hot: 4 },
+          { v: 3, cool: 17, hot: 15 },
+          { v: 4, cool: 39, hot: 36 },
+          { v: 5, cool: 77, hot: 69 },
+          { v: 6, cool: 132, hot: 120 },
+          { v: 7, cool: 210, hot: 190 },
+          { v: 8, cool: 314, hot: 284 },
+          { v: 9, cool: 447, hot: 405 },
+          { v: 10, cool: 612, hot: 555 },
+          { v: 11, cool: 815, hot: 739 },
+          { v: 12, cool: 1058, hot: 959 },
+          { v: 13, cool: 1346, hot: 1219 },
+          { v: 14, cool: 1681, hot: 1523 },
+        ],
+        caption: "Not a straight line but a steepening curve: from 5 to 10 m/s the power goes from 77 to 613 W/m², 8 times. The hot-air curve sits about 9 % lower at every speed.",
+      },
+      {
         kind: "md",
         md: md`### What is actually happening
 
@@ -293,6 +408,19 @@ $$P = \tfrac12 \rho A v^3$$
 
 Because of the cube, the windy hours count far more than the calm ones. That is why the **cube of the average speed** badly underestimates energy: at Shagaya's 7.9 m/s, $\tfrac12 \rho \bar v^3$ gives about 271 W/m², while the correct average of the cubes (Weibull, k = 2) gives about 518 W/m², nearly double.`,
       },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "Shagaya's 7.9 m/s mean: two ways to compute power density (W/m²)",
+        xKey: "method",
+        yLabel: "W/m²",
+        series: [{ key: "wm2", label: "W/m²" }],
+        data: [
+          { method: "Cube of the average speed", wm2: 271 },
+          { method: "Average of the cubes (Weibull, k = 2)", wm2: 518 },
+        ],
+        caption: "Same site, same mean speed, same air density: the honest method gives nearly twice the power, because the windy hours count cubed.",
+      },
       { kind: "widget", widget: "weibull", props: { k: 2, c: 8.9 }, caption: "c = 8.9 m/s with k = 2 gives a mean of about 7.9 m/s, Shagaya's long-term hub-height mean. Move k between 1.6 and 3: the mean barely moves, the energy does. Then set air temperature to 45 °C. The turbine is a generic 4.2 MW machine, not Shagaya's." },
       {
         kind: "md",
@@ -302,6 +430,7 @@ Kuwait's wind is strongly **seasonal**: the summer **shamal** (north-westerly) b
 
 The desert adds three design issues: **heat** (standard turbines give full power only up to about 35 to 40 °C, so specify a hot-climate package rated at least 45 °C), **sand erosion** of blade leading edges (costs 1 to 5 % of annual energy, so specify leading-edge protection) and **dust** in gearboxes, filters and seals. The 2014 masterplan foresaw 70 MW (Phase 2) and 127 MW (Phase 3) of wind; neither was procured.`,
       },
+      { kind: "diagram", diagram: "wind-turbine", caption: "Where the desert bites: blade leading edges (sand erosion), the gearbox and generator in the nacelle (dust, heat), and the anemometer and yaw system that keep the rotor turned into the wind." },
       {
         kind: "callout",
         tone: "kuwait",
@@ -399,26 +528,95 @@ $$\text{duration (h)} = \frac{\text{energy (MWh)}}{\text{power (MW)}}, \qquad \t
 
 A 4-hour system runs at **0.25C**, a 2-hour system at 0.5C, a 1-hour system at 1C. Lower C-rate means less heat and slower aging, but more cells per MW.
 
-**State of charge (SoC)** is how full the battery is. The battery management system keeps it inside a window, for example 2.5 to 97.5 %; the width of that window (here 95 %) is the **depth of discharge (DoD)**. Usable energy = nameplate × DoD × state of health.
+**State of charge (SoC)** is how full the battery is. The battery management system keeps it inside a window, for example 2.5 to 97.5 %; the width of that window (here 95 %) is the **depth of discharge (DoD)**. Usable energy = nameplate × DoD × state of health.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "State of charge of a 4-hour battery over a summer day (illustrative)",
+        xKey: "hour",
+        xLabel: "Local time",
+        yLabel: "SoC (%)",
+        series: [
+          { key: "soc", label: "State of charge" },
+          { key: "top", label: "Upper limit (97.5 %)" },
+          { key: "bottom", label: "Lower limit (2.5 %)" },
+        ],
+        data: [
+          { hour: "00:00", soc: 2.5, top: 97.5, bottom: 2.5 },
+          { hour: "01:00", soc: 2.5, top: 97.5, bottom: 2.5 },
+          { hour: "02:00", soc: 2.5, top: 97.5, bottom: 2.5 },
+          { hour: "03:00", soc: 2.5, top: 97.5, bottom: 2.5 },
+          { hour: "04:00", soc: 2.5, top: 97.5, bottom: 2.5 },
+          { hour: "05:00", soc: 2.5, top: 97.5, bottom: 2.5 },
+          { hour: "06:00", soc: 2.5, top: 97.5, bottom: 2.5 },
+          { hour: "07:00", soc: 2.5, top: 97.5, bottom: 2.5 },
+          { hour: "08:00", soc: 2.5, top: 97.5, bottom: 2.5 },
+          { hour: "09:00", soc: 2.5, top: 97.5, bottom: 2.5 },
+          { hour: "10:00", soc: 2.5, top: 97.5, bottom: 2.5 },
+          { hour: "11:00", soc: 21.5, top: 97.5, bottom: 2.5 },
+          { hour: "12:00", soc: 40.5, top: 97.5, bottom: 2.5 },
+          { hour: "13:00", soc: 59.5, top: 97.5, bottom: 2.5 },
+          { hour: "14:00", soc: 78.5, top: 97.5, bottom: 2.5 },
+          { hour: "15:00", soc: 97.5, top: 97.5, bottom: 2.5 },
+          { hour: "16:00", soc: 97.5, top: 97.5, bottom: 2.5 },
+          { hour: "17:00", soc: 97.5, top: 97.5, bottom: 2.5 },
+          { hour: "18:00", soc: 97.5, top: 97.5, bottom: 2.5 },
+          { hour: "19:00", soc: 73.8, top: 97.5, bottom: 2.5 },
+          { hour: "20:00", soc: 50.0, top: 97.5, bottom: 2.5 },
+          { hour: "21:00", soc: 26.2, top: 97.5, bottom: 2.5 },
+          { hour: "22:00", soc: 2.5, top: 97.5, bottom: 2.5 },
+          { hour: "23:00", soc: 2.5, top: 97.5, bottom: 2.5 },
+          { hour: "24:00", soc: 2.5, top: 97.5, bottom: 2.5 },
+        ],
+        caption: "Charge from PV between 10:00 and 15:00, sit full through the afternoon, empty the tank between 18:00 and 22:00. The SoC never leaves the window: the gap between the two limit lines is the DoD (95 %).",
+      },
+      {
+        kind: "md",
+        md: md`**Round-trip efficiency (RTE)** = energy out ÷ energy in. The cells alone lose only 4 to 6 %, but every step to the grid loses a little more, and in a 50 °C summer the air conditioning (**auxiliaries**) runs all day.
 
-**Round-trip efficiency (RTE)** = energy out ÷ energy in. The cells alone lose only 4 to 6 %, but every step to the grid loses a little more, and in a 50 °C summer the air conditioning (**auxiliaries**) runs all day.
-
-**The boundary matters most.** Energy flows cells → PCS → transformers → **point of interconnection (POI)** revenue meter. A plant sold as "1,000 MWh" (DC nameplate) can deliver about 905 MWh at the POI. MEWRE only cares about the POI.
-
-**The three brains**:
+**The boundary matters most.** Energy flows cells → PCS → transformers → **point of interconnection (POI)** revenue meter. A plant sold as "1,000 MWh" (DC nameplate) can deliver about 905 MWh at the POI. MEWRE only cares about the POI.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "A battery sold as \"1,000 MWh\": what reaches the meter (Track 0 worked example, MWh)",
+        xKey: "step",
+        yLabel: "MWh",
+        series: [{ key: "mwh", label: "MWh" }],
+        data: [
+          { step: "DC nameplate", mwh: 1003.2 },
+          { step: "Usable (95 % SoC window)", mwh: 953 },
+          { step: "After cell losses", mwh: 928.9 },
+          { step: "At the POI meter", mwh: 904.9 },
+        ],
+        caption: "Each step loses a little and the bars step down: about 98 MWh gone before the meter, plus HVAC auxiliaries drawn from the grid on top. Only the last bar is what MEWRE buys.",
+      },
+      {
+        kind: "md",
+        md: md`**The three brains**:
 
 - **BMS** (battery management system): watches the voltage, current and temperature of every cell, estimates SoC and health, balances cells and opens contactors on a fault.
 - **PCS**: does the conversion and the grid-code behaviour (reactive power, fault ride-through).
-- **EMS** (energy management system): decides when to charge and discharge, following the control centre's dispatch.
-
-**Chemistry: LFP vs NMC.** Both are lithium-ion.
+- **EMS** (energy management system): decides when to charge and discharge, following the control centre's dispatch.`,
+      },
+      { kind: "diagram", diagram: "bess", caption: "From cell to grid: cells, modules and racks (watched by the BMS), then the PCS and transformer, with HVAC, fire suppression and the EMS around them. Every step between the cell and the POI loses a little energy." },
+      {
+        kind: "md",
+        md: md`**Chemistry: LFP vs NMC.** Both are lithium-ion.
 
 - **LFP** (lithium iron phosphate): 3.2 V per cell, 6,000 to 10,000+ cycles, goes into thermal runaway later and releases no oxygen. Heavier, which does not matter for a stationary plant. The utility standard.
 - **NMC** (nickel manganese cobalt): more energy per kg (220 to 280 vs 160 to 190 Wh/kg, good for cars), but 2,000 to 5,000 cycles and earlier runaway with oxygen release. Avoid for a Kuwaiti grid battery.
 
-Today's standard is a 314 Ah LFP cell of about 1 kWh; a 20-ft container holds about 5 MWh.`,
+Today's standard is a 314 Ah LFP cell of about 1 kWh; a 20-ft container holds about 5 MWh.
+
+| | LFP | NMC |
+|---|---|---|
+| Cycle life | 6,000 to 10,000+ | 2,000 to 5,000 |
+| Energy per kg | 160 to 190 Wh/kg | 220 to 280 Wh/kg |
+| Thermal runaway | Later, no oxygen released | Earlier, with oxygen release |
+| Best use | Stationary grid storage | Cars, where weight matters |`,
       },
-      { kind: "diagram", diagram: "bess", caption: "From cell to grid: cells, modules and racks (watched by the BMS), then the PCS and transformer, with HVAC, fire suppression and the EMS around them. Every step between the cell and the POI loses a little energy." },
       { kind: "widget", widget: "bess-sizing", props: { mw: 500, hours: 4 }, caption: "500 MW for 4 hours, the size of the reported first phase. Change DoD and RTE and watch the usable energy move." },
       {
         kind: "callout",
@@ -507,19 +705,32 @@ Where the picture breaks: grid LFP cells are far more robust than phone cells, a
 - **Calendar aging**: time, temperature and **sitting at high charge**. Aging roughly **doubles for every 10 °C** of cell temperature.
 - **Cycle aging**: energy throughput, depth of discharge and C-rate.
 
-Kuwait's duty is the worst case for calendar aging: charge from PV between 10:00 and 15:00, sit full through the afternoon heat, discharge from 18:00 to 22:00.
-
-**Augmentation.** To keep the MWh at the POI for 20 years you either **overbuild** on day one, or **augment**: add new containers every 4 to 6 years. Augmenting is usually cheaper because cells get cheaper and money spent later is worth less, but only if someone creditworthy is obliged to do it and the land, feeder bays and EMS capacity were provided at COD.
-
-**Warranty conditions.** A performance warranty reads "X years or Y equivalent full cycles (EFC), **whichever comes first**", and only holds inside an **operating window**: cell temperature, C-rate, SoC limits, rest SoC, data reporting. Extra cycling ends it sooner; weak cooling can void it. Product warranties (defects) run 2 to 5 years; an LTSA capacity guarantee at the POI runs 10 to 20 years.
-
-**Thermal runaway.** A damaged or overheated cell heats up. Its internal layers break down (about 80 to 120 °C), the separator melts (about 130 to 165 °C), the cell short-circuits internally and **vents flammable, toxic gas** (rich in hydrogen for LFP, plus carbon monoxide and hydrogen fluoride). The gas may burn, or it may **build up unignited and explode** when someone opens a door. That is what injured several firefighters at McMicken, Arizona, in 2019.
-
-**Defences, in layers**: BMS and HVAC to prevent; off-gas detection to warn early; a design where one cell cannot ignite its neighbours (proved by **UL 9540A** testing); **explosion control** (gas-triggered exhaust fans or roof vent panels); an emergency response plan agreed with the fire authority, with the rule **never open a gassing container**. Gas suppression alone knocks down flame but does not stop runaway or gas.
-
-**Codes**: **NFPA 855** (installation and spacing), **UL 9540** (whole-system listing), **UL 9540A** (fire test method, not pass or fail), **IEC 62933-5-2** and **IEC 62619**. Track 0 found no BESS-specific Kuwaiti code, so these are adopted by reference in the specification.
-
-**HVAC in desert heat.** The chiller must hold cells near 25 °C while dumping heat into 50 °C air. Its efficiency (COP) falls from about 4 at 35 °C to about 2.5 at 50 °C, and many standard units trip above about 52 °C. Kuwait's record is 53.9 °C (Mitribah, 2016), so specify 50 °C design with operation to 55 °C, N+1 redundancy, and sand-trap louvres and filters against shamal dust.`,
+Kuwait's duty is the worst case for calendar aging: charge from PV between 10:00 and 15:00, sit full through the afternoon heat, discharge from 18:00 to 22:00.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "How fast a cell ages vs its temperature (rule of thumb: ×2 per +10 °C)",
+        xKey: "cell",
+        xLabel: "Cell temperature (°C)",
+        yLabel: "Aging rate vs 25 °C (×)",
+        series: [{ key: "factor", label: "Relative aging rate" }],
+        data: [
+          { cell: 15, factor: 0.5 },
+          { cell: 20, factor: 0.71 },
+          { cell: 25, factor: 1 },
+          { cell: 30, factor: 1.41 },
+          { cell: 35, factor: 2 },
+          { cell: 40, factor: 2.83 },
+          { cell: 45, factor: 4 },
+          { cell: 50, factor: 5.66 },
+          { cell: 55, factor: 8 },
+        ],
+        caption: "A cell held at 35 °C ages about twice as fast as one at 25 °C; at 45 °C about four times. The HVAC is what keeps the plant on the flat left of this curve.",
+      },
+      {
+        kind: "md",
+        md: md`**Augmentation.** To keep the MWh at the POI for 20 years you either **overbuild** on day one, or **augment**: add new containers every 4 to 6 years. Augmenting is usually cheaper because cells get cheaper and money spent later is worth less, but only if someone creditworthy is obliged to do it and the land, feeder bays and EMS capacity were provided at COD.`,
       },
       {
         kind: "chart",
@@ -562,6 +773,52 @@ Kuwait's duty is the worst case for calendar aging: charge from PV between 10:00
         caption: "Fade of 3 % in year 1, then 1.6 % a year. Without augmentation the plant falls short from year 6; adding 205, 240 and 261 MWh at years 5, 10 and 15 keeps it above the line, at about USD 100 m less (present value) than overbuilding 3,395 MWh on day one.",
       },
       { kind: "widget", widget: "bess-sizing", props: { mw: 500, hours: 4 }, caption: "Switch the strategy between overbuild and augmentation, then raise the fade rate (a hotter battery): see how much extra energy each strategy needs." },
+      {
+        kind: "md",
+        md: md`**Warranty conditions.** A performance warranty reads "X years or Y equivalent full cycles (EFC), **whichever comes first**", and only holds inside an **operating window**: cell temperature, C-rate, SoC limits, rest SoC, data reporting. Extra cycling ends it sooner; weak cooling can void it. Product warranties (defects) run 2 to 5 years; an LTSA capacity guarantee at the POI runs 10 to 20 years.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "\"20 years or 7,300 EFC, whichever comes first\": years of cover",
+        xKey: "cycles",
+        xLabel: "Equivalent full cycles per day",
+        yLabel: "Years of warranty",
+        series: [{ key: "years", label: "Years of cover" }],
+        data: [
+          { cycles: "0.5", years: 20 },
+          { cycles: "1.0", years: 20 },
+          { cycles: "1.3", years: 15.4 },
+          { cycles: "1.5", years: 13.3 },
+          { cycles: "2.0", years: 10 },
+        ],
+        caption: "Up to one cycle a day the calendar ends the warranty at 20 years; above that the cycle cap ends it first (7,300 ÷ (cycles × 365)). Every extra service you sell shortens the cover.",
+      },
+      {
+        kind: "md",
+        md: md`**Thermal runaway.** A damaged or overheated cell heats up. Its internal layers break down (about 80 to 120 °C), the separator melts (about 130 to 165 °C), the cell short-circuits internally and **vents flammable, toxic gas** (rich in hydrogen for LFP, plus carbon monoxide and hydrogen fluoride). The gas may burn, or it may **build up unignited and explode** when someone opens a door. That is what injured several firefighters at McMicken, Arizona, in 2019.`,
+      },
+      {
+        kind: "flow",
+        title: "Thermal runaway, step by step",
+        steps: [
+          { label: "Cell damaged or overheated", detail: "A defect, abuse or failed cooling" },
+          { label: "Internal layers break down", detail: "About 80 to 120 °C" },
+          { label: "Separator melts", detail: "About 130 to 165 °C" },
+          { label: "Internal short circuit", detail: "The cell heats itself further" },
+          { label: "Vents flammable, toxic gas", detail: "Hydrogen-rich for LFP, plus carbon monoxide and hydrogen fluoride" },
+          { label: "Fire or explosion", detail: "The gas burns, or builds up unignited and explodes when a door is opened" },
+        ],
+        caption: "Once started, each step drives the next on its own. Defences therefore aim to stop the first box (cooling, BMS) and contain the last two (detection, explosion control, never opening the door).",
+      },
+      {
+        kind: "md",
+        md: md`**Defences, in layers**: BMS and HVAC to prevent; off-gas detection to warn early; a design where one cell cannot ignite its neighbours (proved by **UL 9540A** testing); **explosion control** (gas-triggered exhaust fans or roof vent panels); an emergency response plan agreed with the fire authority, with the rule **never open a gassing container**. Gas suppression alone knocks down flame but does not stop runaway or gas.
+
+**Codes**: **NFPA 855** (installation and spacing), **UL 9540** (whole-system listing), **UL 9540A** (fire test method, not pass or fail), **IEC 62933-5-2** and **IEC 62619**. Track 0 found no BESS-specific Kuwaiti code, so these are adopted by reference in the specification.
+
+**HVAC in desert heat.** The chiller must hold cells near 25 °C while dumping heat into 50 °C air. Its efficiency (COP) falls from about 4 at 35 °C to about 2.5 at 50 °C, and many standard units trip above about 52 °C. Kuwait's record is 53.9 °C (Mitribah, 2016), so specify 50 °C design with operation to 55 °C, N+1 redundancy, and sand-trap louvres and filters against shamal dust.`,
+      },
       {
         kind: "callout",
         tone: "tip",
@@ -655,21 +912,67 @@ Before you are allowed on, the highway authority checks that the junction can ta
 A **grid code** is the technical contract between every connected plant and the system operator. Inverters do not naturally behave like spinning generators, so the code makes them do deliberately what generators do by physics. Typical requirements (values from international comparators such as ENTSO-E RfG and IEEE 2800):
 
 - **Operating ranges**: stay connected, for example 49.0 to 51.0 Hz continuously and 0.90 to 1.05 pu voltage at 400 kV, with wider bands for limited times. A plant that trips during an excursion turns a disturbance into a blackout.
-- **Fault ride-through (FRT)**: a transmission fault drops voltage over a wide area for about 100 ms. The plant must stay connected, even down to 0 pu for about 150 ms, and inject **reactive current** to prop up voltage. Mass PV tripping has lost gigawatts in real events.
-- **Reactive power**: typically 0.95 power factor leading and lagging at the **POI**, about ±0.33 × Pmax, across 0.90 to 1.10 pu voltage, and in Kuwait it must hold at 50 °C.
+- **Fault ride-through (FRT)**: a transmission fault drops voltage over a wide area for about 100 ms. The plant must stay connected, even down to 0 pu for about 150 ms, and inject **reactive current** to prop up voltage. Mass PV tripping has lost gigawatts in real events.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "Fault ride-through: stay connected above this line (typical profile)",
+        xKey: "t",
+        xLabel: "Time after the fault starts (ms)",
+        yLabel: "Voltage at the POI (pu)",
+        series: [{ key: "v", label: "Minimum voltage the plant must ride through" }],
+        data: [
+          { t: 0, v: 0 },
+          { t: 150, v: 0 },
+          { t: 300, v: 0.09 },
+          { t: 450, v: 0.19 },
+          { t: 600, v: 0.28 },
+          { t: 750, v: 0.38 },
+          { t: 900, v: 0.47 },
+          { t: 1050, v: 0.57 },
+          { t: 1200, v: 0.66 },
+          { t: 1350, v: 0.76 },
+          { t: 1500, v: 0.85 },
+          { t: 1650, v: 0.85 },
+          { t: 1800, v: 0.85 },
+          { t: 1950, v: 0.85 },
+          { t: 2100, v: 0.85 },
+          { t: 2250, v: 0.85 },
+        ],
+        caption: "A typical international profile, not a Kuwaiti requirement: 0 pu for 150 ms, then a ramp to about 0.85 pu by 1.5 s. While the POI voltage stays above the line the plant must stay on and push reactive current; only below it may it trip.",
+      },
+      {
+        kind: "md",
+        md: md`- **Reactive power**: typically 0.95 power factor leading and lagging at the **POI**, about ±0.33 × Pmax, across 0.90 to 1.10 pu voltage, and in Kuwait it must hold at 50 °C.
 - **Active power and ramp rates**: follow the control centre's set-point; ramp no faster than about 10 % of Pmax per minute. PV can hold back upward ramps, but a cloud or dust front pulling output down needs storage.
 - **Frequency response**: cut output when frequency is high (from about 50.2 Hz, with a **droop** of 2 to 12 %); raise output when it is low, which needs headroom or a battery.
 - **Power quality**: limits on harmonics, flicker and unbalance (IEEE 519: total harmonic distortion at most 1.5 % above 161 kV).
-- **Models and tests**: validated simulation models and witnessed on-site tests.
-
-**Interconnection studies** prove the network can take the plant:
+- **Models and tests**: validated simulation models and witnessed on-site tests.`,
+      },
+      { kind: "widget", widget: "droop", props: { droop: 4 }, caption: "Lower the grid frequency and watch the plant's output move along the droop line once outside the deadband. A PV plant can only add power if it is running with headroom; a battery can do it either way." },
+      {
+        kind: "md",
+        md: md`**Interconnection studies** prove the network can take the plant:
 
 - **Load flow**: voltages and line loadings in normal and single-outage (N-1) cases. In Kuwait, **winter midday** (low load, strong sun) is as critical as the summer peak, plus the evening with batteries discharging.
 - **Short circuit**: fault levels against switchgear ratings.
 - **Stability (RMS) and EMT**: does the plant ride through faults; are its controls stable on a weak grid?
-- **Harmonics** and **protection coordination**.
+- **Harmonics** and **protection coordination**.`,
+      },
+      { kind: "widget", widget: "grid-topology", props: { level: "ehv", mw: 400 }, caption: "The network the studies test: a PV plant collects at 33 kV, steps up and joins the 400 kV backbone. Click each level and compare the current that 400 MW needs at 400 kV and at 33 kV: this is why big plants connect high." },
+      {
+        kind: "md",
+        md: md`**Curtailment risk**: when the grid cannot take the power, the control centre caps output. Causes: a grid constraint, system security, oversupply, grid unavailability or a late grid connection. In typical PPAs these are compensated as **deemed energy** (what the plant could have produced), sometimes above an annual allowance; curtailment caused by the plant itself is not.
 
-**Curtailment risk**: when the grid cannot take the power, the control centre caps output. Causes: a grid constraint, system security, oversupply, grid unavailability or a late grid connection. In typical PPAs these are compensated as **deemed energy** (what the plant could have produced), sometimes above an annual allowance; curtailment caused by the plant itself is not.`,
+| Why output was capped | Typical PPA treatment |
+|---|---|
+| Grid constraint | Deemed energy, paid (sometimes only above an annual allowance) |
+| System security | Deemed energy, paid |
+| Oversupply | Deemed energy, paid |
+| Grid unavailability | Deemed energy, paid |
+| Late grid connection | Deemed energy, paid |
+| The plant's own fault | Not paid |`,
       },
       {
         kind: "flow",
@@ -685,7 +988,6 @@ A **grid code** is the technical contract between every connected plant and the 
         ],
         caption: "Models and studies run in parallel with design. A missing EMT model or a late study can hold the whole energisation date.",
       },
-      { kind: "widget", widget: "droop", props: { droop: 4 }, caption: "Lower the grid frequency and watch the plant's output move along the droop line once outside the deadband. A PV plant can only add power if it is running with headroom; a battery can do it either way." },
       {
         kind: "callout",
         tone: "unverified",
@@ -782,7 +1084,34 @@ Where the picture breaks: when something sudden happens, such as a grid fault, e
 - Follow the active-power set-point or curtailment (within about 1 minute, to about ±1 to 2 % of Pmax).
 - Limit ramp rates; give frequency response.
 - Control voltage (with a slope), or reactive power, or power factor, as the control centre chooses.
-- Share P and Q between PV and battery, manage the battery's charge, and never exceed the POI limit.
+- Share P and Q between PV and battery, manage the battery's charge, and never exceed the POI limit.`,
+      },
+      {
+        kind: "flow",
+        title: "The PPC control loop",
+        steps: [
+          { label: "Control centre", detail: "Sends one set-point: P, plus voltage, Q or power factor" },
+          { label: "PPC", detail: "Compares the set-point with what it measures at the POI" },
+          { label: "Inverters and PCS", detail: "Receive new set-points every 100 to 200 ms" },
+          { label: "Output changes", detail: "Flows through MV cables and transformers to the POI" },
+          { label: "Measure at the POI", detail: "P, Q, V and f go back to the PPC; the loop repeats" },
+        ],
+        caption: "A closed loop around the POI. The control centre never talks to individual inverters, and the PPC corrects for the losses between the inverters and the meter.",
+      },
+      {
+        kind: "md",
+        md: md`**Fast to slow: who acts when.**
+
+| Who | Acts in about | For what |
+|---|---|---|
+| IEC 61850 GOOSE message | 4 ms | Relays telling breakers to trip inside the substation |
+| Each inverter, on its own | Milliseconds | Fault ride-through |
+| Protection | 80 to 120 ms | Clearing a 400 kV fault |
+| PPC loop | 100 to 200 ms per cycle | New set-points to every inverter |
+| Voltage control | 1 to 5 s (90 % of a step) | Holding the POI voltage |
+| Active-power set-point | About 1 minute | Following dispatch or curtailment |
+
+The PPC sits in the middle of this ladder: too slow for faults, fast enough for dispatch.
 
 **SCADA** (supervisory control and data acquisition) sees, logs and commands everything in the plant, in layers:
 
@@ -791,9 +1120,24 @@ Where the picture breaks: when something sudden happens, such as a grid fault, e
 - **Plant control**: SCADA servers and screens, the PPC, the battery EMS, the **historian** (the data archive).
 - **Gateway**: talks to the control centre, usually with the **IEC 60870-5-104** protocol. Inside substations, **IEC 61850** links relays, with fast GOOSE trip messages in about 4 ms.
 - **Telecoms**: **OPGW** (optical fibre inside the earth wire of the 400 kV line) plus a backup path.
-- **Control centre**: MEWRE's national energy management system (state estimation, automatic generation control, dispatch).
-
-A **signal list** fixes what the plant sends (P, Q, V, f, breaker positions, available power, battery charge, alarms) and receives (P set-point, voltage or Q set-point, mode commands). Agree it early: if the control centre's database is not ready, the plant cannot be dispatched at COD.
+- **Control centre**: MEWRE's national energy management system (state estimation, automatic generation control, dispatch).`,
+      },
+      {
+        kind: "flow",
+        title: "SCADA layers, from the field to the control centre",
+        steps: [
+          { label: "Field", detail: "Inverters, PCS, BMS, trackers, weather stations, relays, meters" },
+          { label: "Plant network", detail: "Fibre rings across the site" },
+          { label: "Plant control", detail: "SCADA servers, PPC, battery EMS, historian" },
+          { label: "Gateway", detail: "IEC 60870-5-104 to the control centre" },
+          { label: "Telecoms", detail: "OPGW in the 400 kV earth wire, plus a backup path" },
+          { label: "Control centre", detail: "MEWRE's national energy management system" },
+        ],
+        caption: "Data climbs this ladder and commands come down it. A break at any rung (often the telecoms) means the plant cannot be dispatched.",
+      },
+      {
+        kind: "md",
+        md: md`A **signal list** fixes what the plant sends (P, Q, V, f, breaker positions, available power, battery charge, alarms) and receives (P set-point, voltage or Q set-point, mode commands). Agree it early: if the control centre's database is not ready, the plant cannot be dispatched at COD.
 
 **Cyber security basics (IEC 62443)**: split the plant into zones with firewalls between them; a buffer zone (DMZ) between plant controls and any outside network; remote access for manufacturers only through a jump host with multi-factor login and time-limited approval; default passwords changed; no 4G modem left behind after commissioning. The 2015 and 2016 attacks on Ukraine's grid used stolen credentials and remote access to open breakers.
 

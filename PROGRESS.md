@@ -164,6 +164,7 @@ physics error in the capstone, several overstated figures and Arabic glossary te
 - [x] 45 explainers (`src/content/trial/`, brief in `docs/TRIAL_BRIEF.md`), each 8 to 15 minutes: why it matters at MEWRE, an everyday picture, the mechanism in plain words, an interactive visual, the numbers you will hear, phrases for meetings, the classic trap, three questions that feed review, and links to the full lessons for after the trial
 - [x] Day 1 starts from zero (voltage, current, resistance, power vs energy, DC vs AC, coils, capacitors, reactance) before reactive power and three-phase; one analogy (a closed water loop) with its limits stated
 - [x] New `ac-power` widget: voltage, current and instantaneous power with energy returned per cycle, tested calculators
+- [x] Drawings for the fundamentals: `water-analogy` (pump, narrow pipe, heavy wheel, membrane, with live flow trace), `grid-topology` (voltage ladder from power station to socket, PV plant joining at 400 kV), `induction`, `transformer`, `impedance-triangle`, `line-drop`; about 120 more diagrams placed next to the paragraphs they explain across all 45 explainers
 - [x] Kuwait facts only from Track 0 lessons with their confidence labels; validator checks every explainer against Track 0 ids and that each appears once in the plan (`tests/trial.test.ts`)
 
 ## Known limitations / next ideas

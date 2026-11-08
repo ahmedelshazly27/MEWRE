@@ -75,14 +75,14 @@ export default function WaterAnalogy({ props }: WidgetProps) {
 
   // geometry
   const W = 440;
-  const H = 230;
-  const loop = "M70,40 L370,40 L370,190 L70,190 Z";
+  const H = 280;
+  const loop = "M120,40 L390,40 L390,190 L120,190 Z";
   const wheelAngle = (offset * 40) % 360;
 
   const trace = state.trace;
   const tMax = trace.length ? trace[trace.length - 1].t : 0;
   const iScale = Math.max(iFull, 1);
-  const path = trace.map((p, k) => `${k ? "L" : "M"}${(300 + ((p.t - (tMax - WINDOW)) / WINDOW) * 130).toFixed(1)},${(213 - (p.i / iScale) * 26).toFixed(1)}`).join(" ");
+  const path = trace.map((p, k) => `${k ? "L" : "M"}${(10 + ((p.t - (tMax - WINDOW)) / WINDOW) * 420).toFixed(1)},${(266 - (p.i / iScale) * 30).toFixed(1)}`).join(" ");
 
   return (
     <Card title="The water loop: what voltage, current, resistance, coils and capacitors do" subtitle="Pump = voltage. Flow = current. Narrow pipe = resistance. Heavy wheel = coil. Rubber membrane = capacitor.">
@@ -122,30 +122,30 @@ export default function WaterAnalogy({ props }: WidgetProps) {
             {/* flowing water: dashes move with the current */}
             <path d={loop} fill="none" stroke="var(--info, #3b82f6)" strokeWidth={5} strokeDasharray="3 13" strokeDashoffset={offset} strokeLinecap="round" strokeLinejoin="round" />
             {/* narrow section on the top pipe */}
-            <rect x={175} y={40 - width / 2 - 6} width={90} height={6} fill="var(--surface)" />
-            <rect x={175} y={40 + width / 2} width={90} height={6} fill="var(--surface)" />
-            <rect x={175} y={40 - width / 2 - 8} width={90} height={3} fill="var(--text)" opacity={0.6} />
-            <rect x={175} y={40 + width / 2 + 5} width={90} height={3} fill="var(--text)" opacity={0.6} />
-            <text x={220} y={18} fontSize={11} textAnchor="middle" fill="var(--text)" fontWeight={600}>
+            <rect x={210} y={40 - width / 2 - 6} width={90} height={6} fill="var(--surface)" />
+            <rect x={210} y={40 + width / 2} width={90} height={6} fill="var(--surface)" />
+            <rect x={210} y={40 - width / 2 - 8} width={90} height={3} fill="var(--text)" opacity={0.6} />
+            <rect x={210} y={40 + width / 2 + 5} width={90} height={3} fill="var(--text)" opacity={0.6} />
+            <text x={255} y={18} fontSize={11} textAnchor="middle" fill="var(--text)" fontWeight={600}>
               narrow pipe = resistance R
             </text>
             {heat > 1 && (
-              <text x={220} y={68} fontSize={10} textAnchor="middle" fill="var(--danger)">
+              <text x={255} y={68} fontSize={10} textAnchor="middle" fill="var(--danger)">
                 gets warm: I²R
               </text>
             )}
             {/* pump on the left */}
-            <circle cx={70} cy={115} r={26} fill="var(--surface)" stroke="var(--text)" strokeWidth={2} />
-            <path d="M70,129 L70,101 M62,109 L70,100 L78,109" stroke="var(--accent)" strokeWidth={3} fill="none" opacity={on && v > 0 ? 1 : 0.25} />
-            <text x={20} y={160} fontSize={11} fill="var(--text)" fontWeight={600}>
+            <circle cx={120} cy={115} r={26} fill="var(--surface)" stroke="var(--text)" strokeWidth={2} />
+            <path d="M120,129 L120,101 M112,109 L120,100 L128,109" stroke="var(--accent)" strokeWidth={3} fill="none" opacity={on && v > 0 ? 1 : 0.25} />
+            <text x={4} y={112} fontSize={11} fill="var(--text)" fontWeight={600}>
               pump = voltage
             </text>
-            <text x={20} y={174} fontSize={10} fill="var(--muted)">
+            <text x={4} y={126} fontSize={10} fill="var(--muted)">
               {on ? `${v} V push` : "off"}
             </text>
             {/* right side: coil wheel or capacitor membrane or plain load */}
             {mode === "coil" && (
-              <g transform={`translate(370,115)`}>
+              <g transform={`translate(390,115)`}>
                 <circle r={24} fill="var(--surface)" stroke="var(--text)" strokeWidth={2} />
                 <g transform={`rotate(${wheelAngle})`}>
                   {[0, 60, 120].map((a) => (
@@ -158,7 +158,7 @@ export default function WaterAnalogy({ props }: WidgetProps) {
               </g>
             )}
             {mode === "capacitor" && (
-              <g transform="translate(370,115)">
+              <g transform="translate(390,115)">
                 <rect x={-20} y={-30} width={40} height={60} rx={6} fill="var(--surface)" stroke="var(--text)" strokeWidth={2} />
                 <path d={`M-20,0 Q0,${Math.max(-26, Math.min(26, -(state.vc / Math.max(v, 1)) * 24))} 20,0`} fill="none" stroke="var(--accent)" strokeWidth={3} />
                 <text x={-34} y={50} fontSize={11} fill="var(--text)" fontWeight={600} textAnchor="end">
@@ -167,10 +167,10 @@ export default function WaterAnalogy({ props }: WidgetProps) {
               </g>
             )}
             {/* trace of current over time */}
-            <rect x={296} y={182} width={138} height={36} rx={4} fill="var(--surface-2)" />
-            <line x1={300} y1={213} x2={430} y2={213} stroke="var(--border)" />
+            <rect x={4} y={214} width={432} height={62} rx={6} fill="var(--surface-2)" />
+            <line x1={10} y1={266} x2={430} y2={266} stroke="var(--border)" />
             <path d={path} fill="none" stroke="var(--accent)" strokeWidth={1.8} />
-            <text x={300} y={192} fontSize={9} fill="var(--muted)">
+            <text x={10} y={228} fontSize={10} fill="var(--muted)">
               flow over the last {WINDOW} s
             </text>
           </svg>

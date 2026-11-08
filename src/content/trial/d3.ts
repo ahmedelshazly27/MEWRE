@@ -45,13 +45,20 @@ Where the analogy breaks: electricity cannot queue like passengers. If supply fa
 
 $RM = (C_{avail} - P_{peak}) / P_{peak}$
 
-Hot-climate utilities typically plan for +10 to 20 % on *available* capacity. In June 2025 MEES reported a 16.98 GW peak against 16.275 GW available: $RM \approx -4.2\%$. A negative margin means cuts, emergency imports through the GCC interconnector (GCCIA) or appeals to save power. That is what happened in 2024 and 2025.
-
-**Fuel.** Kuwait generates roughly **62 % from gas and 36 % from oil** (crude, fuel oil and gasoil burned directly), with about 2 % renewables. Its own gas is mostly associated gas from oil fields, so summer is topped up with **imported LNG** (5.2 Mt in January to August 2025) and liquid fuels. The marginal summer kWh comes from the oldest, least efficient units burning the most expensive fuel.
-
-**Tariffs.** Kuwaiti citizens in private housing pay **2 fils/kWh**, unchanged since 1966 (1 KWD = 1,000 fils). The cost of supply is not officially published; estimates run from **14 to 38 fils/kWh**. The state budget pays the gap.
-
-**Why every solar MWh saves money.** Each solar kWh means a thermal unit burns less fuel. Valued at what that fuel could earn or would cost on world markets, that is about **37 fils/kWh** for crude in an old steam unit (at USD 70/bbl) and about **26 fils/kWh** for LNG in a combined-cycle plant (at USD 12/MMBtu). Analysts estimate solar in Kuwait at **7 to 8 fils/kWh**. The difference is the saving, and the crude not burned can be exported.`,
+Hot-climate utilities typically plan for +10 to 20 % on *available* capacity. In June 2025 MEES reported a 16.98 GW peak against 16.275 GW available: $RM \approx -4.2\%$. A negative margin means cuts, emergency imports through the GCC interconnector (GCCIA) or appeals to save power. That is what happened in 2024 and 2025.`,
+      },
+      {
+        kind: "flow",
+        title: "Why the summer margin disappears",
+        steps: [
+          { label: "48 to 50 °C afternoon", detail: "Air conditioning pushes demand to the year's peak (17,540 MW in 2026)" },
+          { label: "Gas turbines derate", detail: "The same heat costs about 0.5 to 0.7 % of output per °C above 15 °C" },
+          { label: "Outages and maintenance", detail: "Forced trips and maintenance running into the heat remove more units" },
+          { label: "Available ≈ 17 GW", detail: "Out of about 21 GW installed" },
+          { label: "Margin thin or negative", detail: "June 2025: 16.98 GW peak vs 16.275 GW available, RM ≈ -4.2 %" },
+          { label: "Imports, appeals, cuts", detail: "GCCIA imports, calls to save power or load-shedding (2024 and 2025)" },
+        ],
+        caption: "Heat pushes demand up and pushes available supply down in the same hour: that double hit is why the margin vanishes.",
       },
       {
         kind: "chart",
@@ -68,6 +75,14 @@ Hot-climate utilities typically plan for +10 to 20 % on *available* capacity. In
           { item: "Peak Jun 2025 (MEES)", gw: 16.98 },
         ],
         caption: "Installed capacity looks comfortable; capacity available at the peak hour does not. Sources and bases differ, which is exactly why every figure carries its label.",
+      },
+      {
+        kind: "md",
+        md: md`**Fuel.** Kuwait generates roughly **62 % from gas and 36 % from oil** (crude, fuel oil and gasoil burned directly), with about 2 % renewables. Its own gas is mostly associated gas from oil fields, so summer is topped up with **imported LNG** (5.2 Mt in January to August 2025) and liquid fuels. The marginal summer kWh comes from the oldest, least efficient units burning the most expensive fuel.
+
+**Tariffs.** Kuwaiti citizens in private housing pay **2 fils/kWh**, unchanged since 1966 (1 KWD = 1,000 fils). The cost of supply is not officially published; estimates run from **14 to 38 fils/kWh**. The state budget pays the gap.
+
+**Why every solar MWh saves money.** Each solar kWh means a thermal unit burns less fuel. Valued at what that fuel could earn or would cost on world markets, that is about **37 fils/kWh** for crude in an old steam unit (at USD 70/bbl) and about **26 fils/kWh** for LNG in a combined-cycle plant (at USD 12/MMBtu). Analysts estimate solar in Kuwait at **7 to 8 fils/kWh**. The difference is the saving, and the crude not burned can be exported.`,
       },
       {
         kind: "chart",
@@ -94,6 +109,7 @@ Hot-climate utilities typically plan for +10 to 20 % on *available* capacity. In
 - PV helps the afternoon peak but gives less than nameplate at 50 °C and nothing after sunset, when cooling load is still high. Always ask how many **MWac** a project delivers at the peak hour. That is why the ministry paired the PV programme with a planned 1 to 1.5 GW / 4 to 6 GWh battery storage (BESS) programme.
 - With a margin this thin, grid tie-in outages between April and October will almost certainly be refused. Plan energisation for November to March.`,
       },
+      { kind: "widget", widget: "load-curve", props: { season: "summer", pvMW: 1600 }, caption: "Indicative summer day with 1,600 MW of PV (Zones 1 and 2). PV shaves the afternoon, but load stays high after sunset, so the net peak moves toward the evening and falls by far less than 1,600 MW. Switch to winter: the peak comes after sunset and PV does not touch it at all." },
       {
         kind: "callout",
         tone: "kuwait",
@@ -194,9 +210,24 @@ Kuwait's public sector works the same way, with one difference: the "departments
 
 **The Higher Committee for PPP**, chaired by the **Minister of Finance**, approves the project, the procurement stages and the selected investor.
 
-**CAPT**, the Central Agency for Public Tenders (Public Tenders Law 49/2016), governs conventional public tenders above KD 75,000: the grid works, consultancy and O&M contracts MEWRE buys itself.
+**CAPT**, the Central Agency for Public Tenders (Public Tenders Law 49/2016), governs conventional public tenders above KD 75,000: the grid works, consultancy and O&M contracts MEWRE buys itself.`,
+      },
+      {
+        kind: "md",
+        md: md`**Two tracks, side by side.** Every file you touch sits on one of them, and the track decides which gates apply.
 
-**The State Audit Bureau** (Law 30/1964) carries out **prior review** of contracts before signature. Nothing signs without it: even the 2025 emergency GCCIA power imports needed its conditional approval.
+| | PPP / IPP track | Conventional tender track |
+|---|---|---|
+| Who runs the procurement | KAPP | MEWRE, under CAPT rules |
+| Law | PPP Law 116/2014 | Public Tenders Law 49/2016 |
+| Typical projects | Solar IPPs (Shagaya Phase III), IWPPs | Grid works (Shagaya to Al-Wafra 400 kV line), consultancy, O&M |
+| Gatekeeper | Higher Committee for PPP (project, then investor) | CAPT (tenders above KD 75,000) |
+| Before signature | State Audit Bureau prior review | State Audit Bureau prior review |
+| MEWRE's hat | Offtaker (30-year PPA) | Direct buyer |`,
+      },
+      {
+        kind: "md",
+        md: md`**The State Audit Bureau** (Law 30/1964) carries out **prior review** of contracts before signature. Nothing signs without it: even the 2025 emergency GCCIA power imports needed its conditional approval.
 
 **The Fatwa and Legislation Department** reviews the legal terms of contracts, PPAs included, and gives the government legal opinions. You reach it through the ministry's legal affairs department.
 
@@ -235,6 +266,25 @@ Each gate takes a review time $t$ and returns the file with probability $p$. On 
 $E[T] = t / (1 - p)$
 
 A 6-week review with a 40 % chance of return takes 10 weeks on average; at 50 % it doubles. Your biggest lever is **lowering p with complete, pre-cleared files**, not chasing the reviewer to shorten t.`,
+      },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "Expected time at one gate with a 6-week review",
+        xKey: "p",
+        xLabel: "Chance the file is returned (p)",
+        yLabel: "Expected weeks",
+        series: [{ key: "weeks", label: "Expected weeks" }],
+        data: [
+          { p: "0 %", weeks: 6 },
+          { p: "10 %", weeks: 6.7 },
+          { p: "20 %", weeks: 7.5 },
+          { p: "30 %", weeks: 8.6 },
+          { p: "40 %", weeks: 10 },
+          { p: "50 %", weeks: 12 },
+          { p: "60 %", weeks: 15 },
+        ],
+        caption: "E[T] = 6 / (1 - p). The curve bends upward: each extra point of return risk costs more weeks than the last, so a complete file is worth more than a faster reviewer.",
       },
       {
         kind: "callout",
@@ -335,21 +385,67 @@ Kuwait's pipeline is reported mostly through trade press (MEED, Zawya, AGBI, Sol
 - **30 % by 2030, 40 % by 2040, 50 % by 2050**: stated by a MEWRE official in 2025. Formal cabinet adoption is not confirmed.
 - **Carbon neutrality by 2060** for the country; **net zero 2050** for the oil and gas sector. Outlets that write "Kuwait net zero 2050" are wrong about the national pledge.
 
-**Where we are.** About **102 MW** of solar at end-2024 (MEWRE). Rystad forecasts about 3.3 GW of renewables by 2030 (about 7 % of generation) and expects 15 % to be reached around 2035.
-
-**Shagaya Phase I**, the KISR pilot (70 MW, Jahra Governorate): **50 MW parabolic-trough CSP with 10 hours of molten-salt storage**, **10 MW PV** and **10 MW wind**, operating since 2017 to 2019. The wind farm did very well (capacity factor 45.2 % in year 1, 42.1 % in year 2). **No CSP operating data have been published since 2019.**
+**Where we are.** About **102 MW** of solar at end-2024 (MEWRE). Rystad forecasts about 3.3 GW of renewables by 2030 (about 7 % of generation) and expects 15 % to be reached around 2035.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "Renewable share of electricity: targets vs reality (%)",
+        xKey: "item",
+        yLabel: "% of generation",
+        series: [{ key: "pct", label: "% of generation" }],
+        data: [
+          { item: "Today (Ember, medium-low)", pct: 2 },
+          { item: "2030 Rystad forecast", pct: 7 },
+          { item: "2030 official target", pct: 15 },
+          { item: "2030 stated by MEWRE", pct: 30 },
+          { item: "2040 stated by MEWRE", pct: 40 },
+          { item: "2050 stated by MEWRE", pct: 50 },
+        ],
+        caption: "For 2030 alone there are three numbers: about 7 % forecast, 15 % official, 30 % stated (adoption unverified). Always say which target you mean.",
+      },
+      {
+        kind: "md",
+        md: md`**Shagaya Phase I**, the KISR pilot (70 MW, Jahra Governorate): **50 MW parabolic-trough CSP with 10 hours of molten-salt storage**, **10 MW PV** and **10 MW wind**, operating since 2017 to 2019. The wind farm did very well (capacity factor 45.2 % in year 1, 42.1 % in year 2). **No CSP operating data have been published since 2019.**
 
 **Shagaya Phase III**: utility PV IPPs procured by KAPP, each with a 30-year PPA with MEWRE. It grew out of **Al-Dibdibah**: KNPC tendered a ~1.5 GW solar project for the oil sector (seven bids, April 2019); the cabinet cancelled that tender (COVID-19, market impact) and the scope was folded into "Al Dibdibah Power and Al Shagaya Renewable Energy Phase III" as KAPP IPPs.
 
 - **Zone 1, 1,100 MW PV plus a 400 kV substation**: Masdar with Fouad AlGhanim & Sons was **reported** selected by MEED around August 2026. It still needs Higher Committee and Audit Bureau approval and a signed PPA. **The tariff has not been reported.**
 - **Zone 2, 500 MW PV**: bids opened 26 July 2026. MEED reports three bids; Zawya and Al-Rai report two.
-- **Shagaya to Al-Wafra 400 kV line**, MEWRE's own contract: awarded to Power Grid Company (Kuwait), KD 48.6 m, March 2026. If it is late, the plants are stranded.
-
-**The China government-to-government (G2G) track.** On 17 March 2025 MEWRE signed a framework agreement with China's National Energy Administration covering Shagaya Phases 3 and 4 and Abdaliya solar (3.5 GW, expandable to 5 GW). In May 2025 Kuwait said a Chinese state company (SPIC) had been awarded Phases 3 and 4, reaching 4,800 MW by 2028. Whether a definitive contract exists, and whether it **overlaps** Zones 1 and 2 or is additional, is **unknown**.
+- **Shagaya to Al-Wafra 400 kV line**, MEWRE's own contract: awarded to Power Grid Company (Kuwait), KD 48.6 m, March 2026. If it is late, the plants are stranded.`,
+      },
+      {
+        kind: "flow",
+        title: "Shagaya Phase III Zone 1: how far it has got",
+        steps: [
+          { label: "RFQ", detail: "January 2024; six prequalified" },
+          { label: "RFP", detail: "About June 2025; deadline extended" },
+          { label: "Bids", detail: "15 January 2026; three consortia" },
+          { label: "Financial bids opened", detail: "About July 2026" },
+          { label: "Preferred bidder reported", detail: "About August 2026 (MEED; medium confidence)" },
+          { label: "Still to come", detail: "Higher Committee, Audit Bureau, PPA signing, financial close: none publicly confirmed" },
+        ],
+        caption: "The project is between step 6 and step 7 of the approval chain. Anything past the press report is not yet a fact.",
+      },
+      {
+        kind: "md",
+        md: md`**The China government-to-government (G2G) track.** On 17 March 2025 MEWRE signed a framework agreement with China's National Energy Administration covering Shagaya Phases 3 and 4 and Abdaliya solar (3.5 GW, expandable to 5 GW). In May 2025 Kuwait said a Chinese state company (SPIC) had been awarded Phases 3 and 4, reaching 4,800 MW by 2028. Whether a definitive contract exists, and whether it **overlaps** Zones 1 and 2 or is additional, is **unknown**.
 
 **Al-Khairan is not solar.** Al-Khairan Phase 1 is a **1,800 MW gas-fired IWPP** (two bids on 1 June 2026). No 1,800 MW Al-Khairan solar project was found. The other big thermal project, Az-Zour North 2&3, signed its 25-year ECWPA on 3 February 2026.
 
 **Storage.** A **1 to 1.5 GW / 4 to 6 GWh battery (BESS)** programme was announced in November 2025, with the first 500 MW targeted for summer 2027.`,
+      },
+      {
+        kind: "md",
+        md: md`**The register in tiers.** The same projects, sorted by how real they are:
+
+| Tier | Projects (Track 0 confidence) |
+|---|---|
+| Operating | Shagaya Phase I, 70 MW (high); about 102 MW of solar in total at end-2024 (MEWRE) |
+| Signed or awarded | Shagaya to Al-Wafra 400 kV line, MEWRE contract, March 2026; Az-Zour North 2&3 ECWPA, February 2026 (gas, not renewable) |
+| Preferred bidder (press only) | Zone 1, 1,100 MW PV, reported August 2026 (medium) |
+| Bidding | Zone 2, 500 MW PV (medium); Al-Khairan Phase 1, 1,800 MW (gas, high) |
+| Announced or framework | China G2G, 3.5 to 5 GW (low to medium); BESS, 1 to 1.5 GW / 4 to 6 GWh (medium-low) |`,
       },
       {
         kind: "md",
@@ -376,19 +472,6 @@ where $\sigma$ is the share, $E_{tot}$ the total annual generation and $CF$ the 
           { item: "Needed for 30 %", mw: 11507 },
         ],
         caption: "Illustrative: 84 TWh/yr total generation and a 25 % PV capacity factor (Track 0 assumptions; Phase I counted as PV-equivalent). 15 % by 2030 is reachable only if the unverified G2G track is real, additional and on time.",
-      },
-      {
-        kind: "flow",
-        title: "Shagaya Phase III Zone 1: how far it has got",
-        steps: [
-          { label: "RFQ", detail: "January 2024; six prequalified" },
-          { label: "RFP", detail: "About June 2025; deadline extended" },
-          { label: "Bids", detail: "15 January 2026; three consortia" },
-          { label: "Financial bids opened", detail: "About July 2026" },
-          { label: "Preferred bidder reported", detail: "About August 2026 (MEED; medium confidence)" },
-          { label: "Still to come", detail: "Higher Committee, Audit Bureau, PPA signing, financial close: none publicly confirmed" },
-        ],
-        caption: "The project is between step 6 and step 7 of the approval chain. Anything past the press report is not yet a fact.",
       },
       {
         kind: "callout",
@@ -478,6 +561,35 @@ Sunlight works the same way. **Irradiance** is the rate: watts per square metre 
 Now picture car headlights in fog. Some light comes **straight from the lamp** in a beam; the rest is **scattered** by the fog and seems to glow from everywhere. Sunlight through Kuwait's dusty air is like that: a direct beam from the sun's disc plus a glow from the whole sky. The dustier the air, the weaker the beam and the brighter the glow.`,
       },
       {
+        kind: "chart",
+        chart: "area",
+        title: "GHI through an illustrative clear June day at Shagaya (W/m²)",
+        xKey: "hour",
+        xLabel: "Local time",
+        yLabel: "W/m²",
+        series: [{ key: "ghi", label: "GHI (W/m²)" }],
+        data: [
+          { hour: "04:00", ghi: 0 },
+          { hour: "05:00", ghi: 0 },
+          { hour: "06:00", ghi: 122 },
+          { hour: "07:00", ghi: 311 },
+          { hour: "08:00", ghi: 516 },
+          { hour: "09:00", ghi: 709 },
+          { hour: "10:00", ghi: 864 },
+          { hour: "11:00", ghi: 965 },
+          { hour: "12:00", ghi: 1000 },
+          { hour: "13:00", ghi: 965 },
+          { hour: "14:00", ghi: 864 },
+          { hour: "15:00", ghi: 709 },
+          { hour: "16:00", ghi: 516 },
+          { hour: "17:00", ghi: 311 },
+          { hour: "18:00", ghi: 122 },
+          { hour: "19:00", ghi: 0 },
+          { hour: "20:00", ghi: 0 },
+        ],
+        caption: "The height of the curve at any moment is irradiance (W/m², the rate: how hard it is raining). The shaded area is irradiation (kWh/m², the bucket): about 8 kWh/m² for this 14-hour day. Shape only, not measured data.",
+      },
+      {
         kind: "md",
         md: md`### What is actually happening
 
@@ -495,14 +607,31 @@ where $\theta_z$ is the sun's angle from straight overhead. A station that measu
 
 **PV works from GHI.** More precisely, from everything that reaches the tilted or tracking module: beam, diffuse and light reflected off the ground. A flat panel does not care where the light comes from.
 
-**CSP needs DNI.** Mirrors can only focus a parallel beam onto a receiver, the way a magnifying glass can focus sunshine but not the glow of an overcast sky. Diffuse light is useless to CSP, so dust hurts CSP far more than PV.
-
-**The sun's path.** Shagaya is at about 29.3°N. At solar noon the sun stands about **84° high in June, 61° at the equinoxes and 37° in December**. In summer it rises north of east (about 27° north of east on 21 June), sets north of west, and days last about 14 hours. A fixed south-facing panel wastes those summer mornings and evenings; a **single-axis tracker** turning east to west catches them. On a tracker the irradiation on the modules is about 1.22 to 1.28 times GHI.
-
-**Kuwait's heat and dust.** GHI peaks in May to July. DNI is held down in late spring and summer by dust and haze (the shamal season), so the beam is weakest relative to GHI when the sun is strongest. Summer afternoons above 45 °C are routine; the record is **53.9 °C at Mitribah on 21 July 2016**. Heat lowers PV output (next explainer) and dust coats the modules (soiling).`,
+**CSP needs DNI.** Mirrors can only focus a parallel beam onto a receiver, the way a magnifying glass can focus sunshine but not the glow of an overcast sky. Diffuse light is useless to CSP, so dust hurts CSP far more than PV.`,
+      },
+      {
+        kind: "flow",
+        title: "From the top of the atmosphere to the panel",
+        steps: [
+          { label: "Top of atmosphere", detail: "About 1,361 W/m²" },
+          { label: "Air, water vapour, dust", detail: "Absorb part of the light and scatter part of it" },
+          { label: "Direct beam: DNI", detail: "Straight from the sun's disc; dust weakens it" },
+          { label: "Scattered skylight: DHI", detail: "Glow from the whole sky; dust brightens it" },
+          { label: "GHI on flat ground", detail: "GHI = DNI cos θz + DHI" },
+          { label: "Who uses what", detail: "PV: beam, diffuse and ground reflection. CSP mirrors: the beam (DNI) only" },
+        ],
+        caption: "Dust moves light from the DNI box to the DHI box. PV barely notices; CSP loses it.",
+      },
+      {
+        kind: "md",
+        md: md`**The sun's path.** Shagaya is at about 29.3°N. At solar noon the sun stands about **84° high in June, 61° at the equinoxes and 37° in December**. In summer it rises north of east (about 27° north of east on 21 June), sets north of west, and days last about 14 hours. A fixed south-facing panel wastes those summer mornings and evenings; a **single-axis tracker** turning east to west catches them. On a tracker the irradiation on the modules is about 1.22 to 1.28 times GHI.`,
+      },
+      { kind: "widget", widget: "sun-path", props: { latitude: 29.3, dayOfYear: 172 }, caption: "21 June at 29.3°N: the sun rises north of east. Move the day to 355 (December) and watch the noon height drop to about 37°. Compare tracker and fixed-tilt irradiance." },
+      {
+        kind: "md",
+        md: md`**Kuwait's heat and dust.** GHI peaks in May to July. DNI is held down in late spring and summer by dust and haze (the shamal season), so the beam is weakest relative to GHI when the sun is strongest. Summer afternoons above 45 °C are routine; the record is **53.9 °C at Mitribah on 21 July 2016**. Heat lowers PV output (next explainer) and dust coats the modules (soiling).`,
       },
       { kind: "widget", widget: "kuwait-climate", props: { metric: "ghi" }, caption: "Daily averages by month, in kWh/m² per day (indicative, not bankable). In June GHI is about 8 but DNI below 6: dust holds the beam down exactly when the sun and the heat peak." },
-      { kind: "widget", widget: "sun-path", props: { latitude: 29.3, dayOfYear: 172 }, caption: "21 June at 29.3°N: the sun rises north of east. Move the day to 355 (December) and watch the noon height drop to about 37°. Compare tracker and fixed-tilt irradiance." },
       {
         kind: "callout",
         tone: "kuwait",
@@ -597,32 +726,81 @@ Where the analogy breaks: in a real cell the current stays almost constant as vo
 
 **Photons free electrons.** A silicon cell is a large, thin diode. Light arrives as packets of energy (**photons**). A photon with enough energy (more than silicon's **band gap** of 1.12 eV, which means wavelengths below about 1,100 nm) knocks an electron loose. The cell is made of two layers, **p-type** and **n-type** silicon. Where they meet, the **p-n junction**, a built-in electric field sweeps the freed electrons to one side. Connect a load and they flow round the circuit: the **photocurrent**. Photon energy above the band gap ends up as heat, one reason commercial cells convert only about 23 to 26 % of the light (modules about 22 to 23 %).
 
-**The output is DC.** Current flows one way only. A string of modules gives up to 1,500 V DC, and the **inverter** turns it into grid AC (next explainer).
-
-**The I-V curve** shows every combination of current and voltage the module can deliver:
+**The output is DC.** Current flows one way only. A string of modules gives up to 1,500 V DC, and the **inverter** turns it into grid AC (next explainer).`,
+      },
+      {
+        kind: "flow",
+        title: "From a photon to grid power",
+        steps: [
+          { label: "Photon arrives", detail: "Needs more than 1.12 eV (wavelength below about 1,100 nm)" },
+          { label: "Electron knocked loose", detail: "Any energy above the band gap becomes heat" },
+          { label: "p-n junction field", detail: "Sweeps the freed electrons to one side" },
+          { label: "Load connected", detail: "Electrons flow round the circuit: the DC photocurrent" },
+          { label: "Strings in series", detail: "Voltages add, up to 1,500 V DC" },
+          { label: "Inverter", detail: "Turns DC into three-phase grid AC" },
+        ],
+        caption: "Light in, one-way current out. Everything before the inverter is DC.",
+      },
+      {
+        kind: "md",
+        md: md`**The I-V curve** shows every combination of current and voltage the module can deliver:
 
 - $I_{sc}$ is proportional to sunlight: half the irradiance, half the current.
 - $V_{oc}$ barely changes with sunlight but **falls as the cell heats up**.
 - At the **maximum power point** (MPP), $V_{mp}$ is about 80 to 84 % of $V_{oc}$ and $I_{mp}$ about 94 to 96 % of $I_{sc}$. The inverter's **MPPT** (maximum power point tracker) hunts for this point all day.
-- **Watts-peak (Wp)** on the datasheet are measured at **STC**: 1,000 W/m², 25 °C cell temperature and a standard spectrum (AM1.5). The field is rarely like that.
-
-**Heat is the enemy.** Every °C of cell temperature above 25 °C costs power, set by the **temperature coefficient** $\gamma$ (in %/°C):
+- **Watts-peak (Wp)** on the datasheet are measured at **STC**: 1,000 W/m², 25 °C cell temperature and a standard spectrum (AM1.5). The field is rarely like that.`,
+      },
+      { kind: "diagram", diagram: "iv-curve", caption: "The hose picture on one curve: Isc is the nozzle wide open, Voc the thumb fully over the end, and the MPP sits at the knee, where current times voltage is largest." },
+      {
+        kind: "md",
+        md: md`**Heat is the enemy.** Every °C of cell temperature above 25 °C costs power, set by the **temperature coefficient** $\gamma$ (in %/°C):
 
 $P = P_{STC} \times \frac{G}{1000} \times [1 + \gamma (T_c - 25)]$
 
-On a Kuwaiti summer afternoon at 50 °C ambient the cell runs at about **70 to 75 °C**. A TOPCon module ($\gamma$ = -0.30 %/°C) at 1,000 W/m² and 72 °C gives $1 - 0.0030 \times 47 \approx 0.86$, so about **86 % of its rating** even in full sun.
-
-**Module types.**
+On a Kuwaiti summer afternoon at 50 °C ambient the cell runs at about **70 to 75 °C**. A TOPCon module ($\gamma$ = -0.30 %/°C) at 1,000 W/m² and 72 °C gives $1 - 0.0030 \times 47 \approx 0.86$, so about **86 % of its rating** even in full sun.`,
+      },
+      { kind: "widget", widget: "iv-curve", props: { irradiance: 1000, temperature: 72 }, caption: "Set to a Kuwaiti summer afternoon (1,000 W/m², cell 72 °C). Slide the temperature back to 25 °C: voltage and power recover, current barely changes. Then drop irradiance to 500 W/m²: current halves, voltage hardly moves." },
+      {
+        kind: "md",
+        md: md`**Module types.**
 
 - **PERC** (p-type): the older workhorse, $\gamma$ about -0.35 %/°C.
 - **TOPCon** (n-type): now mainstream, $\gamma$ about -0.30 %/°C.
 - **HJT** (heterojunction, n-type): best in heat, $\gamma$ about -0.25 %/°C.
 
-Better passivation of the cell surfaces gives higher voltage and a smaller heat loss, which is why n-type modules dominate Gulf tenders.
-
-**Bifacial modules** have a glass rear and also collect light reflected from the ground. Over light desert sand (**albedo**, the share of light reflected, about 0.25 to 0.4) on trackers, they produce about **5 to 9 %** more energy. **Bifaciality** (rear efficiency relative to front) is about 0.70 for PERC, 0.80 for TOPCon and 0.85 to 0.90 for HJT.`,
+Better passivation of the cell surfaces gives higher voltage and a smaller heat loss, which is why n-type modules dominate Gulf tenders.`,
       },
-      { kind: "widget", widget: "iv-curve", props: { irradiance: 1000, temperature: 72 }, caption: "Set to a Kuwaiti summer afternoon (1,000 W/m², cell 72 °C). Slide the temperature back to 25 °C: voltage and power recover, current barely changes. Then drop irradiance to 500 W/m²: current halves, voltage hardly moves." },
+      {
+        kind: "chart",
+        chart: "line",
+        title: "Output vs cell temperature at 1,000 W/m² (% of STC rating)",
+        xKey: "cell",
+        xLabel: "Cell temperature (°C)",
+        yLabel: "% of rating",
+        series: [
+          { key: "perc", label: "PERC (-0.35 %/°C)" },
+          { key: "topcon", label: "TOPCon (-0.30 %/°C)" },
+          { key: "hjt", label: "HJT (-0.25 %/°C)" },
+        ],
+        data: [
+          { cell: 25, perc: 100, topcon: 100, hjt: 100 },
+          { cell: 30, perc: 98.3, topcon: 98.5, hjt: 98.8 },
+          { cell: 35, perc: 96.5, topcon: 97, hjt: 97.5 },
+          { cell: 40, perc: 94.8, topcon: 95.5, hjt: 96.3 },
+          { cell: 45, perc: 93, topcon: 94, hjt: 95 },
+          { cell: 50, perc: 91.3, topcon: 92.5, hjt: 93.8 },
+          { cell: 55, perc: 89.5, topcon: 91, hjt: 92.5 },
+          { cell: 60, perc: 87.8, topcon: 89.5, hjt: 91.3 },
+          { cell: 65, perc: 86, topcon: 88, hjt: 90 },
+          { cell: 70, perc: 84.3, topcon: 86.5, hjt: 88.8 },
+          { cell: 75, perc: 82.5, topcon: 85, hjt: 87.5 },
+        ],
+        caption: "The lines fan out as the cell heats up. At the 70 to 75 °C of a Kuwaiti summer afternoon, HJT keeps about 4 to 5 points more output than PERC, every sunny day.",
+      },
+      {
+        kind: "md",
+        md: md`**Bifacial modules** have a glass rear and also collect light reflected from the ground. Over light desert sand (**albedo**, the share of light reflected, about 0.25 to 0.4) on trackers, they produce about **5 to 9 %** more energy. **Bifaciality** (rear efficiency relative to front) is about 0.70 for PERC, 0.80 for TOPCon and 0.85 to 0.90 for HJT.`,
+      },
       {
         kind: "callout",
         tone: "tip",
@@ -708,6 +886,7 @@ Think of a river system. Thousands of small springs feed little streams; streams
 
 One more idea, the most debated one: designers deliberately install **more DC (modules) than AC (inverters)**. Picture an exchange counter sized for a normal busy hour rather than the single busiest minute of the year. At the very peak a few customers are turned away (**clipping**), but the counter is busy all day and you paid for a smaller one.`,
       },
+      { kind: "diagram", diagram: "pv-plant", caption: "The river on one drawing: modules (springs) join into strings, strings meet at combiners, the inverter changes DC into AC, then the MV and HV transformers widen the flow toward the grid." },
       {
         kind: "md",
         md: md`### What is actually happening
@@ -723,18 +902,34 @@ One more idea, the most debated one: designers deliberately install **more DC (m
    Both are bankable. In Kuwait the choice turns on heat derating (full power typically up to 35 to 45 °C ambient, then down to about 80 to 90 % at 50 °C, OEM-specific), dust filters and in-country service.
 5. **MV skid**: inverter(s) plus a step-up transformer to **33 kV** plus a ring main unit (RMU, the MV switchgear), about 4 to 7 MVA per block.
 6. **33 kV collector cables**, buried, loop back to the **collector substation**.
-7. The **HV transformer** steps up to 132 or 400 kV at the **point of interconnection**. Zone 1's scope includes a **400 kV substation**; the Shagaya to Al-Wafra 400 kV line is a separate MEWRE contract, a classic interface risk.
+7. The **HV transformer** steps up to 132 or 400 kV at the **point of interconnection**. Zone 1's scope includes a **400 kV substation**; the Shagaya to Al-Wafra 400 kV line is a separate MEWRE contract, a classic interface risk.`,
+      },
+      { kind: "widget", widget: "pv-sld", caption: "Click each box from module to grid: role, typical rating and the PM checks. Notice where DC becomes AC and where the voltage steps up." },
+      {
+        kind: "md",
+        md: md`**Central or string, at a glance.**
+
+| | Central inverter | String inverter |
+|---|---|---|
+| Unit size | 3 to 5 MVA on a skid | 250 to 350 kW, spread across the field |
+| Cost per watt at GW scale | Lowest | Higher |
+| Output lost when one unit fails | 3 to 5 MW | About 0.3 MW |
+| After a fault | Repaired in place | Swapped in hours |
+| MPPT inputs | Fewer | More (less mismatch) |
+| Kuwait questions (both) | Heat derating, dust filters, in-country service | Heat derating, dust filters, in-country service |
 
 **DC/AC ratio.**
 
 $\text{DC/AC} = P_{DC,STC} / P_{AC,rated}$
 
-that is, module nameplate (MWp) divided by inverter AC rating (MWac). Typical values are **1.15 to 1.40**. Real DC output rarely reaches nameplate (heat, dust and wiring keep it to about 80 to 90 % at best), so a 1:1 inverter would rarely run at full output. At 1.30 the clipped energy is about 3 % on a clear day and 0.5 to 3 % over a year. Since the grid connection is contracted in MWac, a little clipping is the price of using that connection for more hours.
-
-**Trackers vs fixed tilt.** A **single-axis tracker** turns rows from east to west (about ±52° to ±60°) on a north-south axis. At 29°N, with the summer sun rising north of east, it gains about **15 to 25 %** more energy than fixed tilt, for a few US cents per Wp more. At low sun it **backtracks** (rotates back toward flat) so rows do not shade each other, and in high wind it **stows**. The ground coverage ratio (GCR, module width divided by row spacing) is typically 0.28 to 0.40.`,
+that is, module nameplate (MWp) divided by inverter AC rating (MWac). Typical values are **1.15 to 1.40**. Real DC output rarely reaches nameplate (heat, dust and wiring keep it to about 80 to 90 % at best), so a 1:1 inverter would rarely run at full output. At 1.30 the clipped energy is about 3 % on a clear day and 0.5 to 3 % over a year. Since the grid connection is contracted in MWac, a little clipping is the price of using that connection for more hours.`,
       },
-      { kind: "widget", widget: "pv-sld", caption: "Click each box from module to grid: role, typical rating and the PM checks. Notice where DC becomes AC and where the voltage steps up." },
       { kind: "widget", widget: "dc-ac-ratio", props: { ratio: 1.3 }, caption: "Clear-sky day at DC/AC 1.3: the flat top is clipped energy. Push the ratio to 1.5 and back to 1.1 to see the trade between clipped energy and inverter cost." },
+      {
+        kind: "md",
+        md: md`**Trackers vs fixed tilt.** A **single-axis tracker** turns rows from east to west (about ±52° to ±60°) on a north-south axis. At 29°N, with the summer sun rising north of east, it gains about **15 to 25 %** more energy than fixed tilt, for a few US cents per Wp more. At low sun it **backtracks** (rotates back toward flat) so rows do not shade each other, and in high wind it **stows**. The ground coverage ratio (GCR, module width divided by row spacing) is typically 0.28 to 0.40.`,
+      },
+      { kind: "widget", widget: "sun-path", props: { latitude: 29.3, dayOfYear: 172 }, caption: "21 June at Shagaya: compare the tracker and fixed-tilt irradiance curves. The tracker's extra energy sits in the morning and late afternoon, when the sun is north of east or west. A clear June day shows a gain well above the annual 15 to 25 %; move to December (day 355) and the gain disappears, because a south-facing fixed tilt suits the low winter sun. The year averages the two." },
       {
         kind: "callout",
         tone: "tip",
@@ -836,9 +1031,13 @@ A yield model (usually **PVsyst**) runs hour by hour through a typical year and 
 - **Soiling** (dust on the glass): about 2 to 5 % with a good cleaning regime. It rises fast if cleaning slips: Kuwaiti test studies saw 8.7 to 15.1 % with only monthly cleaning.
 - **Angle of incidence (IAM)**: 1.5 to 2.5 %. **Shading and backtracking**: 0.5 to 1.5 %.
 - **Mismatch**: 0.7 to 1.5 %. Modules in a string are never identical, and the weakest drags the rest.
-- **DC cables** 1 to 1.5 %; **inverter efficiency** 1.2 to 2 %; **clipping** 0.5 to 3 %; **AC cables and transformers** 1 to 2 %; **unavailability** 0.5 to 1.5 %.
-
-**Performance ratio (PR)**:
+- **DC cables** 1 to 1.5 %; **inverter efficiency** 1.2 to 2 %; **clipping** 0.5 to 3 %; **AC cables and transformers** 1 to 2 %; **unavailability** 0.5 to 1.5 %.`,
+      },
+      { kind: "widget", widget: "loss-waterfall", caption: "Defaults are a Kuwait-like tracker plant. Set GHI to 2,050 kWh/m², then raise temperature to 10 % and soiling to 5 %: watch the PR and specific yield fall." },
+      { kind: "widget", widget: "soiling", caption: "Soiling on its own: the sawtooth is dust building up day by day and dropping to zero at each cleaning. Raise the soiling rate (a shamal week) and see the optimal cleaning interval shorten and the lost energy grow." },
+      {
+        kind: "md",
+        md: md`**Performance ratio (PR)**:
 
 $PR = Y_f / Y_r$
 
@@ -846,12 +1045,26 @@ The **final yield** $Y_f$ is the kWh exported per kWp installed. The **reference
 
 **Specific yield** (kWh per kWp per year) is the number bidders compete on. Plausible for Kuwait trackers: about **2,000 to 2,300 kWh/kWp**. Claims of 2,300 to 2,500 are optimistic and unverified for Shagaya.
 
-**P50 and P90.** Every input is uncertain: the long-term sunlight estimate (4 to 6 % without site data, 2.5 to 3.5 % with 12 months of site-adapted data), the model, soiling, availability and year-to-year weather (2.5 to 4 %). Combining the mid-range values of Track 0's table gives a total of about 6 % with good site data and 7 to 8 % without. Assuming a normal distribution, **P90 sits 1.28 standard deviations below P50**: at 6 % uncertainty, about 7.7 % below.
-
-**Why lenders care.** Debt is sized so that cash flow in a **P90 (or P99) year** still covers debt service with a margin (the DSCR covenant, for example 1.20 to 1.30×). Lower uncertainty means a higher P90, more debt, less equity and a **lower tariff for MEWRE**. That is why a ground measurement station installed a year before the tender pays for itself.`,
+**P50 and P90.** Every input is uncertain: the long-term sunlight estimate (4 to 6 % without site data, 2.5 to 3.5 % with 12 months of site-adapted data), the model, soiling, availability and year-to-year weather (2.5 to 4 %). Combining the mid-range values of Track 0's table gives a total of about 6 % with good site data and 7 to 8 % without. Assuming a normal distribution, **P90 sits 1.28 standard deviations below P50**: at 6 % uncertainty, about 7.7 % below.`,
       },
-      { kind: "widget", widget: "loss-waterfall", caption: "Defaults are a Kuwait-like tracker plant. Set GHI to 2,050 kWh/m², then raise temperature to 10 % and soiling to 5 %: watch the PR and specific yield fall." },
       { kind: "widget", widget: "p50-p90", props: { p50: 2400, sigma: 6 }, caption: "An illustrative plant with P50 = 2,400 GWh/yr. Move σ from 4 % to 8 % and watch P90 drift away from P50: that gap is lost debt capacity." },
+      {
+        kind: "md",
+        md: md`**Why lenders care.** Debt is sized so that cash flow in a **P90 (or P99) year** still covers debt service with a margin (the DSCR covenant, for example 1.20 to 1.30×). Lower uncertainty means a higher P90, more debt, less equity and a **lower tariff for MEWRE**. That is why a ground measurement station installed a year before the tender pays for itself.`,
+      },
+      {
+        kind: "flow",
+        title: "How a ground station lowers MEWRE's tariff",
+        steps: [
+          { label: "Site data before the tender", detail: "12 months of site-adapted measurements" },
+          { label: "Resource uncertainty falls", detail: "From 4 to 6 % to 2.5 to 3.5 %" },
+          { label: "P90 moves up toward P50", detail: "Total uncertainty about 6 % instead of 7 to 8 %" },
+          { label: "More debt", detail: "Same DSCR covenant (1.20 to 1.30×) on a higher P90 cash flow" },
+          { label: "Less equity", detail: "Cheaper money funds more of the plant" },
+          { label: "Lower tariff", detail: "Bidders can offer MEWRE a lower price" },
+        ],
+        caption: "Each box causes the next. The station is cheap; the tariff it lowers runs for 30 years.",
+      },
       {
         kind: "callout",
         tone: "tip",

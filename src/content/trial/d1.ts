@@ -518,6 +518,7 @@ Two facts of nature, both discovered in the 1800s, run the entire power system:
         ],
         caption: "Read it left to right: current makes field, changing field makes voltage. Generators, transformers, motors and the lag of a coil's current all come from this one chain.",
       },
+      { kind: "widget", widget: "induction", props: { mode: "switch" }, caption: "Try steady DC first: a strong field, no voltage on the right. Then switch on and off, then AC: the meter moves only while the field is changing." },
       {
         kind: "md",
         md: md`Everything follows from these:
@@ -538,6 +539,7 @@ Two facts of nature, both discovered in the 1800s, run the entire power system:
         ],
         caption: "Every box depends on a magnetic field, and every one of them absorbs reactive power. That is why the grid as a whole draws lagging current.",
       },
+      { kind: "widget", widget: "transformer", props: { preset: "400-132", mva: 500 }, caption: "Two coils, one iron core, no moving parts. Change the preset and watch voltage fall by the turns ratio while current rises by the same ratio. Then try steady DC." },
       {
         kind: "md",
         md: md`**Inductance.** A coil's own changing field induces a voltage in the coil itself that **opposes the change in current**. Try to increase the current and the coil pushes back; try to cut it and the coil pushes to keep it going (which is why switching off a big motor or transformer can draw a spark, and why breakers must handle arcs). The coil stores energy in its magnetic field and returns it. This property is **inductance** (L, henries, H).
@@ -838,7 +840,7 @@ $$Z = \sqrt{R^2 + X^2}$$
 
 Example: a 30 Ω resistor in series with a coil of 40 Ω reactance has $Z = \sqrt{30^2 + 40^2} = 50$ Ω, not 70 Ω. On 240 V it draws $240/50 = 4.8$ A (the resistor alone would draw 8 A), and the current lags the voltage. A coil's reactance and a capacitor's reactance work in **opposite** directions, so in a circuit they partly cancel.`,
       },
-      { kind: "widget", widget: "power-triangle", props: { p: 30, pf: 0.6 }, caption: "Borrowed from tomorrow's power triangle, set so its short sides are 30 and 40. Read P as R = 30 Ω and Q as X = 40 Ω: the long side, Z, is 50, not 70, and the angle (53°) is how far the current lags. Ignore the capacitor controls until Day 2." },
+      { kind: "widget", widget: "impedance-triangle", props: { r: 30, xl: 40, xc: 0 }, caption: "R = 30 Ω and X = 40 Ω give Z = 50 Ω, not 70 Ω: they add at right angles. Add capacitor reactance and watch it cancel the coil; raise the frequency and watch the two move in opposite directions." },
       {
         kind: "md",
         md: md`**ELI the ICE man, recap:**
