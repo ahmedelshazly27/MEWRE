@@ -10,6 +10,8 @@ import { Card, ProgressBar } from "@/components/ui";
 
 export interface TrialDayDto extends Omit<TrialDay, "playbook"> {
   explainers: { id: string; title: string; minutes: number }[];
+  /** Optional explainers for the day ("if you have time"). */
+  extra: { id: string; title: string; minutes: number }[];
   /** Tier-1 must-know concepts of the day's modules. */
   concepts: { id: string; module: string }[];
   playbook: { id: string; title: string }[];
@@ -54,14 +56,16 @@ export function TrialPlan({ days, trialStart, reviewMin, selftestMin, examMin }:
   const examBest = d ? bestScores(d, "crash").get("crash") : undefined;
 
   const left = daysBetween(today, trialStart);
-  // which plan day is "today": day 1 is 7 days before the trial
-  const todayIdx = Math.min(Math.max(7 - left + 1, 1), 7);
+  // which plan day is "today": the plan's last day is the day before the trial
+  const n = days.length;
+  const todayIdx = Math.min(Math.max(n - left + 1, 1), n);
 
   const dayItems = (day: TrialDayDto) => {
+    // optional explainers do not count towards the day's progress
     const items: boolean[] = [!!doc.review?.includes(day.day), ...day.explainers.map((e) => checks.has(e.id))];
     if (day.concepts.length) items.push(day.concepts.every((c) => known.has(c.id)));
     for (const p of day.playbook) items.push(!!doc.playbook?.includes(p.id));
-    if (day.day === 7) items.push(examBest !== undefined);
+    if (day.exam) items.push(examBest !== undefined);
     return items;
   };
   const all = days.flatMap(dayItems);
@@ -89,7 +93,7 @@ export function TrialPlan({ days, trialStart, reviewMin, selftestMin, examMin }:
 
       <div className="space-y-4">
         {days.map((day) => {
-          const minutes = reviewMin + day.explainers.reduce((s, e) => s + e.minutes, 0) + (day.concepts.length ? selftestMin : 0) + day.playbook.length * 8 + (day.day === 7 ? examMin : 0);
+          const minutes = reviewMin + day.explainers.reduce((s, e) => s + e.minutes, 0) + (day.concepts.length ? selftestMin : 0) + day.playbook.length * 8 + (day.exam ? examMin : 0);
           const items = dayItems(day);
           const isToday = left > 0 && day.day === todayIdx;
           return (
@@ -142,12 +146,26 @@ export function TrialPlan({ days, trialStart, reviewMin, selftestMin, examMin }:
                     Playbook: {p.title}
                   </Row>
                 ))}
-                {day.day === 7 && (
+                {day.exam && (
                   <Row done={examBest !== undefined} label="Completed by taking the exam" href="/crash/exam" minutes={examMin}>
                     Final exam: 25 timed questions across all modules{examBest !== undefined && <span className="ms-2 text-xs text-muted">{Math.round(examBest * 100)}%</span>}
                   </Row>
                 )}
               </ul>
+              {day.extra.length > 0 && (
+                <details className="mt-2 text-sm">
+                  <summary className="cursor-pointer text-muted">
+                    If you have time ({day.extra.length} more, about {day.extra.reduce((s, e) => s + e.minutes, 0)} min), or in your first weeks
+                  </summary>
+                  <ul className="mt-1 divide-y divide-border/60">
+                    {day.extra.map((e) => (
+                      <Row key={e.id} done={checks.has(e.id)} label="Completed by answering its three questions" href={`/trial/${e.id}`} minutes={e.minutes}>
+                        {e.title}
+                      </Row>
+                    ))}
+                  </ul>
+                </details>
+              )}
             </Card>
           );
         })}

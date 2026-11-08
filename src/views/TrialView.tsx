@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { KEY_CONCEPTS } from "@/content/key";
 import { EXAM_MIN, PLAYBOOK } from "@/content/crash";
-import { EXPLAINERS, REVIEW_MIN, SELFTEST_MIN, TRIAL_DAYS, TRIAL_START, getExplainer } from "@/content/trial";
+import { PLAN_ORDER, REVIEW_MIN, SELFTEST_MIN, TRIAL_DAYS, TRIAL_START, getExplainer, planSlot } from "@/content/trial";
 import type { Lesson } from "@/content/schema";
 import { getLesson, getModule } from "@/lib/content";
 import { BlockRenderer } from "@/components/lesson/BlockRenderer";
@@ -15,7 +15,14 @@ import { TrialPlan, type TrialDayDto } from "@/components/trial/TrialPlan";
 export function TrialView() {
   const days: TrialDayDto[] = TRIAL_DAYS.map((d) => ({
     ...d,
-    explainers: EXPLAINERS.filter((e) => e.day === d.day).map((e) => ({ id: e.id, title: e.title, minutes: e.minutes })),
+    explainers: d.core.flatMap((id) => {
+      const e = getExplainer(id);
+      return e ? [{ id: e.id, title: e.title, minutes: e.minutes }] : [];
+    }),
+    extra: d.optional.flatMap((id) => {
+      const e = getExplainer(id);
+      return e ? [{ id: e.id, title: e.title, minutes: e.minutes }] : [];
+    }),
     concepts: d.modules.flatMap((m) => (KEY_CONCEPTS[m]?.en ?? []).filter((k) => k.tier === 1).map((k) => ({ id: k.id, module: m }))),
     playbook: d.playbook.map((id) => ({ id, title: PLAYBOOK.find((p) => p.id === id)?.title.en ?? id })),
     moduleTitles: d.modules.map((m) => ({ id: m, title: getModule(m, "en")?.title ?? m })),
@@ -23,7 +30,7 @@ export function TrialView() {
   return (
     <div className="mx-auto max-w-4xl">
       <PageHeader
-        title="Trial week: 7 days, 2 to 3 hours a day"
+        title="Trial week: 4 days, 2 to 3 hours a day"
         subtitle="Intuition first, then the numbers and words you will hear at MEWRE. Short explainers with a picture, an analogy and three quick questions; theory waits until after you start."
       />
       <TrialPlan days={days} trialStart={TRIAL_START} reviewMin={REVIEW_MIN} selftestMin={SELFTEST_MIN} examMin={EXAM_MIN} />
@@ -45,12 +52,14 @@ export function TrialView() {
 export function ExplainerView({ id }: { id: string }) {
   const e = getExplainer(id);
   if (!e) notFound();
-  const sameDay = EXPLAINERS.filter((x) => x.day === e.day);
-  const i = sameDay.findIndex((x) => x.id === e.id);
-  const all = EXPLAINERS.findIndex((x) => x.id === e.id);
-  const prev = EXPLAINERS[all - 1];
-  const next = EXPLAINERS[all + 1];
-  const day = TRIAL_DAYS.find((d) => d.day === e.day)!;
+  const slot = planSlot(e.id) ?? { day: 1, core: false };
+  const day = TRIAL_DAYS.find((d) => d.day === slot.day)!;
+  const list = slot.core ? day.core : day.optional;
+  const i = list.indexOf(e.id);
+  const pos = PLAN_ORDER.indexOf(e.id);
+  const prev = pos > 0 ? getExplainer(PLAN_ORDER[pos - 1]) : undefined;
+  const next = pos >= 0 ? getExplainer(PLAN_ORDER[pos + 1]) : undefined;
+  const nextSlot = next ? planSlot(next.id) : undefined;
   // BlockRenderer needs a lesson for scenario/formula lookups; explainers use neither, so a shell is enough.
   const shell = { id: e.id, title: e.title, summary: e.hook, minutes: e.minutes, objectives: [], concepts: [], sections: [], quiz: [], flashcards: [] } as unknown as Lesson;
   return (
@@ -59,7 +68,7 @@ export function ExplainerView({ id }: { id: string }) {
         <Link href="/trial" className="text-accent">
           Trial week
         </Link>{" "}
-        · Day {e.day}: {day.title} · {i + 1} of {sameDay.length} · {e.minutes} min
+        · Day {slot.day}: {day.title} · {slot.core ? `${i + 1} of ${list.length}` : "if you have time"} · {e.minutes} min
       </div>
       <PageHeader title={e.title} />
       <div className="mb-6 rounded-xl border border-accent/30 bg-accent-soft/40 p-4 text-sm">
@@ -114,7 +123,7 @@ export function ExplainerView({ id }: { id: string }) {
         )}
         {next ? (
           <Link href={`/trial/${next.id}`} className="text-end text-accent">
-            {next.day !== e.day ? `Day ${next.day}: ` : ""}
+            {nextSlot && nextSlot.day !== slot.day ? `Day ${nextSlot.day}: ` : ""}
             {next.title} →
           </Link>
         ) : (

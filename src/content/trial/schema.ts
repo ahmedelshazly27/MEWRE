@@ -7,7 +7,7 @@ import type { Block, Question } from "../schema";
 export interface Explainer {
   /** "x-reactive-power" */
   id: string;
-  /** Trial-plan day (1 to 7; day 7 also holds the rehearsal). */
+  /** Topic group the explainer was written for (1 to 7). The 4-day plan in index.ts decides when it is studied. */
   day: number;
   title: string;
   minutes: number;
@@ -35,6 +35,12 @@ export interface TrialDay {
   title: string;
   /** What you can do at the end of the day. */
   goal: string;
+  /** Explainer ids in the day's main path, in study order (fits the daily budget). */
+  core: string[];
+  /** Explainer ids to do if time allows, or after the trial starts. */
+  optional: string[];
+  /** Ends with the final exam. */
+  exam?: boolean;
   /** Track 0 modules whose must-know concepts you self-test that day. */
   modules: string[];
   /** Playbook section ids to read that day. */

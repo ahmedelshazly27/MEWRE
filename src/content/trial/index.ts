@@ -15,21 +15,61 @@ export const TRIAL_START = "2026-11-15";
 /** Daily budget the plan is built for: 2 to 3 hours. */
 export const DAY_BUDGET_MIN = 150;
 /** Spaced review at the start of every day. */
-export const REVIEW_MIN = 20;
-/** Must-know self-test per day. */
-export const SELFTEST_MIN = 20;
+export const REVIEW_MIN = 15;
+/** Must-know self-test per day (tier-1 concepts of the day's modules). */
+export const SELFTEST_MIN = 15;
 
 export const TRIAL_DAYS: TrialDay[] = [
-  { day: 1, title: "Electricity from zero", goal: "Say in your own words what voltage, current, resistance, DC and AC, power and energy are, and how coils and capacitors make current lag or lead.", modules: ["m01"], playbook: ["intro"] },
-  { day: 2, title: "Grid electricity", goal: "Explain reactive power, three-phase, transformers and voltage levels, frequency and inertia, fault levels and Kuwait's load curve, and ask the right grid question.", modules: ["m01"], playbook: ["numbers"] },
-  { day: 3, title: "Kuwait's power system and solar PV", goal: "Describe Kuwait's system and who decides what, and how a utility PV plant turns sunlight into MWh and where it loses them.", modules: ["m00", "m02"], playbook: ["who"] },
-  { day: 4, title: "CSP, wind, batteries and the grid connection", goal: "Compare CSP, PV with batteries and wind for Kuwait, size a battery in MW and MWh, and follow a grid-connection discussion.", modules: ["m03", "m04", "m05", "m06"], playbook: [] },
-  { day: 5, title: "How a project is delivered and controlled", goal: "Walk a project from feasibility to handover and read a schedule, an earned-value report and a risk register.", modules: ["m07", "m08"], playbook: ["questions"] },
-  { day: 6, title: "Contracts, money and procurement", goal: "Explain FIDIC basics, bonds and delay damages, IPP and PPA structures, LCOE and NPV, and how Kuwait tenders a project.", modules: ["m09", "m10", "m11"], playbook: [] },
-  { day: 7, title: "Operations, the ministry, and rehearsal", goal: "Read a plant performance report, work like a ministry PM, use AI safely, then rehearse: final exam, playbook out loud, 60-second introduction.", modules: ["m12", "m13", "m14"], playbook: ["avoid", "week", "intro"] },
+  {
+    day: 1,
+    title: "Electricity from zero to the grid",
+    goal: "Say in your own words what voltage, current, DC and AC, coils, capacitors and reactance are, then explain reactive power and three-phase and why the grid cares.",
+    core: ["x-voltage-current-resistance", "x-power-energy", "x-dc-vs-ac", "x-magnetism-inductance", "x-capacitance", "x-reactance-impedance", "x-reactive-power", "x-three-phase"],
+    optional: ["x-transformers-voltage-levels", "x-frequency-inertia", "x-fault-level-protection", "x-load-curve-kuwait"],
+    modules: ["m01"],
+    playbook: ["intro"],
+  },
+  {
+    day: 2,
+    title: "Kuwait, solar, CSP and batteries",
+    goal: "Describe Kuwait's power system and who decides what, how a PV plant makes and loses MWh, how CSP and batteries fit the evening peak.",
+    core: ["x-kuwait-power-system", "x-who-decides", "x-pv-how-it-works", "x-pv-plant-anatomy", "x-pv-losses-yield", "x-csp", "x-bess-basics"],
+    optional: ["x-kuwait-pipeline", "x-solar-resource", "x-csp-vs-pv-bess", "x-wind", "x-bess-life-safety"],
+    modules: ["m00", "m02", "m05"],
+    playbook: ["numbers", "who"],
+  },
+  {
+    day: 3,
+    title: "Grid connection and project delivery",
+    goal: "Follow a grid-connection discussion and walk a project from feasibility to handover, reading a schedule, an earned-value report and a risk register.",
+    core: ["x-transformers-voltage-levels", "x-grid-code-connection", "x-project-lifecycle", "x-testing-commissioning-cod", "x-schedule-critical-path", "x-earned-value", "x-risk-change-reporting"],
+    optional: ["x-ppc-scada", "x-design-owners-engineer", "x-scope-wbs"],
+    modules: ["m06", "m07", "m08"],
+    playbook: ["questions"],
+  },
+  {
+    day: 4,
+    title: "Contracts, money, the ministry, and rehearsal",
+    goal: "Explain FIDIC basics, bonds and delay damages, IPPs and PPAs, LCOE and NPV, how Kuwait tenders and how the ministry works, then rehearse with the final exam.",
+    core: ["x-contract-strategies-fidic", "x-bonds-lds", "x-ipp-ppa", "x-npv-irr-lcoe", "x-kuwait-procurement", "x-how-the-ministry-works"],
+    optional: ["x-claims-variations", "x-project-finance-tariff-bids", "x-om-kpis", "x-om-contracts-warranty", "x-meetings-presenting-negotiating", "x-ai-at-work-safely"],
+    modules: ["m09", "m10", "m11", "m13"],
+    playbook: ["avoid", "week"],
+    exam: true,
+  },
 ];
 
 export const EXPLAINERS: Explainer[] = [...D1, ...D2, ...D3, ...D4, ...D5, ...D6, ...D7];
 
-export const explainersForDay = (day: number) => EXPLAINERS.filter((e) => e.day === day);
+/** Study order across the plan: each day's core list, then its optional list. */
+export const PLAN_ORDER: string[] = TRIAL_DAYS.flatMap((d) => [...d.core, ...d.optional]);
+
+/** Plan day and whether the explainer is core, for an explainer id. */
+export function planSlot(id: string): { day: number; core: boolean } | undefined {
+  for (const d of TRIAL_DAYS) {
+    if (d.core.includes(id)) return { day: d.day, core: true };
+    if (d.optional.includes(id)) return { day: d.day, core: false };
+  }
+  return undefined;
+}
 export const getExplainer = (id: string) => EXPLAINERS.find((e) => e.id === id);

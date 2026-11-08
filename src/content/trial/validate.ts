@@ -59,3 +59,20 @@ export function validateExplainers(explainers: Explainer[], track0: Module[]): V
   for (const i of all) if ((i.where.includes("trial") || explainers.some((e) => i.where.includes(e.id))) && !lessonShape.test(i.message)) issues.push(i);
   return issues;
 }
+
+/** Every explainer appears exactly once in the plan (core or optional), and the plan names only real explainers. */
+export function validatePlan(days: { day: number; core: string[]; optional: string[] }[], explainers: Explainer[]): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  const ids = new Set(explainers.map((e) => e.id));
+  const count = new Map<string, number>();
+  for (const d of days)
+    for (const id of [...d.core, ...d.optional]) {
+      count.set(id, (count.get(id) ?? 0) + 1);
+      if (!ids.has(id)) issues.push({ where: `trial plan day ${d.day}`, message: `unknown explainer ${id}` });
+    }
+  for (const e of explainers) {
+    const n = count.get(e.id) ?? 0;
+    if (n !== 1) issues.push({ where: `trial plan`, message: `${e.id} appears ${n} times in the plan (must be exactly once)` });
+  }
+  return issues;
+}
