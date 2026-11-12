@@ -92,7 +92,7 @@ self.addEventListener("fetch", (event) => {
 
 // Pages kept by the "trial" scope: the MEWRE track in English, the trial week, the crash course and the study tools.
 const TRIAL_SCOPE = /^\/($|trial|crash|review|practice|errors|notes|settings|glossary|formulas$|work|learn$|learn\/m\d\d|tracks\/mewre|scenarios\/m\d\d|print\/m\d\d|diagnostic|tutor|concepts$|library)/;
-const TRIAL_DATA = /^\/data\/(content|concepts)\.json$|^\/(manifest|icon|apple)/;
+const TRIAL_DATA = /^\/data\/(content|concepts)\.json$|^\/(manifest|icon|apple|downloads\/)/;
 
 /** A response we must not store offline: an error, or a redirect to the sign-in page. */
 const unusable = (res) => !res.ok || res.redirected || new URL(res.url).pathname.startsWith("/login");
