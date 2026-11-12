@@ -7,8 +7,12 @@ const AUTO_KEY = "mewre-offline-version";
 
 export type OfflineProgress = { type: "progress" | "done" | "error"; done?: number; total?: number; message?: string; version?: string; at?: number };
 
+/** "trial": MEWRE track in English, trial week, crash course and study tools (~60 MB). "all": every track and Arabic (~270 MB). */
+export type OfflineScope = "trial" | "all";
+export type OfflineStatus = { version: string; at: number; scope?: OfflineScope };
+
 /** Ask the service worker to download every page and asset. */
-export async function downloadForOffline(onProgress?: (p: OfflineProgress) => void): Promise<void> {
+export async function downloadForOffline(onProgress?: (p: OfflineProgress) => void, scope: OfflineScope = offlineStatus()?.scope ?? "trial"): Promise<void> {
   if (!("serviceWorker" in navigator)) throw new Error("This browser does not support offline mode.");
   const reg = await navigator.serviceWorker.ready;
   const sw = reg.active;
@@ -19,17 +23,17 @@ export async function downloadForOffline(onProgress?: (p: OfflineProgress) => vo
       onProgress?.(e.data);
       if (e.data.type === "done") {
         try {
-          localStorage.setItem(AUTO_KEY, JSON.stringify({ version: BUILD_ID, at: Date.now() }));
+          localStorage.setItem(AUTO_KEY, JSON.stringify({ version: BUILD_ID, at: Date.now(), scope }));
         } catch {}
         resolve();
       }
       if (e.data.type === "error") reject(new Error(e.data.message));
     };
-    sw.postMessage({ type: "precache-all" }, [ch.port2]);
+    sw.postMessage({ type: "precache-all", scope }, [ch.port2]);
   });
 }
 
-export function offlineStatus(): { version: string; at: number } | null {
+export function offlineStatus(): OfflineStatus | null {
   try {
     return JSON.parse(localStorage.getItem(AUTO_KEY) || "null");
   } catch {
@@ -46,7 +50,8 @@ export function ServiceWorker() {
       .then(async () => {
         await navigator.serviceWorker.ready;
         const st = offlineStatus();
-        // First install, or a new deploy: refresh the offline copy in the background when online.
+        // First install, or a new deploy: refresh the offline copy in the background when online, with the scope the
+        // learner chose last (the small "trial" copy by default).
         if (navigator.onLine && st?.version !== BUILD_ID) {
           const idle = (cb: () => void) => ("requestIdleCallback" in window ? (window as Window).requestIdleCallback(cb) : setTimeout(cb, 3000));
           idle(() => void downloadForOffline().catch(() => undefined));

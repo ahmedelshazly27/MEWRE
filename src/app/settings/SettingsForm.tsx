@@ -9,7 +9,8 @@ import { getStore } from "@/lib/store/store";
 import { supabase } from "@/lib/store/supabase";
 import { resetProgress } from "@/lib/store/actions";
 import type { Settings } from "@/lib/store/derive";
-import { BUILD_ID, downloadForOffline, offlineStatus, type OfflineProgress } from "@/components/ServiceWorker";
+import { BUILD_ID } from "@/components/ServiceWorker";
+import { OfflinePanel } from "@/components/OfflinePanel";
 import { btn, Pill, ProgressBar } from "@/components/ui";
 
 const field = "w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm";
@@ -93,61 +94,7 @@ function Account() {
 }
 
 function Offline() {
-  const { t } = useT();
-  const [p, setP] = useState<OfflineProgress | null>(null);
-  const [status, setStatus] = useState<{ version: string; at: number } | null>(null);
-  const [err, setErr] = useState<string | null>(null);
-  const [supported, setSupported] = useState(true);
-  useEffect(() => {
-    setStatus(offlineStatus());
-    setSupported("serviceWorker" in navigator);
-  }, []);
-  const running = p?.type === "progress";
-  const upToDate = status?.version === BUILD_ID;
-  return (
-    <div className="space-y-3 text-sm">
-      <p className="text-muted">
-        {t("Every lesson, quiz, flashcard, widget and spreadsheet is stored on this device so you can study with no connection. Progress made offline syncs automatically when you are back online. The AI tutor needs a connection.")}
-      </p>
-      <div>
-        {status ? (
-          <Pill tone={upToDate ? "ok" : "warn"}>{upToDate ? t("Available offline · {d}", { d: new Date(status.at).toLocaleDateString() }) : t("Offline copy is from an older version")}</Pill>
-        ) : (
-          <Pill tone="warn">{t("Not downloaded yet")}</Pill>
-        )}
-      </div>
-      {running && p?.total ? (
-        <div>
-          <ProgressBar value={(p.done ?? 0) / p.total} />
-          <div className="mt-1 text-xs text-muted">
-            {t("{d}/{n} files", { d: p.done ?? 0, n: p.total })}
-          </div>
-        </div>
-      ) : null}
-      <button
-        className={btn.primary}
-        disabled={running || !supported}
-        onClick={async () => {
-          setErr(null);
-          setP({ type: "progress", done: 0, total: 1 });
-          try {
-            await downloadForOffline(setP);
-            setStatus(offlineStatus());
-          } catch (e) {
-            setErr((e as Error).message);
-            setP(null);
-          }
-        }}
-      >
-        {running ? t("Downloading…") : status ? t("Refresh offline copy") : t("Download for offline")}
-      </button>
-      {!supported && <div className="text-warn">{t("This browser does not support offline mode.")}</div>}
-      {err && <div className="text-danger">{err}</div>}
-      <p className="text-xs text-muted">
-        {t("On iPhone: open the site in Safari → Share → Add to Home Screen. On Android: Chrome menu → Install app. Open it once while online so it can finish downloading.")}
-      </p>
-    </div>
-  );
+  return <OfflinePanel />;
 }
 
 function Plan() {

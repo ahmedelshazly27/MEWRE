@@ -10,6 +10,7 @@ import { QuizRunner } from "@/components/quiz/QuizRunner";
 import { Markdown } from "@/components/Markdown";
 import { Card, PageHeader } from "@/components/ui";
 import { TrialPlan, type TrialDayDto } from "@/components/trial/TrialPlan";
+import { OfflinePanel } from "@/components/OfflinePanel";
 
 /** The 7-day trial plan: plain-language explainers, daily review, must-know self-tests, playbook and rehearsal. */
 export function TrialView() {
@@ -33,6 +34,10 @@ export function TrialView() {
         title="Trial week: 4 days, 2 to 3 hours a day"
         subtitle="Intuition first, then the numbers and words you will hear at MEWRE. Short explainers with a picture, an analogy and three quick questions; theory waits until after you start."
       />
+      <Card className="mb-6">
+        <h2 className="mb-2 font-semibold">Studying on the plane? Download it first</h2>
+        <OfflinePanel compact />
+      </Card>
       <TrialPlan days={days} trialStart={TRIAL_START} reviewMin={REVIEW_MIN} selftestMin={SELFTEST_MIN} examMin={EXAM_MIN} />
       <Card className="mt-8">
         <h2 className="mb-2 text-lg font-semibold">How to study each explainer (no copying)</h2>

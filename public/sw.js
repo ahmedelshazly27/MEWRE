@@ -35,7 +35,8 @@ async function networkFirstPage(request) {
   const cache = await caches.open(PAGES);
   try {
     const res = await Promise.race([fetch(request), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 6000))]);
-    if (res.ok && res.type === "basic") await cache.put(pageKey(request.url), res.clone());
+    // never store a login redirect (expired session) under a lesson URL
+    if (res.ok && res.type === "basic" && !res.redirected) await cache.put(pageKey(request.url), res.clone());
     return res;
   } catch {
     const hit = (await cache.match(pageKey(request.url))) || (await cache.match(pageKey(request.url).replace(/\/$/, "")));
@@ -89,11 +90,25 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(staleWhileRevalidate(req, DATA));
 });
 
-// Download every page and asset so the whole academy works offline.
-async function precacheAll(port) {
+// Pages kept by the "trial" scope: the MEWRE track in English, the trial week, the crash course and the study tools.
+const TRIAL_SCOPE = /^\/($|trial|crash|review|practice|errors|notes|settings|glossary|formulas$|work|learn$|learn\/m\d\d|tracks\/mewre|scenarios\/m\d\d|print\/m\d\d|diagnostic|tutor|concepts$|library)/;
+const TRIAL_DATA = /^\/data\/(content|concepts)\.json$|^\/(manifest|icon|apple)/;
+
+/** A response we must not store offline: an error, or a redirect to the sign-in page. */
+const unusable = (res) => !res.ok || res.redirected || new URL(res.url).pathname.startsWith("/login");
+
+// Download every page and asset so the academy works offline. scope "trial" keeps the download small (~60 MB).
+async function precacheAll(port, scope) {
   const post = (m) => port && port.postMessage(m);
   try {
-    const manifest = await (await fetch("/data/routes.json", { cache: "no-store" })).json();
+    const mres = await fetch("/data/routes.json", { cache: "no-store", credentials: "same-origin" });
+    if (unusable(mres)) throw new Error("You are signed out. Sign in again, then start the download.");
+    const manifest = await mres.json();
+    if (scope === "trial") {
+      manifest.routes = manifest.routes.filter((r) => TRIAL_SCOPE.test(r));
+      manifest.data = manifest.data.filter((d) => TRIAL_DATA.test(d));
+    }
+    let signedOut = 0;
     const pages = await caches.open(PAGES);
     const assets = await caches.open(ASSETS);
     const data = await caches.open(DATA);
@@ -109,11 +124,17 @@ async function precacheAll(port) {
       done++;
       if (done % 10 === 0) post({ type: "progress", done, total });
     };
-    for (const u of manifest.data) await step(async () => data.put(u, await fetch(u)));
+    for (const u of manifest.data)
+      await step(async () => {
+        const res = await fetch(u, { credentials: "same-origin" });
+        if (unusable(res)) return;
+        await data.put(u, res);
+      });
     for (const r of manifest.routes) {
       await step(async () => {
         const res = await fetch(r, { credentials: "same-origin" });
-        if (!res.ok) return;
+        if (res.redirected && new URL(res.url).pathname.startsWith("/login")) signedOut++;
+        if (unusable(res)) return;
         const html = await res.clone().text();
         await pages.put(pageKey(new URL(r, self.location.origin).toString()), res);
         for (const m of html.matchAll(/\/_next\/static\/[^"'\s)]+/g)) found.add(m[0].replace(/\\u0026/g, "&"));
@@ -128,13 +149,14 @@ async function precacheAll(port) {
       });
       else done++;
     }
-    post({ type: "done", done: total, total, version: VERSION, at: Date.now() });
+    if (signedOut > manifest.routes.length / 2) throw new Error("Your session expired during the download. Sign in again and restart it.");
+    post({ type: "done", done: total, total, version: VERSION, at: Date.now(), scope });
   } catch (e) {
     post({ type: "error", message: String(e && e.message ? e.message : e) });
   }
 }
 
 self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "precache-all") event.waitUntil(precacheAll(event.ports && event.ports[0]));
+  if (event.data && event.data.type === "precache-all") event.waitUntil(precacheAll(event.ports && event.ports[0], event.data.scope || "all"));
   if (event.data && event.data.type === "skip-waiting") self.skipWaiting();
 });
