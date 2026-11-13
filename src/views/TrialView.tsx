@@ -36,6 +36,12 @@ export function TrialView() {
       />
       <Card className="mb-6">
         <h2 className="mb-2 font-semibold">Studying on the plane? Download it first</h2>
+        <p className="mb-3 text-sm">
+          <a href="/downloads/mewre-cheat-sheets.pdf" download className="font-medium text-accent">
+            Cheat-sheet pack (PDF, 23 A4 pages)
+          </a>
+          : every term, equation, number and actor from the four days, ready to print or read offline.
+        </p>
         <OfflinePanel compact />
       </Card>
       <TrialPlan days={days} trialStart={TRIAL_START} reviewMin={REVIEW_MIN} selftestMin={SELFTEST_MIN} examMin={EXAM_MIN} />
