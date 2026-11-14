@@ -251,13 +251,13 @@ Re-check every M/L item against the latest MEWRE, KAPP or press source before yo
     id: "who",
     title: { en: "Who's who in one minute", ar: "من يفعل ماذا في دقيقة" },
     md: {
-      en: md`- **MEWRE:** policy, grid owner, offtaker (30-year PPAs), grid tenders.
-- **KAPP:** procures PPP/IPP projects; holds 60% of IWPP project companies.
-- **Higher Committee** (chaired by the Minister of Finance): approves the project, its stages and the investor.
-- **CAPT:** public tenders above KD 75k (state-funded EPC route).
-- **Audit Bureau:** prior review of large contracts (threshold: verify).
-- **Fatwa & Legislation:** legal review of contract terms.
-- **KISR:** Shagaya Phase I and resource measurement.
+      en: md`- **MEWRE** (وزارة الكهرباء والماء والطاقة المتجددة): policy, grid owner, offtaker (30-year PPAs), grid tenders.
+- **KAPP** (هيئة مشروعات الشراكة بين القطاعين العام والخاص): procures PPP/IPP projects; holds 60% of IWPP project companies.
+- **Higher Committee** (اللجنة العليا، chaired by the Minister of Finance): approves the project, its stages and the investor.
+- **CAPT** (الجهاز المركزي للمناقصات العامة): public tenders above KD 75k (state-funded EPC route).
+- **Audit Bureau** (ديوان المحاسبة): prior review of large contracts (threshold: verify).
+- **Fatwa & Legislation** (إدارة الفتوى والتشريع): legal review of contract terms.
+- **KISR** (معهد الكويت للأبحاث العلمية): Shagaya Phase I and resource measurement.
 
 **IPP chain:** request (MEWRE) → feasibility (KAPP) → Higher Committee → RFQ → RFP → preferred bidder → Higher Committee → Audit Bureau → PPA → financial close.`,
       ar: md`- **الوزارة (MEWRE):** السياسات، مالكة الشبكة، المشتري (اتفاقيات شراء طاقة لمدة 30 سنة)، مناقصات الشبكة.

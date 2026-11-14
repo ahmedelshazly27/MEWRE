@@ -109,6 +109,7 @@ export function CourseView() {
         .course .why { background: var(--accent-soft); border-color: transparent; }
         .course .trap { background: color-mix(in srgb, var(--danger) 10%, transparent); border-color: transparent; }
         .course .answers { break-before: page; }
+        .course p:has(+ table), .course p:has(+ div table), .course h3 + p, .course h4 { break-after: avoid; }
         .course figure, .course .widget-card, .course svg, .course table, .course pre { break-inside: avoid; }
         @media print {
           .course { max-width: none; }

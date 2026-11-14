@@ -235,6 +235,46 @@ Kuwait's public sector works the same way, with one difference: the "departments
 
 **Also on the map:** the **Ministry of Finance** prepares the budget (fiscal year 1 April to 31 March) and funds ministry capital projects. **KISR**, the Kuwait Institute for Scientific Research, built Shagaya Phase I with the ministry and runs solar measurement stations at five inland sites: your source of ground-truth sunlight data. The **EPA** (Environment Public Authority) handles environmental approvals; the **Supreme Council for Planning and Development** owns Kuwait Vision 2035.`,
       },
+      {
+        kind: "md",
+        md: md`### Their names in Arabic
+
+Official letters, meetings and file covers use the Arabic names. Learn to recognise them on a page.
+
+| English | Arabic | You will hear |
+|---|---|---|
+| Ministry of Electricity, Water and Renewable Energy (MEWRE) | وزارة الكهرباء والماء والطاقة المتجددة | "الوزارة" |
+| Kuwait Authority for Partnership Projects (KAPP) | هيئة مشروعات الشراكة بين القطاعين العام والخاص | "هيئة الشراكة" |
+| Higher Committee for PPP projects | اللجنة العليا لمشروعات الشراكة بين القطاعين العام والخاص | "اللجنة العليا" |
+| Central Agency for Public Tenders (CAPT) | الجهاز المركزي للمناقصات العامة | "جهاز المناقصات" |
+| State Audit Bureau | ديوان المحاسبة | "الديوان" |
+| Fatwa and Legislation Department | إدارة الفتوى والتشريع | "الفتوى والتشريع" |
+| Council of Ministers | مجلس الوزراء | |
+| Ministry of Finance | وزارة المالية | |
+| Kuwait Institute for Scientific Research (KISR) | معهد الكويت للأبحاث العلمية | "المعهد" |
+| Supreme Council for Planning and Development (SCPD) | المجلس الأعلى للتخطيط والتنمية | |
+| National Assembly (suspended since May 2024) | مجلس الأمة | |
+| Environment Public Authority (EPA) | الهيئة العامة للبيئة | |
+| Kuwait Petroleum Corporation (KPC) | مؤسسة البترول الكويتية | |
+| Kuwait Direct Investment Promotion Authority (KDIPA) | هيئة تشجيع الاستثمار المباشر | |
+| GCC Interconnection Authority (GCCIA) | هيئة الربط الكهربائي لدول مجلس التعاون الخليجي | "هيئة الربط" |
+
+**Inside the ministry**
+
+| Title | Arabic |
+|---|---|
+| Minister | الوزير |
+| How you address or refer to the Minister | معالي الوزير |
+| Undersecretary | وكيل الوزارة |
+| Assistant Undersecretary (heads a sector) | الوكيل المساعد |
+| Director of a department | مدير إدارة |
+| Controller | مراقب |
+| Section head | رئيس قسم |
+| The decision written on a memo | تأشيرة |
+| "Approved" | موافق |
+| "For presentation" (send it up) | للعرض |
+| "Take the necessary action" | لاتخاذ اللازم |`,
+      },
       { kind: "widget", widget: "institution-map", caption: "Click each institution for its role. Then trace a solar IPP: MEWRE requests, KAPP procures, the Higher Committee approves, the Audit Bureau reviews, MEWRE signs the PPA." },
       {
         kind: "flow",
