@@ -37,10 +37,10 @@ export function TrialView() {
       <Card className="mb-6">
         <h2 className="mb-2 font-semibold">Studying on the plane? Download it first</h2>
         <p className="mb-3 text-sm">
-          <a href="/downloads/mewre-trial-crash-course.pdf" download className="font-medium text-accent">
-            Crash course (PDF, 29 lessons, about 3 hours)
+          <a href="/downloads/mewre-crash-course-days-2-4.pdf" download className="font-medium text-accent">
+            Crash course, Days 2 to 4 (PDF, 74 pages, about 3 hours)
           </a>
-          : the four days as one document to study, with drawings, self-checks and answers. Then the{" "}
+          : Kuwait&apos;s power sector and its actors, PV, CSP, wind and BESS, grid connection (SCR, inverter clamping, EMT studies), delivery, contracts, finance and procurement, written as one course with worked examples, self-checks and answers. Then the{" "}
           <a href="/downloads/mewre-cheat-sheets.pdf" download className="font-medium text-accent">
             reference pack (PDF, 23 pages)
           </a>{" "}
