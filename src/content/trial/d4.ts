@@ -1231,4 +1231,173 @@ The PPC sits in the middle of this ladder: too slow for faults, fast enough for 
     ],
     deeper: ["m06-l03", "m06-l05"],
   },
+  {
+    id: "x-weak-grids-ibr",
+    day: 4,
+    title: "Weak grids and inverters: SCR, current clamping and EMT studies",
+    minutes: 15,
+    module: "m06",
+    hook: "Grid engineers at MEWRE will ask whether a solar or battery plant is stable where it connects. The answer depends on how strong the grid is there (its short-circuit ratio), on what inverters do in a fault (they clamp their current), and on whether the study used detailed EMT models. These three ideas decide which studies you demand and which risks you flag.",
+    blocks: [
+      {
+        kind: "md",
+        md: md`### The picture first
+
+Imagine pushing a small boat away from a **big ship**. The ship does not move; your push goes exactly where you aim it. Now push the same boat away from **another small boat**: both drift, and if you keep pushing in rhythm the two can start rocking each other.
+
+- The **grid** is the ship or the small boat. A grid with lots of large spinning generators and short, strong connections is the big ship: **strong**. A remote node at the end of a long line with few generators nearby is the small boat: **weak**.
+- The **inverter** of a PV or battery plant is the person pushing. On a strong grid its push changes little; on a weak grid its own push moves the voltage it is trying to follow, and its controls can start to oscillate.
+
+Where the picture breaks: the "rocking" is not mechanical but in the inverter's control loops, which react in milliseconds.`,
+      },
+      {
+        kind: "md",
+        md: md`### What is actually happening
+
+**Grid strength is measured by the fault level.** If you short-circuited the grid at the plant's connection point, how much current would flow? A strong point delivers a huge current (many thousands of MVA); a weak point much less. Fault level is set by the generators and lines behind that point.
+
+**The short-circuit ratio (SCR)** compares that strength with the plant's size:
+
+$$\text{SCR} = \frac{S_{sc}}{P_{plant}}$$
+
+where $S_{sc}$ is the fault level at the connection point (MVA) and $P_{plant}$ the plant rating (MW). Several plants on the same weak node share it, so engineers also use the **weighted SCR (WSCR)**: fault level divided by the **sum** of all nearby inverter plants.
+
+- **SCR above about 5:** strong. Standard studies are usually enough.
+- **SCR about 3 to 5:** moderate. Detailed EMT studies recommended.
+- **SCR below about 3:** **weak** for today's standard inverters; risk of oscillations and voltage instability.
+- **SCR below about 2:** very weak; needs grid-forming inverters, synchronous condensers or a stronger connection.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "Same 1,100 MW plant, three connection points",
+        xKey: "point",
+        yLabel: "SCR",
+        series: [{ key: "scr", label: "Short-circuit ratio" }],
+        data: [
+          { point: "15,000 MVA bus", scr: 13.6 },
+          { point: "5,000 MVA bus", scr: 4.5 },
+          { point: "3,000 MVA bus", scr: 2.7 },
+        ],
+        caption: "The plant is identical; only the grid behind it changes. At the strong bus the SCR is 13.6, at the weak bus 2.7: below 3, where standard inverters start to struggle.",
+      },
+      {
+        kind: "md",
+        md: md`**Grid-following vs grid-forming.** Almost every PV inverter today is **grid-following**: it measures the grid's voltage with a control called a **phase-locked loop (PLL)** and injects current in step with it. It needs a stiff voltage to follow. A **grid-forming** inverter instead creates its own voltage waveform, like a generator does, so it can hold up a weak grid, give synthetic inertia and even restart a dead grid. It needs energy headroom, which is why it is mostly specified for **batteries**.
+
+**Current clamping.** An inverter's power transistors are destroyed by overcurrent within microseconds. So its control **clamps** (limits) the output current at roughly **1.1 to 1.2 times** its rating, even during a short circuit. A spinning generator, by contrast, pushes **4 to 7 times** its rated current into a fault.
+
+This has three practical consequences:
+
+- **Protection.** Relays detect faults by their large current. In an area fed mostly by inverters the fault current is small, so relays may not see the fault, or may misjudge its direction. Protection settings must be checked with inverter models.
+- **Priority.** During a voltage dip the inverter must choose what to spend its limited current on. Grid codes usually require **reactive current first**, to hold voltage up: $\Delta I_q = k \cdot \Delta V$, with $k$ typically about 2.
+- **Control behaviour.** When the current is clamped, the controllers are saturated; badly designed ones overshoot or oscillate when the fault clears. Grid-forming inverters can even lose synchronism while clamped.
+
+Two other "clamps" you will hear about: **clipping**, the flat top of a PV plant's output at noon when the DC modules can give more than the inverter's AC rating (not a fault behaviour), and the **DC-link chopper**, a resistor that dumps surplus energy so the inverter's internal DC voltage stays safe during a fault.`,
+      },
+      {
+        kind: "chart",
+        chart: "bar",
+        title: "Current into a fault, as a multiple of rated current (typical)",
+        xKey: "source",
+        yLabel: "× rated current",
+        series: [{ key: "x", label: "Fault current" }],
+        data: [
+          { source: "Synchronous generator (low)", x: 4 },
+          { source: "Synchronous generator (high)", x: 7 },
+          { source: "Inverter (clamped)", x: 1.2 },
+        ],
+        caption: "A generator floods a fault with current, which is what protection relies on. An inverter clamps at about 1.2 times its rating, so a grid full of inverters has much weaker fault currents.",
+      },
+      {
+        kind: "md",
+        md: md`### RMS and EMT studies
+
+Grid studies simulate the network on a computer. There are two kinds of dynamic simulation:
+
+- **RMS (phasor) studies** treat voltages and currents as smooth 50 Hz quantities and step in **milliseconds**. They are fast and cover the whole national grid over seconds to minutes: frequency after a generator trip, voltage stability, how plants ride through faults at system level. Tools: PSS/E, PowerFactory.
+- **EMT (electromagnetic transient) studies** simulate the **actual waveforms**, all three phases, in steps of **1 to 50 microseconds**, including the inverter's real control code. They are slow, so they model a local area for a few seconds. Tools: PSCAD, EMTP, PowerFactory EMT, RTDS for real-time hardware testing.
+
+**EMT is needed** when: the SCR is low; several inverter plants, STATCOMs or HVDC links are electrically close and could interact; ride-through must be verified with real current clamping and unbalanced faults; grid-forming behaviour must be proven; or for fast events such as transformer energisation (inrush), cable and capacitor switching, temporary overvoltages and harmonic resonance.
+
+A memory picture: RMS is a normal video showing the smooth motion; EMT is a slow-motion camera at 50,000 frames per second showing every wiggle.`,
+      },
+      {
+        kind: "flow",
+        title: "How a PM manages the studies",
+        steps: [
+          { label: "Agree scope with MEWRE Transmission", detail: "Which studies, cases (summer peak, winter midday, N-1), SCR range, neighbouring plants" },
+          { label: "Get the network model", detail: "Latest MEWRE base case under NDA" },
+          { label: "Get validated plant models", detail: "Vendor RMS and EMT models, locked to the firmware version" },
+          { label: "Run and review", detail: "Owner's engineer checks against a checklist" },
+          { label: "Approve and freeze settings", detail: "Then order equipment and set protection" },
+          { label: "Prove on site", detail: "Compliance tests must match the model; re-study if firmware changes" },
+        ],
+        caption: "The PM does not run the simulations; the PM makes sure the right ones are run, with the right models, and that site tests confirm them.",
+      },
+      {
+        kind: "callout",
+        tone: "tip",
+        title: "Numbers you will hear",
+        md: md`- **SCR** thresholds about **5, 3, 2**. Module 6 rule: EMT required if SCR is below about 5.
+- Example: 15,000 MVA at the 400 kV point of interconnection and a 1,100 MW plant give SCR ≈ 13.6 (strong).
+- Inverter fault current about **1.1 to 1.2 pu**; generator **4 to 7 pu**.
+- Reactive current injection $\Delta I_q = k\,\Delta V$, $k$ about **2** (typical).
+- RMS time step about **1 to 10 ms**; EMT about **1 to 50 µs**.
+- Kuwait's own grid-code values were not found in the course sources: ask MEWRE Transmission.`,
+      },
+    ],
+    say: [
+      "What is the minimum fault level at the connection point, and what SCR does that give with all the plants nearby?",
+      "Has an EMT study been done with the inverter vendor's real, version-locked models?",
+      "What is the inverter's maximum fault current, and is it reactive-priority during dips?",
+      "Have the protection settings been checked against the low fault current from the inverters?",
+      "Is the battery's power conversion system grid-forming capable?",
+    ],
+    trap: "Assuming a big, strong 400 kV connection means no stability studies are needed. The grid can be weak at minimum generation on a winter night, several plants share the same node (use the weighted SCR), and inverters clamp their fault current, so protection and control still need checking with detailed models.",
+    check: [
+      {
+        id: "x-weak-grids-ibr-c1",
+        type: "numeric",
+        prompt: md`A 500 MW solar plant connects where the fault level is 2,000 MVA. What is its short-circuit ratio?`,
+        answer: 4,
+        tolerance: { abs: 0.05 },
+        unit: "",
+        explanation: md`SCR = 2,000 / 500 = 4: moderate. EMT studies are recommended, and the weighted SCR with any neighbouring plants could be lower.`,
+        concepts: ["m06.system-strength"],
+        difficulty: 1,
+      },
+      {
+        id: "x-weak-grids-ibr-c2",
+        type: "mcq",
+        prompt: md`Why do protection engineers worry about areas fed mostly by inverters?`,
+        options: [
+          "Inverters clamp their current at about 1.1 to 1.2 times rating, so fault currents are small and relays may not detect faults reliably",
+          "Inverters produce too much fault current and overload the breakers",
+          "Inverters cannot be switched off by breakers",
+          "Inverters only work on DC networks",
+        ],
+        answer: 0,
+        explanation: md`Generators give 4 to 7 times rated current into a fault; inverters clamp at about 1.2 times. Relays that rely on large fault currents must be checked with inverter models.`,
+        concepts: ["m06.protection", "m06.system-strength"],
+        difficulty: 1,
+      },
+      {
+        id: "x-weak-grids-ibr-c3",
+        type: "mcq",
+        prompt: md`Which situation most clearly calls for an EMT study rather than only an RMS study?`,
+        options: [
+          "Two large inverter plants and a STATCOM connected close together at a node with SCR around 2.5",
+          "Checking whether a 132 kV line overloads at summer peak",
+          "Estimating the annual energy yield of a PV plant",
+          "Comparing the levelised cost of two tariff bids",
+        ],
+        answer: 0,
+        explanation: md`Low SCR and several inverter-based devices close together create the risk of control interactions, which only EMT models with the real control code can show. Line loading is a load-flow question.`,
+        concepts: ["m06.dynamic-studies", "m06.system-strength"],
+        difficulty: 2,
+      },
+    ],
+    deeper: ["m06-l03", "m06-l04"],
+  },
 ];

@@ -43,7 +43,7 @@ export const TRIAL_DAYS: TrialDay[] = [
     title: "Grid connection and project delivery",
     goal: "Follow a grid-connection discussion and walk a project from feasibility to handover, reading a schedule, an earned-value report and a risk register.",
     core: ["x-transformers-voltage-levels", "x-grid-code-connection", "x-project-lifecycle", "x-testing-commissioning-cod", "x-schedule-critical-path", "x-earned-value", "x-risk-change-reporting"],
-    optional: ["x-ppc-scada", "x-design-owners-engineer", "x-scope-wbs"],
+    optional: ["x-weak-grids-ibr", "x-ppc-scada", "x-design-owners-engineer", "x-scope-wbs"],
     modules: ["m06", "m07", "m08"],
     playbook: ["questions"],
   },
